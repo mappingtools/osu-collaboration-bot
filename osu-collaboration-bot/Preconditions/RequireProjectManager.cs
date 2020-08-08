@@ -16,7 +16,7 @@ namespace CollaborationBot.Preconditions {
                 return ErrorResult(context.User, context.Channel, services);
             }
 
-             if( guildUser.Roles.All(o => !o.Permissions.Administrator && o.Name != PROJECT_MANAGER_ROLE) ) {
+            if( guildUser.Roles.All(o => !o.Permissions.Administrator && o.Name != PROJECT_MANAGER_ROLE) ) {
                 return ErrorResult(context.User, context.Channel, services);
             }
 
@@ -25,8 +25,7 @@ namespace CollaborationBot.Preconditions {
 
         private Task<PreconditionResult> ErrorResult(IUser user, IMessageChannel channel, IServiceProvider services) {
             var resources = services.GetService(typeof(ResourceService)) as ResourceService;
-            channel.SendMessageAsync(resources.GenerateUnauthorizedMessage(user));
-            return Task.FromResult(PreconditionResult.FromError($"{user} is not authorized to use this command!"));
+            return Task.FromResult(PreconditionResult.FromError(resources.GenerateUnauthorizedMessage(user)));
         }
     }
 }

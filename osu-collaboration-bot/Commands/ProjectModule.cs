@@ -19,10 +19,10 @@ namespace CollaborationBot.Commands {
             var res = await _context.AddProject(name);
 
             if( res ) {
-                await Context.Channel.SendMessageAsync($"Added project {name}.");
+                await Context.Channel.SendMessageAsync($"Added project '{name}'.");
             }
             else {
-                await Context.Channel.SendMessageAsync($"Could not add project {name}.");
+                await Context.Channel.SendMessageAsync($"Could not add project '{name}'.");
             }
         }
     }
