@@ -13,7 +13,7 @@ namespace CollaborationBot.Commands {
             _context = context;
         }
 
-        
+        [RequireProjectManager]
         [Command("create")]
         public async Task Create(string name) {
             var res = await _context.AddProject(name);
