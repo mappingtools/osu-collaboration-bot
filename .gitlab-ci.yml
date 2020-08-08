@@ -18,4 +18,4 @@ deploy:
   script:
     - ssh $USER@$HOST "cd /etc/repos/osu-collaboration-bot/; git fetch --all; git reset --hard origin/master; git pull origin master; dotnet publish -c release; sudo supervisorctl restart osu-collaboration-bot"
   only:
-    - develop
+    - master
