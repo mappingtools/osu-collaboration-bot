@@ -1,4 +1,5 @@
-﻿using CollaborationBot.Services;
+﻿using CollaborationBot.Database.Records;
+using CollaborationBot.Services;
 using MySql.Data.MySqlClient;
 using System;
 using System.Data.Common;
@@ -19,8 +20,13 @@ namespace CollaborationBot.Database {
             ConnectionString = connectionString;
         }
 
-        public async Task<bool> AddProject(string name) {
-            return await ExecuteNonQuery($"INSERT INTO Projects (name) VALUES('{name}')") > 0;
+        public async Task<bool> AddProject(string name, ulong guildId) {
+            var guild = await ExecuteScalar<GuildRecord>($"SELECT * FROM Guilds WHERE guildId = {guildId}");
+            return await ExecuteNonQuery($"INSERT INTO Projects (name, guildId) VALUES('{name}', '{guild.Id}')") > 0;
+        }
+
+        public async Task<bool> AddGuild(ulong guildId) {
+            return await ExecuteNonQuery($"INSERT INTO Guilds (guild_id) VALUES({guildId})") > 0;
         }
 
         private async Task<int> ExecuteNonQuery(string sqlQuery) {
@@ -38,7 +44,7 @@ namespace CollaborationBot.Database {
             }
         }
 
-        private async void ExecuteReader(string sqlQuery, Action<DbDataReader> operation) {
+        private async Task ExecuteReader(string sqlQuery, Action<DbDataReader> operation) {
             try {
                 using var conn = GetConnection();
                 conn.Open();
@@ -48,6 +54,21 @@ namespace CollaborationBot.Database {
 
                 using var reader = await cmd.ExecuteReaderAsync();
                 operation(reader);
+            }
+            catch( Exception ) {
+                throw new Exception(_resourceService.BackendErrorMessage);
+            }
+        }
+
+        private async Task<T> ExecuteScalar<T>(string sqlQuery) {
+            try {
+                using var conn = GetConnection();
+                conn.Open();
+
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = sqlQuery;
+
+                return (T) await cmd.ExecuteScalarAsync();
             }
             catch( Exception ) {
                 throw new Exception(_resourceService.BackendErrorMessage);

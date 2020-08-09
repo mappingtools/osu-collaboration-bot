@@ -16,14 +16,12 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager]
         [Command("create")]
         public async Task Create(string name) {
-            var res = await _context.AddProject(name);
-
-            if( res ) {
+            if( await _context.AddProject(name, Context.Guild.Id) ) {
                 await Context.Channel.SendMessageAsync($"Added project '{name}'.");
+                return;
             }
-            else {
-                await Context.Channel.SendMessageAsync($"Could not add project '{name}'.");
-            }
+
+            await Context.Channel.SendMessageAsync($"Could not add project '{name}'.");
         }
     }
 }
