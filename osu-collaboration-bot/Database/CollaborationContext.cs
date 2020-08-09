@@ -49,8 +49,6 @@ namespace CollaborationBot.Database {
                         });
                     }
                 }
-
-                await reader.CloseAsync();
             });
             return projects;
         }
