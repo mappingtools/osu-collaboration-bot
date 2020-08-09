@@ -18,6 +18,18 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager]
         [RequireUserPermission(Discord.GuildPermission.Administrator)]
+        [Command("list")]
+        public async Task List() {
+            if (await _context.AddProject(name, Context.Guild.Id)) {
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(name));
+                return;
+            }
+
+            await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(name, false));
+        }
+
+        [RequireProjectManager]
+        [RequireUserPermission(Discord.GuildPermission.Administrator)]
         [Command("create")]
         public async Task Create(string name) {
             if( await _context.AddProject(name, Context.Guild.Id) ) {
