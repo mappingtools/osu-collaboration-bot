@@ -36,6 +36,18 @@ namespace CollaborationBot.Commands {
         }
 
         [RequireProjectManager]
+        [RequireUserPermission(Discord.GuildPermission.Administrator)]
+        [Command("remove")]
+        public async Task Remove(string name) {
+            if (await _context.RemoveProject(name, Context.Guild.Id)) {
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(name));
+                return;
+            }
+
+            await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(name, false));
+        }
+
+        [RequireProjectManager]
         [Command("add")]
         public async Task AddMember(string projectName) {
             if( await _context.AddMemberToProject(projectName, Context.User.Id, Context.Guild.Id) ) {

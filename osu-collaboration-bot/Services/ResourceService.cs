@@ -21,6 +21,14 @@ namespace CollaborationBot.Services {
             }
         }
 
+        public string GenerateRemoveProjectMessage(string projectName, bool isSuccessful = true) {
+            if (isSuccessful) {
+                return $"Removed project with name '{projectName}'.";
+            } else {
+                return $"Could not remove project with name '{projectName}'.";
+            }
+        }
+
         public string GenerateAddGuildMessage(bool isSuccessful = true) {
             if( isSuccessful ) {
                 return $"Added this server.";
