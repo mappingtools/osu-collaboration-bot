@@ -1,8 +1,8 @@
 ﻿namespace CollaborationBot.Database.Records {
 
     public class ProjectRecord {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int GuildId { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+        public int guildId { get; set; }
     }
 }

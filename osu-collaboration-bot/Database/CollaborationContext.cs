@@ -27,7 +27,7 @@ namespace CollaborationBot.Database {
                 throw new Exception(_resourceService.GuildNotExistsMessage);
             }
 
-            return await ExecuteNonQuery($"INSERT INTO Projects (name, guildId) VALUES('{name}', '{guild.Id}')") > 0;
+            return await ExecuteNonQuery($"INSERT INTO Projects (name, guildId) VALUES('{name}', '{guild.id}')") > 0;
         }
 
         public async Task<bool> AddGuild(ulong guildId) {
