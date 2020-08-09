@@ -20,16 +20,16 @@ namespace CollaborationBot.Database {
             ConnectionString = connectionString;
         }
 
-        public async Task<bool> AddProject(string name, ulong guildId) {
-            var id = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE guildId = {guildId}");
+        public async Task<bool> AddProject(string name, ulong uniqueGuildId) {
+            var id = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE guildId = {uniqueGuildId}");
             return await ExecuteNonQuery($"INSERT INTO Projects (name, guildId) VALUES('{name}', '{id}')") > 0;
         }
 
-        public async Task<bool> AddGuild(ulong guildId) {
-            return await ExecuteNonQuery($"INSERT INTO Guilds (guildId) VALUES({guildId})") > 0;
+        public async Task<bool> AddGuild(ulong uniqueGuildId) {
+            return await ExecuteNonQuery($"INSERT INTO Guilds (guildId) VALUES({uniqueGuildId})") > 0;
         }
 
-        public async Task<bool> AddMemberToProject(string project, ulong guildId) {
+        public async Task<bool> AddMemberToProject(string project, ulong uniqueGuildId) {
             return await ExecuteNonQuery($"INSERT INTO Members () VALUES()") > 0;
         }
 
