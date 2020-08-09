@@ -48,10 +48,13 @@ namespace CollaborationBot.Services {
         }
 
         public string GenerateListMessage(string message, IEnumerable<string> list) {
-            var builder = new StringBuilder(message + Environment.NewLine);
+            var builder = new StringBuilder();
+            builder.AppendLine(message);
+            builder.Append("```");
             foreach (var item in list) {
-                builder.Append($"- {item}{Environment.NewLine}");
+                builder.AppendLine($"- {item}");
             }
+            builder.Append("```");
             return builder.ToString();
         }
     }
