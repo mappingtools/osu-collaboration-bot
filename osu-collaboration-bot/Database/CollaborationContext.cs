@@ -1,5 +1,4 @@
-﻿using CollaborationBot.Database.Records;
-using CollaborationBot.Services;
+﻿using CollaborationBot.Services;
 using MySql.Data.MySqlClient;
 using System;
 using System.Data.Common;
@@ -27,6 +26,10 @@ namespace CollaborationBot.Database {
 
         public async Task<bool> AddGuild(ulong guildId) {
             return await ExecuteNonQuery($"INSERT INTO Guilds (guildId) VALUES({guildId})") > 0;
+        }
+
+        public async Task<bool> AddMemberToProject(string project, ulong guildId) {
+            return await ExecuteNonQuery($"INSERT INTO Members () VALUES()") > 0;
         }
 
         private async Task<int> ExecuteNonQuery(string sqlQuery) {

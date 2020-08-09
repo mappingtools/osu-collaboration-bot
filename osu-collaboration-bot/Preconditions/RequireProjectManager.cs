@@ -16,7 +16,7 @@ namespace CollaborationBot.Preconditions {
                 return ErrorResult(context.User, context.Channel, services);
             }
 
-            if( guildUser.Roles.All(o => !o.Permissions.Administrator && o.Name != PROJECT_MANAGER_ROLE) ) {
+            if( guildUser.Roles.All(o => o.Name != PROJECT_MANAGER_ROLE) ) {
                 return ErrorResult(context.User, context.Channel, services);
             }
 

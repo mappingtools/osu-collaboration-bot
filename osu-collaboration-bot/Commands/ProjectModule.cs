@@ -17,6 +17,7 @@ namespace CollaborationBot.Commands {
         }
 
         [RequireProjectManager]
+        [RequireUserPermission(Discord.GuildPermission.Administrator)]
         [Command("create")]
         public async Task Create(string name) {
             if( await _context.AddProject(name, Context.Guild.Id) ) {
@@ -25,6 +26,17 @@ namespace CollaborationBot.Commands {
             }
 
             await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(name, false));
+        }
+
+        [RequireProjectManager]
+        [Command("add")]
+        public async Task AddMember(string projectName) {
+            if( await _context.AddMemberToProject(projectName, Context.Guild.Id) ) {
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateAddMemberToProject(Context.User, projectName));
+                return;
+            }
+
+            await Context.Channel.SendMessageAsync(_resourceService.GenerateAddMemberToProject(Context.User, projectName, false));
         }
     }
 }
