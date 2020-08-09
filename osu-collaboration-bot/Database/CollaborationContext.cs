@@ -39,7 +39,7 @@ namespace CollaborationBot.Database {
         public async Task<List<ProjectRecord>> GetProjectList(ulong guildId) {
             var id = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE uniqueGuildId = {guildId}");
             var projects = new List<ProjectRecord>();
-            await ExecuteReader($"SELECT name FROM Projects WHERE guildId = {id}", async reader => {
+            await ExecuteReader($"SELECT * FROM Projects WHERE guildId = {id}", async reader => {
                 if (reader.HasRows) {
                     while (await reader.ReadAsync()) {
                         projects.Add(new ProjectRecord {
