@@ -16,8 +16,6 @@ namespace CollaborationBot.Commands {
             _resourceService = resourceService;
         }
 
-        [RequireProjectManager]
-        [RequireUserPermission(Discord.GuildPermission.Administrator)]
         [Command("list")]
         public async Task List() {
             var projects = await _context.GetProjectList(Context.Guild.Id);
