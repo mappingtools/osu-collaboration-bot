@@ -22,16 +22,18 @@ namespace CollaborationBot.Database {
         }
 
         public async Task<bool> AddProject(string name, ulong uniqueGuildId) {
-            var id = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE guildId = {uniqueGuildId}");
+            var id = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE uniqueGuildId = {uniqueGuildId}");
             return await ExecuteNonQuery($"INSERT INTO Projects (name, guildId) VALUES('{name}', '{id}')") > 0;
         }
 
         public async Task<bool> AddGuild(ulong uniqueGuildId) {
-            return await ExecuteNonQuery($"INSERT INTO Guilds (guildId) VALUES({uniqueGuildId})") > 0;
+            return await ExecuteNonQuery($"INSERT INTO Guilds (uniqueGuildId) VALUES({uniqueGuildId})") > 0;
         }
 
-        public async Task<bool> AddMemberToProject(string project, ulong uniqueGuildId) {
-            return await ExecuteNonQuery($"INSERT INTO Members () VALUES()") > 0;
+        public async Task<bool> AddMemberToProject(string projectName, ulong uniqueMemberId, ulong uniqueGuildId) {
+            var guildId = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE uniqueGuildId = {uniqueGuildId}");
+            var projectId = await ExecuteScalar<int>($"SELECT id FROM Projects WHERE projectName = '{projectName}' AND guildId = {guildId}");
+            return await ExecuteNonQuery($"INSERT INTO Members (uniqueMemberId, guildId, projectId) VALUES('{uniqueMemberId}', '{guildId}', '{projectId}')") > 0;
         }
 
         public async Task<List<ProjectRecord>> GetProjectList(ulong guildId) {
@@ -78,6 +80,7 @@ namespace CollaborationBot.Database {
 
                 using var reader = await cmd.ExecuteReaderAsync();
                 operation(reader);
+                await reader.CloseAsync();
             }
             catch( Exception ) {
                 throw new Exception(_resourceService.BackendErrorMessage);
