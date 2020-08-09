@@ -47,9 +47,9 @@ namespace CollaborationBot.Database {
             await ExecuteReader($"SELECT * FROM Projects WHERE guildId = {id}", async reader => {
                 while( await reader.ReadAsync() ) {
                     projects.Add(new ProjectRecord {
-                        id = await reader.GetFieldValueAsync<int>(0),
-                        name = await reader.GetFieldValueAsync<string>(1),
-                        guildId = await reader.GetFieldValueAsync<int>(2)
+                        Id = await reader.GetFieldValueAsync<int>(0),
+                        Name = await reader.GetFieldValueAsync<string>(1),
+                        GuildId = await reader.GetFieldValueAsync<int>(2)
                     });
                 }
             });

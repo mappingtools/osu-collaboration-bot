@@ -1,18 +1,20 @@
 ﻿namespace CollaborationBot.Database.Records {
 
     public enum ProjectStatus {
-        Finished,
-        In_Review,
-        In_Progress,
-        Assigning_Parts,
-        Searching_For_Members,
-        On_Hold,
-        Not_Started
+        Finished = 0,
+        In_Review = 1,
+        In_Progress = 2,
+        Assigning_Parts = 3,
+        Searching_For_Members = 4,
+        On_Hold = 5,
+        Not_Started = 6
     }
 
     public class ProjectRecord {
-        public int id { get; set; }
-        public string name { get; set; }
-        public int guildId { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int GuildId { get; set; }
+        public int Status { get; set; }
+        public ProjectStatus ProjectStatus => (ProjectStatus) Status;
     }
 }
