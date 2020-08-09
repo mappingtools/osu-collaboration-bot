@@ -8,7 +8,7 @@ namespace CollaborationBot.Database.Records {
         In_Progress = 2,
         Assigning_Parts = 3,
         Searching_For_Members = 4,
-        On_Halt = 5,
+        On_Hold = 5,
         Not_Started = 6
     }
 
