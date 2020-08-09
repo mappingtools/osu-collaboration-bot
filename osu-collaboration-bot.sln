@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu-collaboration-bot", "osu-collaboration-bot\osu-collaboration-bot.csproj", "{09AAD2D0-CFAA-46BB-967A-0257050CE5EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "osu-collaboration-bot", "osu-collaboration-bot\osu-collaboration-bot.csproj", "{09AAD2D0-CFAA-46BB-967A-0257050CE5EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatmapHelper", "BeatmapHelper\BeatmapHelper.csproj", "{A2F2D517-6497-4527-B2A1-C6B9FE72A990}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{09AAD2D0-CFAA-46BB-967A-0257050CE5EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09AAD2D0-CFAA-46BB-967A-0257050CE5EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09AAD2D0-CFAA-46BB-967A-0257050CE5EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2F2D517-6497-4527-B2A1-C6B9FE72A990}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2F2D517-6497-4527-B2A1-C6B9FE72A990}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2F2D517-6497-4527-B2A1-C6B9FE72A990}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2F2D517-6497-4527-B2A1-C6B9FE72A990}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
