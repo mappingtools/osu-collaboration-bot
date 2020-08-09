@@ -29,6 +29,12 @@ namespace CollaborationBot.Commands {
         }
 
         [RequireProjectManager]
+        [Command("test")]
+        public async Task test() {
+            await Context.Channel.SendMessageAsync("YEET");
+        }
+
+        [RequireProjectManager]
         [Command("add")]
         public async Task AddMember(string projectName) {
             if( await _context.AddMemberToProject(projectName, Context.Guild.Id) ) {
