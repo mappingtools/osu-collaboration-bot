@@ -22,9 +22,10 @@ namespace CollaborationBot.Services {
         }
 
         public string GenerateRemoveProjectMessage(string projectName, bool isSuccessful = true) {
-            if (isSuccessful) {
+            if( isSuccessful ) {
                 return $"Removed project with name '{projectName}'.";
-            } else {
+            }
+            else {
                 return $"Could not remove project with name '{projectName}'.";
             }
         }
@@ -52,14 +53,14 @@ namespace CollaborationBot.Services {
         }
 
         public string GenerateProjectListMessage(List<ProjectRecord> projects) {
-            return GenerateListMessage("Here are all the projects going on the server:", projects.Select(p => p.name));
+            return GenerateListMessage("Here are all the projects going on the server:", projects.Select(p => p.Name));
         }
 
         public string GenerateListMessage(string message, IEnumerable<string> list) {
             var builder = new StringBuilder();
             builder.AppendLine(message);
             builder.Append("```");
-            foreach (var item in list) {
+            foreach( var item in list ) {
                 builder.AppendLine($"- {item}");
             }
             builder.Append("```");

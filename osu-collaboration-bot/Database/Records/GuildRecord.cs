@@ -1,7 +1,7 @@
 ﻿namespace CollaborationBot.Database.Records {
 
     public class GuildRecord {
-        public int id { get; set; }
-        public ulong uniqueGuildId { get; set; }
+        public int Id { get; set; }
+        public ulong UniqueGuildId { get; set; }
     }
 }
