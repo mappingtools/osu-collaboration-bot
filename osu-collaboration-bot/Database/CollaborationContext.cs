@@ -22,11 +22,16 @@ namespace CollaborationBot.Database {
 
         public async Task<bool> AddProject(string name, ulong guildId) {
             var guild = await ExecuteScalar<GuildRecord>($"SELECT * FROM Guilds WHERE guildId = {guildId}");
+
+            if( guild == null ) {
+                throw new Exception(_resourceService.GuildNotExistsMessage);
+            }
+
             return await ExecuteNonQuery($"INSERT INTO Projects (name, guildId) VALUES('{name}', '{guild.Id}')") > 0;
         }
 
         public async Task<bool> AddGuild(ulong guildId) {
-            return await ExecuteNonQuery($"INSERT INTO Guilds (guild_id) VALUES({guildId})") > 0;
+            return await ExecuteNonQuery($"INSERT INTO Guilds (guildId) VALUES({guildId})") > 0;
         }
 
         private async Task<int> ExecuteNonQuery(string sqlQuery) {
