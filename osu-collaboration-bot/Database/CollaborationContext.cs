@@ -40,17 +40,13 @@ namespace CollaborationBot.Database {
             var id = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE uniqueGuildId = {guildId}");
             var projects = new List<ProjectRecord>();
             await ExecuteReader($"SELECT * FROM Projects WHERE guildId = {id}", async reader => {
-                if (reader.HasRows) {
-                    while (await reader.ReadAsync()) {
-                        projects.Add(new ProjectRecord {
-                            id = await reader.GetFieldValueAsync<int>(0), 
-                            name = await reader.GetFieldValueAsync<string>(1), 
-                            guildId = await reader.GetFieldValueAsync<int>(2)
-                        });
-                    }
+                while( await reader.ReadAsync() ) {
+                    projects.Add(new ProjectRecord {
+                        id = await reader.GetFieldValueAsync<int>(0),
+                        name = await reader.GetFieldValueAsync<string>(1),
+                        guildId = await reader.GetFieldValueAsync<int>(2)
+                    });
                 }
-
-                await reader.CloseAsync();
             });
             return projects;
         }
@@ -70,7 +66,7 @@ namespace CollaborationBot.Database {
             }
         }
 
-        private async Task ExecuteReader(string sqlQuery, Action<DbDataReader> operation) {
+        private async Task<bool> ExecuteReader(string sqlQuery, Action<DbDataReader> operation) {
             try {
                 using var conn = GetConnection();
                 conn.Open();
@@ -80,7 +76,10 @@ namespace CollaborationBot.Database {
 
                 using var reader = await cmd.ExecuteReaderAsync();
                 operation(reader);
+
+                var res = reader.HasRows;
                 await reader.CloseAsync();
+                return res;
             }
             catch( Exception ) {
                 throw new Exception(_resourceService.BackendErrorMessage);
