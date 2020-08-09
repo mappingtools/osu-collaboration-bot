@@ -1,4 +1,9 @@
-﻿using Discord;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using CollaborationBot.Database.Records;
+using Discord;
 
 namespace CollaborationBot.Services {
 
@@ -36,6 +41,18 @@ namespace CollaborationBot.Services {
 
         public string GenerateUnauthorizedMessage(IMentionable mention) {
             return $"{mention.Mention}, you are not authorized to use this command.";
+        }
+
+        public string GenerateProjectListMessage(List<ProjectRecord> projects) {
+            return GenerateListMessage("Here are all the projects going on the server:", projects.Select(p => p.name));
+        }
+
+        public string GenerateListMessage(string message, IEnumerable<string> list) {
+            var builder = new StringBuilder(message + Environment.NewLine);
+            foreach (var item in list) {
+                builder.Append($"- {item}{Environment.NewLine}");
+            }
+            return builder.ToString();
         }
     }
 }

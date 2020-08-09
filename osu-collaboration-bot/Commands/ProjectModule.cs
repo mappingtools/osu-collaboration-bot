@@ -20,12 +20,9 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(Discord.GuildPermission.Administrator)]
         [Command("list")]
         public async Task List() {
-            if (await _context.AddProject(name, Context.Guild.Id)) {
-                await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(name));
-                return;
-            }
+            var projects = await _context.GetProjectList(Context.Guild.Id);
 
-            await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(name, false));
+            await Context.Channel.SendMessageAsync(_resourceService.GenerateProjectListMessage(projects));
         }
 
         [RequireProjectManager]

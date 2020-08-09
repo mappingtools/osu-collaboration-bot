@@ -1,4 +1,5 @@
-﻿using CollaborationBot.Services;
+﻿using CollaborationBot.Database.Records;
+using CollaborationBot.Services;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -33,9 +34,23 @@ namespace CollaborationBot.Database {
             return await ExecuteNonQuery($"INSERT INTO Members () VALUES()") > 0;
         }
 
-        public async Task<List<string>> GetProjectList(ulong guildId) {
-            var id = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE guildId = {guildId}");
-            return await ExecuteScalar<List<string>>($"SELECT name FROM Projects WHERE guildId = {id}");
+        public async Task<List<ProjectRecord>> GetProjectList(ulong guildId) {
+            var id = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE uniqueGuildId = {guildId}");
+            var projects = new List<ProjectRecord>();
+            await ExecuteReader($"SELECT name FROM Projects WHERE guildId = {id}", async reader => {
+                if (reader.HasRows) {
+                    while (await reader.ReadAsync()) {
+                        projects.Add(new ProjectRecord {
+                            id = await reader.GetFieldValueAsync<int>(0), 
+                            name = await reader.GetFieldValueAsync<string>(1), 
+                            guildId = await reader.GetFieldValueAsync<int>(2)
+                        });
+                    }
+                }
+
+                await reader.CloseAsync();
+            });
+            return projects;
         }
 
         private async Task<int> ExecuteNonQuery(string sqlQuery) {
