@@ -2,6 +2,6 @@
 
     public class GuildRecord {
         public int id { get; set; }
-        public ulong guildId { get; set; }
+        public ulong uniqueGuildId { get; set; }
     }
 }
