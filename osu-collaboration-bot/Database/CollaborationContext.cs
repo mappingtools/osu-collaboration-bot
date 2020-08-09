@@ -1,4 +1,5 @@
-﻿using CollaborationBot.Services;
+﻿using CollaborationBot.Database.Records;
+using CollaborationBot.Services;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -29,8 +30,10 @@ namespace CollaborationBot.Database {
             return await ExecuteNonQuery($"INSERT INTO Guilds (uniqueGuildId) VALUES({uniqueGuildId})") > 0;
         }
 
-        public async Task<bool> AddMemberToProject(string project, ulong uniqueGuildId) {
-            return await ExecuteNonQuery($"INSERT INTO Members () VALUES()") > 0;
+        public async Task<bool> AddMemberToProject(string projectName, ulong uniqueMemberId, ulong uniqueGuildId) {
+            var guildId = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE uniqueGuildId = {uniqueGuildId}");
+            var projectId = await ExecuteScalar<int>($"SELECT id FROM Projects WHERE projectName = '{projectName}' AND guildId = {guildId}");
+            return await ExecuteNonQuery($"INSERT INTO Members (uniqueMemberId, guildId, projectId) VALUES('{uniqueMemberId}', '{guildId}', '{projectId}')") > 0;
         }
 
         public async Task<List<string>> GetProjectList(ulong guildId) {
@@ -63,6 +66,7 @@ namespace CollaborationBot.Database {
 
                 using var reader = await cmd.ExecuteReaderAsync();
                 operation(reader);
+                await reader.CloseAsync();
             }
             catch( Exception ) {
                 throw new Exception(_resourceService.BackendErrorMessage);
