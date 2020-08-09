@@ -6,7 +6,7 @@
         In_Progress,
         Assigning_Parts,
         Searching_For_Members,
-        On_Halt,
+        On_Hold,
         Not_Started
     }
 
