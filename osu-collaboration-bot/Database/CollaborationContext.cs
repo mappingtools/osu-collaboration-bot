@@ -22,8 +22,8 @@ namespace CollaborationBot.Database {
         }
 
         public async Task<bool> AddProject(string name, ulong uniqueGuildId) {
-            var id = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE uniqueGuildId = {uniqueGuildId}");
-            return await ExecuteNonQuery($"INSERT INTO Projects (name, guildId) VALUES('{name}', '{id}')") > 0;
+            var id = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE uniqueGuildId = {uniqueGuildId} LIMIT 1");
+            return await ExecuteNonQuery($"INSERT INTO Projects (name, guildId, status) VALUES('{name}', '{id}', '{ProjectStatus.Not_Started}')") > 0;
         }
 
         public async Task<bool> RemoveProject(string name, ulong uniqueGuildId) {
