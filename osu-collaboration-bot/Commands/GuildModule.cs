@@ -25,8 +25,9 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            await Context.Channel.SendMessageAsync(_resourceService.GenerateAddGuildMessage());
             _fileHandler.GenerateGuildDirectory(Context.Guild);
+
+            await Context.Channel.SendMessageAsync(_resourceService.GenerateAddGuildMessage());
         }
     }
 }

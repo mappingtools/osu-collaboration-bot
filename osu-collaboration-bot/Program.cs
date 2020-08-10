@@ -18,6 +18,7 @@ namespace CollaborationBot {
         private FileHandlerSettings _fileHandlerSettings;
         private CommandHandlerService _commandHandler;
         private CollaborationContext _context;
+        private FileHandlingService _fileHandler;
 
         public static void Main(string[] args) => new Program().MainAsync().GetAwaiter().GetResult();
 
@@ -39,6 +40,9 @@ namespace CollaborationBot {
 
             _commandHandler = services.GetRequiredService<CommandHandlerService>();
             await _commandHandler.InstallCommandsAsync();
+
+            _fileHandler = services.GetRequiredService<FileHandlingService>();
+            _fileHandler.Initialize(_fileHandlerSettings.Path);
 
             // Block this task until the program is closed.
             await Task.Delay(-1);
