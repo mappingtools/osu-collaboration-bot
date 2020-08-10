@@ -21,6 +21,16 @@ namespace CollaborationBot.Commands {
             _resourceService = resourceService;
         }
 
+        [RequireProjectMember]
+        [Command("submitPart")]
+        public async Task SubmitPart(string projectName) {
+            // Find out which parts this member is allowed to edit in the project
+            // Download the attached file and put it in the member's folder
+            // Merge it into the base file
+            // Success message
+            await Context.Channel.SendMessageAsync(_resourceService.GenerateSubmitPartMessage(projectName, false));
+        }
+
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Permission")]
         [Command("addBaseFile")]
@@ -37,7 +47,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            await Context.Channel.SendMessageAsync($"Successfully uploaded {attachment.Filename} as base file for project {projectName}");
+            await Context.Channel.SendMessageAsync($"Successfully uploaded {attachment.Filename} as base file for project '{projectName}'");
         }
 
         [RequireProjectManager(Group = "Permission")]
@@ -46,7 +56,7 @@ namespace CollaborationBot.Commands {
         public async Task GetBaseFile(string projectName) {
             try {
                 var projectBaseFilePath = _fileHandler.GetProjectBaseFilePath(Context.Guild, projectName);
-                await Context.Channel.SendFileAsync(projectBaseFilePath, $"Compiled .osu of project {projectName}:");
+                await Context.Channel.SendFileAsync(projectBaseFilePath, $"Compiled .osu of project '{projectName}':");
             }
             catch (Exception) {
                 await Context.Channel.SendFileAsync(_resourceService.BackendErrorMessage);

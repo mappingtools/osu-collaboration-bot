@@ -12,6 +12,14 @@ namespace CollaborationBot.Services {
         public string GuildExistsMessage = "Server is already registered.";
         public string GuildNotExistsMessage = "Your server is not registered! You can add it via command '!!guild add'.";
 
+        public string GenerateSubmitPartMessage(string projectName, bool isSuccessful = true) {
+            if (isSuccessful) {
+                return $"Successfully submitted part for project '{projectName}'.";
+            } else {
+                return $"Something went wrong when submitting part for project '{projectName}'.";
+            }
+        }
+
         public string GenerateAddProjectMessage(string projectName, bool isSuccessful = true) {
             if( isSuccessful ) {
                 return $"Added project with name '{projectName}'.";
