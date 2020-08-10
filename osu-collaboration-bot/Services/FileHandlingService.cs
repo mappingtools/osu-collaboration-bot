@@ -23,7 +23,7 @@ namespace CollaborationBot.Services {
             _path = path;
         }
 
-        public async Task<bool> UploadBaseFile(IGuild guild, string projectName, Attachment att) {
+        public async Task<bool> DownloadBaseFile(IGuild guild, string projectName, Attachment att) {
             try {
                 if( !IsFilePermissible(att.Url, PermissibleFileType.DOT_OSU) ) {
                     return false;

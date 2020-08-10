@@ -30,7 +30,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            if( !await _fileHandler.UploadBaseFile(Context.Guild, projectName, attachment) ) {
+            if( !await _fileHandler.DownloadBaseFile(Context.Guild, projectName, attachment) ) {
                 await Context.Channel.SendMessageAsync("Something went wrong while trying to upload the base file.");
                 return;
             }
