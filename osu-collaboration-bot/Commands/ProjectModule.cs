@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using CollaborationBot.Database;
 using CollaborationBot.Services;
 using System.Linq;
+using System.Net;
+using System;
+using System.IO;
 
 namespace CollaborationBot.Commands {
 
@@ -19,10 +22,18 @@ namespace CollaborationBot.Commands {
 
         [Command("addBaseFile")]
         public async Task AddBaseFile(string projectName) {
-            var attachments = Context.Message.Attachments;
+            var attachment = Context.Message.Attachments.SingleOrDefault();
 
-            foreach( var att in attachments ) {
-                await Context.Channel.SendFileAsync(att.Url, "a file");
+            if( attachment != null ) {
+                var extension = Path.GetExtension(attachment.Url);
+
+                if( extension == ".osu" ) {
+                    if( Uri.TryCreate(attachment.Url, UriKind.Absolute, out var uri) ) {
+                        using var client = new WebClient();
+                        client.DownloadFileAsync(uri, "temp_attachment.osu");
+                        await Context.Channel.SendFileAsync("temp_attachment.osu", "You uploaded this file.");
+                    }
+                }
             }
         }
 
