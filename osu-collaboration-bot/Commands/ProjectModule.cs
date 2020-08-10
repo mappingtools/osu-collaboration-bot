@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Discord.Commands;
 using CollaborationBot.Preconditions;
 using System.Threading.Tasks;
@@ -43,13 +44,8 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Permission")]
         [Command("getBaseFile")]
         public async Task GetBaseFile(string projectName) {
-            try {
-                var projectBaseFilePath = _fileHandler.GetProjectBaseFilePath(Context.Guild, projectName);
-                await Context.Channel.SendFileAsync(projectBaseFilePath, $"Compiled .osu of project {projectName}:");
-            }
-            catch (Exception e) {
-                await Context.Channel.SendMessageAsync(e.Message);
-            }
+            var projectBaseFilePath = _fileHandler.GetProjectBaseFilePath(Context.Guild, projectName);
+            await Context.Channel.SendFileAsync(projectBaseFilePath, $"Compiled .osu of project {projectName}:");
         }
 
         [Command("list")]
