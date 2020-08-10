@@ -29,7 +29,7 @@ namespace CollaborationBot.Services {
                     return false;
                 }
 
-                var localProjectPath = Path.Combine(_path, guild.Id.ToString(), projectName);
+                var localProjectPath = GetProjectPath(guild, projectName);
 
                 if( !Directory.Exists(localProjectPath) ) {
                     return false;
@@ -51,8 +51,26 @@ namespace CollaborationBot.Services {
             }
         }
 
+        public string GetProjectBaseFilePath(IGuild guild, string projectName) {
+            var localProjectPath = GetProjectPath(guild, projectName);
+            string[] osuFiles = Directory.GetFiles(localProjectPath, "*.osu");
+
+            if (osuFiles.Length == 0)
+                throw new FileNotFoundException("No .osu files found in project directory.");
+
+            return osuFiles[0];
+        }
+
+        public string GetGuildPath(IGuild guild) {
+            return Path.Combine(_path, guild.Id.ToString());
+        }
+
+        public string GetProjectPath(IGuild guild, string projectName) {
+            return Path.Combine(_path, guild.Id.ToString(), projectName);
+        }
+
         public void GenerateGuildDirectory(IGuild guild) {
-            var localGuildPath = Path.Combine(_path, guild.Id.ToString());
+            var localGuildPath = GetGuildPath(guild);
 
             if( !Directory.Exists(localGuildPath) ) {
                 Directory.CreateDirectory(localGuildPath);
@@ -60,9 +78,9 @@ namespace CollaborationBot.Services {
         }
 
         public void GenerateProjectDirectory(IGuild guild, string projectName) {
-            var localProjectPath = Path.Combine(_path, guild.Id.ToString(), projectName);
+            var localProjectPath = GetProjectPath(guild, projectName);
 
-            if( !Directory.Exists(localProjectPath) ) {
+            if ( !Directory.Exists(localProjectPath) ) {
                 Directory.CreateDirectory(localProjectPath);
             }
         }
