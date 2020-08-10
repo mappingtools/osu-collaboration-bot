@@ -57,6 +57,10 @@ namespace CollaborationBot.Services {
         }
 
         public string GenerateListMessage(string message, IEnumerable<string> list) {
+            if( list.Count() <= 0 ) {
+                return "There are no projects in this server.";
+            }
+
             var builder = new StringBuilder();
             builder.AppendLine(message);
             builder.Append("```");
