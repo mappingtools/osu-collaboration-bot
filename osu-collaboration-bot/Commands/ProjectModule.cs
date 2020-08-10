@@ -4,9 +4,6 @@ using System.Threading.Tasks;
 using CollaborationBot.Database;
 using CollaborationBot.Services;
 using System.Linq;
-using System.Net;
-using System;
-using System.IO;
 
 namespace CollaborationBot.Commands {
 
@@ -44,20 +41,21 @@ namespace CollaborationBot.Commands {
         [Command("list")]
         public async Task List() {
             var projects = await _context.GetProjectList(Context.Guild.Id);
-
             await Context.Channel.SendMessageAsync(_resourceService.GenerateProjectListMessage(projects));
         }
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Permission")]
         [Command("create")]
-        public async Task Create(string name) {
-            if( await _context.AddProject(name, Context.Guild.Id) ) {
-                await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(name));
+        public async Task Create(string projectName) {
+            if( await _context.AddProject(projectName, Context.Guild.Id) ) {
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName, false));
                 return;
             }
 
-            await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(name, false));
+            _fileHandler.GenerateProjectDirectory(Context.Guild, projectName);
+
+            await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName));
         }
 
         [RequireProjectManager]
