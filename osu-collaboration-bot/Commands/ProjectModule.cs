@@ -49,13 +49,13 @@ namespace CollaborationBot.Commands {
         [Command("create")]
         public async Task Create(string projectName) {
             if( !await _context.AddProject(projectName, Context.Guild.Id) ) {
-                _fileHandler.GenerateProjectDirectory(Context.Guild, projectName);
-                await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName));
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName, false));
 
                 return;
             }
 
-            await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName, false));
+            _fileHandler.GenerateProjectDirectory(Context.Guild, projectName);
+            await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName));
         }
 
         [RequireProjectManager]
