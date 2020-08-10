@@ -21,7 +21,6 @@ namespace CollaborationBot.Commands {
             _resourceService = resourceService;
         }
 
-        [RequireProjectMember]
         [Command("submitPart")]
         public async Task SubmitPart(string projectName) {
             // Find out which parts this member is allowed to edit in the project
