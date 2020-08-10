@@ -3,6 +3,7 @@ using CollaborationBot.Preconditions;
 using System.Threading.Tasks;
 using CollaborationBot.Database;
 using CollaborationBot.Services;
+using System.Linq;
 
 namespace CollaborationBot.Commands {
 
@@ -14,6 +15,15 @@ namespace CollaborationBot.Commands {
         public ProjectModule(CollaborationContext context, ResourceService resourceService) {
             _context = context;
             _resourceService = resourceService;
+        }
+
+        [Command("addBaseFile")]
+        public async Task AddBaseFile(string projectName) {
+            var attachments = Context.Message.Attachments;
+
+            foreach( var att in attachments ) {
+                await Context.Channel.SendFileAsync(att.Url, "a file");
+            }
         }
 
         [Command("list")]
@@ -39,7 +49,7 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(Discord.GuildPermission.Administrator)]
         [Command("remove")]
         public async Task Remove(string name) {
-            if (await _context.RemoveProject(name, Context.Guild.Id)) {
+            if( await _context.RemoveProject(name, Context.Guild.Id) ) {
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(name));
                 return;
             }
