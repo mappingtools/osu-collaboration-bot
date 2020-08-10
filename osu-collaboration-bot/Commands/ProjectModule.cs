@@ -44,8 +44,13 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Permission")]
         [Command("getBaseFile")]
         public async Task GetBaseFile(string projectName) {
-            var projectBaseFilePath = _fileHandler.GetProjectBaseFilePath(Context.Guild, projectName);
-            await Context.Channel.SendFileAsync(projectBaseFilePath, $"Compiled .osu of project {projectName}:");
+            try {
+                var projectBaseFilePath = _fileHandler.GetProjectBaseFilePath(Context.Guild, projectName);
+                await Context.Channel.SendFileAsync(projectBaseFilePath, $"Compiled .osu of project {projectName}:");
+            }
+            catch (Exception) {
+                await Context.Channel.SendFileAsync(_resourceService.BackendErrorMessage);
+            }
         }
 
         [Command("list")]
