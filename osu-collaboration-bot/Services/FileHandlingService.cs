@@ -61,7 +61,7 @@ namespace CollaborationBot.Services {
 
         public void GenerateProjectDirectory(IGuild guild, string projectName) {
             var localProjectPath = Path.Combine(_path, guild.Id.ToString(), projectName);
-            Console.WriteLine(localProjectPath);
+
             if( !Directory.Exists(localProjectPath) ) {
                 Directory.CreateDirectory(localProjectPath);
             }
