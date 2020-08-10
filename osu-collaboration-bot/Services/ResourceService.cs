@@ -53,14 +53,13 @@ namespace CollaborationBot.Services {
         }
 
         public string GenerateProjectListMessage(List<ProjectRecord> projects) {
-            return GenerateListMessage("Here are all the projects going on the server:", projects.Select(p => p.Name));
+            if (projects.Count <= 0) {
+                return "There are no projects in this server.";
+            }
+            return GenerateListMessage("Here are all the projects in the server:", projects.Select(p => p.Name));
         }
 
         public string GenerateListMessage(string message, IEnumerable<string> list) {
-            if( list.Count() <= 0 ) {
-                return "There are no projects in this server.";
-            }
-
             var builder = new StringBuilder();
             builder.AppendLine(message);
             builder.Append("```");
