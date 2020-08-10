@@ -15,6 +15,7 @@ namespace CollaborationBot {
         private DiscordSocketClient _client;
         private DiscordSettings _discordSettings;
         private DatabaseSettings _databaseSettings;
+        private FileHandlerSettings _fileHandlerSettings;
         private CommandHandlerService _commandHandler;
         private CollaborationContext _context;
 
@@ -25,6 +26,7 @@ namespace CollaborationBot {
 
             _discordSettings = JsonConvert.DeserializeObject<DiscordSettings>(File.ReadAllText("discord_settings.json"));
             _databaseSettings = JsonConvert.DeserializeObject<DatabaseSettings>(File.ReadAllText("database_settings.json"));
+            _fileHandlerSettings = JsonConvert.DeserializeObject<FileHandlerSettings>(File.ReadAllText("filehandler_settings.json"));
 
             _client = services.GetRequiredService<DiscordSocketClient>();
             _client.Log += Log;
@@ -51,6 +53,7 @@ namespace CollaborationBot {
             var services = new ServiceCollection();
             services.AddSingleton<ResourceService>();
             services.AddSingleton<CollaborationContext>();
+            services.AddSingleton<FileHandlingService>();
             services.AddSingleton<DiscordSocketClient>();
             services.AddSingleton<CommandService>();
             services.AddSingleton<CommandHandlerService>();

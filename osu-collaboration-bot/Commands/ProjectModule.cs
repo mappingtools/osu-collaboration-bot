@@ -13,28 +13,32 @@ namespace CollaborationBot.Commands {
     [Group("project")]
     public class ProjectModule :ModuleBase<SocketCommandContext> {
         private readonly CollaborationContext _context;
+        private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
 
-        public ProjectModule(CollaborationContext context, ResourceService resourceService) {
+        public ProjectModule(CollaborationContext context, FileHandlingService fileHandler, ResourceService resourceService) {
             _context = context;
+            _fileHandler = fileHandler;
             _resourceService = resourceService;
         }
 
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Permission")]
         [Command("addBaseFile")]
         public async Task AddBaseFile(string projectName) {
             var attachment = Context.Message.Attachments.SingleOrDefault();
 
-            if( attachment != null ) {
-                var extension = Path.GetExtension(attachment.Url);
-
-                if( extension == ".osu" ) {
-                    if( Uri.TryCreate(attachment.Url, UriKind.Absolute, out var uri) ) {
-                        using var client = new WebClient();
-                        client.DownloadFileAsync(uri, "temp_attachment.osu");
-                        await Context.Channel.SendFileAsync("temp_attachment.osu", "You uploaded this file.");
-                    }
-                }
+            if( attachment == null ) {
+                await Context.Channel.SendMessageAsync("Could not find an attached .osu file.");
+                return;
             }
+
+            if( !await _fileHandler.UploadBaseFile(Context.Guild, projectName, attachment) ) {
+                await Context.Channel.SendMessageAsync("Something went wrong while trying to upload the base file.");
+                return;
+            }
+
+            await Context.Channel.SendMessageAsync($"Successfully uploaded {attachment.Filename} as base file for project {projectName}");
         }
 
         [Command("list")]

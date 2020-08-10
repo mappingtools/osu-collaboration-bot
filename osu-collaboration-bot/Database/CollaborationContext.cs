@@ -35,6 +35,19 @@ namespace CollaborationBot.Database {
             return await ExecuteNonQuery($"INSERT INTO Guilds (uniqueGuildId) VALUES({uniqueGuildId})") > 0;
         }
 
+        public async Task<GuildRecord> GetGuild(ulong uniqueGuildId) {
+            var guild = new GuildRecord();
+
+            await ExecuteReader($"SELECT * FROM Guilds WHERE uniqueGuildId = {uniqueGuildId} LIMIT 1", async reader => {
+                while( await reader.ReadAsync() ) {
+                    guild.Id = await reader.GetFieldValueAsync<int>(0);
+                    guild.UniqueGuildId = await reader.GetFieldValueAsync<ulong>(1);
+                }
+            });
+
+            return guild;
+        }
+
         public async Task<bool> AddMemberToProject(string projectName, ulong uniqueMemberId, ulong uniqueGuildId) {
             var guildId = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE uniqueGuildId = {uniqueGuildId}");
             var projectId = await ExecuteScalar<int>($"SELECT id FROM Projects WHERE projectName = '{projectName}' AND guildId = {guildId}");
