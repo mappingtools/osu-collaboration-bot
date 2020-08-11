@@ -12,8 +12,17 @@ namespace CollaborationBot.Database {
     public class CollaborationContext {
         private readonly ResourceService _resourceService;
 
-        private string GetGuildIdStatement => $"SELECT id FROM Guilds WHERE uniqueGuildId=@uniqueGuildId";
-        private string InsertNewProject => $"INSERT INTO Projects (name, guildId, status) VALUES(@name, @guildId, @status)";
+        private string InsertNewGuildStatement => "INSERT INTO Guilds (uniqueGuildId) VALUES(@uniqueGuildid)";
+        private string GetGuildStatement => "SELECT * FROM Guilds WHERE uniqueGuildId=@uniqueGuildId";
+        private string GetGuildIdStatement => "SELECT id FROM Guilds WHERE uniqueGuildId=@uniqueGuildId";
+        private string GetProjectsFromGuildStatement => "SELECT * FROM Projects INNER JOIN Guilds ON Guilds.id=Projects.guildId HAVING Guilds.uniqueGuildId=@uniqueGuildId";
+        private string GetProjectFromGuildStatement => "SELECT * FROM Projects INNER JOIN Guilds ON Guilds.id=Projects.guildID HAVING Guilds.uniqueGuildId=@uniqueGuildId AND Projects.name=@projectName";
+
+        private string InsertNewProjectStatement => "INSERT INTO Projects (name, guildId, status) VALUES(@name, @guildId, @status)"
+        private string DeleteProjectStatement => "DELETE FROM Projects WHERE name=@name AND guildId=@guildId";
+
+        private string InsertNewMemberStatement => "INSERT INTO Members (uniqueMemberId, guildId, projectId, role) VALUES(@uniqueMemberId, @guildId, @projectId, @role)";
+        private string GetMemberFromProjectStatement => "SELECT * FROM Members INNER JOIN Projects ON Projects.id=Members.projectId HAVING Projects.Name=@projectName AND Members.uniqueMemberId=@uniqueMemberId";
 
         public string ConnectionString { get; set; }
 
@@ -27,41 +36,52 @@ namespace CollaborationBot.Database {
 
         public async Task<bool> AddProjectAsync(string name, ulong uniqueGuildId) {
             var uniqueGuildIdParam = new MySqlParameter("@uniqueGuildId", uniqueGuildId);
-            var guildId = await SelectScalar<int>(GetGuildIdStatement, uniqueGuildIdParam);
+            var guildId = await ExecuteScalarAsync<int>(GetGuildIdStatement, uniqueGuildIdParam);
 
             var nameParam = new MySqlParameter("@name", name);
             var guildIdParam = new MySqlParameter("@guildId", guildId);
             var statusParam = new MySqlParameter("@status", ProjectStatus.Not_Started);
 
-            return await Insert(InsertNewProject, nameParam, guildIdParam, statusParam) > 0;
+            return await ExecuteAsync(InsertNewProjectStatement, nameParam, guildIdParam, statusParam) > 0;
         }
 
         public async Task<bool> RemoveProjectAsync(string name, ulong uniqueGuildId) {
-            var id = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE uniqueGuildId = {uniqueGuildId}");
-            return await ExecuteNonQueryAsync($"DELETE FROM Projects WHERE name = {name} AND guildId = {id}") > 0;
+            var uniqueGuildIdParam = new MySqlParameter("@uniqueGuildId", uniqueGuildId);
+            var guildId = await ExecuteScalarAsync<int>(GetGuildIdStatement, uniqueGuildIdParam);
+
+            var nameParam = new MySqlParameter("@name", name);
+            var guildIdParam = new MySqlParameter("@guildId", guildId);
+
+            return await ExecuteAsync(DeleteProjectStatement, nameParam, guildIdParam) > 0;
         }
 
         public async Task<bool> AddGuildAsync(ulong uniqueGuildId) {
-            return await ExecuteNonQueryAsync($"INSERT INTO Guilds (uniqueGuildId) VALUES({uniqueGuildId})") > 0;
+            var uniqueGuildIdParam = new MySqlParameter("@uniqueGuildId", uniqueGuildId);
+            return await ExecuteAsync(InsertNewGuildStatement, uniqueGuildIdParam) > 0;
         }
 
         public async Task<GuildRecord> GetGuildAsync(ulong uniqueGuildId) {
+            var uniqueGuildIdParam = new MySqlParameter("@uniqueGuildId", uniqueGuildId);
+
             var guild = new GuildRecord();
 
-            await ExecuteReaderAsync($"SELECT * FROM Guilds WHERE uniqueGuildId = {uniqueGuildId} LIMIT 1", async reader => {
+            await ExecuteReaderAsync(async reader => {
                 while( await reader.ReadAsync() ) {
                     guild.Id = await reader.GetFieldValueAsync<int>(0);
                     guild.UniqueGuildId = await reader.GetFieldValueAsync<ulong>(1);
                 }
-            });
+            }, GetGuildStatement, uniqueGuildIdParam);
 
             return guild;
         }
 
         public async Task<MemberRecord> GetMemberAsync(ulong uniqueMemberId, string projectName) {
+            var uniqueMemberIdParam = new MySqlParameter("@uniqueMemberId", uniqueMemberId);
+            var projectNameParam = new MySqlParameter("@projectName", projectName);
+
             var member = new MemberRecord();
 
-            await ExecuteReaderAsync($"SELECT * FROM Members INNER JOIN Projects ON Projects.id = Members.projectId HAVING Projects.Name = '{projectName}' AND Members.uniqueMemberId = {uniqueMemberId} LIMIT 1", async reader => {
+            await ExecuteReaderAsync(async reader => {
                 while( await reader.ReadAsync() ) {
                     member.Id = await reader.GetFieldValueAsync<int>(0);
                     member.UniqueMemberId = await reader.GetFieldValueAsync<ulong>(1);
@@ -69,33 +89,57 @@ namespace CollaborationBot.Database {
                     member.ProjectId = await reader.GetFieldValueAsync<int>(3);
                     member.Role = await reader.GetFieldValueAsync<int>(4);
                 }
-            });
+            }, GetMemberFromProjectStatement, uniqueMemberIdParam, projectNameParam);
 
             return member;
         }
 
         public async Task<bool> AddMemberToProjectAsync(string projectName, ulong uniqueMemberId, ulong uniqueGuildId) {
-            var guildId = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE uniqueGuildId = {uniqueGuildId}");
-            var projectId = await ExecuteScalar<int>($"SELECT id FROM Projects WHERE projectName = '{projectName}' AND guildId = {guildId}");
-            return await ExecuteNonQueryAsync($"INSERT INTO Members (uniqueMemberId, guildId, projectId) VALUES('{uniqueMemberId}', '{guildId}', '{projectId}')") > 0;
+            var projectNameParam = new MySqlParameter("@projectName", projectName);
+            var uniqueGuildIdParam = new MySqlParameter("@uniqueGuildId", uniqueGuildId);
+
+            int projectId = 0;
+            int guildId = 0;
+
+            await ExecuteReaderAsync(async reader => {
+                while( await reader.ReadAsync() ) {
+                    projectId = await reader.GetFieldValueAsync<int>(0);
+                    guildId = await reader.GetFieldValueAsync<int>(2);
+                }
+            }, GetProjectFromGuildStatement, projectNameParam, uniqueGuildIdParam);
+
+            if( projectId <= 0 || guildId <= 0 ) {
+                return false;
+            }
+
+            var uniqueMemberIdParam = new MySqlParameter("@uniqueMemberId", uniqueMemberId);
+            var guildIdParam = new MySqlParameter("@guildId", guildId);
+            var projectIdParam = new MySqlParameter("@projectId", projectId);
+            var roleParam = new MySqlParameter("@role", ProjectRole.Member);
+
+            return await ExecuteAsync(InsertNewMemberStatement, uniqueMemberIdParam, guildIdParam, projectIdParam, roleParam) > 0;
         }
 
-        public async Task<List<ProjectRecord>> GetProjectListAsync(ulong guildId) {
-            var id = await ExecuteScalar<int>($"SELECT id FROM Guilds WHERE uniqueGuildId = {guildId}");
+        public async Task<List<ProjectRecord>> GetProjectListAsync(ulong uniqueGuildId) {
+            var uniqueGuildIdParam = new MySqlParameter("@uniqueGuildId", uniqueGuildId);
+
             var projects = new List<ProjectRecord>();
-            await ExecuteReaderAsync($"SELECT * FROM Projects WHERE guildId = {id}", async reader => {
+
+            await ExecuteReaderAsync(async reader => {
                 while( await reader.ReadAsync() ) {
                     projects.Add(new ProjectRecord {
                         Id = await reader.GetFieldValueAsync<int>(0),
                         Name = await reader.GetFieldValueAsync<string>(1),
-                        GuildId = await reader.GetFieldValueAsync<int>(2)
+                        GuildId = await reader.GetFieldValueAsync<int>(2),
+                        Status = await reader.GetFieldValueAsync<int>(3)
                     });
                 }
-            });
+            }, GetProjectsFromGuildStatement, uniqueGuildIdParam);
+
             return projects;
         }
 
-        private async Task<int> Insert(string sqlStatement, params MySqlParameter[] parameters) {
+        private async Task<int> ExecuteAsync(string sqlStatement, params MySqlParameter[] parameters) {
             try {
                 using var conn = GetConnection();
                 await conn.OpenAsync();
@@ -113,7 +157,7 @@ namespace CollaborationBot.Database {
             }
         }
 
-        private async Task<T> SelectScalar<T>(string sqlStatement, params MySqlParameter[] parameters) {
+        private async Task<T> ExecuteScalarAsync<T>(string sqlStatement, params MySqlParameter[] parameters) {
             try {
                 using var conn = GetConnection();
                 await conn.OpenAsync();
@@ -131,50 +175,25 @@ namespace CollaborationBot.Database {
             }
         }
 
-        private async Task<int> ExecuteNonQueryAsync(string sqlQuery) {
+        private async Task<bool> ExecuteReaderAsync(Action<DbDataReader> operation, string sqlStatement, params MySqlParameter[] parameters) {
             try {
                 using var conn = GetConnection();
-                conn.Open();
+                await conn.OpenAsync();
 
-                var cmd = conn.CreateCommand();
-                cmd.CommandText = sqlQuery;
+                var command = new MySqlCommand(sqlStatement, conn);
 
-                return await cmd.ExecuteNonQueryAsync();
-            }
-            catch( Exception ) {
-                throw new Exception(_resourceService.BackendErrorMessage);
-            }
-        }
+                foreach( var param in parameters ) {
+                    command.Parameters.Add(param);
+                }
 
-        private async Task<bool> ExecuteReaderAsync(string sqlQuery, Action<DbDataReader> operation) {
-            try {
-                using var conn = GetConnection();
-                conn.Open();
-
-                var cmd = conn.CreateCommand();
-                cmd.CommandText = sqlQuery;
-
-                using var reader = await cmd.ExecuteReaderAsync();
+                using var reader = await command.ExecuteReaderAsync();
                 operation(reader);
 
                 var res = reader.HasRows;
+
                 await reader.CloseAsync();
+
                 return res;
-            }
-            catch( Exception ) {
-                throw new Exception(_resourceService.BackendErrorMessage);
-            }
-        }
-
-        private async Task<T> ExecuteScalar<T>(string sqlQuery) {
-            try {
-                using var conn = GetConnection();
-                conn.Open();
-
-                var cmd = conn.CreateCommand();
-                cmd.CommandText = sqlQuery;
-
-                return (T) await cmd.ExecuteScalarAsync();
             }
             catch( Exception ) {
                 throw new Exception(_resourceService.BackendErrorMessage);
