@@ -13,7 +13,7 @@ namespace CollaborationBot.Database {
         private readonly ResourceService _resourceService;
 
         private string GetGuildIdStatement => $"SELECT id FROM Guilds WHERE uniqueGuildId=@uniqueGuildId";
-        private string InsertNewProject => $"INSERT INTO Projects (name, guildId, status) VALUES(@name, @guildId, @projectStatus)";
+        private string InsertNewProject => $"INSERT INTO Projects (name, guildId, status) VALUES(@name, @guildId, @status)";
 
         public string ConnectionString { get; set; }
 
@@ -99,6 +99,7 @@ namespace CollaborationBot.Database {
             try {
                 using var conn = GetConnection();
                 await conn.OpenAsync();
+
                 var command = new MySqlCommand(sqlStatement, conn);
 
                 foreach( var param in parameters ) {
