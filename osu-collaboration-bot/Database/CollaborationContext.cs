@@ -107,7 +107,7 @@ namespace CollaborationBot.Database {
                 return await command.ExecuteNonQueryAsync();
             }
             catch( Exception ) {
-                throw new Exception(_resourceService.BackendErrorMessage);
+                throw new Exception(_resourceService.BackendErrorMessage + "insert");
             }
         }
 
@@ -123,7 +123,7 @@ namespace CollaborationBot.Database {
                 return (T) await command.ExecuteScalarAsync();
             }
             catch( Exception ) {
-                throw new Exception(_resourceService.BackendErrorMessage);
+                throw new Exception(_resourceService.BackendErrorMessage + "scalar");
             }
         }
 
