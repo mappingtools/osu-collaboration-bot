@@ -20,7 +20,7 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(Discord.GuildPermission.Administrator)]
         [Command("add")]
         public async Task Add() {
-            if( !await _context.AddGuild(Context.Guild.Id) ) {
+            if( !await _context.AddGuildAsync(Context.Guild.Id) ) {
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateAddGuildMessage(false));
                 return;
             }

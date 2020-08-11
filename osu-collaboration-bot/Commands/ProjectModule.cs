@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Discord.Commands;
 using CollaborationBot.Preconditions;
 using System.Threading.Tasks;
@@ -57,14 +56,14 @@ namespace CollaborationBot.Commands {
                 var projectBaseFilePath = _fileHandler.GetProjectBaseFilePath(Context.Guild, projectName);
                 await Context.Channel.SendFileAsync(projectBaseFilePath, $"Compiled .osu of project '{projectName}':");
             }
-            catch (Exception) {
+            catch( Exception ) {
                 await Context.Channel.SendFileAsync(_resourceService.BackendErrorMessage);
             }
         }
 
         [Command("list")]
         public async Task List() {
-            var projects = await _context.GetProjectList(Context.Guild.Id);
+            var projects = await _context.GetProjectListAsync(Context.Guild.Id);
             await Context.Channel.SendMessageAsync(_resourceService.GenerateProjectListMessage(projects));
         }
 
@@ -72,7 +71,7 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Permission")]
         [Command("create")]
         public async Task Create(string projectName) {
-            if( !await _context.AddProject(projectName, Context.Guild.Id) ) {
+            if( !await _context.AddProjectAsync(projectName, Context.Guild.Id) ) {
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName, false));
 
                 return;
@@ -82,11 +81,11 @@ namespace CollaborationBot.Commands {
             await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName));
         }
 
-        [RequireProjectManager]
-        [RequireUserPermission(Discord.GuildPermission.Administrator)]
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Permission")]
         [Command("remove")]
         public async Task Remove(string name) {
-            if( await _context.RemoveProject(name, Context.Guild.Id) ) {
+            if( await _context.RemoveProjectAsync(name, Context.Guild.Id) ) {
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(name));
                 return;
             }
@@ -97,7 +96,7 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager]
         [Command("add")]
         public async Task AddMember(string projectName) {
-            if( await _context.AddMemberToProject(projectName, Context.User.Id, Context.Guild.Id) ) {
+            if( await _context.AddMemberToProjectAsync(projectName, Context.User.Id, Context.Guild.Id) ) {
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateAddMemberToProject(Context.User, projectName));
                 return;
             }

@@ -55,7 +55,7 @@ namespace CollaborationBot.Services {
             var localProjectPath = GetProjectPath(guild, projectName);
             string[] osuFiles = Directory.GetFiles(localProjectPath, "*.osu");
 
-            if (osuFiles.Length == 0)
+            if( osuFiles.Length == 0 )
                 throw new FileNotFoundException("No .osu files found in project directory.");
 
             return osuFiles[0];
@@ -80,7 +80,7 @@ namespace CollaborationBot.Services {
         public void GenerateProjectDirectory(IGuild guild, string projectName) {
             var localProjectPath = GetProjectPath(guild, projectName);
 
-            if ( !Directory.Exists(localProjectPath) ) {
+            if( !Directory.Exists(localProjectPath) ) {
                 Directory.CreateDirectory(localProjectPath);
             }
         }
