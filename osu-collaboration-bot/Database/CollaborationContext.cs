@@ -95,11 +95,15 @@ namespace CollaborationBot.Database {
             return projects;
         }
 
-        private async Task<int> Insert(string sqlStatement, params IDataParameter[] parameters) {
+        private async Task<int> Insert(string sqlStatement, params MySqlParameter[] parameters) {
             try {
                 using var conn = GetConnection();
                 var command = new MySqlCommand(sqlStatement, conn);
-                command.Parameters.AddRange(parameters);
+
+                foreach( var param in parameters ) {
+                    command.Parameters.Add(param);
+                }
+
                 return await command.ExecuteNonQueryAsync();
             }
             catch( Exception ) {
@@ -107,11 +111,15 @@ namespace CollaborationBot.Database {
             }
         }
 
-        private async Task<T> SelectScalar<T>(string sqlStatement, params IDataParameter[] parameters) {
+        private async Task<T> SelectScalar<T>(string sqlStatement, params MySqlParameter[] parameters) {
             try {
                 using var conn = GetConnection();
                 var command = new MySqlCommand(sqlStatement, conn);
-                command.Parameters.AddRange(parameters);
+
+                foreach( var param in parameters ) {
+                    command.Parameters.Add(param);
+                }
+
                 return (T) await command.ExecuteScalarAsync();
             }
             catch( Exception ) {
