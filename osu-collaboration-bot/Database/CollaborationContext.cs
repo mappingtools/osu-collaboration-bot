@@ -29,9 +29,9 @@ namespace CollaborationBot.Database {
             var uniqueGuildIdParam = new MySqlParameter("@uniqueGuildId", uniqueGuildId);
             var guildId = await SelectScalar<int>(GetGuildIdStatement, uniqueGuildIdParam);
 
-            var nameParam = new MySqlParameter("name", name);
-            var guildIdParam = new MySqlParameter("guildId", guildId);
-            var statusParam = new MySqlParameter("status", ProjectStatus.Not_Started);
+            var nameParam = new MySqlParameter("@name", name);
+            var guildIdParam = new MySqlParameter("@guildId", guildId);
+            var statusParam = new MySqlParameter("@status", ProjectStatus.Not_Started);
 
             return await Insert(InsertNewProject, nameParam, guildIdParam, statusParam) > 0;
         }
@@ -108,7 +108,7 @@ namespace CollaborationBot.Database {
                 return await command.ExecuteNonQueryAsync();
             }
             catch( Exception ) {
-                throw new Exception(_resourceService.BackendErrorMessage + "insert");
+                throw new Exception(_resourceService.BackendErrorMessage);
             }
         }
 
@@ -116,6 +116,7 @@ namespace CollaborationBot.Database {
             try {
                 using var conn = GetConnection();
                 await conn.OpenAsync();
+
                 var command = new MySqlCommand(sqlStatement, conn);
 
                 foreach( var param in parameters ) {
@@ -125,7 +126,7 @@ namespace CollaborationBot.Database {
                 return (T) await command.ExecuteScalarAsync();
             }
             catch( Exception ) {
-                throw new Exception(_resourceService.BackendErrorMessage + "scalar");
+                throw new Exception(_resourceService.BackendErrorMessage);
             }
         }
 
