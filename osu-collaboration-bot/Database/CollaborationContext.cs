@@ -97,14 +97,22 @@ namespace CollaborationBot.Database {
         private async Task<int> Insert(string sqlStatement, params MySqlParameter[] parameters) {
             using var conn = GetConnection();
             var command = new MySqlCommand(sqlStatement, conn);
-            command.Parameters.AddRange(parameters);
+
+            foreach( var param in parameters ) {
+                command.Parameters.AddWithValue(param.ParameterName, param.Value);
+            }
+
             return await command.ExecuteNonQueryAsync();
         }
 
         private async Task<T> SelectScalar<T>(string sqlStatement, params MySqlParameter[] parameters) {
             using var conn = GetConnection();
             var command = new MySqlCommand(sqlStatement, conn);
-            command.Parameters.AddRange(parameters);
+
+            foreach( var param in parameters ) {
+                command.Parameters.AddWithValue(param.ParameterName, param.Value);
+            }
+
             return (T) await command.ExecuteScalarAsync();
         }
 
