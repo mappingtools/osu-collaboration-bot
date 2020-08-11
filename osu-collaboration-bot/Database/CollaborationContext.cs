@@ -17,10 +17,8 @@ namespace CollaborationBot.Database {
         private string GetGuildIdStatement => "SELECT id FROM Guilds WHERE uniqueGuildId=@uniqueGuildId";
         private string GetProjectsFromGuildStatement => "SELECT * FROM Projects INNER JOIN Guilds ON Guilds.id=Projects.guildId HAVING Guilds.uniqueGuildId=@uniqueGuildId";
         private string GetProjectFromGuildStatement => "SELECT * FROM Projects INNER JOIN Guilds ON Guilds.id=Projects.guildID HAVING Guilds.uniqueGuildId=@uniqueGuildId AND Projects.name=@projectName";
-
-        private string InsertNewProjectStatement => "INSERT INTO Projects (name, guildId, status) VALUES(@name, @guildId, @status)"
+        private string InsertNewProjectStatement => "INSERT INTO Projects (name, guildId, status) VALUES(@name, @guildId, @status)";
         private string DeleteProjectStatement => "DELETE FROM Projects WHERE name=@name AND guildId=@guildId";
-
         private string InsertNewMemberStatement => "INSERT INTO Members (uniqueMemberId, guildId, projectId, role) VALUES(@uniqueMemberId, @guildId, @projectId, @role)";
         private string GetMemberFromProjectStatement => "SELECT * FROM Members INNER JOIN Projects ON Projects.id=Members.projectId HAVING Projects.Name=@projectName AND Members.uniqueMemberId=@uniqueMemberId";
 
