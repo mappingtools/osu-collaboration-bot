@@ -3,6 +3,7 @@ using CollaborationBot.Services;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
 
@@ -11,8 +12,8 @@ namespace CollaborationBot.Database {
     public class CollaborationContext {
         private readonly ResourceService _resourceService;
 
-        private string GetGuildIdStatement => $"SELECT id FROM Guilds WHERE uniqueGuildId = @uniqueGuildId LIMIT 1";
-        private string InsertNewProject => $"INSERT INTO Projects (name, guildId, status) VALUES('@name', '@guildId', '@projectStatus')";
+        private string GetGuildIdStatement => $"SELECT id FROM Guilds WHERE uniqueGuildId=@uniqueGuildId";
+        private string InsertNewProject => $"INSERT INTO Projects (name, guildId, status) VALUES(@name, @guildId, @projectStatus)";
 
         public string ConnectionString { get; set; }
 
@@ -28,9 +29,9 @@ namespace CollaborationBot.Database {
             var uniqueGuildIdParam = new MySqlParameter("@uniqueGuildId", uniqueGuildId);
             var guildId = await SelectScalar<int>(GetGuildIdStatement, uniqueGuildIdParam);
 
-            var nameParam = new MySqlParameter("@name", name);
-            var guildIdParam = new MySqlParameter("@guildId", guildId);
-            var statusParam = new MySqlParameter("@status", ProjectStatus.Not_Started);
+            var nameParam = new MySqlParameter("name", name);
+            var guildIdParam = new MySqlParameter("guildId", guildId);
+            var statusParam = new MySqlParameter("status", ProjectStatus.Not_Started);
 
             return await Insert(InsertNewProject, nameParam, guildIdParam, statusParam) > 0;
         }
@@ -94,26 +95,28 @@ namespace CollaborationBot.Database {
             return projects;
         }
 
-        private async Task<int> Insert(string sqlStatement, params MySqlParameter[] parameters) {
-            using var conn = GetConnection();
-            var command = new MySqlCommand(sqlStatement, conn);
-
-            foreach( var param in parameters ) {
-                command.Parameters.AddWithValue(param.ParameterName, param.Value);
+        private async Task<int> Insert(string sqlStatement, params IDataParameter[] parameters) {
+            try {
+                using var conn = GetConnection();
+                var command = new MySqlCommand(sqlStatement, conn);
+                command.Parameters.AddRange(parameters);
+                return await command.ExecuteNonQueryAsync();
             }
-
-            return await command.ExecuteNonQueryAsync();
+            catch( Exception ) {
+                throw new Exception(_resourceService.BackendErrorMessage);
+            }
         }
 
-        private async Task<T> SelectScalar<T>(string sqlStatement, params MySqlParameter[] parameters) {
-            using var conn = GetConnection();
-            var command = new MySqlCommand(sqlStatement, conn);
-
-            foreach( var param in parameters ) {
-                command.Parameters.AddWithValue(param.ParameterName, param.Value);
+        private async Task<T> SelectScalar<T>(string sqlStatement, params IDataParameter[] parameters) {
+            try {
+                using var conn = GetConnection();
+                var command = new MySqlCommand(sqlStatement, conn);
+                command.Parameters.AddRange(parameters);
+                return (T) await command.ExecuteScalarAsync();
             }
-
-            return (T) await command.ExecuteScalarAsync();
+            catch( Exception ) {
+                throw new Exception(_resourceService.BackendErrorMessage);
+            }
         }
 
         private async Task<int> ExecuteNonQueryAsync(string sqlQuery) {
