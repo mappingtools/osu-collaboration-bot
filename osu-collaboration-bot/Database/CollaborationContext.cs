@@ -98,6 +98,7 @@ namespace CollaborationBot.Database {
         private async Task<int> Insert(string sqlStatement, params MySqlParameter[] parameters) {
             try {
                 using var conn = GetConnection();
+                await conn.OpenAsync();
                 var command = new MySqlCommand(sqlStatement, conn);
 
                 foreach( var param in parameters ) {
@@ -114,7 +115,7 @@ namespace CollaborationBot.Database {
         private async Task<T> SelectScalar<T>(string sqlStatement, params MySqlParameter[] parameters) {
             try {
                 using var conn = GetConnection();
-                conn.Open();
+                await conn.OpenAsync();
                 var command = new MySqlCommand(sqlStatement, conn);
 
                 foreach( var param in parameters ) {
