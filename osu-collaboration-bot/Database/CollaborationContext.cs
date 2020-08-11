@@ -114,6 +114,7 @@ namespace CollaborationBot.Database {
         private async Task<T> SelectScalar<T>(string sqlStatement, params MySqlParameter[] parameters) {
             try {
                 using var conn = GetConnection();
+                conn.Open();
                 var command = new MySqlCommand(sqlStatement, conn);
 
                 foreach( var param in parameters ) {
