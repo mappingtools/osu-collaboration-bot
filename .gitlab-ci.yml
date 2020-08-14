@@ -16,4 +16,4 @@ before_script:
 deploy:
   stage: deploy
   script:
-    - ssh $USER@$HOST "cd /etc/repos/osu-collaboration-bot/; git fetch --all; git reset --hard origin/master; git pull origin master; dotnet publish -c release; supervisorctl restart osu-collaboration-bot"
+    - ssh $USER@$HOST "cd ~/repos/osu-collaboration-bot/; git fetch --all; git reset --hard origin/master; git pull origin master; dotnet publish -c release -o ~/builds/osu-collaboration-bot; supervisorctl restart osu-collaboration-bot"
