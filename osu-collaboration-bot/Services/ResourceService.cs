@@ -2,20 +2,20 @@
 using System.Linq;
 using System.Text;
 using CollaborationBot.Database.Records;
+using CollaborationBot.Resources;
 using Discord;
 
 namespace CollaborationBot.Services {
     public class ResourceService {
-        public string BackendErrorMessage = "Something went wrong while processing the request on our backend.";
-        public string GuildExistsMessage = "Server is already registered.";
+        public string BackendErrorMessage = Strings.BackendErrorMessage;
+        public string GuildExistsMessage = Strings.GuildExistsMessage;
 
-        public string GuildNotExistsMessage =
-            "Your server is not registered! You can add it via command '!!guild add'.";
+        public string GuildNotExistsMessage = Strings.GuildNotExistsMessage;
 
         public string GenerateSubmitPartMessage(string projectName, bool isSuccessful = true) {
             if (isSuccessful)
-                return $"Successfully submitted part for project '{projectName}'.";
-            return $"Something went wrong when submitting part for project '{projectName}'.";
+                return string.Format(Strings.SubmitPartSuccessMessage, projectName);
+            return string.Format(Strings.SubmitPartFailMessage, projectName);
         }
 
         public string GenerateAddProjectMessage(string projectName, bool isSuccessful = true) {
