@@ -1,23 +1,21 @@
-﻿using Discord;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using Discord;
 
 namespace CollaborationBot.Services {
-
     public class FileHandlingService {
-
         public enum PermissibleFileType {
             DOT_OSU
         }
 
-        public Dictionary<PermissibleFileType, string> PermissibleFileExtensions = new Dictionary<PermissibleFileType, string> {
-            { PermissibleFileType.DOT_OSU, ".osu" }
-        };
-
         private string _path;
+
+        public Dictionary<PermissibleFileType, string> PermissibleFileExtensions = new() {
+            {PermissibleFileType.DOT_OSU, ".osu"}
+        };
 
         public void Initialize(string path) {
             _path = path;
@@ -25,19 +23,13 @@ namespace CollaborationBot.Services {
 
         public async Task<bool> DownloadBaseFile(IGuild guild, string projectName, Attachment att) {
             try {
-                if( !IsFilePermissible(att.Url, PermissibleFileType.DOT_OSU) ) {
-                    return false;
-                }
+                if (!IsFilePermissible(att.Url, PermissibleFileType.DOT_OSU)) return false;
 
                 var localProjectPath = GetProjectPath(guild, projectName);
 
-                if( !Directory.Exists(localProjectPath) ) {
-                    return false;
-                }
+                if (!Directory.Exists(localProjectPath)) return false;
 
-                if( !Uri.TryCreate(att.Url, UriKind.Absolute, out var uri) ) {
-                    return false;
-                }
+                if (!Uri.TryCreate(att.Url, UriKind.Absolute, out var uri)) return false;
 
                 var filePath = Path.Combine(localProjectPath, att.Filename);
 
@@ -46,16 +38,16 @@ namespace CollaborationBot.Services {
 
                 return true;
             }
-            catch( Exception ) {
+            catch (Exception) {
                 return false;
             }
         }
 
         public string GetProjectBaseFilePath(IGuild guild, string projectName) {
             var localProjectPath = GetProjectPath(guild, projectName);
-            string[] osuFiles = Directory.GetFiles(localProjectPath, "*.osu");
+            var osuFiles = Directory.GetFiles(localProjectPath, "*.osu");
 
-            if( osuFiles.Length == 0 )
+            if (osuFiles.Length == 0)
                 throw new FileNotFoundException("No .osu files found in project directory.");
 
             return osuFiles[0];
@@ -72,23 +64,17 @@ namespace CollaborationBot.Services {
         public void GenerateGuildDirectory(IGuild guild) {
             var localGuildPath = GetGuildPath(guild);
 
-            if( !Directory.Exists(localGuildPath) ) {
-                Directory.CreateDirectory(localGuildPath);
-            }
+            if (!Directory.Exists(localGuildPath)) Directory.CreateDirectory(localGuildPath);
         }
 
         public void GenerateProjectDirectory(IGuild guild, string projectName) {
             var localProjectPath = GetProjectPath(guild, projectName);
 
-            if( !Directory.Exists(localProjectPath) ) {
-                Directory.CreateDirectory(localProjectPath);
-            }
+            if (!Directory.Exists(localProjectPath)) Directory.CreateDirectory(localProjectPath);
         }
 
         private bool IsFilePermissible(string url, PermissibleFileType fileType) {
-            if( !PermissibleFileExtensions.TryGetValue(fileType, out var ext) ) {
-                return false;
-            }
+            if (!PermissibleFileExtensions.TryGetValue(fileType, out var ext)) return false;
 
             return ext == Path.GetExtension(url);
         }

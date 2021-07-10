@@ -1,5 +1,4 @@
 ﻿namespace CollaborationBot.Database.Records {
-
     public enum ProjectStatus {
         Finished = 0,
         In_Review = 1,

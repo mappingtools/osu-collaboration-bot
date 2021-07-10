@@ -1,5 +1,4 @@
 ﻿namespace CollaborationBot.Database.Records {
-
     public enum ProjectRole {
         Owner = 0,
         Manager = 1,

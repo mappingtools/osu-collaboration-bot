@@ -1,32 +1,41 @@
-﻿using CollaborationBot.Database.Records;
-using CollaborationBot.Services;
-using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
+using CollaborationBot.Database.Records;
+using CollaborationBot.Services;
+using MySql.Data.MySqlClient;
 
 namespace CollaborationBot.Database {
-
     public class CollaborationContext {
         private readonly ResourceService _resourceService;
-
-        private string InsertNewGuildStatement => "INSERT INTO Guilds (uniqueGuildId) VALUES(@uniqueGuildid)";
-        private string GetGuildStatement => "SELECT * FROM Guilds WHERE uniqueGuildId=@uniqueGuildId";
-        private string GetGuildIdStatement => "SELECT id FROM Guilds WHERE uniqueGuildId=@uniqueGuildId";
-        private string GetProjectsFromGuildStatement => "SELECT * FROM Projects INNER JOIN Guilds ON Guilds.id=Projects.guildId HAVING Guilds.uniqueGuildId=@uniqueGuildId";
-        private string GetProjectFromGuildStatement => "SELECT * FROM Projects INNER JOIN Guilds ON Guilds.id=Projects.guildID HAVING Guilds.uniqueGuildId=@uniqueGuildId AND Projects.name=@projectName";
-        private string InsertNewProjectStatement => "INSERT INTO Projects (name, guildId, status) VALUES(@name, @guildId, @status)";
-        private string DeleteProjectStatement => "DELETE FROM Projects WHERE name=@name AND guildId=@guildId";
-        private string InsertNewMemberStatement => "INSERT INTO Members (uniqueMemberId, guildId, projectId, role) VALUES(@uniqueMemberId, @guildId, @projectId, @role)";
-        private string GetMemberFromProjectStatement => "SELECT * FROM Members INNER JOIN Projects ON Projects.id=Members.projectId HAVING Projects.Name=@projectName AND Members.uniqueMemberId=@uniqueMemberId";
-
-        public string ConnectionString { get; set; }
 
         public CollaborationContext(ResourceService resourceService) {
             _resourceService = resourceService;
         }
+
+        private string InsertNewGuildStatement => "INSERT INTO Guilds (uniqueGuildId) VALUES(@uniqueGuildid)";
+        private string GetGuildStatement => "SELECT * FROM Guilds WHERE uniqueGuildId=@uniqueGuildId";
+        private string GetGuildIdStatement => "SELECT id FROM Guilds WHERE uniqueGuildId=@uniqueGuildId";
+
+        private string GetProjectsFromGuildStatement =>
+            "SELECT * FROM Projects INNER JOIN Guilds ON Guilds.id=Projects.guildId HAVING Guilds.uniqueGuildId=@uniqueGuildId";
+
+        private string GetProjectFromGuildStatement =>
+            "SELECT * FROM Projects INNER JOIN Guilds ON Guilds.id=Projects.guildID HAVING Guilds.uniqueGuildId=@uniqueGuildId AND Projects.name=@projectName";
+
+        private string InsertNewProjectStatement =>
+            "INSERT INTO Projects (name, guildId, status) VALUES(@name, @guildId, @status)";
+
+        private string DeleteProjectStatement => "DELETE FROM Projects WHERE name=@name AND guildId=@guildId";
+
+        private string InsertNewMemberStatement =>
+            "INSERT INTO Members (uniqueMemberId, guildId, projectId, role) VALUES(@uniqueMemberId, @guildId, @projectId, @role)";
+
+        private string GetMemberFromProjectStatement =>
+            "SELECT * FROM Members INNER JOIN Projects ON Projects.id=Members.projectId HAVING Projects.Name=@projectName AND Members.uniqueMemberId=@uniqueMemberId";
+
+        public string ConnectionString { get; set; }
 
         public void Initialize(string connectionString) {
             ConnectionString = connectionString;
@@ -64,7 +73,7 @@ namespace CollaborationBot.Database {
             var guild = new GuildRecord();
 
             await ExecuteReaderAsync(async reader => {
-                while( await reader.ReadAsync() ) {
+                while (await reader.ReadAsync()) {
                     guild.Id = await reader.GetFieldValueAsync<int>(0);
                     guild.UniqueGuildId = await reader.GetFieldValueAsync<ulong>(1);
                 }
@@ -80,7 +89,7 @@ namespace CollaborationBot.Database {
             var member = new MemberRecord();
 
             await ExecuteReaderAsync(async reader => {
-                while( await reader.ReadAsync() ) {
+                while (await reader.ReadAsync()) {
                     member.Id = await reader.GetFieldValueAsync<int>(0);
                     member.UniqueMemberId = await reader.GetFieldValueAsync<ulong>(1);
                     member.GuildId = await reader.GetFieldValueAsync<int>(2);
@@ -96,26 +105,25 @@ namespace CollaborationBot.Database {
             var projectNameParam = new MySqlParameter("@projectName", projectName);
             var uniqueGuildIdParam = new MySqlParameter("@uniqueGuildId", uniqueGuildId);
 
-            int projectId = 0;
-            int guildId = 0;
+            var projectId = 0;
+            var guildId = 0;
 
             await ExecuteReaderAsync(async reader => {
-                while( await reader.ReadAsync() ) {
+                while (await reader.ReadAsync()) {
                     projectId = await reader.GetFieldValueAsync<int>(0);
                     guildId = await reader.GetFieldValueAsync<int>(2);
                 }
             }, GetProjectFromGuildStatement, projectNameParam, uniqueGuildIdParam);
 
-            if( projectId <= 0 || guildId <= 0 ) {
-                return false;
-            }
+            if (projectId <= 0 || guildId <= 0) return false;
 
             var uniqueMemberIdParam = new MySqlParameter("@uniqueMemberId", uniqueMemberId);
             var guildIdParam = new MySqlParameter("@guildId", guildId);
             var projectIdParam = new MySqlParameter("@projectId", projectId);
             var roleParam = new MySqlParameter("@role", ProjectRole.Member);
 
-            return await ExecuteAsync(InsertNewMemberStatement, uniqueMemberIdParam, guildIdParam, projectIdParam, roleParam) > 0;
+            return await ExecuteAsync(InsertNewMemberStatement, uniqueMemberIdParam, guildIdParam, projectIdParam,
+                roleParam) > 0;
         }
 
         public async Task<List<ProjectRecord>> GetProjectListAsync(ulong uniqueGuildId) {
@@ -124,14 +132,13 @@ namespace CollaborationBot.Database {
             var projects = new List<ProjectRecord>();
 
             await ExecuteReaderAsync(async reader => {
-                while( await reader.ReadAsync() ) {
+                while (await reader.ReadAsync())
                     projects.Add(new ProjectRecord {
                         Id = await reader.GetFieldValueAsync<int>(0),
                         Name = await reader.GetFieldValueAsync<string>(1),
                         GuildId = await reader.GetFieldValueAsync<int>(2),
                         Status = await reader.GetFieldValueAsync<int>(3)
                     });
-                }
             }, GetProjectsFromGuildStatement, uniqueGuildIdParam);
 
             return projects;
@@ -144,13 +151,11 @@ namespace CollaborationBot.Database {
 
                 var command = new MySqlCommand(sqlStatement, conn);
 
-                foreach( var param in parameters ) {
-                    command.Parameters.Add(param);
-                }
+                foreach (var param in parameters) command.Parameters.Add(param);
 
                 return await command.ExecuteNonQueryAsync();
             }
-            catch( Exception ) {
+            catch (Exception) {
                 throw new Exception(_resourceService.BackendErrorMessage);
             }
         }
@@ -162,27 +167,24 @@ namespace CollaborationBot.Database {
 
                 var command = new MySqlCommand(sqlStatement, conn);
 
-                foreach( var param in parameters ) {
-                    command.Parameters.Add(param);
-                }
+                foreach (var param in parameters) command.Parameters.Add(param);
 
                 return (T) await command.ExecuteScalarAsync();
             }
-            catch( Exception ) {
+            catch (Exception) {
                 throw new Exception(_resourceService.BackendErrorMessage);
             }
         }
 
-        private async Task<bool> ExecuteReaderAsync(Action<DbDataReader> operation, string sqlStatement, params MySqlParameter[] parameters) {
+        private async Task<bool> ExecuteReaderAsync(Action<DbDataReader> operation, string sqlStatement,
+            params MySqlParameter[] parameters) {
             try {
                 using var conn = GetConnection();
                 await conn.OpenAsync();
 
                 var command = new MySqlCommand(sqlStatement, conn);
 
-                foreach( var param in parameters ) {
-                    command.Parameters.Add(param);
-                }
+                foreach (var param in parameters) command.Parameters.Add(param);
 
                 using var reader = await command.ExecuteReaderAsync();
                 operation(reader);
@@ -193,13 +195,13 @@ namespace CollaborationBot.Database {
 
                 return res;
             }
-            catch( Exception ) {
+            catch (Exception) {
                 throw new Exception(_resourceService.BackendErrorMessage);
             }
         }
 
         private MySqlConnection GetConnection() {
-            return new MySqlConnection(ConnectionString);
+            return new(ConnectionString);
         }
     }
 }

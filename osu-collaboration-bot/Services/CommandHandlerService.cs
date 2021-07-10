@@ -1,11 +1,10 @@
-﻿using Discord.Commands;
-using Discord.WebSocket;
-using System;
+﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using Discord.Commands;
+using Discord.WebSocket;
 
 namespace CollaborationBot.Services {
-
     public class CommandHandlerService {
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commands;
@@ -25,20 +24,15 @@ namespace CollaborationBot.Services {
 
         public async Task HandleCommandAsync(SocketMessage messageParameter) {
             // Don't process the command if it was a system message
-            if( !( messageParameter is SocketUserMessage message ) ) {
-                return;
-            }
+            if (!(messageParameter is SocketUserMessage message)) return;
 
             // Create a number to track where the prefix ends and the command begins
-            int argPos = 0;
+            var argPos = 0;
 
             // Determine if the message is a command based on the prefix and make sure no bots trigger commands
-            if( message.Author.IsBot ) {
+            if (message.Author.IsBot)
                 return;
-            }
-            else if( !message.HasStringPrefix("!!", ref argPos) ) {
-                return;
-            }
+            if (!message.HasStringPrefix("!!", ref argPos)) return;
 
             // Create a WebSocket-based command context based on the message
             var context = new SocketCommandContext(_client, message);
@@ -46,13 +40,11 @@ namespace CollaborationBot.Services {
             // Execute the command with the command context we just
             // created, along with the service provider for precondition checks.
             var result = await _commands.ExecuteAsync(
-                context: context,
-                argPos: argPos,
-                services: _services);
+                context,
+                argPos,
+                _services);
 
-            if( !result.IsSuccess ) {
-                await context.Channel.SendMessageAsync(result.ErrorReason);
-            }
+            if (!result.IsSuccess) await context.Channel.SendMessageAsync(result.ErrorReason);
         }
     }
 }

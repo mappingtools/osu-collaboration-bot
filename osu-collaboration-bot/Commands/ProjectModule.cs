@@ -1,20 +1,21 @@
 ﻿using System;
-using Discord.Commands;
-using CollaborationBot.Preconditions;
+using System.Linq;
 using System.Threading.Tasks;
 using CollaborationBot.Database;
+using CollaborationBot.Preconditions;
 using CollaborationBot.Services;
-using System.Linq;
+using Discord;
+using Discord.Commands;
 
 namespace CollaborationBot.Commands {
-
     [Group("project")]
-    public class ProjectModule :ModuleBase<SocketCommandContext> {
+    public class ProjectModule : ModuleBase<SocketCommandContext> {
         private readonly CollaborationContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
 
-        public ProjectModule(CollaborationContext context, FileHandlingService fileHandler, ResourceService resourceService) {
+        public ProjectModule(CollaborationContext context, FileHandlingService fileHandler,
+            ResourceService resourceService) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
@@ -30,33 +31,34 @@ namespace CollaborationBot.Commands {
         }
 
         [RequireProjectManager(Group = "Permission")]
-        [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("addBaseFile")]
         public async Task AddBaseFile(string projectName) {
             var attachment = Context.Message.Attachments.SingleOrDefault();
 
-            if( attachment == null ) {
+            if (attachment == null) {
                 await Context.Channel.SendMessageAsync("Could not find an attached .osu file.");
                 return;
             }
 
-            if( !await _fileHandler.DownloadBaseFile(Context.Guild, projectName, attachment) ) {
+            if (!await _fileHandler.DownloadBaseFile(Context.Guild, projectName, attachment)) {
                 await Context.Channel.SendMessageAsync("Something went wrong while trying to upload the base file.");
                 return;
             }
 
-            await Context.Channel.SendMessageAsync($"Successfully uploaded {attachment.Filename} as base file for project '{projectName}'");
+            await Context.Channel.SendMessageAsync(
+                $"Successfully uploaded {attachment.Filename} as base file for project '{projectName}'");
         }
 
         [RequireProjectManager(Group = "Permission")]
-        [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("getBaseFile")]
         public async Task GetBaseFile(string projectName) {
             try {
                 var projectBaseFilePath = _fileHandler.GetProjectBaseFilePath(Context.Guild, projectName);
                 await Context.Channel.SendFileAsync(projectBaseFilePath, $"Compiled .osu of project '{projectName}':");
             }
-            catch( Exception ) {
+            catch (Exception) {
                 await Context.Channel.SendFileAsync(_resourceService.BackendErrorMessage);
             }
         }
@@ -68,10 +70,10 @@ namespace CollaborationBot.Commands {
         }
 
         [RequireProjectManager(Group = "Permission")]
-        [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("create")]
         public async Task Create(string projectName) {
-            if( !await _context.AddProjectAsync(projectName, Context.Guild.Id) ) {
+            if (!await _context.AddProjectAsync(projectName, Context.Guild.Id)) {
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName, false));
 
                 return;
@@ -82,10 +84,10 @@ namespace CollaborationBot.Commands {
         }
 
         [RequireProjectManager(Group = "Permission")]
-        [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("remove")]
         public async Task Remove(string name) {
-            if( await _context.RemoveProjectAsync(name, Context.Guild.Id) ) {
+            if (await _context.RemoveProjectAsync(name, Context.Guild.Id)) {
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(name));
                 return;
             }
@@ -96,12 +98,14 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager]
         [Command("add")]
         public async Task AddMember(string projectName) {
-            if( await _context.AddMemberToProjectAsync(projectName, Context.User.Id, Context.Guild.Id) ) {
-                await Context.Channel.SendMessageAsync(_resourceService.GenerateAddMemberToProject(Context.User, projectName));
+            if (await _context.AddMemberToProjectAsync(projectName, Context.User.Id, Context.Guild.Id)) {
+                await Context.Channel.SendMessageAsync(
+                    _resourceService.GenerateAddMemberToProject(Context.User, projectName));
                 return;
             }
 
-            await Context.Channel.SendMessageAsync(_resourceService.GenerateAddMemberToProject(Context.User, projectName, false));
+            await Context.Channel.SendMessageAsync(
+                _resourceService.GenerateAddMemberToProject(Context.User, projectName, false));
         }
     }
 }
