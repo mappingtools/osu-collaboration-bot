@@ -338,3 +338,10 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# Secrets
+osu-collaboration-bot/appsettings.Development.json
+scaffold.sh
+
+# Stored bot files
+osu-collaboration-bot/etc/

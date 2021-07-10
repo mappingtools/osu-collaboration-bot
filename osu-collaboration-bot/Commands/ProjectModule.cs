@@ -10,11 +10,11 @@ using Discord.Commands;
 namespace CollaborationBot.Commands {
     [Group("project")]
     public class ProjectModule : ModuleBase<SocketCommandContext> {
-        private readonly CollaborationContext _context;
+        private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
 
-        public ProjectModule(CollaborationContext context, FileHandlingService fileHandler,
+        public ProjectModule(OsuCollabContext context, FileHandlingService fileHandler,
             ResourceService resourceService) {
             _context = context;
             _fileHandler = fileHandler;
@@ -65,8 +65,8 @@ namespace CollaborationBot.Commands {
 
         [Command("list")]
         public async Task List() {
-            var projects = await _context.GetProjectListAsync(Context.Guild.Id);
-            await Context.Channel.SendMessageAsync(_resourceService.GenerateProjectListMessage(projects));
+            var projects = await _context.p(Context.Guild.Id)jor;
+            await Context.Chdddannel.SendMessageAsync(_resourceService.GenerateProjectListMessage(projects));
         }
 
         [RequireProjectManager(Group = "Permission")]

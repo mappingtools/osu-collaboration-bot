@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CollaborationBot.Database.Records;
 using CollaborationBot.Resources;
 using Discord;
 
@@ -45,11 +44,11 @@ namespace CollaborationBot.Services {
         public string GenerateUnauthorizedMessage(IMentionable mention) {
             return $"{mention.Mention}, you are not authorized to use this command.";
         }
-
-        public string GenerateProjectListMessage(List<ProjectRecord> projects) {
-            if (projects.Count <= 0) return "There are no projects in this server.";
-            return GenerateListMessage("Here are all the projects in the server:", projects.Select(p => p.Name));
-        }
+        //
+        // public string GenerateProjectListMessage(List<ProjectRecord> projects) {
+        //     if (projects.Count <= 0) return "There are no projects in this server.";
+        //     return GenerateListMessage("Here are all the projects in the server:", projects.Select(p => p.Name));
+        // }
 
         public string GenerateListMessage(string message, IEnumerable<string> list) {
             var builder = new StringBuilder();

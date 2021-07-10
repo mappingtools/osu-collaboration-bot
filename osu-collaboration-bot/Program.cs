@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using CollaborationBot.Database;
+using CollaborationBot.Entities;
 using CollaborationBot.Services;
 using Discord;
 using Discord.Commands;
@@ -13,40 +13,29 @@ namespace CollaborationBot {
     public class Program {
         private DiscordSocketClient _client;
         private CommandHandlerService _commandHandler;
-        private CollaborationContext _context;
-        private DatabaseSettings _databaseSettings;
-        private DiscordSettings _discordSettings;
+        private AppSettings _appSettings;
         private FileHandlingService _fileHandler;
-        private FileHandlerSettings _fileHandlerSettings;
 
         public static void Main(string[] args) {
             new Program().MainAsync().GetAwaiter().GetResult();
         }
 
         public async Task MainAsync() {
-            using var services = ConfigureServices();
+            await using var services = ConfigureServices();
 
-            _discordSettings =
-                JsonConvert.DeserializeObject<DiscordSettings>(File.ReadAllText("discord_settings.json"));
-            _databaseSettings =
-                JsonConvert.DeserializeObject<DatabaseSettings>(File.ReadAllText("database_settings.json"));
-            _fileHandlerSettings =
-                JsonConvert.DeserializeObject<FileHandlerSettings>(File.ReadAllText("filehandler_settings.json"));
+            _appSettings = services.GetRequiredService<AppSettings>();
 
             _client = services.GetRequiredService<DiscordSocketClient>();
             _client.Log += Log;
 
-            await _client.LoginAsync(TokenType.Bot, _discordSettings.Token);
+            await _client.LoginAsync(TokenType.Bot, _appSettings.Token);
             await _client.StartAsync();
-
-            _context = services.GetRequiredService<CollaborationContext>();
-            _context.Initialize(_databaseSettings.ConnectionString);
 
             _commandHandler = services.GetRequiredService<CommandHandlerService>();
             await _commandHandler.InstallCommandsAsync();
 
             _fileHandler = services.GetRequiredService<FileHandlingService>();
-            _fileHandler.Initialize(_fileHandlerSettings.Path);
+            _fileHandler.Initialize(_appSettings.Path);
 
             // Block this task until the program is closed.
             await Task.Delay(-1);
@@ -59,8 +48,11 @@ namespace CollaborationBot {
 
         private ServiceProvider ConfigureServices() {
             var services = new ServiceCollection();
+            services.AddSingleton(
+                JsonConvert.DeserializeObject<AppSettings>(
+                    File.ReadAllText("appsettings.Development.json")));
             services.AddSingleton<ResourceService>();
-            services.AddSingleton<CollaborationContext>();
+            services.AddDbContext<OsuCollabContext>();
             services.AddSingleton<FileHandlingService>();
             services.AddSingleton<DiscordSocketClient>();
             services.AddSingleton<CommandService>();

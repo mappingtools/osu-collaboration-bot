@@ -1,5 +1,9 @@
-﻿using System.Threading.Tasks;
-using CollaborationBot.Database;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using CollaborationBot.Entities;
+using CollaborationBot.Resources;
 using CollaborationBot.Services;
 using Discord;
 using Discord.Commands;
@@ -7,11 +11,11 @@ using Discord.Commands;
 namespace CollaborationBot.Commands {
     [Group("guild")]
     public class GuildModule : ModuleBase<SocketCommandContext> {
-        private readonly CollaborationContext _context;
+        private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
 
-        public GuildModule(CollaborationContext context, FileHandlingService fileHandler,
+        public GuildModule(OsuCollabContext context, FileHandlingService fileHandler,
             ResourceService resourceService) {
             _context = context;
             _fileHandler = fileHandler;
@@ -21,7 +25,16 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(GuildPermission.Administrator)]
         [Command("add")]
         public async Task Add() {
-            if (!await _context.AddGuildAsync(Context.Guild.Id)) {
+            try {
+                if (_context.Guilds.Any(o => o.UniqueGuildId == Context.Guild.Id)) {
+                    await Context.Channel.SendMessageAsync(Strings.GuildExistsMessage);
+                    return;
+                }
+
+                await _context.Guilds.AddAsync(new Guild { UniqueGuildId = Context.Guild.Id });
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception) {
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateAddGuildMessage(false));
                 return;
             }

@@ -12,7 +12,7 @@ namespace CollaborationBot.Preconditions {
             IServiceProvider services) {
             if (!(context.User is SocketGuildUser guildUser)) return ErrorResult(context.User, services);
 
-            if (guildUser.Roles.All(o => o.Name != PROJECT_MEMBER_ROLE)) return ErrorResult(context.User, services);
+            if (guildUser.Roles.All(o => o.Mention != PROJECT_MEMBER_ROLE)) return ErrorResult(context.User, services);
 
             return Task.FromResult(PreconditionResult.FromSuccess());
         }
