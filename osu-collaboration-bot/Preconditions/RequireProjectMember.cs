@@ -3,18 +3,34 @@ using System.Linq;
 using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
+using CollaborationBot.Entities;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CollaborationBot.Preconditions {
     public class RequireProjectMember : CustomPreconditionBase {
-        private const string PROJECT_MEMBER_ROLE = "osu-project-member";
+        private const string PROJECT_PARAM_NAME = "projectName";
 
-        public override Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context, CommandInfo command,
+        public override async Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context, CommandInfo command,
             IServiceProvider services) {
-            if (!(context.User is SocketGuildUser guildUser)) return ErrorResult(context.User, services);
+            if (context.User is not SocketGuildUser guildUser) return ErrorResult(context.User, services);
 
-            if (guildUser.Roles.All(o => o.Mention != PROJECT_MEMBER_ROLE)) return ErrorResult(context.User, services);
+            try {
+                string projectName = (string) await GetParameter(PROJECT_PARAM_NAME, context, command, services);
 
-            return Task.FromResult(PreconditionResult.FromSuccess());
+                var dbContext = services.GetService<OsuCollabContext>();
+
+                // Check if the membership exists
+                if (dbContext.Members.Any(o =>
+                o.Project.Name == projectName &&
+                o.Project.Guild.UniqueGuildId == context.Guild.Id &&
+                o.UniqueMemberId == guildUser.Id)) {
+                    return PreconditionResult.FromSuccess();
+                }
+            } catch(Exception e) {
+                return PreconditionResult.FromError(e);
+            }
+
+            return ErrorResult(guildUser, services);
         }
     }
 }

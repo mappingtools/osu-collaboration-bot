@@ -7,7 +7,7 @@ using CollaborationBot.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CollaborationBot.Preconditions {
-    public class RequireProjectManager : CustomPreconditionBase {
+    public class RequireProjectOwner : CustomPreconditionBase {
         private const string PROJECT_PARAM_NAME = "projectName";
 
         public override async Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context, CommandInfo command,
@@ -24,7 +24,7 @@ namespace CollaborationBot.Preconditions {
                 o.Project.Name == projectName &&
                 o.Project.Guild.UniqueGuildId == context.Guild.Id &&
                 o.UniqueMemberId == guildUser.Id &&
-                (o.ProjectRole == ProjectRole.Manager || o.ProjectRole == ProjectRole.Owner))) {
+                o.ProjectRole == ProjectRole.Owner)) {
                     return PreconditionResult.FromSuccess();
                 }
             } catch (Exception e) {

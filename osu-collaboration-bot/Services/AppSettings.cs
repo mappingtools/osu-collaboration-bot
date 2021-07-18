@@ -9,5 +9,6 @@ namespace CollaborationBot.Services {
         public string ConnectionString { get; set; }
         public string Token { get; set; }
         public string Path { get; set; }
+        public string Prefix { get; set; }
     }
 }

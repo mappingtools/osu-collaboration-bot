@@ -8,12 +8,14 @@ namespace CollaborationBot.Services {
     public class CommandHandlerService {
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commands;
+        private readonly AppSettings _appSettings;
         private readonly IServiceProvider _services;
 
-        public CommandHandlerService(IServiceProvider services, DiscordSocketClient client, CommandService commands) {
+        public CommandHandlerService(IServiceProvider services, DiscordSocketClient client, CommandService commands, AppSettings appSettings) {
             _services = services;
             _commands = commands;
             _client = client;
+            _appSettings = appSettings;
 
             client.MessageReceived += HandleCommandAsync;
         }
@@ -32,7 +34,7 @@ namespace CollaborationBot.Services {
             // Determine if the message is a command based on the prefix and make sure no bots trigger commands
             if (message.Author.IsBot)
                 return;
-            if (!message.HasStringPrefix("!!", ref argPos)) return;
+            if (!message.HasStringPrefix(_appSettings.Prefix, ref argPos)) return;
 
             // Create a WebSocket-based command context based on the message
             var context = new SocketCommandContext(_client, message);

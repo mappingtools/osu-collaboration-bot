@@ -71,7 +71,6 @@ namespace CollaborationBot.Commands {
             await Context.Channel.SendMessageAsync(_resourceService.GenerateProjectListMessage(projects));
         }
 
-        [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("create")]
         public async Task Create(string projectName) {
@@ -98,7 +97,7 @@ namespace CollaborationBot.Commands {
             await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName));
         }
 
-        [RequireProjectManager(Group = "Permission")]
+        [RequireProjectOwner(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("remove")]
         public async Task Remove(string projectName) {
