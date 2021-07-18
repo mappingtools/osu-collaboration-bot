@@ -15,15 +15,15 @@ namespace CollaborationBot.Entities
         }
 
         public int Id { get; set; }
-        public int? GuildId { get; set; }
+        public int GuildId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal? UniqueRoleId { get; set; }
         public ProjectStatus? ProjectStatus { get; set; }
-        public bool? SelfAssignmentAllowed { get; set; }
+        public bool SelfAssignmentAllowed { get; set; }
         public int? MaxAssignments { get; set; }
-        public bool? PriorityPicking { get; set; }
-        public bool? PartRestrictedUpload { get; set; }
+        public bool PriorityPicking { get; set; }
+        public bool PartRestrictedUpload { get; set; }
 
         public virtual Guild Guild { get; set; }
         public virtual ICollection<AutoUpdate> AutoUpdates { get; set; }

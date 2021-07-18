@@ -13,9 +13,9 @@ namespace CollaborationBot.Entities
         }
 
         public int Id { get; set; }
-        public int? ProjectId { get; set; }
-        public decimal? UniqueMemberId { get; set; }
-        public ProjectRole? ProjectRole { get; set; }
+        public int ProjectId { get; set; }
+        public decimal UniqueMemberId { get; set; }
+        public ProjectRole ProjectRole { get; set; }
         public int? Priority { get; set; }
 
         public virtual Project Project { get; set; }
