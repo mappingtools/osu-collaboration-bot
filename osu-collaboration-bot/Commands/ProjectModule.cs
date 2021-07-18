@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CollaborationBot.Database;
+using CollaborationBot.Entities;
 using CollaborationBot.Preconditions;
+using CollaborationBot.Resources;
 using CollaborationBot.Services;
 using Discord;
 using Discord.Commands;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollaborationBot.Commands {
     [Group("project")]
@@ -65,20 +67,33 @@ namespace CollaborationBot.Commands {
 
         [Command("list")]
         public async Task List() {
-            var projects = await _context.p(Context.Guild.Id)jor;
-            await Context.Chdddannel.SendMessageAsync(_resourceService.GenerateProjectListMessage(projects));
+            var projects = _context.Projects.Include(p => p.Guild).Where(p => p.Guild.UniqueGuildId == Context.Guild.Id).ToList();
+            await Context.Channel.SendMessageAsync(_resourceService.GenerateProjectListMessage(projects));
         }
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("create")]
         public async Task Create(string projectName) {
-            if (!await _context.AddProjectAsync(projectName, Context.Guild.Id)) {
-                await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName, false));
+            var guild = _context.Guilds.FirstOrDefault(o => o.UniqueGuildId == Context.Guild.Id);
 
+            if (guild == null) {
+                await Context.Channel.SendMessageAsync(_resourceService.GuildNotExistsMessage);
                 return;
             }
 
+            try {
+                var projectEntry = await _context.Projects.AddAsync(new Project {Name = projectName, GuildId = guild.Id, Status = ProjectStatus.NotStarted});
+                await _context.SaveChangesAsync();
+                await _context.Members.AddAsync(new Member { ProjectId = projectEntry.Entity.Id, UniqueMemberId = Context.User.Id, ProjectRole = ProjectRole.Owner });
+                await _context.SaveChangesAsync();
+            } 
+            catch (Exception e) {
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName, false));
+                Console.WriteLine(e);
+                return;
+            }
+            
             _fileHandler.GenerateProjectDirectory(Context.Guild, projectName);
             await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName));
         }
@@ -86,26 +101,64 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("remove")]
-        public async Task Remove(string name) {
-            if (await _context.RemoveProjectAsync(name, Context.Guild.Id)) {
-                await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(name));
+        public async Task Remove(string projectName) {
+            var guild = _context.Guilds.FirstOrDefault(o => o.UniqueGuildId == Context.Guild.Id);
+
+            if (guild == null) {
+                await Context.Channel.SendMessageAsync(_resourceService.GuildNotExistsMessage);
                 return;
             }
 
-            await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(name, false));
+            var project = _context.Projects.FirstOrDefault(o => o.GuildId == guild.Id && o.Name == projectName);
+
+            if (project == null) {
+                await Context.Channel.SendMessageAsync(Strings.ProjectNotExistMessage);
+                return;
+            }
+
+            try {
+                _context.Projects.Remove(project);
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName));
+            }
+            catch (Exception e) {
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName, false));
+                Console.WriteLine(e);
+            }
         }
 
         [RequireProjectManager]
-        [Command("add")]
-        public async Task AddMember(string projectName) {
-            if (await _context.AddMemberToProjectAsync(projectName, Context.User.Id, Context.Guild.Id)) {
-                await Context.Channel.SendMessageAsync(
-                    _resourceService.GenerateAddMemberToProject(Context.User, projectName));
+        [Command("join")]
+        public async Task JoinProject(string projectName) {
+            var guild = _context.Guilds.FirstOrDefault(o => o.UniqueGuildId == Context.Guild.Id);
+
+            if (guild == null) {
+                await Context.Channel.SendMessageAsync(_resourceService.GuildNotExistsMessage);
                 return;
             }
 
-            await Context.Channel.SendMessageAsync(
-                _resourceService.GenerateAddMemberToProject(Context.User, projectName, false));
+            var project = _context.Projects.FirstOrDefault(o => o.GuildId == guild.Id && o.Name == projectName);
+
+            if (project == null) {
+                await Context.Channel.SendMessageAsync(Strings.ProjectNotExistMessage);
+                return;
+            }
+
+            if (_context.Members.Any(o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id)) {
+                await Context.Channel.SendMessageAsync(Strings.AlreadyJoinedMessage);
+                return;
+            }
+
+            try {
+                await _context.Members.AddAsync(new Member {ProjectId = project.Id, UniqueMemberId = Context.User.Id, ProjectRole = ProjectRole.Member});
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(
+                    _resourceService.GenerateAddMemberToProject(Context.User, projectName));
+            }
+            catch (Exception) {
+                await Context.Channel.SendMessageAsync(
+                    _resourceService.GenerateAddMemberToProject(Context.User, projectName, false));
+            }
         }
     }
 }

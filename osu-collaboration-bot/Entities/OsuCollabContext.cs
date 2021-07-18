@@ -110,6 +110,8 @@ namespace CollaborationBot.Entities
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.ProjectRole).HasColumnName("project_role");
+
                 entity.Property(e => e.Priority).HasColumnName("priority");
 
                 entity.Property(e => e.ProjectId).HasColumnName("project_id");
@@ -133,6 +135,8 @@ namespace CollaborationBot.Entities
                 entity.Property(e => e.Name)
                     .HasMaxLength(255)
                     .HasColumnName("name");
+
+                entity.Property(e => e.Status).HasColumnName("status");
 
                 entity.Property(e => e.ProjectId).HasColumnName("project_id");
 
@@ -169,6 +173,8 @@ namespace CollaborationBot.Entities
                 entity.Property(e => e.SelfAssignmentAllowed).HasColumnName("self_assignment_allowed");
 
                 entity.Property(e => e.UniqueRoleId).HasColumnName("unique_role_id");
+
+                entity.Property(e => e.Status).HasColumnName("status");
 
                 entity.HasOne(d => d.Guild)
                     .WithMany(p => p.Projects)

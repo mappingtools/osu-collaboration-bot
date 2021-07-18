@@ -61,6 +61,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are already a member of this project..
+        /// </summary>
+        public static string AlreadyJoinedMessage {
+            get {
+                return ResourceManager.GetString("AlreadyJoinedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Something went wrong while processing the request on our backend..
         /// </summary>
         public static string BackendErrorMessage {
@@ -84,6 +93,33 @@ namespace CollaborationBot.Resources {
         public static string GuildNotExistsMessage {
             get {
                 return ResourceManager.GetString("GuildNotExistsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This user is already a member of the project..
+        /// </summary>
+        public static string MemberExistsMessage {
+            get {
+                return ResourceManager.GetString("MemberExistsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This project already exists..
+        /// </summary>
+        public static string ProjectExistsMessage {
+            get {
+                return ResourceManager.GetString("ProjectExistsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This project does not exist..
+        /// </summary>
+        public static string ProjectNotExistMessage {
+            get {
+                return ResourceManager.GetString("ProjectNotExistMessage", resourceCulture);
             }
         }
         

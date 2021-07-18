@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlreadyJoinedMessage" xml:space="preserve">
+    <value>You are already a member of this project.</value>
+  </data>
   <data name="BackendErrorMessage" xml:space="preserve">
     <value>Something went wrong while processing the request on our backend.</value>
   </data>
@@ -125,6 +128,15 @@
   </data>
   <data name="GuildNotExistsMessage" xml:space="preserve">
     <value>Your server is not registered! You can add it via command '!!guild add'.</value>
+  </data>
+  <data name="MemberExistsMessage" xml:space="preserve">
+    <value>This user is already a member of the project.</value>
+  </data>
+  <data name="ProjectExistsMessage" xml:space="preserve">
+    <value>This project already exists.</value>
+  </data>
+  <data name="ProjectNotExistMessage" xml:space="preserve">
+    <value>This project does not exist.</value>
   </data>
   <data name="SubmitPartFailMessage" xml:space="preserve">
     <value>Something went wrong when submitting part for project '{0}'.</value>
