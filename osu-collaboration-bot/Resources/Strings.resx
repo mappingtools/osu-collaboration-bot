@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddMemberFailMessage" xml:space="preserve">
+    <value>Could not add {0} to project '{1}'.</value>
+  </data>
+  <data name="AddMemberSuccessMessage" xml:space="preserve">
+    <value>Added {0} to project '{1}'.</value>
+  </data>
   <data name="AlreadyJoinedMessage" xml:space="preserve">
     <value>You are already a member of this project.</value>
   </data>
@@ -132,11 +138,26 @@
   <data name="MemberExistsMessage" xml:space="preserve">
     <value>This user is already a member of the project.</value>
   </data>
+  <data name="MemberNotExistsMessage" xml:space="preserve">
+    <value>This user is not a member of the project.</value>
+  </data>
+  <data name="NotJoinedMessage" xml:space="preserve">
+    <value>You are not a member of this project.</value>
+  </data>
+  <data name="OwnerCannotLeaveMessage" xml:space="preserve">
+    <value>A project owner can't leave their own project. Transfer ownership with `set-owner` first.</value>
+  </data>
   <data name="ProjectExistsMessage" xml:space="preserve">
     <value>This project already exists.</value>
   </data>
   <data name="ProjectNotExistMessage" xml:space="preserve">
     <value>This project does not exist.</value>
+  </data>
+  <data name="RemoveMemberFailMessage" xml:space="preserve">
+    <value>Could not remove {0} from project '{1}'.</value>
+  </data>
+  <data name="RemoveMemberSuccessMessage" xml:space="preserve">
+    <value>Removed {0} from project '{1}'.</value>
   </data>
   <data name="SubmitPartFailMessage" xml:space="preserve">
     <value>Something went wrong when submitting part for project '{0}'.</value>

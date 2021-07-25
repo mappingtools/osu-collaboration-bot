@@ -61,6 +61,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not add {0} to project &apos;{1}&apos;..
+        /// </summary>
+        public static string AddMemberFailMessage {
+            get {
+                return ResourceManager.GetString("AddMemberFailMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Added {0} to project &apos;{1}&apos;..
+        /// </summary>
+        public static string AddMemberSuccessMessage {
+            get {
+                return ResourceManager.GetString("AddMemberSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are already a member of this project..
         /// </summary>
         public static string AlreadyJoinedMessage {
@@ -106,6 +124,33 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This user is not a member of the project..
+        /// </summary>
+        public static string MemberNotExistsMessage {
+            get {
+                return ResourceManager.GetString("MemberNotExistsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are not a member of this project..
+        /// </summary>
+        public static string NotJoinedMessage {
+            get {
+                return ResourceManager.GetString("NotJoinedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A project owner can&apos;t leave their own project. Transfer ownership with `set-owner` first..
+        /// </summary>
+        public static string OwnerCannotLeaveMessage {
+            get {
+                return ResourceManager.GetString("OwnerCannotLeaveMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This project already exists..
         /// </summary>
         public static string ProjectExistsMessage {
@@ -120,6 +165,24 @@ namespace CollaborationBot.Resources {
         public static string ProjectNotExistMessage {
             get {
                 return ResourceManager.GetString("ProjectNotExistMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not remove {0} from project &apos;{1}&apos;..
+        /// </summary>
+        public static string RemoveMemberFailMessage {
+            get {
+                return ResourceManager.GetString("RemoveMemberFailMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removed {0} from project &apos;{1}&apos;..
+        /// </summary>
+        public static string RemoveMemberSuccessMessage {
+            get {
+                return ResourceManager.GetString("RemoveMemberSuccessMessage", resourceCulture);
             }
         }
         

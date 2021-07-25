@@ -38,8 +38,14 @@ namespace CollaborationBot.Services {
 
         public string GenerateAddMemberToProject(IMentionable user, string projectName, bool isSuccessful = true) {
             if (isSuccessful)
-                return $"Added {user.Mention} to project '{projectName}'.";
-            return $"Could not add {user.Mention} to project '{projectName}'.";
+                return string.Format(Strings.AddMemberSuccessMessage, user.Mention, projectName);
+            return string.Format(Strings.AddMemberFailMessage, user.Mention, projectName);
+        }
+
+        public string GenerateRemoveMemberFromProject(IMentionable user, string projectName, bool isSuccessful = true) {
+            if (isSuccessful)
+                return string.Format(Strings.RemoveMemberSuccessMessage, user.Mention, projectName);
+            return string.Format(Strings.RemoveMemberFailMessage, user.Mention, projectName);
         }
 
         public string GenerateUnauthorizedMessage(IMentionable mention) {

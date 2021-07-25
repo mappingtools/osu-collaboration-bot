@@ -67,14 +67,14 @@ namespace CollaborationBot.Commands {
 
         [Command("list")]
         public async Task List() {
-            var projects = _context.Projects.Include(p => p.Guild).Where(p => p.Guild.UniqueGuildId == Context.Guild.Id).ToList();
+            var projects = await _context.Projects.Include(p => p.Guild).Where(p => p.Guild.UniqueGuildId == Context.Guild.Id).ToListAsync();
             await Context.Channel.SendMessageAsync(_resourceService.GenerateProjectListMessage(projects));
         }
 
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("create")]
         public async Task Create(string projectName) {
-            var guild = _context.Guilds.FirstOrDefault(o => o.UniqueGuildId == Context.Guild.Id);
+            var guild = await _context.Guilds.AsAsyncEnumerable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 
             if (guild == null) {
                 await Context.Channel.SendMessageAsync(_resourceService.GuildNotExistsMessage);
@@ -99,19 +99,11 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectOwner(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("remove")]
-        public async Task Remove(string projectName) {
-            var guild = _context.Guilds.FirstOrDefault(o => o.UniqueGuildId == Context.Guild.Id);
-
-            if (guild == null) {
-                await Context.Channel.SendMessageAsync(_resourceService.GuildNotExistsMessage);
-                return;
-            }
-
-            var project = _context.Projects.FirstOrDefault(o => o.GuildId == guild.Id && o.Name == projectName);
+        [Command("delete")]
+        public async Task Delete(string projectName) {
+            var project = await GetProjectAsync(projectName);
 
             if (project == null) {
-                await Context.Channel.SendMessageAsync(Strings.ProjectNotExistMessage);
                 return;
             }
 
@@ -126,20 +118,12 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        [RequireProjectManager]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("join")]
         public async Task JoinProject(string projectName) {
-            var guild = _context.Guilds.FirstOrDefault(o => o.UniqueGuildId == Context.Guild.Id);
-
-            if (guild == null) {
-                await Context.Channel.SendMessageAsync(_resourceService.GuildNotExistsMessage);
-                return;
-            }
-
-            var project = _context.Projects.FirstOrDefault(o => o.GuildId == guild.Id && o.Name == projectName);
+            var project = await GetProjectAsync(projectName);
 
             if (project == null) {
-                await Context.Channel.SendMessageAsync(Strings.ProjectNotExistMessage);
                 return;
             }
 
@@ -154,10 +138,124 @@ namespace CollaborationBot.Commands {
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateAddMemberToProject(Context.User, projectName));
             }
-            catch (Exception) {
+            catch (Exception e) {
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateAddMemberToProject(Context.User, projectName, false));
+                Console.WriteLine(e);
             }
+        }
+
+        [Command("leave")]
+        public async Task LeaveProject(string projectName) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            var member = await _context.Members.AsAsyncEnumerable()
+                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id);
+
+            if (member == null) {
+                await Context.Channel.SendMessageAsync(Strings.NotJoinedMessage);
+                return;
+            }
+
+            if (member.ProjectRole == ProjectRole.Owner) {
+                await Context.Channel.SendMessageAsync(Strings.OwnerCannotLeaveMessage);
+                return;
+            }
+
+            try {
+                _context.Members.Remove(member);
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(
+                    _resourceService.GenerateRemoveMemberFromProject(Context.User, projectName));
+            } catch (Exception e) {
+                await Context.Channel.SendMessageAsync(
+                    _resourceService.GenerateRemoveMemberFromProject(Context.User, projectName, false));
+                Console.WriteLine(e);
+            }
+        }
+
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("add")]
+        public async Task AddMember(string projectName, IGuildUser user) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            if (_context.Members.Any(o => o.ProjectId == project.Id && o.UniqueMemberId == user.Id)) {
+                await Context.Channel.SendMessageAsync(Strings.MemberExistsMessage);
+                return;
+            }
+
+            try {
+                await _context.Members.AddAsync(new Member { ProjectId = project.Id, UniqueMemberId = user.Id, ProjectRole = ProjectRole.Member });
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(
+                    _resourceService.GenerateAddMemberToProject(user, projectName));
+            } catch (Exception e) {
+                await Context.Channel.SendMessageAsync(
+                    _resourceService.GenerateAddMemberToProject(user, projectName, false));
+                Console.WriteLine(e);
+            }
+        }
+
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("remove")]
+        public async Task RemoveMember(string projectName, IGuildUser user) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            var member = await _context.Members.AsAsyncEnumerable()
+                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == user.Id);
+
+            if (member == null) {
+                await Context.Channel.SendMessageAsync(Strings.MemberNotExistsMessage);
+                return;
+            }
+
+            if (member.ProjectRole == ProjectRole.Owner) {
+                await Context.Channel.SendMessageAsync(Strings.OwnerCannotLeaveMessage);
+                return;
+            }
+
+            try {
+                _context.Members.Remove(member);
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(
+                    _resourceService.GenerateRemoveMemberFromProject(user, projectName));
+            } catch (Exception e) {
+                await Context.Channel.SendMessageAsync(
+                    _resourceService.GenerateRemoveMemberFromProject(user, projectName, false));
+                Console.WriteLine(e);
+            }
+        }
+
+        private async Task<Project> GetProjectAsync(string projectName) {
+            var guild = await _context.Guilds.AsAsyncEnumerable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
+
+            if (guild == null) {
+                await Context.Channel.SendMessageAsync(_resourceService.GuildNotExistsMessage);
+                return null;
+            }
+
+            var project = await _context.Projects.AsAsyncEnumerable().SingleOrDefaultAsync(o => o.GuildId == guild.Id && o.Name == projectName);
+
+            if (project == null) {
+                await Context.Channel.SendMessageAsync(Strings.ProjectNotExistMessage);
+                return null;
+            }
+
+            return project;
         }
     }
 }
