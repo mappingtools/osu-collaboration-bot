@@ -187,6 +187,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not transfer ownership of project &apos;{0}&apos; to {1}..
+        /// </summary>
+        public static string SetOwnerFailMessage {
+            get {
+                return ResourceManager.GetString("SetOwnerFailMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transfered ownership of project &apos;{0}&apos; to {1}..
+        /// </summary>
+        public static string SetOwnerSuccessMessage {
+            get {
+                return ResourceManager.GetString("SetOwnerSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Something went wrong when submitting part for project &apos;{0}&apos;..
         /// </summary>
         public static string SubmitPartFailMessage {
@@ -210,6 +228,15 @@ namespace CollaborationBot.Resources {
         public static string TestString {
             get {
                 return ResourceManager.GetString("TestString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This user is already owner of project &apos;{0}&apos;..
+        /// </summary>
+        public static string UserAlreadyOwnerMessage {
+            get {
+                return ResourceManager.GetString("UserAlreadyOwnerMessage", resourceCulture);
             }
         }
     }

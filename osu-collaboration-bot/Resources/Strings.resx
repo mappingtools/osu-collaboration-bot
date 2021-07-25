@@ -159,6 +159,12 @@
   <data name="RemoveMemberSuccessMessage" xml:space="preserve">
     <value>Removed {0} from project '{1}'.</value>
   </data>
+  <data name="SetOwnerFailMessage" xml:space="preserve">
+    <value>Could not transfer ownership of project '{0}' to {1}.</value>
+  </data>
+  <data name="SetOwnerSuccessMessage" xml:space="preserve">
+    <value>Transfered ownership of project '{0}' to {1}.</value>
+  </data>
   <data name="SubmitPartFailMessage" xml:space="preserve">
     <value>Something went wrong when submitting part for project '{0}'.</value>
   </data>
@@ -167,5 +173,8 @@
   </data>
   <data name="TestString" xml:space="preserve">
     <value>test</value>
+  </data>
+  <data name="UserAlreadyOwnerMessage" xml:space="preserve">
+    <value>This user is already owner of project '{0}'.</value>
   </data>
 </root>

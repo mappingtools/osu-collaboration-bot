@@ -48,6 +48,12 @@ namespace CollaborationBot.Services {
             return string.Format(Strings.RemoveMemberFailMessage, user.Mention, projectName);
         }
 
+        public string GenerateSetOwner(IMentionable user, string projectName, bool isSuccessful = true) {
+            if (isSuccessful)
+                return string.Format(Strings.SetOwnerSuccessMessage, projectName, user.Mention);
+            return string.Format(Strings.SetOwnerFailMessage, projectName, user.Mention);
+        }
+
         public string GenerateUnauthorizedMessage(IMentionable mention) {
             return $"{mention.Mention}, you are not authorized to use this command.";
         }

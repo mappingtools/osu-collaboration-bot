@@ -71,7 +71,7 @@ namespace CollaborationBot.Commands {
             await Context.Channel.SendMessageAsync(_resourceService.GenerateProjectListMessage(projects));
         }
 
-        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        //[RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("create")]
         public async Task Create(string projectName) {
             var guild = await _context.Guilds.AsAsyncEnumerable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
@@ -181,7 +181,7 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("add")]
-        public async Task AddMember(string projectName, IGuildUser user) {
+        public async Task AddMember(string projectName, IUser user) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -208,7 +208,7 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("remove")]
-        public async Task RemoveMember(string projectName, IGuildUser user) {
+        public async Task RemoveMember(string projectName, IUser user) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -236,6 +236,49 @@ namespace CollaborationBot.Commands {
             } catch (Exception e) {
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateRemoveMemberFromProject(user, projectName, false));
+                Console.WriteLine(e);
+            }
+        }
+
+        [RequireProjectOwner(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("set-owner")]
+        public async Task SetOwner(string projectName, IUser user) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            var member = await _context.Members.AsAsyncEnumerable()
+                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == user.Id);
+
+            if (member == null) {
+                await Context.Channel.SendMessageAsync(Strings.MemberNotExistsMessage);
+                return;
+            }
+
+            if (member.ProjectRole == ProjectRole.Owner) {
+                await Context.Channel.SendMessageAsync(string.Format(Strings.UserAlreadyOwnerMessage, projectName));
+                return;
+            }
+
+            try {
+                var previousOwner = await _context.Members.AsAsyncEnumerable()
+                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.ProjectRole == ProjectRole.Owner);
+
+                member.ProjectRole = ProjectRole.Owner;
+                
+                if (previousOwner != null) {
+                    previousOwner.ProjectRole = ProjectRole.Manager;
+                }
+                
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(
+                    _resourceService.GenerateSetOwner(user, projectName));
+            } catch (Exception e) {
+                await Context.Channel.SendMessageAsync(
+                    _resourceService.GenerateSetOwner(user, projectName, false));
                 Console.WriteLine(e);
             }
         }
