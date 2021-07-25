@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using CollaborationBot.Entities;
@@ -16,6 +17,8 @@ namespace CollaborationBot {
         private AppSettings _appSettings;
         private FileHandlingService _fileHandler;
 
+        private List<SocketGuild> guildList = new();
+    
         public static void Main(string[] args) {
             new Program().MainAsync().GetAwaiter().GetResult();
         }
@@ -27,6 +30,8 @@ namespace CollaborationBot {
 
             _client = services.GetRequiredService<DiscordSocketClient>();
             _client.Log += Log;
+            _client.GuildAvailable += GuildAvailable;
+            _client.Connected += Connected;
 
             await _client.LoginAsync(TokenType.Bot, _appSettings.Token);
             await _client.StartAsync();
@@ -39,6 +44,16 @@ namespace CollaborationBot {
 
             // Block this task until the program is closed.
             await Task.Delay(-1);
+        }
+
+        private async Task Connected() {
+            await _client.DownloadUsersAsync(guildList);
+            guildList.Clear();
+        }
+
+        private Task GuildAvailable(SocketGuild arg) {
+            guildList.Add(arg);
+            return Task.CompletedTask;
         }
 
         private Task Log(LogMessage msg) {

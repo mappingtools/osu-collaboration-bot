@@ -26,7 +26,7 @@ namespace CollaborationBot.Services {
 
         public async Task HandleCommandAsync(SocketMessage messageParameter) {
             // Don't process the command if it was a system message
-            if (!(messageParameter is SocketUserMessage message)) return;
+            if (messageParameter is not SocketUserMessage message) return;
 
             // Create a number to track where the prefix ends and the command begins
             var argPos = 0;

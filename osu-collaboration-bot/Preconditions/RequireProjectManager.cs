@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Discord.Commands;
-using Discord.WebSocket;
 using CollaborationBot.Entities;
 using Microsoft.Extensions.DependencyInjection;
+using Discord;
 
 namespace CollaborationBot.Preconditions {
     public class RequireProjectManager : CustomPreconditionBase {
@@ -12,7 +12,7 @@ namespace CollaborationBot.Preconditions {
 
         public override async Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context, CommandInfo command,
             IServiceProvider services) {
-            if (context.User is not SocketGuildUser guildUser) return ErrorResult(context.User, services);
+            if (context.User is not IGuildUser guildUser) return ErrorResult(context.User, services);
 
             try {
                 string projectName = (string)await GetParameter(PROJECT_PARAM_NAME, context, command, services);

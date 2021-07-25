@@ -60,7 +60,8 @@ namespace CollaborationBot.Commands {
                 var projectBaseFilePath = _fileHandler.GetProjectBaseFilePath(Context.Guild, projectName);
                 await Context.Channel.SendFileAsync(projectBaseFilePath, $"Compiled .osu of project '{projectName}':");
             }
-            catch (Exception) {
+            catch (Exception e) {
+                Console.WriteLine(e);
                 await Context.Channel.SendFileAsync(_resourceService.BackendErrorMessage);
             }
         }
@@ -88,8 +89,8 @@ namespace CollaborationBot.Commands {
                 await _context.SaveChangesAsync();
             } 
             catch (Exception e) {
-                await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName, false));
                 Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName, false));
                 return;
             }
             
@@ -113,8 +114,8 @@ namespace CollaborationBot.Commands {
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName));
             }
             catch (Exception e) {
-                await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName, false));
                 Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName, false));
             }
         }
 
@@ -139,9 +140,9 @@ namespace CollaborationBot.Commands {
                     _resourceService.GenerateAddMemberToProject(Context.User, projectName));
             }
             catch (Exception e) {
+                Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateAddMemberToProject(Context.User, projectName, false));
-                Console.WriteLine(e);
             }
         }
 
@@ -172,16 +173,16 @@ namespace CollaborationBot.Commands {
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateRemoveMemberFromProject(Context.User, projectName));
             } catch (Exception e) {
+                Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateRemoveMemberFromProject(Context.User, projectName, false));
-                Console.WriteLine(e);
             }
         }
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("add")]
-        public async Task AddMember(string projectName, IUser user) {
+        public async Task AddMember(string projectName, IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -199,16 +200,16 @@ namespace CollaborationBot.Commands {
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateAddMemberToProject(user, projectName));
             } catch (Exception e) {
+                Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateAddMemberToProject(user, projectName, false));
-                Console.WriteLine(e);
             }
         }
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("remove")]
-        public async Task RemoveMember(string projectName, IUser user) {
+        public async Task RemoveMember(string projectName, IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -234,16 +235,16 @@ namespace CollaborationBot.Commands {
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateRemoveMemberFromProject(user, projectName));
             } catch (Exception e) {
+                Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateRemoveMemberFromProject(user, projectName, false));
-                Console.WriteLine(e);
             }
         }
 
         [RequireProjectOwner(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("set-owner")]
-        public async Task SetOwner(string projectName, IUser user) {
+        public async Task SetOwner(string projectName, IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -277,9 +278,9 @@ namespace CollaborationBot.Commands {
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateSetOwner(user, projectName));
             } catch (Exception e) {
+                Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateSetOwner(user, projectName, false));
-                Console.WriteLine(e);
             }
         }
 
