@@ -19,7 +19,7 @@ namespace CollaborationBot.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
@@ -57,6 +57,24 @@ namespace CollaborationBot.Resources {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not promote {0} to manager of project &apos;{1}&apos;..
+        /// </summary>
+        public static string AddManagerFailMessage {
+            get {
+                return ResourceManager.GetString("AddManagerFailMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Promoted {0} to manager of project &apos;{1}&apos;..
+        /// </summary>
+        public static string AddManagerSuccessMessage {
+            get {
+                return ResourceManager.GetString("AddManagerSuccessMessage", resourceCulture);
             }
         }
         
@@ -142,6 +160,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This user is owner of project &apos;{0}&apos; and can&apos;t be demoted. Transfer ownership with `set-owner` first..
+        /// </summary>
+        public static string OwnerCannotBeDemotedMessage {
+            get {
+                return ResourceManager.GetString("OwnerCannotBeDemotedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A project owner can&apos;t leave their own project. Transfer ownership with `set-owner` first..
         /// </summary>
         public static string OwnerCannotLeaveMessage {
@@ -165,6 +192,24 @@ namespace CollaborationBot.Resources {
         public static string ProjectNotExistMessage {
             get {
                 return ResourceManager.GetString("ProjectNotExistMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not demote {0} to a regular member of &apos;{1}&apos;..
+        /// </summary>
+        public static string RemoveManagerFailMessage {
+            get {
+                return ResourceManager.GetString("RemoveManagerFailMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Demoted {0} to a regular member of &apos;{1}&apos;..
+        /// </summary>
+        public static string RemoveManagerSuccessMessage {
+            get {
+                return ResourceManager.GetString("RemoveManagerSuccessMessage", resourceCulture);
             }
         }
         
@@ -232,11 +277,29 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This user is already a manager of project &apos;{0}&apos;..
+        /// </summary>
+        public static string UserAlreadyManagerMessage {
+            get {
+                return ResourceManager.GetString("UserAlreadyManagerMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This user is already owner of project &apos;{0}&apos;..
         /// </summary>
         public static string UserAlreadyOwnerMessage {
             get {
                 return ResourceManager.GetString("UserAlreadyOwnerMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This user is not a manager of project &apos;{0}&apos;..
+        /// </summary>
+        public static string UserNotManagerMessage {
+            get {
+                return ResourceManager.GetString("UserNotManagerMessage", resourceCulture);
             }
         }
     }

@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddManagerFailMessage" xml:space="preserve">
+    <value>Could not promote {0} to manager of project '{1}'.</value>
+  </data>
+  <data name="AddManagerSuccessMessage" xml:space="preserve">
+    <value>Promoted {0} to manager of project '{1}'.</value>
+  </data>
   <data name="AddMemberFailMessage" xml:space="preserve">
     <value>Could not add {0} to project '{1}'.</value>
   </data>
@@ -144,6 +150,9 @@
   <data name="NotJoinedMessage" xml:space="preserve">
     <value>You are not a member of this project.</value>
   </data>
+  <data name="OwnerCannotBeDemotedMessage" xml:space="preserve">
+    <value>This user is owner of project '{0}' and can't be demoted. Transfer ownership with `set-owner` first.</value>
+  </data>
   <data name="OwnerCannotLeaveMessage" xml:space="preserve">
     <value>A project owner can't leave their own project. Transfer ownership with `set-owner` first.</value>
   </data>
@@ -152,6 +161,12 @@
   </data>
   <data name="ProjectNotExistMessage" xml:space="preserve">
     <value>This project does not exist.</value>
+  </data>
+  <data name="RemoveManagerFailMessage" xml:space="preserve">
+    <value>Could not demote {0} to a regular member of '{1}'.</value>
+  </data>
+  <data name="RemoveManagerSuccessMessage" xml:space="preserve">
+    <value>Demoted {0} to a regular member of '{1}'.</value>
   </data>
   <data name="RemoveMemberFailMessage" xml:space="preserve">
     <value>Could not remove {0} from project '{1}'.</value>
@@ -174,7 +189,13 @@
   <data name="TestString" xml:space="preserve">
     <value>test</value>
   </data>
+  <data name="UserAlreadyManagerMessage" xml:space="preserve">
+    <value>This user is already a manager of project '{0}'.</value>
+  </data>
   <data name="UserAlreadyOwnerMessage" xml:space="preserve">
     <value>This user is already owner of project '{0}'.</value>
+  </data>
+  <data name="UserNotManagerMessage" xml:space="preserve">
+    <value>This user is not a manager of project '{0}'.</value>
   </data>
 </root>
