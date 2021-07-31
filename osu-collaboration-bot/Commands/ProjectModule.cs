@@ -10,7 +10,7 @@ using Discord.Commands;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollaborationBot.Commands {
-    [Group("project")]
+    [Group()]
     public class ProjectModule : ModuleBase<SocketCommandContext> {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
@@ -22,6 +22,8 @@ namespace CollaborationBot.Commands {
             _fileHandler = fileHandler;
             _resourceService = resourceService;
         }
+
+        #region files
 
         [Command("submitPart")]
         public async Task SubmitPart(string projectName) {
@@ -65,6 +67,10 @@ namespace CollaborationBot.Commands {
                 await Context.Channel.SendFileAsync(_resourceService.BackendErrorMessage);
             }
         }
+
+        #endregion
+
+        #region creation
 
         [Command("list")]
         public async Task List() {
@@ -120,6 +126,9 @@ namespace CollaborationBot.Commands {
             }
         }
 
+        #endregion
+
+        #region members
 
         [Command("members")]
         public async Task Members(string projectName) {
@@ -380,6 +389,8 @@ namespace CollaborationBot.Commands {
                     _resourceService.GenerateSetOwner(user, projectName, false));
             }
         }
+
+        #endregion
 
         private async Task<Project> GetProjectAsync(string projectName) {
             var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
