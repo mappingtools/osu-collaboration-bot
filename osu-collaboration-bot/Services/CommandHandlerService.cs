@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using CollaborationBot.TypeReaders;
 using Discord.Commands;
 using Discord.WebSocket;
 
@@ -18,6 +19,9 @@ namespace CollaborationBot.Services {
             _appSettings = appSettings;
 
             client.MessageReceived += HandleCommandAsync;
+
+            // Add custom type readers
+            _commands.AddTypeReader<TimeSpan>(new OsuTimeTypeReader());
         }
 
         public async Task InstallCommandsAsync() {

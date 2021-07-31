@@ -129,11 +129,23 @@
   <data name="AddMemberSuccessMessage" xml:space="preserve">
     <value>Added {0} to project '{1}'.</value>
   </data>
+  <data name="AddPartFail" xml:space="preserve">
+    <value>Could not add part '{0}' to project '{1}'.</value>
+  </data>
+  <data name="AddPartSuccess" xml:space="preserve">
+    <value>Added part '{0}' to project '{1}'.</value>
+  </data>
   <data name="AlreadyJoinedMessage" xml:space="preserve">
     <value>You are already a member of this project.</value>
   </data>
   <data name="BackendErrorMessage" xml:space="preserve">
     <value>Something went wrong while processing the request on our backend.</value>
+  </data>
+  <data name="EditPartFail" xml:space="preserve">
+    <value>Could not edit part.</value>
+  </data>
+  <data name="EditPartSuccess" xml:space="preserve">
+    <value>Successfully edited part.</value>
   </data>
   <data name="GuildExistsMessage" xml:space="preserve">
     <value>Server is already registered.</value>
@@ -156,6 +168,9 @@
   <data name="OwnerCannotLeaveMessage" xml:space="preserve">
     <value>A project owner can't leave their own project. Transfer ownership with `set-owner` first.</value>
   </data>
+  <data name="PartNotExists" xml:space="preserve">
+    <value>A part named '{0}' does not exist in project '{1}'.</value>
+  </data>
   <data name="ProjectExistsMessage" xml:space="preserve">
     <value>This project already exists.</value>
   </data>
@@ -173,6 +188,12 @@
   </data>
   <data name="RemoveMemberSuccessMessage" xml:space="preserve">
     <value>Removed {0} from project '{1}'.</value>
+  </data>
+  <data name="RemovePartFail" xml:space="preserve">
+    <value>Could not remove part '{0}' from project '{1}'.</value>
+  </data>
+  <data name="RemovePartSuccess" xml:space="preserve">
+    <value>Removed part '{0}' from project '{1}'.</value>
   </data>
   <data name="SetOwnerFailMessage" xml:space="preserve">
     <value>Could not transfer ownership of project '{0}' to {1}.</value>

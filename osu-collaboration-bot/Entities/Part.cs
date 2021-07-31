@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CollaborationBot.Entities
 {
-    public partial class Part
+    public partial class Part : IComparable<Part>
     {
         public Part()
         {
@@ -21,5 +21,34 @@ namespace CollaborationBot.Entities
 
         public virtual Project Project { get; set; }
         public virtual ICollection<Assignment> Assignments { get; set; }
+
+        public int CompareTo(Part other) {
+            if (!Start.HasValue && !End.HasValue && !other.Start.HasValue && !other.End.HasValue)
+                return 0;
+
+            if (!Start.HasValue && !End.HasValue && (other.Start.HasValue || other.End.HasValue))
+                return 1;
+
+            if ((Start.HasValue || End.HasValue) && !other.Start.HasValue && !other.End.HasValue)
+                return -1;
+
+            if (End.HasValue && !other.End.HasValue)
+                return -1;
+
+            if (!End.HasValue && other.End.HasValue)
+                return 1;
+
+            if (Start.HasValue && !other.Start.HasValue)
+                return 1;
+
+            if (!Start.HasValue && other.Start.HasValue)
+                return -1;
+
+            if (Start.HasValue && other.Start.HasValue) {
+                return Start.Value.CompareTo(other.Start.Value);
+            } else {
+                return End.Value.CompareTo(other.End.Value);
+            }
+        }
     }
 }

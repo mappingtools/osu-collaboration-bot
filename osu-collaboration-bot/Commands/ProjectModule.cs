@@ -10,7 +10,7 @@ using Discord.Commands;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollaborationBot.Commands {
-    [Group()]
+    [Group]
     public class ProjectModule : ModuleBase<SocketCommandContext> {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CollaborationBot.Entities;
@@ -88,6 +89,12 @@ namespace CollaborationBot.Services {
                 members.Select(o => $"{_client.GetUser((ulong)o.UniqueMemberId).Username} ({o.ProjectRole})"));
         }
 
+        public string GeneratePartsListMessage(List<Part> parts) {
+            if (parts.Count <= 0) return "There are no parts in this project.";
+            return GenerateListMessage("Here are all the parts of the project:",
+                parts.Select(o => $"{o.Name} ({TimeToString(o.Start)} - {TimeToString(o.End)}): {o.Status}"));
+        }
+
         public string GenerateListMessage(string message, IEnumerable<string> list) {
             var builder = new StringBuilder();
             builder.AppendLine(message);
@@ -95,6 +102,17 @@ namespace CollaborationBot.Services {
             foreach (var item in list) builder.AppendLine($"- {item}");
             builder.Append("```");
             return builder.ToString();
+        }
+
+        public string TimeToString(int? time) {
+            if (!time.HasValue)
+                return "XX:XX:XXX";
+
+            var timeSpan = TimeSpan.FromMilliseconds(time.Value);
+
+            return $"{(timeSpan.Days > 0 ? $"{timeSpan.Days:####}:" : string.Empty)}" +
+                    $"{(timeSpan.Hours > 0 ? $"{timeSpan.Hours:00}:" : string.Empty)}" +
+                    $"{timeSpan.Minutes:00}:{timeSpan.Seconds:00}:{timeSpan.Milliseconds:000}";
         }
     }
 }

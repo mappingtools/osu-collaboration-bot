@@ -97,6 +97,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not add part &apos;{0}&apos; to project &apos;{1}&apos;..
+        /// </summary>
+        public static string AddPartFail {
+            get {
+                return ResourceManager.GetString("AddPartFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Added part &apos;{0}&apos; to project &apos;{1}&apos;..
+        /// </summary>
+        public static string AddPartSuccess {
+            get {
+                return ResourceManager.GetString("AddPartSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are already a member of this project..
         /// </summary>
         public static string AlreadyJoinedMessage {
@@ -111,6 +129,24 @@ namespace CollaborationBot.Resources {
         public static string BackendErrorMessage {
             get {
                 return ResourceManager.GetString("BackendErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not edit part..
+        /// </summary>
+        public static string EditPartFail {
+            get {
+                return ResourceManager.GetString("EditPartFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully edited part..
+        /// </summary>
+        public static string EditPartSuccess {
+            get {
+                return ResourceManager.GetString("EditPartSuccess", resourceCulture);
             }
         }
         
@@ -178,6 +214,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A part named &apos;{0}&apos; does not exist in project &apos;{1}&apos;..
+        /// </summary>
+        public static string PartNotExists {
+            get {
+                return ResourceManager.GetString("PartNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This project already exists..
         /// </summary>
         public static string ProjectExistsMessage {
@@ -228,6 +273,24 @@ namespace CollaborationBot.Resources {
         public static string RemoveMemberSuccessMessage {
             get {
                 return ResourceManager.GetString("RemoveMemberSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not remove part &apos;{0}&apos; from project &apos;{1}&apos;..
+        /// </summary>
+        public static string RemovePartFail {
+            get {
+                return ResourceManager.GetString("RemovePartFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removed part &apos;{0}&apos; from project &apos;{1}&apos;..
+        /// </summary>
+        public static string RemovePartSuccess {
+            get {
+                return ResourceManager.GetString("RemovePartSuccess", resourceCulture);
             }
         }
         
