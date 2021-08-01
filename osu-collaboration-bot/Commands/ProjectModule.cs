@@ -118,12 +118,14 @@ namespace CollaborationBot.Commands {
             try {
                 _context.Projects.Remove(project);
                 await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName));
             }
             catch (Exception e) {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName, false));
             }
+
+            _fileHandler.DeleteProjectDirectory(Context.Guild, projectName);
+            await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName));
         }
 
         #endregion

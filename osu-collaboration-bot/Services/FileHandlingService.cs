@@ -73,6 +73,12 @@ namespace CollaborationBot.Services {
             if (!Directory.Exists(localProjectPath)) Directory.CreateDirectory(localProjectPath);
         }
 
+        public void DeleteProjectDirectory(IGuild guild, string projectName) {
+            var localProjectPath = GetProjectPath(guild, projectName);
+
+            if (Directory.Exists(localProjectPath)) Directory.Delete(localProjectPath, true);
+        }
+
         private bool IsFilePermissible(string url, PermissibleFileType fileType) {
             if (!PermissibleFileExtensions.TryGetValue(fileType, out var ext)) return false;
 
