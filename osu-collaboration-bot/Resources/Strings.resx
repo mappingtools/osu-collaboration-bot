@@ -174,6 +174,9 @@
   <data name="MoveDeadlineSuccess" xml:space="preserve">
     <value>Moved deadline to {0}.</value>
   </data>
+  <data name="NoAttachedFile" xml:space="preserve">
+    <value>Could not find an attached file.</value>
+  </data>
   <data name="NotJoinedMessage" xml:space="preserve">
     <value>You are not a member of this project.</value>
   </data>
@@ -225,6 +228,9 @@
   <data name="SetOwnerSuccessMessage" xml:space="preserve">
     <value>Transfered ownership of project '{0}' to {1}.</value>
   </data>
+  <data name="ShowBaseFile" xml:space="preserve">
+    <value>Compiled .osu file of project '{0}':</value>
+  </data>
   <data name="SubmitPartFailMessage" xml:space="preserve">
     <value>Something went wrong when submitting part for project '{0}'.</value>
   </data>
@@ -233,6 +239,12 @@
   </data>
   <data name="TestString" xml:space="preserve">
     <value>This is a test string! The quick brown fox jumped over the lazy dog.</value>
+  </data>
+  <data name="UploadBaseFileFail" xml:space="preserve">
+    <value>Something went wrong while trying to upload the base file.</value>
+  </data>
+  <data name="UploadBaseFileSuccess" xml:space="preserve">
+    <value>Successfully uploaded '{0}' as base file for project '{1}'.</value>
   </data>
   <data name="UserAlreadyManagerMessage" xml:space="preserve">
     <value>This user is already a manager of project '{0}'.</value>

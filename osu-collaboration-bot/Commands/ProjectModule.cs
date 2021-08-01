@@ -25,7 +25,7 @@ namespace CollaborationBot.Commands {
 
         #region files
 
-        [Command("submitPart")]
+        [Command("submit")]
         public async Task SubmitPart(string projectName) {
             // Find out which parts this member is allowed to edit in the project
             // Download the attached file and put it in the member's folder
@@ -41,17 +41,16 @@ namespace CollaborationBot.Commands {
             var attachment = Context.Message.Attachments.SingleOrDefault();
 
             if (attachment == null) {
-                await Context.Channel.SendMessageAsync("Could not find an attached .osu file.");
+                await Context.Channel.SendMessageAsync(Strings.NoAttachedFile);
                 return;
             }
 
             if (!await _fileHandler.DownloadBaseFile(Context.Guild, projectName, attachment)) {
-                await Context.Channel.SendMessageAsync("Something went wrong while trying to upload the base file.");
+                await Context.Channel.SendMessageAsync(Strings.UploadBaseFileFail);
                 return;
             }
 
-            await Context.Channel.SendMessageAsync(
-                $"Successfully uploaded {attachment.Filename} as base file for project '{projectName}'");
+            await Context.Channel.SendMessageAsync(string.Format(Strings.UploadBaseFileSuccess, attachment.Filename, projectName));
         }
 
         [RequireProjectManager(Group = "Permission")]
@@ -60,11 +59,11 @@ namespace CollaborationBot.Commands {
         public async Task GetBaseFile(string projectName) {
             try {
                 var projectBaseFilePath = _fileHandler.GetProjectBaseFilePath(Context.Guild, projectName);
-                await Context.Channel.SendFileAsync(projectBaseFilePath, $"Compiled .osu of project '{projectName}':");
+                await Context.Channel.SendFileAsync(projectBaseFilePath, string.Format(Strings.ShowBaseFile, projectName));
             }
             catch (Exception e) {
                 Console.WriteLine(e);
-                await Context.Channel.SendFileAsync(_resourceService.BackendErrorMessage);
+                await Context.Channel.SendFileAsync(Strings.BackendErrorMessage);
             }
         }
 

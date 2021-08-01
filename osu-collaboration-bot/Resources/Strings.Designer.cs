@@ -232,6 +232,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find an attached file..
+        /// </summary>
+        public static string NoAttachedFile {
+            get {
+                return ResourceManager.GetString("NoAttachedFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are not a member of this project..
         /// </summary>
         public static string NotJoinedMessage {
@@ -385,6 +394,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compiled .osu file of project &apos;{0}&apos;:.
+        /// </summary>
+        public static string ShowBaseFile {
+            get {
+                return ResourceManager.GetString("ShowBaseFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Something went wrong when submitting part for project &apos;{0}&apos;..
         /// </summary>
         public static string SubmitPartFailMessage {
@@ -408,6 +426,24 @@ namespace CollaborationBot.Resources {
         public static string TestString {
             get {
                 return ResourceManager.GetString("TestString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Something went wrong while trying to upload the base file..
+        /// </summary>
+        public static string UploadBaseFileFail {
+            get {
+                return ResourceManager.GetString("UploadBaseFileFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully uploaded &apos;{0}&apos; as base file for project &apos;{1}&apos;..
+        /// </summary>
+        public static string UploadBaseFileSuccess {
+            get {
+                return ResourceManager.GetString("UploadBaseFileSuccess", resourceCulture);
             }
         }
         
