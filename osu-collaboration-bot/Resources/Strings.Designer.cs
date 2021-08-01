@@ -151,11 +151,29 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The attached file is invalid..
+        /// </summary>
+        public static string AttachedFileInvalid {
+            get {
+                return ResourceManager.GetString("AttachedFileInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Something went wrong while processing the request on our backend..
         /// </summary>
         public static string BackendErrorMessage {
             get {
                 return ResourceManager.GetString("BackendErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not parse osu! beatmap: ```{0}```.
+        /// </summary>
+        public static string BeatmapParseFail {
+            get {
+                return ResourceManager.GetString("BeatmapParseFail", resourceCulture);
             }
         }
         
@@ -421,6 +439,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Submitted file has no hit objects or you have no open assignments for the submitted parts..
+        /// </summary>
+        public static string SubmitNoHitObjects {
+            get {
+                return ResourceManager.GetString("SubmitNoHitObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Something went wrong when submitting part for project &apos;{0}&apos;..
         /// </summary>
         public static string SubmitPartFailMessage {
@@ -430,7 +457,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfully submitted part for project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Successfully submitted {0} hit objects to project &apos;{1}&apos;..
         /// </summary>
         public static string SubmitPartSuccessMessage {
             get {
@@ -457,7 +484,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfully uploaded &apos;{0}&apos; as base file for project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Successfully uploaded `{0}` as base file for project &apos;{1}&apos;..
         /// </summary>
         public static string UploadBaseFileSuccess {
             get {

@@ -8,6 +8,10 @@ using CollaborationBot.Services;
 using Discord;
 using Discord.Commands;
 using Microsoft.EntityFrameworkCore;
+using Mapping_Tools_Core.BeatmapHelper.IO.Decoding;
+using Mapping_Tools_Core.Tools.PatternGallery;
+using Mapping_Tools_Core.BeatmapHelper.IO.Editor;
+using Mapping_Tools_Core.Exceptions;
 
 namespace CollaborationBot.Commands {
     [Group]
@@ -25,13 +29,91 @@ namespace CollaborationBot.Commands {
 
         #region files
 
+        [RequireProjectMember(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("submit")]
         public async Task SubmitPart(string projectName) {
             // Find out which parts this member is allowed to edit in the project
             // Download the attached file and put it in the member's folder
             // Merge it into the base file
             // Success message
-            await Context.Channel.SendMessageAsync(_resourceService.GenerateSubmitPartMessage(projectName, false));
+
+            var attachment = Context.Message.Attachments.SingleOrDefault();
+
+            if (attachment == null) {
+                await Context.Channel.SendMessageAsync(Strings.NoAttachedFile);
+                return;
+            }
+
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            var parts = await _context.Assignments.AsQueryable()
+                .Where(o => o.Part.ProjectId == project.Id && o.Member.UniqueMemberId == Context.User.Id)
+                .Select(o => o.Part)
+                .ToListAsync();
+
+            string beatmapString = await _fileHandler.DownloadPartSubmit(Context.Guild, projectName, attachment);
+
+            if (beatmapString == null) {
+                await Context.Channel.SendMessageAsync(Strings.AttachedFileInvalid);
+                return;
+            }
+
+            try {
+                var partBeatmap = new OsuBeatmapDecoder().Decode(beatmapString);
+
+                // Restrict beatmap to only the hit objects inside any assigned part
+                partBeatmap.HitObjects = partBeatmap.HitObjects
+                    .Where(ho => parts.Any(p => 
+                    p.Status != PartStatus.Locked && 
+                    ho.StartTime >= p.Start - 5 && 
+                    ho.StartTime <= p.End + 5 && 
+                    ho.EndTime >= p.Start - 5 && 
+                    ho.EndTime <= p.End + 5))
+                    .ToList();
+
+                var count = partBeatmap.HitObjects.Count;
+
+                if (count == 0) {
+                    await Context.Channel.SendMessageAsync(Strings.SubmitNoHitObjects);
+                    return;
+                }
+
+                var placer = new OsuPatternPlacer {
+                    PatternOverwriteMode = PatternOverwriteMode.PartitionedOverwrite,
+                    TimingOverwriteMode = TimingOverwriteMode.PatternTimingOnly,
+                    Padding = 5,
+                    PartingDistance = 4,
+                    FixColourHax = true,
+                    FixBpmSv = false,
+                    FixStackLeniency = false,
+                    FixTickRate = false,
+                    FixGlobalSv = false,
+                    SnapToNewTiming = false,
+                    ScaleToNewTiming = false, 
+                    IncludeHitsounds = true,
+                    IncludeKiai = true,
+                    ScaleToNewCircleSize = false,
+                };
+
+                var editor = new BeatmapEditor(_fileHandler.GetProjectBaseFilePath(Context.Guild, projectName));
+                var beatmap = editor.ReadFile();
+            
+                placer.PlaceOsuPattern(partBeatmap, beatmap);
+
+                editor.WriteFile(beatmap);
+
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateSubmitPartMessage(projectName, count, true));
+            } catch (BeatmapParsingException e) {
+                await Context.Channel.SendMessageAsync(string.Format(Strings.BeatmapParseFail, e.Message));
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateSubmitPartMessage(projectName, 0, false));
+            }
         }
 
         [RequireProjectManager(Group = "Permission")]

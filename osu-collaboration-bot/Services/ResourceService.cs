@@ -21,9 +21,9 @@ namespace CollaborationBot.Services {
             _client = client;
         }
 
-        public string GenerateSubmitPartMessage(string projectName, bool isSuccessful = true) {
+        public string GenerateSubmitPartMessage(string projectName, int hitObjectCount, bool isSuccessful = true) {
             if (isSuccessful)
-                return string.Format(Strings.SubmitPartSuccessMessage, projectName);
+                return string.Format(Strings.SubmitPartSuccessMessage, hitObjectCount, projectName);
             return string.Format(Strings.SubmitPartFailMessage, projectName);
         }
 

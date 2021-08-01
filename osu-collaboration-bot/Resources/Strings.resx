@@ -147,8 +147,14 @@
   <data name="AssignmentNotExists" xml:space="preserve">
     <value>This assignment does not exist.</value>
   </data>
+  <data name="AttachedFileInvalid" xml:space="preserve">
+    <value>The attached file is invalid.</value>
+  </data>
   <data name="BackendErrorMessage" xml:space="preserve">
     <value>Something went wrong while processing the request on our backend.</value>
+  </data>
+  <data name="BeatmapParseFail" xml:space="preserve">
+    <value>Could not parse osu! beatmap: ```{0}```</value>
   </data>
   <data name="EditPartFail" xml:space="preserve">
     <value>Could not edit part.</value>
@@ -237,11 +243,14 @@
   <data name="ShowBaseFile" xml:space="preserve">
     <value>Compiled .osu file of project '{0}':</value>
   </data>
+  <data name="SubmitNoHitObjects" xml:space="preserve">
+    <value>Submitted file has no hit objects or you have no open assignments for the submitted parts.</value>
+  </data>
   <data name="SubmitPartFailMessage" xml:space="preserve">
     <value>Something went wrong when submitting part for project '{0}'.</value>
   </data>
   <data name="SubmitPartSuccessMessage" xml:space="preserve">
-    <value>Successfully submitted part for project '{0}'.</value>
+    <value>Successfully submitted {0} hit objects to project '{1}'.</value>
   </data>
   <data name="TestString" xml:space="preserve">
     <value>This is a test string! The quick brown fox jumped over the lazy dog.</value>
@@ -250,7 +259,7 @@
     <value>Something went wrong while trying to upload the base file.</value>
   </data>
   <data name="UploadBaseFileSuccess" xml:space="preserve">
-    <value>Successfully uploaded '{0}' as base file for project '{1}'.</value>
+    <value>Successfully uploaded `{0}` as base file for project '{1}'.</value>
   </data>
   <data name="UserAlreadyManagerMessage" xml:space="preserve">
     <value>This user is already a manager of project '{0}'.</value>

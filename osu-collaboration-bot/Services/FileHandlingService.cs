@@ -7,6 +7,8 @@ using Discord;
 
 namespace CollaborationBot.Services {
     public class FileHandlingService {
+        public const string BaseFilename = "basefile.osu";
+
         public enum PermissibleFileType {
             DOT_OSU
         }
@@ -31,21 +33,44 @@ namespace CollaborationBot.Services {
 
                 if (!Uri.TryCreate(att.Url, UriKind.Absolute, out var uri)) return false;
 
-                var filePath = Path.Combine(localProjectPath, att.Filename);
+                var filePath = Path.Combine(localProjectPath, BaseFilename);
 
                 using var client = new WebClient();
                 await client.DownloadFileTaskAsync(uri, filePath);
 
                 return true;
             }
-            catch (Exception) {
+            catch (Exception e) {
+                Console.WriteLine(e);
                 return false;
+            }
+        }
+
+        public async Task<string> DownloadPartSubmit(IGuild guild, string projectName, Attachment att) {
+            try {
+                if (!IsFilePermissible(att.Url, PermissibleFileType.DOT_OSU)) return null;
+
+                var localProjectPath = GetProjectPath(guild, projectName);
+
+                if (!Directory.Exists(localProjectPath)) return null;
+
+                if (!Uri.TryCreate(att.Url, UriKind.Absolute, out var uri)) return null;
+
+                var filePath = Path.Combine(localProjectPath, att.Filename);
+
+                using var client = new WebClient();
+                var result = await client.DownloadStringTaskAsync(uri);
+
+                return result;
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                return null;
             }
         }
 
         public string GetProjectBaseFilePath(IGuild guild, string projectName) {
             var localProjectPath = GetProjectPath(guild, projectName);
-            var osuFiles = Directory.GetFiles(localProjectPath, "*.osu");
+            var osuFiles = Directory.GetFiles(localProjectPath, BaseFilename);
 
             if (osuFiles.Length == 0)
                 throw new FileNotFoundException("No .osu files found in project directory.");
