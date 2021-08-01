@@ -232,6 +232,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not remove parts from project &apos;{0}&apos;..
+        /// </summary>
+        public static string MultiRemovePartFail {
+            get {
+                return ResourceManager.GetString("MultiRemovePartFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removed {0} parts from project &apos;{1}&apos;..
+        /// </summary>
+        public static string MultiRemovePartSuccess {
+            get {
+                return ResourceManager.GetString("MultiRemovePartSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find an attached file..
         /// </summary>
         public static string NoAttachedFile {
