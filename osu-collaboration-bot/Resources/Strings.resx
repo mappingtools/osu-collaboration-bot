@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddAssignmentFail" xml:space="preserve">
+    <value>Could not assign part '{0}' to user '{1}'.</value>
+  </data>
+  <data name="AddAssignmentSuccess" xml:space="preserve">
+    <value>Assigned part '{0}' to user '{1}'.</value>
+  </data>
   <data name="AddManagerFailMessage" xml:space="preserve">
     <value>Could not promote {0} to manager of project '{1}'.</value>
   </data>
@@ -137,6 +143,9 @@
   </data>
   <data name="AlreadyJoinedMessage" xml:space="preserve">
     <value>You are already a member of this project.</value>
+  </data>
+  <data name="AssignmentNotExists" xml:space="preserve">
+    <value>This assignment does not exist.</value>
   </data>
   <data name="BackendErrorMessage" xml:space="preserve">
     <value>Something went wrong while processing the request on our backend.</value>
@@ -159,6 +168,12 @@
   <data name="MemberNotExistsMessage" xml:space="preserve">
     <value>This user is not a member of the project.</value>
   </data>
+  <data name="MoveDeadlineFail" xml:space="preserve">
+    <value>Could not move deadline to {0}.</value>
+  </data>
+  <data name="MoveDeadlineSuccess" xml:space="preserve">
+    <value>Moved deadline to {0}.</value>
+  </data>
   <data name="NotJoinedMessage" xml:space="preserve">
     <value>You are not a member of this project.</value>
   </data>
@@ -176,6 +191,15 @@
   </data>
   <data name="ProjectNotExistMessage" xml:space="preserve">
     <value>This project does not exist.</value>
+  </data>
+  <data name="RemoveAssignmentFail" xml:space="preserve">
+    <value>Could not remove assignment from user '{0}'.</value>
+  </data>
+  <data name="RemoveAssignmentSuccess" xml:space="preserve">
+    <value>Removed assignment from user '{0}'.</value>
+  </data>
+  <data name="RemoveDeadlineSuccess" xml:space="preserve">
+    <value>Removed deadline for user '{0}'.</value>
   </data>
   <data name="RemoveManagerFailMessage" xml:space="preserve">
     <value>Could not demote {0} to a regular member of '{1}'.</value>
@@ -208,7 +232,7 @@
     <value>Successfully submitted part for project '{0}'.</value>
   </data>
   <data name="TestString" xml:space="preserve">
-    <value>test</value>
+    <value>This is a test string! The quick brown fox jumped over the lazy dog.</value>
   </data>
   <data name="UserAlreadyManagerMessage" xml:space="preserve">
     <value>This user is already a manager of project '{0}'.</value>

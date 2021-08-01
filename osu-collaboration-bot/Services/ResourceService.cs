@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using CollaborationBot.Entities;
@@ -93,6 +94,12 @@ namespace CollaborationBot.Services {
             if (parts.Count <= 0) return "There are no parts in this project.";
             return GenerateListMessage("Here are all the parts of the project:",
                 parts.Select(o => $"{o.Name} ({TimeToString(o.Start)} - {TimeToString(o.End)}): {o.Status}"));
+        }
+
+        public string GenerateAssignmentListMessage(List<Assignment> assignments) {
+            if (assignments.Count <= 0) return "There are no assignments in this project.";
+            return GenerateListMessage("Here are all the assignments of the project:",
+                assignments.Select(o => $"{o.Part.Name}: {_client.GetUser((ulong)o.Member.UniqueMemberId).Username} - {o.Deadline.Value.ToString("yyyy-MM-dd")}"));
         }
 
         public string GenerateListMessage(string message, IEnumerable<string> list) {

@@ -36,8 +36,8 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("addBaseFile")]
-        public async Task AddBaseFile(string projectName) {
+        [Command("uploadBaseFile")]
+        public async Task UploadBaseFile(string projectName) {
             var attachment = Context.Message.Attachments.SingleOrDefault();
 
             if (attachment == null) {

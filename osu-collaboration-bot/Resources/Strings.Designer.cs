@@ -61,6 +61,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not assign part &apos;{0}&apos; to user &apos;{1}&apos;..
+        /// </summary>
+        public static string AddAssignmentFail {
+            get {
+                return ResourceManager.GetString("AddAssignmentFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assigned part &apos;{0}&apos; to user &apos;{1}&apos;..
+        /// </summary>
+        public static string AddAssignmentSuccess {
+            get {
+                return ResourceManager.GetString("AddAssignmentSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not promote {0} to manager of project &apos;{1}&apos;..
         /// </summary>
         public static string AddManagerFailMessage {
@@ -120,6 +138,15 @@ namespace CollaborationBot.Resources {
         public static string AlreadyJoinedMessage {
             get {
                 return ResourceManager.GetString("AlreadyJoinedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This assignment does not exist..
+        /// </summary>
+        public static string AssignmentNotExists {
+            get {
+                return ResourceManager.GetString("AssignmentNotExists", resourceCulture);
             }
         }
         
@@ -187,6 +214,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not move deadline to {0}..
+        /// </summary>
+        public static string MoveDeadlineFail {
+            get {
+                return ResourceManager.GetString("MoveDeadlineFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moved deadline to {0}..
+        /// </summary>
+        public static string MoveDeadlineSuccess {
+            get {
+                return ResourceManager.GetString("MoveDeadlineSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are not a member of this project..
         /// </summary>
         public static string NotJoinedMessage {
@@ -237,6 +282,33 @@ namespace CollaborationBot.Resources {
         public static string ProjectNotExistMessage {
             get {
                 return ResourceManager.GetString("ProjectNotExistMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not remove assignment from user &apos;{0}&apos;..
+        /// </summary>
+        public static string RemoveAssignmentFail {
+            get {
+                return ResourceManager.GetString("RemoveAssignmentFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removed assignment from user &apos;{0}&apos;..
+        /// </summary>
+        public static string RemoveAssignmentSuccess {
+            get {
+                return ResourceManager.GetString("RemoveAssignmentSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removed deadline for user &apos;{0}&apos;..
+        /// </summary>
+        public static string RemoveDeadlineSuccess {
+            get {
+                return ResourceManager.GetString("RemoveDeadlineSuccess", resourceCulture);
             }
         }
         
@@ -331,7 +403,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to test.
+        ///   Looks up a localized string similar to This is a test string! The quick brown fox jumped over the lazy dog..
         /// </summary>
         public static string TestString {
             get {
