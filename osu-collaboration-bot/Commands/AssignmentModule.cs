@@ -226,7 +226,7 @@ namespace CollaborationBot.Commands {
                 }
 
                 try {
-                    _context.Assignments.RemoveRange(assignments);
+                    assignments.ForEach(o => o.Deadline = null);
                     part.Status = PartStatus.Finished;
                     await _context.SaveChangesAsync();
                     await Context.Channel.SendMessageAsync(string.Format(Strings.FinishPartSuccess, part.Name));
@@ -253,7 +253,7 @@ namespace CollaborationBot.Commands {
                 return false;
             }
 
-            int assignments = await _context.Assignments.AsQueryable().CountAsync(o => o.MemberId == member.Id && o.Part.ProjectId == project.Id);
+            int assignments = await _context.Assignments.AsQueryable().CountAsync(o => o.MemberId == member.Id && o.Part.ProjectId == project.Id && o.Deadline.HasValue);
             if (project.MaxAssignments.HasValue && assignments >= project.MaxAssignments) {
                 await Context.Channel.SendMessageAsync(string.Format(Strings.MaxAssignmentsReached, project.MaxAssignments));
                 return false;

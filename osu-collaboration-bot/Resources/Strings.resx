@@ -175,7 +175,7 @@
     <value>Your server is not registered! You can add it via command '!!guild add'.</value>
   </data>
   <data name="MaxAssignmentsReached" xml:space="preserve">
-    <value>You are only allowed to have {0} parts claimed.</value>
+    <value>You are only allowed to have {0} active assignments.</value>
   </data>
   <data name="MemberExistsMessage" xml:space="preserve">
     <value>This user is already a member of the project.</value>

@@ -232,7 +232,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You are only allowed to have {0} parts claimed..
+        ///   Looks up a localized string similar to You are only allowed to have {0} active assignments..
         /// </summary>
         public static string MaxAssignmentsReached {
             get {
