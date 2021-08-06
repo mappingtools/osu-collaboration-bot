@@ -196,6 +196,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not mark part as finished..
+        /// </summary>
+        public static string FinishPartFail {
+            get {
+                return ResourceManager.GetString("FinishPartFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Part &apos;{0}&apos; is now finished..
+        /// </summary>
+        public static string FinishPartSuccess {
+            get {
+                return ResourceManager.GetString("FinishPartSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server is already registered..
         /// </summary>
         public static string GuildExistsMessage {
@@ -210,6 +228,15 @@ namespace CollaborationBot.Resources {
         public static string GuildNotExistsMessage {
             get {
                 return ResourceManager.GetString("GuildNotExistsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are only allowed to have {0} parts claimed..
+        /// </summary>
+        public static string MaxAssignmentsReached {
+            get {
+                return ResourceManager.GetString("MaxAssignmentsReached", resourceCulture);
             }
         }
         
@@ -277,6 +304,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are not assigned to this part..
+        /// </summary>
+        public static string NotAssigned {
+            get {
+                return ResourceManager.GetString("NotAssigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are not a member of this project..
         /// </summary>
         public static string NotJoinedMessage {
@@ -300,6 +336,15 @@ namespace CollaborationBot.Resources {
         public static string OwnerCannotLeaveMessage {
             get {
                 return ResourceManager.GetString("OwnerCannotLeaveMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This part has been claimed already..
+        /// </summary>
+        public static string PartClaimedAlready {
+            get {
+                return ResourceManager.GetString("PartClaimedAlready", resourceCulture);
             }
         }
         
@@ -408,6 +453,15 @@ namespace CollaborationBot.Resources {
         public static string RemovePartSuccess {
             get {
                 return ResourceManager.GetString("RemovePartSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Self-assignment is not allowed at the moment..
+        /// </summary>
+        public static string SelfAssignmentNotAllowed {
+            get {
+                return ResourceManager.GetString("SelfAssignmentNotAllowed", resourceCulture);
             }
         }
         

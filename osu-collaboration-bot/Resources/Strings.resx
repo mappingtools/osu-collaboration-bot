@@ -162,11 +162,20 @@
   <data name="EditPartSuccess" xml:space="preserve">
     <value>Successfully edited part.</value>
   </data>
+  <data name="FinishPartFail" xml:space="preserve">
+    <value>Could not mark part as finished.</value>
+  </data>
+  <data name="FinishPartSuccess" xml:space="preserve">
+    <value>Part '{0}' is now finished.</value>
+  </data>
   <data name="GuildExistsMessage" xml:space="preserve">
     <value>Server is already registered.</value>
   </data>
   <data name="GuildNotExistsMessage" xml:space="preserve">
     <value>Your server is not registered! You can add it via command '!!guild add'.</value>
+  </data>
+  <data name="MaxAssignmentsReached" xml:space="preserve">
+    <value>You are only allowed to have {0} parts claimed.</value>
   </data>
   <data name="MemberExistsMessage" xml:space="preserve">
     <value>This user is already a member of the project.</value>
@@ -189,6 +198,9 @@
   <data name="NoAttachedFile" xml:space="preserve">
     <value>Could not find an attached file.</value>
   </data>
+  <data name="NotAssigned" xml:space="preserve">
+    <value>You are not assigned to this part.</value>
+  </data>
   <data name="NotJoinedMessage" xml:space="preserve">
     <value>You are not a member of this project.</value>
   </data>
@@ -197,6 +209,9 @@
   </data>
   <data name="OwnerCannotLeaveMessage" xml:space="preserve">
     <value>A project owner can't leave their own project. Transfer ownership with `set-owner` first.</value>
+  </data>
+  <data name="PartClaimedAlready" xml:space="preserve">
+    <value>This part has been claimed already.</value>
   </data>
   <data name="PartNotExists" xml:space="preserve">
     <value>A part named '{0}' does not exist in project '{1}'.</value>
@@ -233,6 +248,9 @@
   </data>
   <data name="RemovePartSuccess" xml:space="preserve">
     <value>Removed part '{0}' from project '{1}'.</value>
+  </data>
+  <data name="SelfAssignmentNotAllowed" xml:space="preserve">
+    <value>Self-assignment is not allowed at the moment.</value>
   </data>
   <data name="SetOwnerFailMessage" xml:space="preserve">
     <value>Could not transfer ownership of project '{0}' to {1}.</value>

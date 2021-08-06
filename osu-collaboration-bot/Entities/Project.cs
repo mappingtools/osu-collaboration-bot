@@ -24,6 +24,7 @@ namespace CollaborationBot.Entities
         public int? MaxAssignments { get; set; }
         public bool PriorityPicking { get; set; }
         public bool PartRestrictedUpload { get; set; }
+        public TimeSpan? AssignmentLifetime { get; set; }
 
         public virtual Guild Guild { get; set; }
         public virtual ICollection<AutoUpdate> AutoUpdates { get; set; }

@@ -99,7 +99,7 @@ namespace CollaborationBot.Services {
         public string GenerateAssignmentListMessage(List<Assignment> assignments) {
             if (assignments.Count <= 0) return "There are no assignments in this project.";
             return GenerateListMessage("Here are all the assignments of the project:",
-                assignments.Select(o => $"{o.Part.Name}: {_client.GetUser((ulong)o.Member.UniqueMemberId).Username} - {o.Deadline.Value.ToString("yyyy-MM-dd")}"));
+                assignments.Select(o => $"{o.Part.Name}: {_client.GetUser((ulong)o.Member.UniqueMemberId).Username}{(o.Deadline.HasValue ? " - " + o.Deadline.Value.ToString("yyyy-MM-dd") : string.Empty)}"));
         }
 
         public string GenerateListMessage(string message, IEnumerable<string> list) {

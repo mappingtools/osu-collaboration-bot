@@ -176,6 +176,8 @@ namespace CollaborationBot.Entities
 
                 entity.Property(e => e.Status).HasColumnName("status");
 
+                entity.Property(e => e.AssignmentLifetime).HasColumnName("assignment_lifetime");
+
                 entity.HasOne(d => d.Guild)
                     .WithMany(p => p.Projects)
                     .HasForeignKey(d => d.GuildId)

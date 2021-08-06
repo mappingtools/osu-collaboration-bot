@@ -47,18 +47,10 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("add")]
-        public async Task Add(string projectName, string partName, IGuildUser user, DateTime? deadline = null) {
+        public async Task Add(string projectName, IGuildUser user, DateTime? deadline = null, params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
-                return;
-            }
-
-            var part = await _context.Parts.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == partName);
-
-            if (part == null) {
-                await Context.Channel.SendMessageAsync(string.Format(Strings.PartNotExists, partName, projectName));
                 return;
             }
 
@@ -70,39 +62,51 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            try {
-                await _context.Assignments.AddAsync(new Assignment { MemberId = member.Id, PartId = part.Id, Deadline = deadline });
-                await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.AddAssignmentSuccess, partName, user.Username));
-            } catch (Exception e) {
-                Console.WriteLine(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.AddAssignmentFail, partName, user.Username));
+            foreach (var partName in partNames) {
+                var part = await _context.Parts.AsQueryable()
+                                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == partName);
+
+                if (part == null) {
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.PartNotExists, partName, projectName));
+                    return;
+                }
+
+                try {
+                    await _context.Assignments.AddAsync(new Assignment { MemberId = member.Id, PartId = part.Id, Deadline = deadline });
+                    await _context.SaveChangesAsync();
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.AddAssignmentSuccess, partName, user.Username));
+                } catch (Exception e) {
+                    Console.WriteLine(e);
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.AddAssignmentFail, partName, user.Username));
+                }
             }
         }
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("remove")]
-        public async Task Remove(string projectName, string partName, IGuildUser user) {
+        public async Task Remove(string projectName, IUser user, params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
                 return;
             }
 
-            var assignment = await GetAssignmentAsync(project, partName, user);
+            foreach (var partName in partNames) {
+                var assignment = await GetAssignmentAsync(project, partName, user);
 
-            if (assignment == null) {
-                return;
-            }
+                if (assignment == null) {
+                    return;
+                }
 
-            try {
-                _context.Assignments.Remove(assignment);
-                await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.RemoveAssignmentSuccess, user.Username));
-            } catch (Exception e) {
-                Console.WriteLine(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.RemoveAssignmentFail, user.Username));
+                try {
+                    _context.Assignments.Remove(assignment);
+                    await _context.SaveChangesAsync();
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.RemoveAssignmentSuccess, user.Username));
+                } catch (Exception e) {
+                    Console.WriteLine(e);
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.RemoveAssignmentFail, user.Username));
+                }
             }
         }
 
@@ -135,6 +139,129 @@ namespace CollaborationBot.Commands {
             }
         }
 
+        [RequireProjectMember(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("claim")]
+        public async Task Claim(string projectName, params string[] partNames) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            var member = await _context.Members.AsQueryable()
+                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id);
+
+            if (member == null) {
+                await Context.Channel.SendMessageAsync(Strings.MemberNotExistsMessage);
+                return;
+            }
+
+            foreach (var partName in partNames) {
+                var part = await _context.Parts.AsQueryable()
+                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == partName);
+
+                if (part == null) {
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.PartNotExists, partName, projectName));
+                    return;
+                }
+
+                // Check project permissions
+                if (!await CheckClaimPermissionsAsync(project, member, part)) {
+                    return;
+                }
+
+                try {
+                    var deadline = DateTime.Now + project.AssignmentLifetime;
+                    await _context.Assignments.AddAsync(new Assignment { MemberId = member.Id, PartId = part.Id, Deadline = deadline });
+                    await _context.SaveChangesAsync();
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.AddAssignmentSuccess, partName, Context.User.Username));
+                } catch (Exception e) {
+                    Console.WriteLine(e);
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.AddAssignmentFail, partName, Context.User.Username));
+                }
+            }
+        }
+
+        [RequireProjectMember(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("unclaim")]
+        public async Task Unclaim(string projectName, params string[] partNames) {
+            await Remove(projectName, Context.User, partNames);
+        }
+
+        [RequireProjectMember(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("done")]
+        public async Task Done(string projectName, params string[] partNames) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            var member = await _context.Members.AsQueryable()
+                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id);
+
+            if (member == null) {
+                await Context.Channel.SendMessageAsync(Strings.MemberNotExistsMessage);
+                return;
+            }
+
+            foreach (var partName in partNames) {
+                var part = await _context.Parts.AsQueryable()
+                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == partName);
+
+                if (part == null) {
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.PartNotExists, partName, project.Name));
+                    return;
+                }
+
+                var assignments = await _context.Assignments.AsQueryable()
+                    .Where(o => o.PartId == part.Id && o.MemberId == member.Id).ToListAsync();
+
+                if (member.ProjectRole == ProjectRole.Member && !assignments.Any(o => o.MemberId == member.Id)) {
+                    await Context.Channel.SendMessageAsync(Strings.NotAssigned);
+                    return;
+                }
+
+                try {
+                    _context.Assignments.RemoveRange(assignments);
+                    part.Status = PartStatus.Finished;
+                    await _context.SaveChangesAsync();
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.FinishPartSuccess, part.Name));
+                } catch (Exception e) {
+                    Console.WriteLine(e);
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.FinishPartFail));
+                }
+            }
+        }
+
+        private async Task<bool> CheckClaimPermissionsAsync(Project project, Member member, Part part) {
+            if (member.ProjectRole != ProjectRole.Member) {
+                return true;
+            }
+
+            if (!project.SelfAssignmentAllowed) {
+                await Context.Channel.SendMessageAsync(Strings.SelfAssignmentNotAllowed);
+                return false;
+            }
+
+            bool claimed = await _context.Assignments.AsQueryable().AnyAsync(o => o.Part.Id == part.Id);
+            if (claimed) {
+                await Context.Channel.SendMessageAsync(Strings.PartClaimedAlready);
+                return false;
+            }
+
+            int assignments = await _context.Assignments.AsQueryable().CountAsync(o => o.MemberId == member.Id && o.Part.ProjectId == project.Id);
+            if (project.MaxAssignments.HasValue && assignments >= project.MaxAssignments) {
+                await Context.Channel.SendMessageAsync(string.Format(Strings.MaxAssignmentsReached, project.MaxAssignments));
+                return false;
+            }
+
+            return true;
+        }
+
         private async Task<Project> GetProjectAsync(string projectName) {
             var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 
@@ -153,7 +280,7 @@ namespace CollaborationBot.Commands {
             return project;
         }
 
-        private async Task<Assignment> GetAssignmentAsync(Project project, string partName, IGuildUser user) {
+        private async Task<Assignment> GetAssignmentAsync(Project project, string partName, IUser user) {
             var part = await _context.Parts.AsQueryable()
                 .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == partName);
 
