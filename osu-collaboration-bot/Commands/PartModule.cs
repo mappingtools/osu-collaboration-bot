@@ -33,7 +33,12 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            var parts = await _context.Parts.AsQueryable().Where(o => o.ProjectId == project.Id).ToListAsync();
+            var parts = await _context.Parts.AsQueryable()
+                .Where(o => o.ProjectId == project.Id)
+                .Include(o => o.Assignments)
+                .ThenInclude(o => o.Member)
+                .ToListAsync();
+
             parts.Sort();
 
             await Context.Channel.SendMessageAsync(_resourceService.GeneratePartsListMessage(parts));

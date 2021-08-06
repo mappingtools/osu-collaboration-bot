@@ -93,7 +93,16 @@ namespace CollaborationBot.Services {
         public string GeneratePartsListMessage(List<Part> parts) {
             if (parts.Count <= 0) return "There are no parts in this project.";
             return GenerateListMessage("Here are all the parts of the project:",
-                parts.Select(o => $"{o.Name} ({TimeToString(o.Start)} - {TimeToString(o.End)}): {o.Status}"));
+                parts.Select(o => {
+                    string str = $"{o.Name} ({TimeToString(o.Start)} - {TimeToString(o.End)}): {o.Status}";
+                    if (o.Assignments.Count > 0) {
+                        var builder = new StringBuilder(" {");
+                        builder.AppendJoin(", ", o.Assignments.Select(a => _client.GetUser((ulong)a.Member.UniqueMemberId)?.Username));
+                        builder.Append('}');
+                        str += builder.ToString();
+                    }
+                    return str;
+                }));
         }
 
         public string GenerateAssignmentListMessage(List<Assignment> assignments) {
