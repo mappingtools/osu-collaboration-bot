@@ -185,28 +185,30 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("remove")]
-        public async Task Remove(string projectName, string name) {
+        public async Task Remove(string projectName, params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
                 return;
             }
 
-            var part = await _context.Parts.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == name);
+            foreach (var partName in partNames) {
+                var part = await _context.Parts.AsQueryable()
+                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == partName);
 
-            if (part == null) {
-                await Context.Channel.SendMessageAsync(string.Format(Strings.PartNotExists, name, projectName));
-                return;
-            }
+                if (part == null) {
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.PartNotExists, partName, projectName));
+                    return;
+                }
 
-            try {
-                _context.Parts.Remove(part);
-                await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.RemovePartSuccess, name, projectName));
-            } catch (Exception e) {
-                Console.WriteLine(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.RemovePartFail, name, projectName));
+                try {
+                    _context.Parts.Remove(part);
+                    await _context.SaveChangesAsync();
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.RemovePartSuccess, partName, projectName));
+                } catch (Exception e) {
+                    Console.WriteLine(e);
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.RemovePartFail, partName, projectName));
+                }
             }
         }
 
