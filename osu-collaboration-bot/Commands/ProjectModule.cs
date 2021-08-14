@@ -545,6 +545,28 @@ namespace CollaborationBot.Commands {
             }
         }
 
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("tags")]
+        public async Task Tags(string projectName) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                var tags = (await _context.Members.AsQueryable()
+                 .Where(predicate: o => o.ProjectId == project.Id && o.Tags != null).ToListAsync())
+                 .SelectMany(o => o.Tags.Split(' ', StringSplitOptions.RemoveEmptyEntries)).Select(o => o.Trim()).Distinct();
+
+                await Context.Channel.SendMessageAsync(string.Format(Strings.AllMemberTags, string.Join(' ', tags)));
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(Strings.BackendErrorMessage);
+            }
+        }
+
         #endregion
 
         private async Task<Project> GetProjectAsync(string projectName) {

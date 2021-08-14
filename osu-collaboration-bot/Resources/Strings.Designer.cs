@@ -133,6 +133,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All member tags: ```{0}``` .
+        /// </summary>
+        public static string AllMemberTags {
+            get {
+                return ResourceManager.GetString("AllMemberTags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are already a member of this project..
         /// </summary>
         public static string AlreadyJoinedMessage {
@@ -205,7 +214,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changed tags of {0} to &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Changed tags of {0} to `{1}`..
         /// </summary>
         public static string ChangeTagsSuccess {
             get {
