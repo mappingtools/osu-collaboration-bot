@@ -213,6 +213,9 @@
   <data name="NoAttachedFile" xml:space="preserve">
     <value>Could not find an attached file.</value>
   </data>
+  <data name="NoPartsToSubmit" xml:space="preserve">
+    <value>Could not find any assigned parts to submit to.</value>
+  </data>
   <data name="NotAssigned" xml:space="preserve">
     <value>You are not assigned to this part.</value>
   </data>

@@ -12,6 +12,7 @@ using Mapping_Tools_Core.BeatmapHelper.IO.Decoding;
 using Mapping_Tools_Core.Tools.PatternGallery;
 using Mapping_Tools_Core.BeatmapHelper.IO.Editor;
 using Mapping_Tools_Core.Exceptions;
+using System.Collections.Generic;
 
 namespace CollaborationBot.Commands {
     [Group]
@@ -32,7 +33,7 @@ namespace CollaborationBot.Commands {
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("submit")]
-        public async Task SubmitPart(string projectName) {
+        public async Task SubmitPart(string projectName, string partName=null) {
             // Find out which parts this member is allowed to edit in the project
             // Download the attached file and put it in the member's folder
             // Merge it into the base file
@@ -51,10 +52,38 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            var parts = await _context.Assignments.AsQueryable()
+            var member = await _context.Members.AsQueryable()
+                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id);
+
+            if (member == null) {
+                await Context.Channel.SendMessageAsync(Strings.NotJoinedMessage);
+                return;
+            }
+
+            List<Part> parts;
+            if (partName == null) {
+                parts = await _context.Assignments.AsQueryable()
                 .Where(o => o.Part.ProjectId == project.Id && o.Member.UniqueMemberId == Context.User.Id)
                 .Select(o => o.Part)
                 .ToListAsync();
+            } else {
+                if (member.ProjectRole == ProjectRole.Member) {
+                    parts = await _context.Assignments.AsQueryable()
+                    .Where(o => o.Part.ProjectId == project.Id && o.Member.Id == member.Id && o.Part.Name == partName)
+                    .Select(o => o.Part)
+                    .ToListAsync();
+                } else {
+                    // Manager submit override
+                    parts = await _context.Parts.AsQueryable()
+                    .Where(o => o.ProjectId == project.Id && o.Name == partName)
+                    .ToListAsync();
+                }
+            }
+
+            if (parts.Count == 0) {
+                await Context.Channel.SendMessageAsync(Strings.NoPartsToSubmit);
+                return;
+            }
 
             string beatmapString = await _fileHandler.DownloadPartSubmit(Context.Guild, projectName, attachment);
 

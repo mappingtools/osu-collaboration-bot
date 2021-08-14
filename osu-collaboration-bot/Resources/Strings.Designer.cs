@@ -349,6 +349,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find any assigned parts to submit to..
+        /// </summary>
+        public static string NoPartsToSubmit {
+            get {
+                return ResourceManager.GetString("NoPartsToSubmit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are not assigned to this part..
         /// </summary>
         public static string NotAssigned {
