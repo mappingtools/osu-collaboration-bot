@@ -118,6 +118,10 @@ namespace CollaborationBot.Entities
 
                 entity.Property(e => e.UniqueMemberId).HasColumnName("unique_member_id");
 
+                entity.Property(e => e.Alias).HasColumnName("alias");
+
+                entity.Property(e => e.Tags).HasColumnName("tags");
+
                 entity.HasOne(d => d.Project)
                     .WithMany(p => p.Members)
                     .HasForeignKey(d => d.ProjectId)

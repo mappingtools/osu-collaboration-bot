@@ -156,6 +156,18 @@
   <data name="BeatmapParseFail" xml:space="preserve">
     <value>Could not parse osu! beatmap: ```{0}```</value>
   </data>
+  <data name="ChangeAliasFail" xml:space="preserve">
+    <value>Could not change alias.</value>
+  </data>
+  <data name="ChangeAliasSuccess" xml:space="preserve">
+    <value>Changed alias of {0} to '{1}'.</value>
+  </data>
+  <data name="ChangeTagsFail" xml:space="preserve">
+    <value>Could not change tags.</value>
+  </data>
+  <data name="ChangeTagsSuccess" xml:space="preserve">
+    <value>Changes tags of {0} to '{1}'.</value>
+  </data>
   <data name="EditPartFail" xml:space="preserve">
     <value>Could not edit part.</value>
   </data>

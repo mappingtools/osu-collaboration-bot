@@ -178,6 +178,42 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not change alias..
+        /// </summary>
+        public static string ChangeAliasFail {
+            get {
+                return ResourceManager.GetString("ChangeAliasFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed alias of {0} to &apos;{1}&apos;..
+        /// </summary>
+        public static string ChangeAliasSuccess {
+            get {
+                return ResourceManager.GetString("ChangeAliasSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not change tags..
+        /// </summary>
+        public static string ChangeTagsFail {
+            get {
+                return ResourceManager.GetString("ChangeTagsFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changes tags of {0} to &apos;{1}&apos;..
+        /// </summary>
+        public static string ChangeTagsSuccess {
+            get {
+                return ResourceManager.GetString("ChangeTagsSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not edit part..
         /// </summary>
         public static string EditPartFail {
