@@ -87,7 +87,7 @@ namespace CollaborationBot.Services {
         public string GenerateMembersListMessage(List<Member> members) {
             if (members.Count <= 0) return "There are no members of this project.";
             return GenerateListMessage("Here are all members of the project:", 
-                members.Select(o => $"{_client.GetUser((ulong)o.UniqueMemberId).Username} ({o.ProjectRole})"));
+                members.Select(o => $"{MemberName(o)} ({o.ProjectRole})"));
         }
 
         public string GeneratePartsListMessage(List<Part> parts) {
@@ -97,7 +97,7 @@ namespace CollaborationBot.Services {
                     string str = $"{o.Name} ({TimeToString(o.Start)} - {TimeToString(o.End)}): {o.Status}";
                     if (o.Assignments.Count > 0) {
                         var builder = new StringBuilder(" {");
-                        builder.AppendJoin(", ", o.Assignments.Select(a => _client.GetUser((ulong)a.Member.UniqueMemberId)?.Username));
+                        builder.AppendJoin(", ", o.Assignments.Select(a => MemberName(a.Member)));
                         builder.Append('}');
                         str += builder.ToString();
                     }
@@ -108,7 +108,7 @@ namespace CollaborationBot.Services {
         public string GenerateAssignmentListMessage(List<Assignment> assignments) {
             if (assignments.Count <= 0) return "There are no assignments in this project.";
             return GenerateListMessage("Here are all the assignments of the project:",
-                assignments.Select(o => $"{o.Part.Name}: {_client.GetUser((ulong)o.Member.UniqueMemberId).Username}{(o.Deadline.HasValue ? " - " + o.Deadline.Value.ToString("yyyy-MM-dd") : string.Empty)}"));
+                assignments.Select(o => $"{o.Part.Name}: {MemberName(o.Member)}{(o.Deadline.HasValue ? " - " + o.Deadline.Value.ToString("yyyy-MM-dd") : string.Empty)}"));
         }
 
         public string GenerateListMessage(string message, IEnumerable<string> list) {
@@ -118,6 +118,14 @@ namespace CollaborationBot.Services {
             foreach (var item in list) builder.AppendLine($"- {item}");
             builder.Append("```");
             return builder.ToString();
+        }
+
+        public string MemberName(Member member) {
+            string name = _client.GetUser((ulong)member.UniqueMemberId).Username;
+            if (member.Alias != null) {
+                name += $" \"{member.Alias}\"";
+            }
+            return name;
         }
 
         public string TimeToString(int? time) {

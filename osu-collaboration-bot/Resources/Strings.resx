@@ -166,7 +166,7 @@
     <value>Could not change tags.</value>
   </data>
   <data name="ChangeTagsSuccess" xml:space="preserve">
-    <value>Changes tags of {0} to '{1}'.</value>
+    <value>Changed tags of {0} to '{1}'.</value>
   </data>
   <data name="EditPartFail" xml:space="preserve">
     <value>Could not edit part.</value>

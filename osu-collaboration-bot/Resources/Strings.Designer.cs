@@ -205,7 +205,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changes tags of {0} to &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Changed tags of {0} to &apos;{1}&apos;..
         /// </summary>
         public static string ChangeTagsSuccess {
             get {
