@@ -49,6 +49,7 @@ namespace CollaborationBot.Commands {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
+                await Context.Channel.SendMessageAsync(Strings.ProjectNotExistMessage);
                 return;
             }
 
@@ -139,9 +140,37 @@ namespace CollaborationBot.Commands {
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateSubmitPartMessage(projectName, count, true));
             } catch (BeatmapParsingException e) {
                 await Context.Channel.SendMessageAsync(string.Format(Strings.BeatmapParseFail, e.Message));
+                return;
             } catch (Exception e) {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateSubmitPartMessage(projectName, 0, false));
+                return;
+            }
+            
+            // Handle auto-updates
+            await HandleAutoUpdates(project);
+        }
+
+        private async Task HandleAutoUpdates(Project project) {
+            // TODO: Add last use time and check cooldown
+            var updates = await _context.AutoUpdates.AsQueryable()
+                .Where(o => o.ProjectId == project.Id)
+                .ToListAsync();
+
+            foreach (var autoUpdate in updates) {
+                string message;
+                if (autoUpdate.DoPing && project.UniqueRoleId.HasValue) {
+                    string mention = Context.Guild.GetRole((ulong) project.UniqueRoleId).Mention;
+                    message = string.Format(Strings.AutoUpdateLatestMention, mention, project.Name);
+                } else {
+                    message = string.Format(Strings.AutoUpdateLatest, project.Name);
+                }
+
+                var channel = Context.Guild.GetTextChannel((ulong) autoUpdate.UniqueChannelId);
+                if (channel != null) {
+                    await channel.SendFileAsync(
+                        _fileHandler.GetProjectBaseFilePath(Context.Guild, project.Name), message);
+                }
             }
         }
 
@@ -156,12 +185,21 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                await Context.Channel.SendMessageAsync(Strings.ProjectNotExistMessage);
+                return;
+            }
+
             if (!await _fileHandler.DownloadBaseFile(Context.Guild, projectName, attachment)) {
                 await Context.Channel.SendMessageAsync(Strings.UploadBaseFileFail);
                 return;
             }
 
             await Context.Channel.SendMessageAsync(string.Format(Strings.UploadBaseFileSuccess, attachment.Filename, projectName));
+
+            await HandleAutoUpdates(project);
         }
 
         [RequireProjectManager(Group = "Permission")]

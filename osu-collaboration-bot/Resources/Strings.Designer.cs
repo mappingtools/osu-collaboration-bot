@@ -19,7 +19,7 @@ namespace CollaborationBot.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
@@ -165,6 +165,24 @@ namespace CollaborationBot.Resources {
         public static string AttachedFileInvalid {
             get {
                 return ResourceManager.GetString("AttachedFileInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Here&apos;s the latest .osu beatmap version of project &apos;{0}&apos;..
+        /// </summary>
+        public static string AutoUpdateLatest {
+            get {
+                return ResourceManager.GetString("AutoUpdateLatest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Here&apos;s the latest .osu beatmap version of project &apos;{1}&apos;..
+        /// </summary>
+        public static string AutoUpdateLatestMention {
+            get {
+                return ResourceManager.GetString("AutoUpdateLatestMention", resourceCulture);
             }
         }
         
