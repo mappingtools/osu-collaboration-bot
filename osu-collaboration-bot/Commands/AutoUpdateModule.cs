@@ -176,6 +176,7 @@ namespace CollaborationBot.Commands {
 
         public static async Task HandleAutoUpdates(Project project, SocketCommandContext context, OsuCollabContext _context, FileHandlingService fileHandler) {
             // TODO: Add last use time and check cooldown
+            // Maybe not use cooldown on the trigger command
             var updates = await _context.AutoUpdates.AsQueryable()
                 .Where(o => o.ProjectId == project.Id)
                 .ToListAsync();
