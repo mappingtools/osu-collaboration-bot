@@ -33,14 +33,14 @@ namespace CollaborationBot {
             _client.GuildAvailable += GuildAvailable;
             _client.Connected += Connected;
 
-            await _client.LoginAsync(TokenType.Bot, _appSettings.Token);
-            await _client.StartAsync();
-
             _commandHandler = services.GetRequiredService<CommandHandlerService>();
             await _commandHandler.InstallCommandsAsync();
 
             _fileHandler = services.GetRequiredService<FileHandlingService>();
             _fileHandler.Initialize(_appSettings.Path);
+
+            await _client.LoginAsync(TokenType.Bot, _appSettings.Token);
+            await _client.StartAsync();
 
             // Block this task until the program is closed.
             await Task.Delay(-1);

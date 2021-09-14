@@ -148,7 +148,7 @@ namespace CollaborationBot.Commands {
             }
             
             // Handle auto-updates
-            await AutoUpdateModule.HandleAutoUpdates(project);
+            await AutoUpdateModule.HandleAutoUpdates(project, Context, _context, _fileHandler);
         }
 
         [RequireProjectManager(Group = "Permission")]
@@ -175,8 +175,9 @@ namespace CollaborationBot.Commands {
             }
 
             await Context.Channel.SendMessageAsync(string.Format(Strings.UploadBaseFileSuccess, attachment.Filename, projectName));
-
-            await HandleAutoUpdates(project);
+            
+            // Handle auto updates
+            await AutoUpdateModule.HandleAutoUpdates(project, Context, _context, _fileHandler);
         }
 
         [RequireProjectManager(Group = "Permission")]

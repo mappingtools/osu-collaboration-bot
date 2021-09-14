@@ -114,7 +114,7 @@ namespace CollaborationBot.Commands {
             }
 
             try {
-                await HandleAutoUpdates(project);
+                await HandleAutoUpdates(project, Context, _context, _fileHandler);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateTriggerSuccess, projectName));
             } catch (Exception e) {
                 Console.WriteLine(e);
@@ -122,7 +122,7 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        private async Task HandleAutoUpdates(Project project) {
+        public static async Task HandleAutoUpdates(Project project, SocketCommandContext context, OsuCollabContext _context, FileHandlingService fileHandler) {
             // TODO: Add last use time and check cooldown
             var updates = await _context.AutoUpdates.AsQueryable()
                 .Where(o => o.ProjectId == project.Id)
@@ -131,16 +131,16 @@ namespace CollaborationBot.Commands {
             foreach (var autoUpdate in updates) {
                 string message;
                 if (autoUpdate.DoPing && project.UniqueRoleId.HasValue) {
-                    string mention = Context.Guild.GetRole((ulong) project.UniqueRoleId).Mention;
+                    string mention = context.Guild.GetRole((ulong) project.UniqueRoleId).Mention;
                     message = string.Format(Strings.AutoUpdateLatestMention, mention, project.Name);
                 } else {
                     message = string.Format(Strings.AutoUpdateLatest, project.Name);
                 }
 
-                var channel = Context.Guild.GetTextChannel((ulong) autoUpdate.UniqueChannelId);
+                var channel = context.Guild.GetTextChannel((ulong) autoUpdate.UniqueChannelId);
                 if (channel != null) {
                     await channel.SendFileAsync(
-                        _fileHandler.GetProjectBaseFilePath(Context.Guild, project.Name), message);
+                        fileHandler.GetProjectBaseFilePath(context.Guild, project.Name), message);
                 }
             }
         }
