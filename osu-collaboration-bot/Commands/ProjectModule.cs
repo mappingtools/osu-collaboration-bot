@@ -148,30 +148,7 @@ namespace CollaborationBot.Commands {
             }
             
             // Handle auto-updates
-            await HandleAutoUpdates(project);
-        }
-
-        private async Task HandleAutoUpdates(Project project) {
-            // TODO: Add last use time and check cooldown
-            var updates = await _context.AutoUpdates.AsQueryable()
-                .Where(o => o.ProjectId == project.Id)
-                .ToListAsync();
-
-            foreach (var autoUpdate in updates) {
-                string message;
-                if (autoUpdate.DoPing && project.UniqueRoleId.HasValue) {
-                    string mention = Context.Guild.GetRole((ulong) project.UniqueRoleId).Mention;
-                    message = string.Format(Strings.AutoUpdateLatestMention, mention, project.Name);
-                } else {
-                    message = string.Format(Strings.AutoUpdateLatest, project.Name);
-                }
-
-                var channel = Context.Guild.GetTextChannel((ulong) autoUpdate.UniqueChannelId);
-                if (channel != null) {
-                    await channel.SendFileAsync(
-                        _fileHandler.GetProjectBaseFilePath(Context.Guild, project.Name), message);
-                }
-            }
+            await AutoUpdateModule.HandleAutoUpdates(project);
         }
 
         [RequireProjectManager(Group = "Permission")]

@@ -123,6 +123,12 @@
   <data name="AddAssignmentSuccess" xml:space="preserve">
     <value>Assigned part '{0}' to user '{1}'.</value>
   </data>
+  <data name="AddAutoUpdateFail" xml:space="preserve">
+    <value>Could not add update notification for project '{0}' to channel {1}.</value>
+  </data>
+  <data name="AddAutoUpdateSuccess" xml:space="preserve">
+    <value>Added update notification for project '{0}' to channel {1}.</value>
+  </data>
   <data name="AddManagerFailMessage" xml:space="preserve">
     <value>Could not promote {0} to manager of project '{1}'.</value>
   </data>
@@ -159,6 +165,15 @@
   <data name="AutoUpdateLatestMention" xml:space="preserve">
     <value>{0} Here's the latest .osu beatmap version of project '{1}'.</value>
   </data>
+  <data name="AutoUpdateNotExists" xml:space="preserve">
+    <value>There is no update notification for project '{0}' and channel {1}.</value>
+  </data>
+  <data name="AutoUpdateTriggerFail" xml:space="preserve">
+    <value>Could not trigger update notification for project '{0}'.</value>
+  </data>
+  <data name="AutoUpdateTriggerSuccess" xml:space="preserve">
+    <value>Triggered update notification for project '{0}'.</value>
+  </data>
   <data name="BackendErrorMessage" xml:space="preserve">
     <value>Something went wrong while processing the request on our backend.</value>
   </data>
@@ -176,6 +191,9 @@
   </data>
   <data name="ChangeTagsSuccess" xml:space="preserve">
     <value>Changed tags of {0} to `{1}`.</value>
+  </data>
+  <data name="DeletedChannel" xml:space="preserve">
+    <value>Deleted channel</value>
   </data>
   <data name="EditPartFail" xml:space="preserve">
     <value>Could not edit part.</value>
@@ -252,6 +270,12 @@
   <data name="RemoveAssignmentSuccess" xml:space="preserve">
     <value>Removed assignment from user '{0}'.</value>
   </data>
+  <data name="RemoveAutoUpdateFail" xml:space="preserve">
+    <value>Could not remove update notification for project '{0}' from channel {1}.</value>
+  </data>
+  <data name="RemoveAutoUpdateSuccess" xml:space="preserve">
+    <value>Removed update notification for project '{0}' from channel {1}.</value>
+  </data>
   <data name="RemoveDeadlineSuccess" xml:space="preserve">
     <value>Removed deadline for user '{0}'.</value>
   </data>
@@ -296,6 +320,9 @@
   </data>
   <data name="TestString" xml:space="preserve">
     <value>This is a test string! The quick brown fox jumped over the lazy dog.</value>
+  </data>
+  <data name="TextChannelNotExist" xml:space="preserve">
+    <value>This text channel does not exist.</value>
   </data>
   <data name="UploadBaseFileFail" xml:space="preserve">
     <value>Something went wrong while trying to upload the base file.</value>

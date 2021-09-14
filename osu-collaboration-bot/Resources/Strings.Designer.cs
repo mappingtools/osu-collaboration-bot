@@ -79,6 +79,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not add update notification for project &apos;{0}&apos; to channel {1}..
+        /// </summary>
+        public static string AddAutoUpdateFail {
+            get {
+                return ResourceManager.GetString("AddAutoUpdateFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Added update notification for project &apos;{0}&apos; to channel {1}..
+        /// </summary>
+        public static string AddAutoUpdateSuccess {
+            get {
+                return ResourceManager.GetString("AddAutoUpdateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not promote {0} to manager of project &apos;{1}&apos;..
         /// </summary>
         public static string AddManagerFailMessage {
@@ -187,6 +205,33 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no update notification for project &apos;{0}&apos; and channel {1}..
+        /// </summary>
+        public static string AutoUpdateNotExists {
+            get {
+                return ResourceManager.GetString("AutoUpdateNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not trigger update notification for project &apos;{0}&apos;..
+        /// </summary>
+        public static string AutoUpdateTriggerFail {
+            get {
+                return ResourceManager.GetString("AutoUpdateTriggerFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Triggered update notification for project &apos;{0}&apos;..
+        /// </summary>
+        public static string AutoUpdateTriggerSuccess {
+            get {
+                return ResourceManager.GetString("AutoUpdateTriggerSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Something went wrong while processing the request on our backend..
         /// </summary>
         public static string BackendErrorMessage {
@@ -237,6 +282,15 @@ namespace CollaborationBot.Resources {
         public static string ChangeTagsSuccess {
             get {
                 return ResourceManager.GetString("ChangeTagsSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted channel.
+        /// </summary>
+        public static string DeletedChannel {
+            get {
+                return ResourceManager.GetString("DeletedChannel", resourceCulture);
             }
         }
         
@@ -466,6 +520,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not remove update notification for project &apos;{0}&apos; from channel {1}..
+        /// </summary>
+        public static string RemoveAutoUpdateFail {
+            get {
+                return ResourceManager.GetString("RemoveAutoUpdateFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removed update notification for project &apos;{0}&apos; from channel {1}..
+        /// </summary>
+        public static string RemoveAutoUpdateSuccess {
+            get {
+                return ResourceManager.GetString("RemoveAutoUpdateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removed deadline for user &apos;{0}&apos;..
         /// </summary>
         public static string RemoveDeadlineSuccess {
@@ -597,6 +669,15 @@ namespace CollaborationBot.Resources {
         public static string TestString {
             get {
                 return ResourceManager.GetString("TestString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This text channel does not exist..
+        /// </summary>
+        public static string TextChannelNotExist {
+            get {
+                return ResourceManager.GetString("TextChannelNotExist", resourceCulture);
             }
         }
         
