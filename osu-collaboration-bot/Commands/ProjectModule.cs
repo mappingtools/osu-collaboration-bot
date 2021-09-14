@@ -215,6 +215,12 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
+            if (_context.Projects.AsQueryable()
+                .Any(o => o.GuildId == guild.Id && o.Name == projectName)) {
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectExistsMessage));
+                return;
+            }
+
             try {
                 var projectEntry = await _context.Projects.AddAsync(new Project {Name = projectName, GuildId = guild.Id, Status = ProjectStatus.NotStarted});
                 await _context.SaveChangesAsync();
@@ -609,6 +615,146 @@ namespace CollaborationBot.Commands {
             } catch (Exception e) {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(Strings.BackendErrorMessage);
+            }
+        }
+
+        #endregion
+
+        #region settings
+
+        // Using admin permissions here to prevent someone assigning @everyone as the project role
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("role")]
+        public async Task Role(string projectName, IRole role) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                project.UniqueRoleId = role.Id;
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ChangeProjectRoleSuccess, projectName, role.Name));
+            } 
+            catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ChangeProjectRoleFail, projectName));
+                return;
+            }
+        }
+        
+        [RequireProjectOwner(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("rename")]
+        public async Task Rename(string projectName, string newProjectName) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            if (_context.Projects.AsQueryable()
+                .Any(o => o.Guild.UniqueGuildId == Context.Guild.Id && o.Name == newProjectName)) {
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectExistsMessage));
+                return;
+            }
+
+            try {
+                project.Name = newProjectName;
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectRenameSuccess, projectName, newProjectName));
+            } 
+            catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectRenameFail, projectName, newProjectName));
+                return;
+            }
+        }
+        
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("description")]
+        public async Task Description(string projectName, string description) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                project.Description = description;
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectDescriptionSuccess, projectName));
+            } 
+            catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectDescriptionFail, projectName));
+                return;
+            }
+        }
+        
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("status")]
+        public async Task Status(string projectName, ProjectStatus? status) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                project.Status = status;
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectStatusSuccess, projectName, status));
+            } 
+            catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectStatusFail, projectName, status));
+                return;
+            }
+        }
+        
+        [NamedArgumentType]
+        public class NamableOptions {
+            public bool? SelfAssignmentAllowed { get; set; }
+            public bool? PriorityPicking { get; set; }
+            public bool? PartRestrictedUpload { get; set; }
+        }
+
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("options")]
+        public async Task Options(string projectName, NamableOptions options) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                int n = 0;
+                if (options.SelfAssignmentAllowed.HasValue) {
+                    project.SelfAssignmentAllowed = options.SelfAssignmentAllowed.Value;
+                    n++;
+                }
+                if (options.PriorityPicking.HasValue) {
+                    project.PriorityPicking = options.PriorityPicking.Value;
+                    n++;
+                }
+                if (options.PartRestrictedUpload.HasValue) {
+                    project.PartRestrictedUpload = options.PartRestrictedUpload.Value;
+                    n++;
+                }
+
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectOptionsSuccess, n, projectName));
+            } 
+            catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectOptionsFail, projectName));
+                return;
             }
         }
 

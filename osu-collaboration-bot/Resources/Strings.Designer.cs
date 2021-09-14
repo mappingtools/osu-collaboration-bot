@@ -304,6 +304,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not change role for project &apos;{0}&apos;..
+        /// </summary>
+        public static string ChangeProjectRoleFail {
+            get {
+                return ResourceManager.GetString("ChangeProjectRoleFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed role for project &apos;{0}&apos; to `{1}`..
+        /// </summary>
+        public static string ChangeProjectRoleSuccess {
+            get {
+                return ResourceManager.GetString("ChangeProjectRoleSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not change tags..
         /// </summary>
         public static string ChangeTagsFail {
@@ -520,6 +538,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not change description for project &apos;{0}&apos;..
+        /// </summary>
+        public static string ProjectDescriptionFail {
+            get {
+                return ResourceManager.GetString("ProjectDescriptionFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed description for project &apos;{0}&apos;..
+        /// </summary>
+        public static string ProjectDescriptionSuccess {
+            get {
+                return ResourceManager.GetString("ProjectDescriptionSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This project already exists..
         /// </summary>
         public static string ProjectExistsMessage {
@@ -534,6 +570,60 @@ namespace CollaborationBot.Resources {
         public static string ProjectNotExistMessage {
             get {
                 return ResourceManager.GetString("ProjectNotExistMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not change options of project &apos;{0}&apos;..
+        /// </summary>
+        public static string ProjectOptionsFail {
+            get {
+                return ResourceManager.GetString("ProjectOptionsFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed {0} options of project &apos;{1}&apos;..
+        /// </summary>
+        public static string ProjectOptionsSuccess {
+            get {
+                return ResourceManager.GetString("ProjectOptionsSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not rename project &apos;{0}&apos; to project &apos;{1}&apos;..
+        /// </summary>
+        public static string ProjectRenameFail {
+            get {
+                return ResourceManager.GetString("ProjectRenameFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Renamed project &apos;{0}&apos; to project &apos;{1}&apos;..
+        /// </summary>
+        public static string ProjectRenameSuccess {
+            get {
+                return ResourceManager.GetString("ProjectRenameSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not change status of project &apos;{0}&apos; to &apos;{1}&apos;..
+        /// </summary>
+        public static string ProjectStatusFail {
+            get {
+                return ResourceManager.GetString("ProjectStatusFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed status of project &apos;{0}&apos; to &apos;{1}&apos;..
+        /// </summary>
+        public static string ProjectStatusSuccess {
+            get {
+                return ResourceManager.GetString("ProjectStatusSuccess", resourceCulture);
             }
         }
         
