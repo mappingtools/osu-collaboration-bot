@@ -105,6 +105,58 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("cooldown")]
+        public async Task Cooldown(string projectName, ITextChannel channel, TimeSpan? cooldown) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+            
+            var autoUpdate = await GetAutoUpdateAsync(project, channel);
+
+            if (autoUpdate == null) {
+                return;
+            }
+
+            try {
+                autoUpdate.Cooldown = cooldown;
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateCooldownSuccess, projectName, cooldown));
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateCooldownFail, projectName));
+            }
+        }
+
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("mention")]
+        public async Task DoPing(string projectName, ITextChannel channel, bool doPing) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+            
+            var autoUpdate = await GetAutoUpdateAsync(project, channel);
+
+            if (autoUpdate == null) {
+                return;
+            }
+
+            try {
+                autoUpdate.DoPing = doPing;
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateDoPingSuccess, doPing));
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateDoPingFail));
+            }
+        }
+
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("trigger")]
         public async Task Trigger(string projectName) {
             var project = await GetProjectAsync(projectName);

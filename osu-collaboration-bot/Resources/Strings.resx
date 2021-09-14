@@ -159,6 +159,18 @@
   <data name="AttachedFileInvalid" xml:space="preserve">
     <value>The attached file is invalid.</value>
   </data>
+  <data name="AutoUpdateCooldownFail" xml:space="preserve">
+    <value>Could not change cooldown for update notification.</value>
+  </data>
+  <data name="AutoUpdateCooldownSuccess" xml:space="preserve">
+    <value>Changed cooldown for update notification for project '{0}' to {1}.</value>
+  </data>
+  <data name="AutoUpdateDoPingFail" xml:space="preserve">
+    <value>Could not change mention configuration for update notification.</value>
+  </data>
+  <data name="AutoUpdateDoPingSuccess" xml:space="preserve">
+    <value>Changed mention configuration for update notification to {0}.</value>
+  </data>
   <data name="AutoUpdateLatest" xml:space="preserve">
     <value>Here's the latest .osu beatmap version of project '{0}'.</value>
   </data>

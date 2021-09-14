@@ -187,6 +187,42 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not change cooldown for update notification..
+        /// </summary>
+        public static string AutoUpdateCooldownFail {
+            get {
+                return ResourceManager.GetString("AutoUpdateCooldownFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed cooldown for update notification for project &apos;{0}&apos; to {1}..
+        /// </summary>
+        public static string AutoUpdateCooldownSuccess {
+            get {
+                return ResourceManager.GetString("AutoUpdateCooldownSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not change mention configuration for update notification..
+        /// </summary>
+        public static string AutoUpdateDoPingFail {
+            get {
+                return ResourceManager.GetString("AutoUpdateDoPingFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed mention configuration for update notification to {0}..
+        /// </summary>
+        public static string AutoUpdateDoPingSuccess {
+            get {
+                return ResourceManager.GetString("AutoUpdateDoPingSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Here&apos;s the latest .osu beatmap version of project &apos;{0}&apos;..
         /// </summary>
         public static string AutoUpdateLatest {
