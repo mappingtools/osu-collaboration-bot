@@ -340,6 +340,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not read the CSV file with the part information. Make sure it uses the correct format..
+        /// </summary>
+        public static string CouldNotReadPartCSV {
+            get {
+                return ResourceManager.GetString("CouldNotReadPartCSV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deleted channel.
         /// </summary>
         public static string DeletedChannel {
@@ -525,6 +534,24 @@ namespace CollaborationBot.Resources {
         public static string PartClaimedAlready {
             get {
                 return ResourceManager.GetString("PartClaimedAlready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not import parts from the CSV file into project &apos;{0}&apos;..
+        /// </summary>
+        public static string PartFromCSVFail {
+            get {
+                return ResourceManager.GetString("PartFromCSVFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Imported parts from the CSV file into project &apos;{0}&apos;..
+        /// </summary>
+        public static string PartFromCSVSuccess {
+            get {
+                return ResourceManager.GetString("PartFromCSVSuccess", resourceCulture);
             }
         }
         

@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using CollaborationBot.Entities;
+using CsvHelper;
+using CsvHelper.Configuration;
+using CsvHelper.Configuration.Attributes;
 using Discord;
 
 namespace CollaborationBot.Services {
@@ -10,13 +15,17 @@ namespace CollaborationBot.Services {
         public const string BaseFilename = "basefile.osu";
 
         public enum PermissibleFileType {
-            DOT_OSU
+            DOT_OSU,
+            DOT_TSV,
+            DOT_CSV
         }
 
         private string _path;
 
         public Dictionary<PermissibleFileType, string> PermissibleFileExtensions = new() {
-            {PermissibleFileType.DOT_OSU, ".osu"}
+            {PermissibleFileType.DOT_OSU, ".osu"},
+            {PermissibleFileType.DOT_TSV, ".tsv"},
+            {PermissibleFileType.DOT_CSV, ".csv"},
         };
 
         public void Initialize(string path) {
@@ -67,6 +76,49 @@ namespace CollaborationBot.Services {
                 return null;
             }
         }
+
+        #region part io
+
+        public class PartRecord {
+            [Index(0)]
+            public string Name { get; set; }
+            [Optional]
+            [Index(1)]
+            public int? Start { get; set; }
+            [Optional]
+            [Index(2)]
+            public int? End { get; set; }
+            [Optional]
+            [Index(3)]
+            public PartStatus? Status { get; set; }
+        }
+
+        public async Task<IEnumerable<PartRecord>> DownloadPartsCSV(Attachment att, bool hasHeaders = true) {
+            try {
+                if (!IsFilePermissible(att.Url, PermissibleFileType.DOT_CSV)) return null;
+
+                if (!Uri.TryCreate(att.Url, UriKind.Absolute, out var uri)) return null;
+
+                using var client = new WebClient();
+                var result = await client.DownloadDataTaskAsync(uri);
+
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    PrepareHeaderForMatch = args => args.Header.ToLower(),
+                    HasHeaderRecord = hasHeaders,
+                };
+                using var reader = new StreamReader(new MemoryStream(result));
+                using var csv = new CsvReader(reader, config);
+                var records = csv.GetRecords<PartRecord>();
+
+                return records;
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                return null;
+            }
+        }
+
+        #endregion
 
         public string GetProjectBaseFilePath(IGuild guild, string projectName) {
             var localProjectPath = GetProjectPath(guild, projectName);

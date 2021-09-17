@@ -234,6 +234,46 @@ namespace CollaborationBot.Commands {
             }
         }
 
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("fromCSV")]
+        public async Task FromCSV(string projectName, bool hasHeaders = true, bool replace = true) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            var attachment = Context.Message.Attachments.SingleOrDefault();
+
+            if (attachment == null) {
+                await Context.Channel.SendMessageAsync(Strings.NoAttachedFile);
+                return;
+            }
+
+            var newParts = await _fileHandler.DownloadPartsCSV(attachment, hasHeaders);
+
+            if (newParts == null) {
+                await Context.Channel.SendMessageAsync(Strings.CouldNotReadPartCSV);
+                return;
+            }
+
+            try {
+                var oldParts = await _context.Parts.AsQueryable().Where(o => o.ProjectId == project.Id).ToListAsync();
+
+                if (replace)
+                    _context.Parts.RemoveRange(oldParts);
+
+                _context.Parts.AddRange(newParts.Select(o => new Part
+                    {ProjectId = project.Id, Name = o.Name, Start = o.Start, End = o.End, Status = o.Status}));
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.PartFromCSVSuccess, projectName));
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.PartFromCSVFail, projectName));
+            }
+        }
+
         private async Task<Project> GetProjectAsync(string projectName) {
             var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 

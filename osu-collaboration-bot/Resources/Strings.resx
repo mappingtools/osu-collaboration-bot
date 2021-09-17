@@ -210,6 +210,9 @@
   <data name="ChangeTagsSuccess" xml:space="preserve">
     <value>Changed tags of {0} to `{1}`.</value>
   </data>
+  <data name="CouldNotReadPartCSV" xml:space="preserve">
+    <value>Could not read the CSV file with the part information. Make sure it uses the correct format.</value>
+  </data>
   <data name="DeletedChannel" xml:space="preserve">
     <value>Deleted channel</value>
   </data>
@@ -272,6 +275,12 @@
   </data>
   <data name="PartClaimedAlready" xml:space="preserve">
     <value>This part has been claimed already.</value>
+  </data>
+  <data name="PartFromCSVFail" xml:space="preserve">
+    <value>Could not import parts from the CSV file into project '{0}'.</value>
+  </data>
+  <data name="PartFromCSVSuccess" xml:space="preserve">
+    <value>Imported parts from the CSV file into project '{0}'.</value>
   </data>
   <data name="PartNotExists" xml:space="preserve">
     <value>A part named '{0}' does not exist in project '{1}'.</value>
