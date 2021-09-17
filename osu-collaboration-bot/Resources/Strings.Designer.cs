@@ -583,6 +583,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not change priority of member {0} to {1}..
+        /// </summary>
+        public static string PriorityChangeFail {
+            get {
+                return ResourceManager.GetString("PriorityChangeFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed priority of member {0} to {1}..
+        /// </summary>
+        public static string PriorityChangeSuccess {
+            get {
+                return ResourceManager.GetString("PriorityChangeSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not change default lifetime of assignments in project &apos;{0}&apos;..
         /// </summary>
         public static string ProjectAssignmentLifetimeFail {
