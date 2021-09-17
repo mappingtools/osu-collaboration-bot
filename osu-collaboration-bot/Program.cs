@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Timers;
 using System.Threading.Tasks;
 using CollaborationBot.Entities;
 using CollaborationBot.Services;
@@ -17,8 +18,9 @@ namespace CollaborationBot {
         private AppSettings _appSettings;
         private FileHandlingService _fileHandler;
 
-        private List<SocketGuild> guildList = new();
-    
+        private readonly List<SocketGuild> guildList = new();
+        private readonly Timer checkupTimer = new();
+
         public static void Main(string[] args) {
             new Program().MainAsync().GetAwaiter().GetResult();
         }
@@ -42,8 +44,17 @@ namespace CollaborationBot {
             await _client.LoginAsync(TokenType.Bot, _appSettings.Token);
             await _client.StartAsync();
 
+            checkupTimer.Interval = TimeSpan.FromMinutes(10).TotalMilliseconds;
+            checkupTimer.Elapsed += CheckupTimerOnElapsed;
+            checkupTimer.AutoReset = true;
+            checkupTimer.Start();
+
             // Block this task until the program is closed.
             await Task.Delay(-1);
+        }
+
+        private void CheckupTimerOnElapsed(object sender, ElapsedEventArgs e) {
+            // Check deadlines and give reminders
         }
 
         private async Task Connected() {
