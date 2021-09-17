@@ -239,7 +239,7 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("fromCSV")]
+        [Command("from-csv")]
         public async Task FromCSV(string projectName, bool hasHeaders = true, bool replace = true) {
             var project = await GetProjectAsync(projectName);
 
@@ -279,7 +279,7 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("toCSV")]
+        [Command("to-csv")]
         public async Task ToCSV(string projectName) {
             var project = await GetProjectAsync(projectName);
 

@@ -858,7 +858,7 @@ namespace CollaborationBot.Commands {
         
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("maxassignments")]
+        [Command("max-assignments")]
         public async Task MaxAssignments(string projectName, int? maxAssignments) {
             var project = await GetProjectAsync(projectName);
 
@@ -880,7 +880,7 @@ namespace CollaborationBot.Commands {
         
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("assignmenttime")]
+        [Command("assignment-lifetime")]
         public async Task AssignmentLifetime(string projectName, TimeSpan? lifetime) {
             var project = await GetProjectAsync(projectName);
 
