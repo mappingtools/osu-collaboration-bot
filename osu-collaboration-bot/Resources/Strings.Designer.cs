@@ -565,6 +565,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not export all parts of project &apos;{0}&apos; to CSV..
+        /// </summary>
+        public static string PartToCSVFail {
+            get {
+                return ResourceManager.GetString("PartToCSVFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exported all parts of project &apos;{0}&apos; to CSV:.
+        /// </summary>
+        public static string PartToCSVSuccess {
+            get {
+                return ResourceManager.GetString("PartToCSVSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not change default lifetime of assignments in project &apos;{0}&apos;..
         /// </summary>
         public static string ProjectAssignmentLifetimeFail {

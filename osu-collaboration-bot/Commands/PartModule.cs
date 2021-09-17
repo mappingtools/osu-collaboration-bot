@@ -8,6 +8,9 @@ using System.Linq;
 using Discord;
 using CollaborationBot.Preconditions;
 using System;
+using System.Globalization;
+using System.IO;
+using CsvHelper;
 
 namespace CollaborationBot.Commands {
     [Group("part")]
@@ -271,6 +274,33 @@ namespace CollaborationBot.Commands {
             } catch (Exception e) {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.PartFromCSVFail, projectName));
+            }
+        }
+
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("toCSV")]
+        public async Task ToCSV(string projectName) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                var parts = await _context.Parts.AsQueryable().Where(o => o.ProjectId == project.Id).ToListAsync();
+
+                await using var dataStream = new MemoryStream();
+                await using (var writer = new StreamWriter(dataStream))
+                await using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture)) {
+                    await csv.WriteRecordsAsync(parts.Select(o => new FileHandlingService.PartRecord
+                        {Name = o.Name, Start = o.Start, End = o.End, Status = o.Status}));
+                }
+
+                await Context.Channel.SendFileAsync(dataStream, string.Format(Strings.PartToCSVSuccess, projectName));
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.PartToCSVFail, projectName));
             }
         }
 

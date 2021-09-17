@@ -285,6 +285,12 @@
   <data name="PartNotExists" xml:space="preserve">
     <value>A part named '{0}' does not exist in project '{1}'.</value>
   </data>
+  <data name="PartToCSVFail" xml:space="preserve">
+    <value>Could not export all parts of project '{0}' to CSV.</value>
+  </data>
+  <data name="PartToCSVSuccess" xml:space="preserve">
+    <value>Exported all parts of project '{0}' to CSV:</value>
+  </data>
   <data name="ProjectAssignmentLifetimeFail" xml:space="preserve">
     <value>Could not change default lifetime of assignments in project '{0}'.</value>
   </data>
