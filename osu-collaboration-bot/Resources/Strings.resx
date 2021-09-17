@@ -228,6 +228,12 @@
   <data name="FinishPartSuccess" xml:space="preserve">
     <value>Part '{0}' is now finished.</value>
   </data>
+  <data name="GeneratePrioritiesFail" xml:space="preserve">
+    <value>Could not generate priorities for members of project '{0}'.</value>
+  </data>
+  <data name="GeneratePrioritiesSuccess" xml:space="preserve">
+    <value>Generated priorities for member of project '{0}'.</value>
+  </data>
   <data name="GuildExistsMessage" xml:space="preserve">
     <value>Server is already registered.</value>
   </data>

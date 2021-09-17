@@ -394,6 +394,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not generate priorities for members of project &apos;{0}&apos;..
+        /// </summary>
+        public static string GeneratePrioritiesFail {
+            get {
+                return ResourceManager.GetString("GeneratePrioritiesFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generated priorities for member of project &apos;{0}&apos;..
+        /// </summary>
+        public static string GeneratePrioritiesSuccess {
+            get {
+                return ResourceManager.GetString("GeneratePrioritiesSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server is already registered..
         /// </summary>
         public static string GuildExistsMessage {

@@ -669,6 +669,37 @@ namespace CollaborationBot.Commands {
             }
         }
 
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("generate-priorities")]
+        public async Task GeneratePriorities(string projectName, int timeWeight = 1) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                var members = await _context.Members.AsQueryable()
+                    .Where(o => o.ProjectId == project.Id).ToListAsync();
+
+                foreach (var member in members) {
+                    var memberUser = Context.Guild.GetUser((ulong) member.UniqueMemberId);
+                    if (memberUser is not IGuildUser gu || !gu.JoinedAt.HasValue) {
+                        member.Priority = 0;
+                        continue;
+                    }
+                    member.Priority = (int) (DateTimeOffset.UtcNow - gu.JoinedAt.Value).TotalDays * timeWeight;
+                }
+
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.GeneratePrioritiesSuccess, projectName));
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.GeneratePrioritiesFail, projectName));
+            }
+        }
+
         #endregion
 
         #region settings
