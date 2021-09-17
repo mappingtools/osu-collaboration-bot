@@ -87,7 +87,8 @@ namespace CollaborationBot.Services {
         public string GenerateMembersListMessage(List<Member> members) {
             if (members.Count <= 0) return "There are no members of this project.";
             return GenerateListMessage("Here are all members of the project:", 
-                members.Select(o => $"{MemberName(o)} ({o.ProjectRole})"));
+                members.Select(o =>
+                    $"{MemberName(o)}{(o.Priority.HasValue ? $" ({o.Priority.Value})" : string.Empty)} [{o.ProjectRole}]"));
         }
 
         public string GeneratePartsListMessage(List<Part> parts) {
