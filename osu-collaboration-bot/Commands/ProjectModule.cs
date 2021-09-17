@@ -61,29 +61,35 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            List<Part> parts;
-            if (partName == null) {
-                parts = await _context.Assignments.AsQueryable()
-                .Where(o => o.Part.ProjectId == project.Id && o.Member.UniqueMemberId == Context.User.Id)
-                .Select(o => o.Part)
-                .ToListAsync();
-            } else {
-                if (member.ProjectRole == ProjectRole.Member) {
+            List<Part> parts = null;
+            if (project.PartRestrictedUpload || partName != null) {
+                if (partName == null) {
+                    // Submit to claimed part
                     parts = await _context.Assignments.AsQueryable()
-                    .Where(o => o.Part.ProjectId == project.Id && o.Member.Id == member.Id && o.Part.Name == partName)
-                    .Select(o => o.Part)
-                    .ToListAsync();
+                        .Where(o => o.Part.ProjectId == project.Id && o.Member.UniqueMemberId == Context.User.Id)
+                        .Select(o => o.Part)
+                        .ToListAsync();
                 } else {
-                    // Manager submit override
-                    parts = await _context.Parts.AsQueryable()
-                    .Where(o => o.ProjectId == project.Id && o.Name == partName)
-                    .ToListAsync();
+                    if (member.ProjectRole == ProjectRole.Member && !project.PartRestrictedUpload) {
+                        // Member submit to specific claimed part
+                        parts = await _context.Assignments.AsQueryable()
+                            .Where(o => o.Part.ProjectId == project.Id && o.Member.Id == member.Id &&
+                                        o.Part.Name == partName)
+                            .Select(o => o.Part)
+                            .ToListAsync();
+                    } else {
+                        // Manager submit override
+                        // OR no part restricted upload with part name provided by member
+                        parts = await _context.Parts.AsQueryable()
+                            .Where(o => o.ProjectId == project.Id && o.Name == partName)
+                            .ToListAsync();
+                    }
                 }
-            }
 
-            if (parts.Count == 0) {
-                await Context.Channel.SendMessageAsync(Strings.NoPartsToSubmit);
-                return;
+                if (parts.Count == 0) {
+                    await Context.Channel.SendMessageAsync(Strings.NoPartsToSubmit);
+                    return;
+                }
             }
 
             string beatmapString = await _fileHandler.DownloadPartSubmit(Context.Guild, projectName, attachment);
@@ -96,15 +102,17 @@ namespace CollaborationBot.Commands {
             try {
                 var partBeatmap = new OsuBeatmapDecoder().Decode(beatmapString);
 
-                // Restrict beatmap to only the hit objects inside any assigned part
-                partBeatmap.HitObjects = partBeatmap.HitObjects
-                    .Where(ho => parts.Any(p => 
-                    p.Status != PartStatus.Locked && 
-                    ho.StartTime >= p.Start - 5 && 
-                    ho.StartTime <= p.End + 5 && 
-                    ho.EndTime >= p.Start - 5 && 
-                    ho.EndTime <= p.End + 5))
-                    .ToList();
+                if (project.PartRestrictedUpload) {
+                    // Restrict beatmap to only the hit objects inside any assigned part
+                    partBeatmap.HitObjects = partBeatmap.HitObjects
+                        .Where(ho => parts!.Any(p =>
+                            p.Status != PartStatus.Locked &&
+                            ho.StartTime >= p.Start - 5 &&
+                            ho.StartTime <= p.End + 5 &&
+                            ho.EndTime >= p.Start - 5 &&
+                            ho.EndTime <= p.End + 5))
+                        .ToList();
+                }
 
                 var count = partBeatmap.HitObjects.Count;
 
