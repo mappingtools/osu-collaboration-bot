@@ -729,7 +729,8 @@ namespace CollaborationBot.Commands {
                     foreach (var member in members.Select(id => Context.Guild.GetUser(id))) {
                         if (member is not IGuildUser gu) continue;
                         await gu.AddRoleAsync(role);
-                        await gu.RemoveRoleAsync(oldRole);
+                        if (oldRole != null)
+                            await gu.RemoveRoleAsync(oldRole);
                     }
                 }
 
