@@ -13,6 +13,7 @@ using Mapping_Tools_Core.Tools.PatternGallery;
 using Mapping_Tools_Core.BeatmapHelper.IO.Editor;
 using Mapping_Tools_Core.Exceptions;
 using System.Collections.Generic;
+using Discord.WebSocket;
 
 namespace CollaborationBot.Commands {
     [Group]
@@ -302,6 +303,7 @@ namespace CollaborationBot.Commands {
             try {
                 await _context.Members.AddAsync(new Member {ProjectId = project.Id, UniqueMemberId = Context.User.Id, ProjectRole = ProjectRole.Member});
                 await _context.SaveChangesAsync();
+                await GrantProjectRole(Context.User, project);
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateAddMemberToProject(Context.User, projectName));
             }
@@ -310,6 +312,16 @@ namespace CollaborationBot.Commands {
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateAddMemberToProject(Context.User, projectName, false));
             }
+        }
+
+        private async Task GrantProjectRole(IPresence user, Project project) {
+            if (project.UniqueRoleId.HasValue && user is IGuildUser gu)
+                await gu.AddRoleAsync(Context.Guild.GetRole((ulong)project.UniqueRoleId.Value));
+        }
+
+        private async Task RevokeProjectRole(IPresence user, Project project) {
+            if (project.UniqueRoleId.HasValue && user is IGuildUser gu)
+                await gu.RemoveRoleAsync(Context.Guild.GetRole((ulong)project.UniqueRoleId.Value));
         }
 
         [Command("leave")]
@@ -336,6 +348,7 @@ namespace CollaborationBot.Commands {
             try {
                 _context.Members.Remove(member);
                 await _context.SaveChangesAsync();
+                await RevokeProjectRole(Context.User, project);
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateRemoveMemberFromProject(Context.User, projectName));
             } catch (Exception e) {
@@ -363,6 +376,7 @@ namespace CollaborationBot.Commands {
             try {
                 await _context.Members.AddAsync(new Member { ProjectId = project.Id, UniqueMemberId = user.Id, ProjectRole = ProjectRole.Member });
                 await _context.SaveChangesAsync();
+                await GrantProjectRole(user, project);
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateAddMemberToProject(user, projectName));
             } catch (Exception e) {
@@ -398,6 +412,7 @@ namespace CollaborationBot.Commands {
             try {
                 _context.Members.Remove(member);
                 await _context.SaveChangesAsync();
+                await RevokeProjectRole(user, project);
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateRemoveMemberFromProject(user, projectName));
             } catch (Exception e) {
@@ -633,7 +648,7 @@ namespace CollaborationBot.Commands {
         // Using admin permissions here to prevent someone assigning @everyone as the project role
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("role")]
-        public async Task Role(string projectName, IRole role) {
+        public async Task Role(string projectName, IRole role, bool reassignRoles = true) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -641,8 +656,24 @@ namespace CollaborationBot.Commands {
             }
 
             try {
+                var oldRole = project.UniqueRoleId.HasValue ? Context.Guild.GetRole((ulong) project.UniqueRoleId.Value) : null;
+
                 project.UniqueRoleId = role.Id;
                 await _context.SaveChangesAsync();
+
+                if (reassignRoles) {
+                    // Give all members the new role and remove the old role if possible
+                    var members = await _context.Members.AsQueryable()
+                        .Where(o => o.ProjectId == project.Id)
+                        .Select(o => o.UniqueMemberId).Cast<ulong>().ToListAsync();
+
+                    foreach (var member in members.Select(id => Context.Guild.GetUser(id))) {
+                        if (member is not IGuildUser gu) continue;
+                        await gu.AddRoleAsync(role);
+                        await gu.RemoveRoleAsync(oldRole);
+                    }
+                }
+
                 await Context.Channel.SendMessageAsync(string.Format(Strings.ChangeProjectRoleSuccess, projectName, role.Name));
             } 
             catch (Exception e) {
