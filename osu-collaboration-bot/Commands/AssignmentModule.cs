@@ -172,6 +172,34 @@ namespace CollaborationBot.Commands {
                 }
 
                 try {
+                    var claimants = await _context.Assignments.AsQueryable()
+                        .Where(o => o.Part.Id == part.Id && o.MemberId != member.Id)
+                        .Include(o => o.Member).ToListAsync();
+                    if (claimants.Count > 0) {
+                        if (!project.PriorityPicking) {
+                            await Context.Channel.SendMessageAsync(Strings.PartClaimedAlready);
+                            return;
+                        }
+
+                        // Perhaps steal parts
+                        if (claimants.All(o => o.Member.Priority < member.Priority)) {
+                            // EZ steal
+                            _context.Assignments.RemoveRange(claimants);
+
+                            // Notify theft
+                            foreach (var victim in claimants) {
+                                var victimUser = Context.Guild.GetUser((ulong) victim.Member.UniqueMemberId);
+                                await Context.Channel.SendMessageAsync(string.Format(Strings.PriorityPartSteal,
+                                    Context.User.Mention, member.Priority, partName, victimUser.Mention,
+                                    victim.Member.Priority));
+                            }
+                        } else {
+                            // Sorry you can't steal this
+                            await Context.Channel.SendMessageAsync(Strings.PartClaimedAlready);
+                            return;
+                        }
+                    }
+
                     var deadline = DateTime.Now + project.AssignmentLifetime;
                     await _context.Assignments.AddAsync(new Assignment { MemberId = member.Id, PartId = part.Id, Deadline = deadline });
                     await _context.SaveChangesAsync();
@@ -220,7 +248,7 @@ namespace CollaborationBot.Commands {
                 var assignments = await _context.Assignments.AsQueryable()
                     .Where(o => o.PartId == part.Id && o.MemberId == member.Id).ToListAsync();
 
-                if (member.ProjectRole == ProjectRole.Member && !assignments.Any(o => o.MemberId == member.Id)) {
+                if (member.ProjectRole == ProjectRole.Member && assignments.All(o => o.MemberId != member.Id)) {
                     await Context.Channel.SendMessageAsync(Strings.NotAssigned);
                     return;
                 }
@@ -244,12 +272,6 @@ namespace CollaborationBot.Commands {
 
             if (!project.SelfAssignmentAllowed) {
                 await Context.Channel.SendMessageAsync(Strings.SelfAssignmentNotAllowed);
-                return false;
-            }
-
-            bool claimed = await _context.Assignments.AsQueryable().AnyAsync(o => o.Part.Id == part.Id);
-            if (claimed) {
-                await Context.Channel.SendMessageAsync(Strings.PartClaimedAlready);
                 return false;
             }
 

@@ -601,6 +601,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} ({1}) stole part {2} from {3} ({4}), oh the humanity!.
+        /// </summary>
+        public static string PriorityPartSteal {
+            get {
+                return ResourceManager.GetString("PriorityPartSteal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not change default lifetime of assignments in project &apos;{0}&apos;..
         /// </summary>
         public static string ProjectAssignmentLifetimeFail {
