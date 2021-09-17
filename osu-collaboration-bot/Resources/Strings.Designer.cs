@@ -538,6 +538,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not change default lifetime of assignments in project &apos;{0}&apos;..
+        /// </summary>
+        public static string ProjectAssignmentLifetimeFail {
+            get {
+                return ResourceManager.GetString("ProjectAssignmentLifetimeFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed default lifetime of assignments in project &apos;{0}&apos; to {1}..
+        /// </summary>
+        public static string ProjectAssignmentLifetimeSuccess {
+            get {
+                return ResourceManager.GetString("ProjectAssignmentLifetimeSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not change description for project &apos;{0}&apos;..
         /// </summary>
         public static string ProjectDescriptionFail {
@@ -561,6 +579,24 @@ namespace CollaborationBot.Resources {
         public static string ProjectExistsMessage {
             get {
                 return ResourceManager.GetString("ProjectExistsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not change max assignment count of project &apos;{0}&apos;..
+        /// </summary>
+        public static string ProjectMaxAssignmentsFail {
+            get {
+                return ResourceManager.GetString("ProjectMaxAssignmentsFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed max assignment count of project &apos;{0}&apos; to {1}..
+        /// </summary>
+        public static string ProjectMaxAssignmentsSuccess {
+            get {
+                return ResourceManager.GetString("ProjectMaxAssignmentsSuccess", resourceCulture);
             }
         }
         

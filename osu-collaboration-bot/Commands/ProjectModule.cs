@@ -757,6 +757,50 @@ namespace CollaborationBot.Commands {
                 return;
             }
         }
+        
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("maxassignments")]
+        public async Task MaxAssignments(string projectName, int? maxAssignments) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                project.MaxAssignments = maxAssignments;
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectMaxAssignmentsSuccess, projectName, maxAssignments));
+            } 
+            catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectMaxAssignmentsFail, projectName));
+                return;
+            }
+        }
+        
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("assignmenttime")]
+        public async Task AssignmentLifetime(string projectName, TimeSpan? lifetime) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                project.AssignmentLifetime = lifetime;
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectAssignmentLifetimeSuccess, projectName, lifetime));
+            } 
+            catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectAssignmentLifetimeFail, projectName));
+                return;
+            }
+        }
 
         #endregion
 

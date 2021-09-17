@@ -276,6 +276,12 @@
   <data name="PartNotExists" xml:space="preserve">
     <value>A part named '{0}' does not exist in project '{1}'.</value>
   </data>
+  <data name="ProjectAssignmentLifetimeFail" xml:space="preserve">
+    <value>Could not change default lifetime of assignments in project '{0}'.</value>
+  </data>
+  <data name="ProjectAssignmentLifetimeSuccess" xml:space="preserve">
+    <value>Changed default lifetime of assignments in project '{0}' to {1}.</value>
+  </data>
   <data name="ProjectDescriptionFail" xml:space="preserve">
     <value>Could not change description for project '{0}'.</value>
   </data>
@@ -284,6 +290,12 @@
   </data>
   <data name="ProjectExistsMessage" xml:space="preserve">
     <value>This project already exists.</value>
+  </data>
+  <data name="ProjectMaxAssignmentsFail" xml:space="preserve">
+    <value>Could not change max assignment count of project '{0}'.</value>
+  </data>
+  <data name="ProjectMaxAssignmentsSuccess" xml:space="preserve">
+    <value>Changed max assignment count of project '{0}' to {1}.</value>
   </data>
   <data name="ProjectNotExistMessage" xml:space="preserve">
     <value>This project does not exist.</value>
