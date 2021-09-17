@@ -315,13 +315,20 @@ namespace CollaborationBot.Commands {
         }
 
         private async Task GrantProjectRole(IPresence user, Project project) {
-            if (project.UniqueRoleId.HasValue && user is IGuildUser gu)
-                await gu.AddRoleAsync(Context.Guild.GetRole((ulong)project.UniqueRoleId.Value));
+            if (project.UniqueRoleId.HasValue && user is IGuildUser gu) {
+                var role = Context.Guild.GetRole((ulong) project.UniqueRoleId.Value);
+                if (role != null)
+                    await gu.AddRoleAsync(role);
+            }
         }
-
+        
         private async Task RevokeProjectRole(IPresence user, Project project) {
-            if (project.UniqueRoleId.HasValue && user is IGuildUser gu)
-                await gu.RemoveRoleAsync(Context.Guild.GetRole((ulong)project.UniqueRoleId.Value));
+            if (project.UniqueRoleId.HasValue && user is IGuildUser gu) {
+                var role = Context.Guild.GetRole((ulong) project.UniqueRoleId.Value);
+                if (role != null) {
+                    await gu.RemoveRoleAsync(role);
+                }
+            }
         }
 
         [Command("leave")]
