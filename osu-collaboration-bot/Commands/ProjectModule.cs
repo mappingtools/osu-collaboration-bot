@@ -317,8 +317,9 @@ namespace CollaborationBot.Commands {
         private async Task GrantProjectRole(IPresence user, Project project) {
             if (project.UniqueRoleId.HasValue && user is IGuildUser gu) {
                 var role = Context.Guild.GetRole((ulong) project.UniqueRoleId.Value);
-                if (role != null)
+                if (role != null) {
                     await gu.AddRoleAsync(role);
+                }
             }
         }
         
