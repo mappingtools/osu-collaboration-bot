@@ -72,7 +72,7 @@ namespace CollaborationBot.Commands {
                 }
 
                 try {
-                    await _context.Assignments.AddAsync(new Assignment { MemberId = member.Id, PartId = part.Id, Deadline = deadline });
+                    await _context.Assignments.AddAsync(new Assignment { MemberId = member.Id, PartId = part.Id, Deadline = deadline, LastReminder = DateTime.UtcNow });
                     await _context.SaveChangesAsync();
                     await Context.Channel.SendMessageAsync(string.Format(Strings.AddAssignmentSuccess, partName, user.Username));
                 } catch (Exception e) {
@@ -200,8 +200,8 @@ namespace CollaborationBot.Commands {
                         }
                     }
 
-                    var deadline = DateTime.Now + project.AssignmentLifetime;
-                    await _context.Assignments.AddAsync(new Assignment { MemberId = member.Id, PartId = part.Id, Deadline = deadline });
+                    var deadline = DateTime.UtcNow + project.AssignmentLifetime;
+                    await _context.Assignments.AddAsync(new Assignment { MemberId = member.Id, PartId = part.Id, Deadline = deadline, LastReminder = DateTime.UtcNow});
                     await _context.SaveChangesAsync();
                     await Context.Channel.SendMessageAsync(string.Format(Strings.AddAssignmentSuccess, partName, Context.User.Username));
                 } catch (Exception e) {

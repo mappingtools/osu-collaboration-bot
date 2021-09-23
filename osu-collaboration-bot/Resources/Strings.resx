@@ -213,6 +213,9 @@
   <data name="CouldNotReadPartCSV" xml:space="preserve">
     <value>Could not read the CSV file with the part information. Make sure it uses the correct format.</value>
   </data>
+  <data name="DeadlineReminder" xml:space="preserve">
+    <value>{0} you have 48 hours left to complete part '{1}' for project '{2}'.</value>
+  </data>
   <data name="DeletedChannel" xml:space="preserve">
     <value>Deleted channel</value>
   </data>

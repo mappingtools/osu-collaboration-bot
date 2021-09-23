@@ -25,6 +25,10 @@ namespace CollaborationBot.Entities
         public bool PriorityPicking { get; set; }
         public bool PartRestrictedUpload { get; set; }
         public TimeSpan? AssignmentLifetime { get; set; }
+        // TODO: add this to the database
+        public decimal? MainChannelId { get; set; }
+        // TODO: add this to the database
+        public bool DoReminders { get; set; }
 
         public virtual Guild Guild { get; set; }
         public virtual ICollection<AutoUpdate> AutoUpdates { get; set; }
