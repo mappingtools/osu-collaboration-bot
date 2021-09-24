@@ -261,6 +261,9 @@
   <data name="MaxAssignmentsReached" xml:space="preserve">
     <value>You are only allowed to have {0} active assignments.</value>
   </data>
+  <data name="MaxCollabCountReached" xml:space="preserve">
+    <value>You have already reached the maximum number of collabs ({0}).</value>
+  </data>
   <data name="MemberExistsMessage" xml:space="preserve">
     <value>This user is already a member of the project.</value>
   </data>

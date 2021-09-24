@@ -217,12 +217,18 @@ namespace CollaborationBot.Commands {
         //[RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("create")]
         public async Task Create(string projectName) {
-            // TODO: Check administrator or max collab count
-
             var guild = await _context.Guilds.AsAsyncEnumerable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 
             if (guild == null) {
                 await Context.Channel.SendMessageAsync(_resourceService.GuildNotExistsMessage);
+                return;
+            }
+
+            // Check administrator or max collab count
+            if (Context.User is not IGuildUser {GuildPermissions: {Administrator: true}} && guild.MaxCollabsPerPerson <=
+                _context.Members.AsQueryable().Count(o =>
+                    o.UniqueMemberId == Context.User.Id && o.ProjectRole == ProjectRole.Owner)) {
+                await Context.Channel.SendMessageAsync(string.Format(Strings.MaxCollabCountReached, guild.MaxCollabsPerPerson));
                 return;
             }
 
@@ -514,7 +520,8 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        [RequireProjectOwner(Group = "Permission")]
+        // Revoked regular access for now since this can potentially be abused to create infinite projects
+        //[RequireProjectOwner(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("set-owner")]
         public async Task SetOwner(string projectName, IGuildUser user) {
@@ -556,7 +563,7 @@ namespace CollaborationBot.Commands {
                     _resourceService.GenerateSetOwner(user, projectName, false));
             }
         }
-
+        
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("alias")]
@@ -912,7 +919,7 @@ namespace CollaborationBot.Commands {
         }
 
         #endregion
-
+        
         private async Task<Project> GetProjectAsync(string projectName) {
             var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 

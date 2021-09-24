@@ -493,6 +493,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have already reached the maximum number of collabs ({0})..
+        /// </summary>
+        public static string MaxCollabCountReached {
+            get {
+                return ResourceManager.GetString("MaxCollabCountReached", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This user is already a member of the project..
         /// </summary>
         public static string MemberExistsMessage {
