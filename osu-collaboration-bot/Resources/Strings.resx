@@ -162,6 +162,12 @@
   <data name="AttachedFileInvalid" xml:space="preserve">
     <value>The attached file is invalid.</value>
   </data>
+  <data name="AutoCleanupChangeFail" xml:space="preserve">
+    <value>Could not change `auto cleanup` of project '{0}' to {1}.</value>
+  </data>
+  <data name="AutoCleanupChangeSuccess" xml:space="preserve">
+    <value>Changed `auto cleanup` of project '{0}' to {1}.</value>
+  </data>
   <data name="AutoUpdateCooldownFail" xml:space="preserve">
     <value>Could not change cooldown for update notification.</value>
   </data>
@@ -341,6 +347,18 @@
   </data>
   <data name="ProjectExistsMessage" xml:space="preserve">
     <value>This project already exists.</value>
+  </data>
+  <data name="ProjectInfoChannelFail" xml:space="preserve">
+    <value>Could not change project info channel to {0}.</value>
+  </data>
+  <data name="ProjectInfoChannelSuccess" xml:space="preserve">
+    <value>Changed project info channel to {0}.</value>
+  </data>
+  <data name="ProjectMainChannelFail" xml:space="preserve">
+    <value>Could not change project main channel to {0}.</value>
+  </data>
+  <data name="ProjectMainChannelSuccess" xml:space="preserve">
+    <value>Changed project main channel to {0}.</value>
   </data>
   <data name="ProjectMaxAssignmentsFail" xml:space="preserve">
     <value>Could not change max assignment count of project '{0}'.</value>

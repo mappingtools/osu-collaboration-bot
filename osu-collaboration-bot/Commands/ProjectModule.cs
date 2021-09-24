@@ -277,6 +277,32 @@ namespace CollaborationBot.Commands {
             await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName));
         }
 
+        [RequireProjectOwner(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("setup")]
+        public async Task Setup(string projectName) {
+            // Make channel, role, and permissions
+            // Automatic channels and roles will be marked for deletion on project deletion unless states otherwise
+
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                _context.Projects.Remove(project);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName, false));
+            }
+
+            _fileHandler.DeleteProjectDirectory(Context.Guild, projectName);
+            await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName));
+        }
+
         #endregion
 
         #region members
@@ -837,6 +863,7 @@ namespace CollaborationBot.Commands {
             public bool? SelfAssignmentAllowed { get; set; }
             public bool? PriorityPicking { get; set; }
             public bool? PartRestrictedUpload { get; set; }
+            public bool? DoReminders { get; set; }
         }
 
         [RequireProjectManager(Group = "Permission")]
@@ -861,6 +888,10 @@ namespace CollaborationBot.Commands {
                 }
                 if (options.PartRestrictedUpload.HasValue) {
                     project.PartRestrictedUpload = options.PartRestrictedUpload.Value;
+                    n++;
+                }
+                if (options.DoReminders.HasValue) {
+                    project.DoReminders = options.DoReminders.Value;
                     n++;
                 }
 
@@ -915,6 +946,66 @@ namespace CollaborationBot.Commands {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectAssignmentLifetimeFail, projectName));
                 return;
+            }
+        }
+        
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("main-channel")]
+        public async Task MainChannel(string projectName, ITextChannel channel) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                project.MainChannelId = channel?.Id;
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectMainChannelSuccess, channel?.Mention));
+            } 
+            catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectMainChannelFail, channel?.Mention));
+            }
+        }
+        
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("info-channel")]
+        public async Task InfoChannel(string projectName, ITextChannel channel) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                project.InfoChannelId = channel?.Id;
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectInfoChannelSuccess, channel?.Mention));
+            } 
+            catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectInfoChannelFail, channel?.Mention));
+            }
+        }
+        
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("deletion-cleanup")]
+        public async Task ChangeAutoCleanup(string projectName, bool cleanup) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                project.CleanupOnDeletion = cleanup;
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.AutoCleanupChangeSuccess, projectName, cleanup));
+            } 
+            catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.AutoCleanupChangeFail, projectName, cleanup));
             }
         }
 

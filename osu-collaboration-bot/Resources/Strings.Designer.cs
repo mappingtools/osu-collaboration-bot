@@ -196,6 +196,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not change `auto cleanup` of project &apos;{0}&apos; to {1}..
+        /// </summary>
+        public static string AutoCleanupChangeFail {
+            get {
+                return ResourceManager.GetString("AutoCleanupChangeFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed `auto cleanup` of project &apos;{0}&apos; to {1}..
+        /// </summary>
+        public static string AutoCleanupChangeSuccess {
+            get {
+                return ResourceManager.GetString("AutoCleanupChangeSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not change cooldown for update notification..
         /// </summary>
         public static string AutoUpdateCooldownFail {
@@ -732,6 +750,42 @@ namespace CollaborationBot.Resources {
         public static string ProjectExistsMessage {
             get {
                 return ResourceManager.GetString("ProjectExistsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not change project info channel to {0}..
+        /// </summary>
+        public static string ProjectInfoChannelFail {
+            get {
+                return ResourceManager.GetString("ProjectInfoChannelFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed project info channel to {0}..
+        /// </summary>
+        public static string ProjectInfoChannelSuccess {
+            get {
+                return ResourceManager.GetString("ProjectInfoChannelSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not change project main channel to {0}..
+        /// </summary>
+        public static string ProjectMainChannelFail {
+            get {
+                return ResourceManager.GetString("ProjectMainChannelFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed project main channel to {0}..
+        /// </summary>
+        public static string ProjectMainChannelSuccess {
+            get {
+                return ResourceManager.GetString("ProjectMainChannelSuccess", resourceCulture);
             }
         }
         

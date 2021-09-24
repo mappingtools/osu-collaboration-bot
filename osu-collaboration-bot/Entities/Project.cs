@@ -28,6 +28,10 @@ namespace CollaborationBot.Entities
         // TODO: add this to the database
         public decimal? MainChannelId { get; set; }
         // TODO: add this to the database
+        public decimal? InfoChannelId { get; set; }
+        // TODO: add this to the database
+        public bool CleanupOnDeletion { get; set; }
+        // TODO: add this to the database
         public bool DoReminders { get; set; }
 
         public virtual Guild Guild { get; set; }
