@@ -430,6 +430,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not change collab category to {0}..
+        /// </summary>
+        public static string GuildCollabCategoryFail {
+            get {
+                return ResourceManager.GetString("GuildCollabCategoryFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed collab category to {0}..
+        /// </summary>
+        public static string GuildCollabCategorySuccess {
+            get {
+                return ResourceManager.GetString("GuildCollabCategorySuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server is already registered..
         /// </summary>
         public static string GuildExistsMessage {

@@ -7,6 +7,7 @@ using CollaborationBot.Resources;
 using CollaborationBot.Services;
 using Discord;
 using Discord.Commands;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollaborationBot.Commands {
     [Group("guild")]
@@ -33,15 +34,45 @@ namespace CollaborationBot.Commands {
 
                 await _context.Guilds.AddAsync(new Guild { UniqueGuildId = Context.Guild.Id });
                 await _context.SaveChangesAsync();
+
+                _fileHandler.GenerateGuildDirectory(Context.Guild);
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateAddGuildMessage());
             }
-            catch (Exception) {
+            catch (Exception ex) {
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateAddGuildMessage(false));
+                Console.WriteLine(ex);
+            }
+        }
+
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [Command("collab-category")]
+        public async Task CollabCategory(ICategoryChannel category) {
+            var guild = await GetGuildAsync();
+
+            if (guild == null) {
                 return;
             }
 
-            _fileHandler.GenerateGuildDirectory(Context.Guild);
+            try {
+                guild.CollabCategoryId = category.Id;
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.GuildCollabCategorySuccess, category.Name));
+            }
+            catch (Exception ex) {
+                await Context.Channel.SendMessageAsync(string.Format(Strings.GuildCollabCategoryFail, category.Name));
+                Console.WriteLine(ex);
+            }
+        }
 
-            await Context.Channel.SendMessageAsync(_resourceService.GenerateAddGuildMessage());
+        private async Task<Guild> GetGuildAsync() {
+            var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
+
+            if (guild == null) {
+                await Context.Channel.SendMessageAsync(_resourceService.GuildNotExistsMessage);
+                return null;
+            }
+
+            return guild;
         }
     }
 }
