@@ -25,6 +25,10 @@ namespace CollaborationBot {
         private readonly List<SocketGuild> guildList = new();
         private readonly Timer checkupTimer = new();
 
+        // TODO: Add help text
+        // TODO: Add guild permission config
+        // TODO: Add auto project channel and role setup
+
         public static void Main(string[] args) {
             new Program().MainAsync().GetAwaiter().GetResult();
         }
