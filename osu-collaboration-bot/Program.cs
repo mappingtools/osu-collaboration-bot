@@ -26,7 +26,6 @@ namespace CollaborationBot {
         private readonly Timer checkupTimer = new();
 
         // TODO: Add help text
-        // TODO: Add guild permission config
         // TODO: Add auto project channel and role setup
 
         public static void Main(string[] args) {
