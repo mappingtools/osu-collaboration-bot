@@ -217,6 +217,8 @@ namespace CollaborationBot.Commands {
         //[RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("create")]
         public async Task Create(string projectName) {
+            // TODO: Check administrator or max collab count
+
             var guild = await _context.Guilds.AsAsyncEnumerable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 
             if (guild == null) {
