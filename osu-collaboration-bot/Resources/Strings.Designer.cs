@@ -169,6 +169,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} could not finish part &apos;{1}&apos; of project &apos;{1}&apos; before the deadline. The part is now available for claiming again..
+        /// </summary>
+        public static string AssignmentDeadlinePassed {
+            get {
+                return ResourceManager.GetString("AssignmentDeadlinePassed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This assignment does not exist..
         /// </summary>
         public static string AssignmentNotExists {

@@ -63,7 +63,7 @@ namespace CollaborationBot {
         }
 
         private async void CheckupTimerOnElapsed(object sender, ElapsedEventArgs e) {
-            // Check deadlines and give reminders
+            // Check assignments and give reminders
             var remindingTime = TimeSpan.FromDays(2);
 
             var assignmentsToRemind = await _context.Assignments.AsQueryable().Where(
@@ -81,10 +81,33 @@ namespace CollaborationBot {
 
                 await textChannel.SendMessageAsync(string.Format(Strings.DeadlineReminder, user.Mention,
                     assignment.Part, assignment.Part.Project.Name));
-
-                // TODO: update last reminder time
+                
+                assignment.LastReminder = DateTime.UtcNow;
             }
 
+            // Check passed deadlines
+            var deadAssignments = await _context.Assignments.AsQueryable().Where(
+                    o => o.Deadline.HasValue && o.Deadline < DateTime.UtcNow)
+                .Include(o => o.Part).ThenInclude(p => p.Project)
+                .Include(o => o.Member).ToListAsync();
+
+            foreach (var assignment in deadAssignments) {
+                if (assignment.Part.Project.MainChannelId.HasValue) {
+                    // Show deadline passed message
+                    var channel = _client.GetChannel((ulong) assignment.Part.Project.MainChannelId!.Value);
+                    var user = _client.GetUser((ulong) assignment.Member.UniqueMemberId);
+                
+                    if (channel is ITextChannel textChannel) {
+                        await textChannel.SendMessageAsync(string.Format(Strings.AssignmentDeadlinePassed, user.Mention,
+                            assignment.Part, assignment.Part.Project.Name));
+                    }
+                }
+                
+                // Remove the assignment
+                _context.Assignments.Remove(assignment);
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         private async Task Connected() {

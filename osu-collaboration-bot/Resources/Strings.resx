@@ -153,6 +153,9 @@
   <data name="AlreadyJoinedMessage" xml:space="preserve">
     <value>You are already a member of this project.</value>
   </data>
+  <data name="AssignmentDeadlinePassed" xml:space="preserve">
+    <value>{0} could not finish part '{1}' of project '{1}' before the deadline. The part is now available for claiming again.</value>
+  </data>
   <data name="AssignmentNotExists" xml:space="preserve">
     <value>This assignment does not exist.</value>
   </data>
