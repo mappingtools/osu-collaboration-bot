@@ -23,8 +23,8 @@ namespace CollaborationBot.Commands {
         }
 
         [RequireUserPermission(GuildPermission.Administrator)]
-        [Command("add")]
-        public async Task Add() {
+        [Command("init")]
+        public async Task Init() {
             try {
                 if (_context.Guilds.Any(o => o.UniqueGuildId == Context.Guild.Id)) {
                     await Context.Channel.SendMessageAsync(Strings.GuildExistsMessage);
