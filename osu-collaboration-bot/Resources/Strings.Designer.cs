@@ -457,6 +457,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not change max collab count per person to {0}..
+        /// </summary>
+        public static string GuildMaxCollabsFail {
+            get {
+                return ResourceManager.GetString("GuildMaxCollabsFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed max collab count per person to {0}..
+        /// </summary>
+        public static string GuildMaxCollabsSuccess {
+            get {
+                return ResourceManager.GetString("GuildMaxCollabsSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your server is not registered! You can add it via command &apos;!!guild add&apos;..
         /// </summary>
         public static string GuildNotExistsMessage {

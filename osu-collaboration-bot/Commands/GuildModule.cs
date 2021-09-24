@@ -64,6 +64,26 @@ namespace CollaborationBot.Commands {
             }
         }
 
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [Command("max-collabs")]
+        public async Task MaxCollabs(int count) {
+            var guild = await GetGuildAsync();
+
+            if (guild == null) {
+                return;
+            }
+
+            try {
+                guild.MaxCollabsPerPerson = count;
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.GuildMaxCollabsSuccess, count));
+            }
+            catch (Exception ex) {
+                await Context.Channel.SendMessageAsync(string.Format(Strings.GuildMaxCollabsFail, count));
+                Console.WriteLine(ex);
+            }
+        }
+
         private async Task<Guild> GetGuildAsync() {
             var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 

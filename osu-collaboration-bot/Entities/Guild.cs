@@ -16,6 +16,8 @@ namespace CollaborationBot.Entities
         public decimal UniqueGuildId { get; set; }
         // TODO: Add this to the database
         public decimal? CollabCategoryId { get; set; }
+        // TODO: Add this to the database
+        public int MaxCollabsPerPerson { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; }
     }
