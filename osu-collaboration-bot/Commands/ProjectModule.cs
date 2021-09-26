@@ -267,14 +267,16 @@ namespace CollaborationBot.Commands {
             try {
                 _context.Projects.Remove(project);
                 await _context.SaveChangesAsync();
+
+                _fileHandler.DeleteProjectDirectory(Context.Guild, projectName);
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName));
+
+                // Delete channels and role
             }
             catch (Exception e) {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName, false));
             }
-
-            _fileHandler.DeleteProjectDirectory(Context.Guild, projectName);
-            await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName));
         }
 
         [RequireProjectOwner(Group = "Permission")]
@@ -290,17 +292,30 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
+            var guild = project.Guild;
+
             try {
-                _context.Projects.Remove(project);
+                // Create project role
+                if (!project.UniqueRoleId.HasValue) {
+                    var role = await Context.Guild.CreateRoleAsync($"{project.Name}-Participant", isMentionable:true);
+                    project.UniqueRoleId = role.Id;
+                }
+
+                if (guild.CollabCategoryId.HasValue) {
+                    if (!project.InfoChannelId.HasValue) {
+                        // Create info channel
+                        var infoChannel = await Context.Guild.CreateTextChannelAsync($"{project.Name}-info",
+                            prop => prop.CategoryId = (ulong) guild.CollabCategoryId);
+                        infoChannel.AddPermissionOverwriteAsync()
+                    }
+                }
+
                 await _context.SaveChangesAsync();
             }
             catch (Exception e) {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName, false));
             }
-
-            _fileHandler.DeleteProjectDirectory(Context.Guild, projectName);
-            await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName));
         }
 
         #endregion
@@ -1019,7 +1034,8 @@ namespace CollaborationBot.Commands {
                 return null;
             }
 
-            var project = await _context.Projects.AsQueryable().SingleOrDefaultAsync(o => o.GuildId == guild.Id && o.Name == projectName);
+            var project = await _context.Projects.AsQueryable().Include(o => o.Guild)
+                .SingleOrDefaultAsync(o => o.GuildId == guild.Id && o.Name == projectName);
 
             if (project == null) {
                 await Context.Channel.SendMessageAsync(Strings.ProjectNotExistMessage);
