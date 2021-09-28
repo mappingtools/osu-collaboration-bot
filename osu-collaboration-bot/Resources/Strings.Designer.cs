@@ -1024,6 +1024,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not set-up project &apos;{0}&apos;..
+        /// </summary>
+        public static string SetupFail {
+            get {
+                return ResourceManager.GetString("SetupFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully set-up project &apos;{0}&apos;..
+        /// </summary>
+        public static string SetupSuccess {
+            get {
+                return ResourceManager.GetString("SetupSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compiled .osu file of project &apos;{0}&apos;:.
         /// </summary>
         public static string ShowBaseFile {

@@ -438,6 +438,12 @@
   <data name="SetOwnerSuccessMessage" xml:space="preserve">
     <value>Transfered ownership of project '{0}' to {1}.</value>
   </data>
+  <data name="SetupFail" xml:space="preserve">
+    <value>Could not set-up project '{0}'.</value>
+  </data>
+  <data name="SetupSuccess" xml:space="preserve">
+    <value>Successfully set-up project '{0}'.</value>
+  </data>
   <data name="ShowBaseFile" xml:space="preserve">
     <value>Compiled .osu file of project '{0}':</value>
   </data>

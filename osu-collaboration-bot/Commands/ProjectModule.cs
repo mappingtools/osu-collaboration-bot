@@ -367,10 +367,11 @@ namespace CollaborationBot.Commands {
                 }
 
                 await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.SetupSuccess, projectName));
             }
             catch (Exception e) {
                 Console.WriteLine(e);
-                await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName, false));
+                await Context.Channel.SendMessageAsync(string.Format(Strings.SetupFail, projectName));
             }
         }
 
