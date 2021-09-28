@@ -182,6 +182,12 @@ namespace CollaborationBot.Commands {
                 .ToListAsync();
 
             foreach (var autoUpdate in updates) {
+                // Check cooldown
+                if (autoUpdate.LastTime.HasValue && autoUpdate.Cooldown.HasValue &&
+                    autoUpdate.LastTime.Value + autoUpdate.Cooldown.Value > DateTime.UtcNow) {
+                    continue;
+                }
+
                 string message;
                 if (autoUpdate.DoPing && project.UniqueRoleId.HasValue) {
                     string mention = context.Guild.GetRole((ulong) project.UniqueRoleId).Mention;
@@ -195,7 +201,11 @@ namespace CollaborationBot.Commands {
                     await channel.SendFileAsync(
                         fileHandler.GetProjectBaseFilePath(context.Guild, project.Name), message);
                 }
+                
+                autoUpdate.LastTime = DateTime.UtcNow;
             }
+
+            await _context.SaveChangesAsync();
         }
 
         private async Task<Project> GetProjectAsync(string projectName) {
