@@ -13,7 +13,6 @@ using Mapping_Tools_Core.Tools.PatternGallery;
 using Mapping_Tools_Core.BeatmapHelper.IO.Editor;
 using Mapping_Tools_Core.Exceptions;
 using System.Collections.Generic;
-using Discord.WebSocket;
 
 namespace CollaborationBot.Commands {
     [Group]
@@ -1073,7 +1072,6 @@ namespace CollaborationBot.Commands {
             catch (Exception e) {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectRenameFail, projectName, newProjectName));
-                return;
             }
         }
         
@@ -1095,7 +1093,6 @@ namespace CollaborationBot.Commands {
             catch (Exception e) {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectDescriptionFail, projectName));
-                return;
             }
         }
         
@@ -1117,7 +1114,6 @@ namespace CollaborationBot.Commands {
             catch (Exception e) {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectStatusFail, projectName, status));
-                return;
             }
         }
         
@@ -1164,7 +1160,6 @@ namespace CollaborationBot.Commands {
             catch (Exception e) {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectOptionsFail, projectName));
-                return;
             }
         }
         
@@ -1186,7 +1181,6 @@ namespace CollaborationBot.Commands {
             catch (Exception e) {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectMaxAssignmentsFail, projectName));
-                return;
             }
         }
         
@@ -1208,7 +1202,6 @@ namespace CollaborationBot.Commands {
             catch (Exception e) {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectAssignmentLifetimeFail, projectName));
-                return;
             }
         }
         
