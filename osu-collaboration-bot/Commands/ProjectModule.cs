@@ -295,19 +295,69 @@ namespace CollaborationBot.Commands {
             var guild = project.Guild;
 
             try {
-                // Create project role
+                // Get all owner/manager users
+                var managers = (await _context.Members.AsQueryable()
+                    .Where(o => o.ProjectId == project.Id && o.ProjectRole != ProjectRole.Member)
+                    .Select(o => o.UniqueMemberId).Cast<ulong>().ToListAsync())
+                    .Select(o => Context.Guild.GetUser(o)).ToList();
+
+                // Get/Create project role
+                IRole role;
                 if (!project.UniqueRoleId.HasValue) {
-                    var role = await Context.Guild.CreateRoleAsync($"{project.Name}-Participant", isMentionable:true);
+                    role = await Context.Guild.CreateRoleAsync($"{project.Name}-Participant", isMentionable:true);
                     project.UniqueRoleId = role.Id;
+                } else {
+                    role = Context.Guild.GetRole((ulong) project.UniqueRoleId.Value);
                 }
 
+                bool createdInfo = false;
+                bool createdMain = false;
                 if (guild.CollabCategoryId.HasValue) {
+                    // Create info channel
+                    ITextChannel infoChannel;
                     if (!project.InfoChannelId.HasValue) {
-                        // Create info channel
-                        var infoChannel = await Context.Guild.CreateTextChannelAsync($"{project.Name}-info",
+                        infoChannel = await Context.Guild.CreateTextChannelAsync($"{project.Name}-info",
                             prop => prop.CategoryId = (ulong) guild.CollabCategoryId);
-                        infoChannel.AddPermissionOverwriteAsync()
+                        
+                        await infoChannel.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, GetNoPermissions());
+                        await infoChannel.AddPermissionOverwriteAsync(role, GetReadPermissions());
+
+                        foreach (var manager in managers) {
+                            await infoChannel.AddPermissionOverwriteAsync(manager, GetPartialAdminPermissions());
+                        }
+
+                        project.InfoChannelId = infoChannel.Id;
+                        createdInfo = true;
+                    } else {
+                        infoChannel = Context.Guild.GetTextChannel((ulong) project.InfoChannelId.Value);
                     }
+
+                    // Create general channel
+                    if (!project.MainChannelId.HasValue) {
+                        var mainChannel = await Context.Guild.CreateTextChannelAsync($"{project.Name}-general",
+                            prop => prop.CategoryId = (ulong) guild.CollabCategoryId);
+                        
+                        await mainChannel.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, GetNoPermissions());
+                        await mainChannel.AddPermissionOverwriteAsync(role, GetWritePermissions());
+
+                        foreach (var manager in managers) {
+                            await mainChannel.AddPermissionOverwriteAsync(manager, GetPartialAdminPermissions());
+                        }
+                        // TODO: Update permissions when adding/removing managers
+
+                        project.MainChannelId = mainChannel.Id;
+                        createdMain = true;
+                    }
+
+                    // Allow auto cleanup if both channels were created
+                    project.CleanupOnDeletion = createdMain && createdInfo;
+
+                    // Send the description in the info channel
+                    if (!string.IsNullOrEmpty(project.Description)) {
+                        await infoChannel.SendMessageAsync("**Description**\n" + project.Description);
+                    }
+
+                    // TODO: add autoupdate
                 }
 
                 await _context.SaveChangesAsync();
@@ -317,6 +367,102 @@ namespace CollaborationBot.Commands {
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName, false));
             }
         }
+
+        #region PermissionMakers
+
+        public static OverwritePermissions GetPartialAdminPermissions() {
+            return new (PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Allow,
+                PermValue.Allow, // This parameter is for the 'viewChannel' permission
+                PermValue.Allow,
+                PermValue.Deny,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Deny,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Deny,
+                PermValue.Allow,
+                PermValue.Deny,
+                PermValue.Deny);
+        }
+
+        public static OverwritePermissions GetWritePermissions() {
+            return new (PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Allow,
+                PermValue.Allow, // This parameter is for the 'viewChannel' permission
+                PermValue.Allow,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Deny,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Allow,
+                PermValue.Deny,
+                PermValue.Deny);
+        }
+
+        public static OverwritePermissions GetReadPermissions() {
+            return new (PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Allow,
+                PermValue.Allow, // This parameter is for the 'viewChannel' permission
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Allow,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Allow,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny);
+        }
+
+        public static OverwritePermissions GetNoPermissions() {
+            return new (PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny, // This parameter is for the 'viewChannel' permission
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny);
+        }
+
+        #endregion
 
         #endregion
 
