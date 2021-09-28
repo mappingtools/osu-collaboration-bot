@@ -271,7 +271,7 @@ namespace CollaborationBot.Commands {
                 _fileHandler.DeleteProjectDirectory(Context.Guild, projectName);
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName));
 
-                // Delete channels and role
+                // TODO: Delete channels and role
             }
             catch (Exception e) {
                 Console.WriteLine(e);
