@@ -295,12 +295,6 @@ namespace CollaborationBot.Commands {
             var guild = project.Guild;
 
             try {
-                // Get all owner/manager users
-                var managers = (await _context.Members.AsQueryable()
-                    .Where(o => o.ProjectId == project.Id && o.ProjectRole != ProjectRole.Member)
-                    .Select(o => o.UniqueMemberId).Cast<ulong>().ToListAsync())
-                    .Select(o => Context.Guild.GetUser(o)).ToList();
-
                 // Get/Create project role
                 IRole role;
                 if (!project.UniqueRoleId.HasValue) {
@@ -308,6 +302,15 @@ namespace CollaborationBot.Commands {
                     project.UniqueRoleId = role.Id;
                 } else {
                     role = Context.Guild.GetRole((ulong) project.UniqueRoleId.Value);
+                }
+
+                // Get/Create manager role
+                IRole managerRole;
+                if (!project.ManagerRoleId.HasValue) {
+                    managerRole = await Context.Guild.CreateRoleAsync($"{project.Name}-Manager", isMentionable:true);
+                    project.ManagerRoleId = role.Id;
+                } else {
+                    managerRole = Context.Guild.GetRole((ulong) project.ManagerRoleId.Value);
                 }
 
                 bool createdInfo = false;
@@ -321,10 +324,7 @@ namespace CollaborationBot.Commands {
                         
                         await infoChannel.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, GetNoPermissions());
                         await infoChannel.AddPermissionOverwriteAsync(role, GetReadPermissions());
-
-                        foreach (var manager in managers) {
-                            await infoChannel.AddPermissionOverwriteAsync(manager, GetPartialAdminPermissions());
-                        }
+                        await infoChannel.AddPermissionOverwriteAsync(managerRole, GetPartialAdminPermissions());
 
                         project.InfoChannelId = infoChannel.Id;
                         createdInfo = true;
@@ -339,11 +339,7 @@ namespace CollaborationBot.Commands {
                         
                         await mainChannel.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, GetNoPermissions());
                         await mainChannel.AddPermissionOverwriteAsync(role, GetWritePermissions());
-
-                        foreach (var manager in managers) {
-                            await mainChannel.AddPermissionOverwriteAsync(manager, GetPartialAdminPermissions());
-                        }
-                        // TODO: Update permissions when adding/removing managers
+                        await mainChannel.AddPermissionOverwriteAsync(managerRole, GetPartialAdminPermissions());
 
                         project.MainChannelId = mainChannel.Id;
                         createdMain = true;
@@ -354,10 +350,20 @@ namespace CollaborationBot.Commands {
 
                     // Send the description in the info channel
                     if (!string.IsNullOrEmpty(project.Description)) {
-                        await infoChannel.SendMessageAsync("**Description**\n" + project.Description);
+                        await infoChannel.SendMessageAsync($"**{Strings.Description}**\n" + project.Description);
                     }
 
-                    // TODO: add autoupdate
+                    // Add auto-update
+                    if (!await _context.AutoUpdates.AsQueryable().AnyAsync(o =>
+                        o.ProjectId == project.Id && o.UniqueChannelId == infoChannel.Id)) {
+                        _context.AutoUpdates.Add(new AutoUpdate {
+                            ProjectId = project.Id,
+                            UniqueChannelId = infoChannel.Id,
+                            Cooldown = TimeSpan.FromHours(1),
+                            DoPing = false,
+                            ShowOsu = true
+                        });
+                    }
                 }
 
                 await _context.SaveChangesAsync();
@@ -527,6 +533,24 @@ namespace CollaborationBot.Commands {
             }
         }
 
+        private async Task GrantManagerRole(IPresence user, Project project) {
+            if (project.ManagerRoleId.HasValue && user is IGuildUser gu) {
+                var role = Context.Guild.GetRole((ulong) project.ManagerRoleId.Value);
+                if (role != null) {
+                    await gu.AddRoleAsync(role);
+                }
+            }
+        }
+        
+        private async Task RevokeManagerRole(IPresence user, Project project) {
+            if (project.ManagerRoleId.HasValue && user is IGuildUser gu) {
+                var role = Context.Guild.GetRole((ulong) project.ManagerRoleId.Value);
+                if (role != null) {
+                    await gu.RemoveRoleAsync(role);
+                }
+            }
+        }
+
         [Command("leave")]
         public async Task LeaveProject(string projectName) {
             var project = await GetProjectAsync(projectName);
@@ -552,6 +576,7 @@ namespace CollaborationBot.Commands {
                 _context.Members.Remove(member);
                 await _context.SaveChangesAsync();
                 await RevokeProjectRole(Context.User, project);
+                await RevokeManagerRole(Context.User, project);
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateRemoveMemberFromProject(Context.User, projectName));
             } catch (Exception e) {
@@ -616,6 +641,7 @@ namespace CollaborationBot.Commands {
                 _context.Members.Remove(member);
                 await _context.SaveChangesAsync();
                 await RevokeProjectRole(user, project);
+                await RevokeManagerRole(user, project);
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateRemoveMemberFromProject(user, projectName));
             } catch (Exception e) {
@@ -657,6 +683,7 @@ namespace CollaborationBot.Commands {
                 member.ProjectRole = ProjectRole.Manager;
 
                 await _context.SaveChangesAsync();
+                await GrantManagerRole(user, project);
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateAddManager(user, projectName));
             } catch (Exception e) {
@@ -698,6 +725,7 @@ namespace CollaborationBot.Commands {
                 member.ProjectRole = ProjectRole.Member;
 
                 await _context.SaveChangesAsync();
+                await RevokeManagerRole(user, project);
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateRemoveManager(user, projectName));
             } catch (Exception e) {
@@ -742,6 +770,7 @@ namespace CollaborationBot.Commands {
                 }
                 
                 await _context.SaveChangesAsync();
+                await GrantManagerRole(user, project);
                 await Context.Channel.SendMessageAsync(
                     _resourceService.GenerateSetOwner(user, projectName));
             } catch (Exception e) {
@@ -943,7 +972,44 @@ namespace CollaborationBot.Commands {
             catch (Exception e) {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.ChangeProjectRoleFail, projectName));
+            }
+        }
+
+        // Using admin permissions here to prevent someone assigning @everyone as the project role
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("manager-role")]
+        public async Task ManagerRole(string projectName, IRole role, bool reassignRoles = true) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
                 return;
+            }
+
+            try {
+                var oldRole = project.ManagerRoleId.HasValue ? Context.Guild.GetRole((ulong) project.ManagerRoleId.Value) : null;
+
+                project.ManagerRoleId = role.Id;
+                await _context.SaveChangesAsync();
+
+                if (reassignRoles) {
+                    // Give all members the new role and remove the old role if possible
+                    var members = await _context.Members.AsQueryable()
+                        .Where(o => o.ProjectId == project.Id && o.ProjectRole != ProjectRole.Member)
+                        .Select(o => o.UniqueMemberId).Cast<ulong>().ToListAsync();
+
+                    foreach (var member in members.Select(id => Context.Guild.GetUser(id))) {
+                        if (member is not IGuildUser gu) continue;
+                        await gu.AddRoleAsync(role);
+                        if (oldRole != null)
+                            await gu.RemoveRoleAsync(oldRole);
+                    }
+                }
+
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ChangeManagerRoleSuccess, projectName, role.Name));
+            } 
+            catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ChangeManagerRoleFail, projectName));
             }
         }
         

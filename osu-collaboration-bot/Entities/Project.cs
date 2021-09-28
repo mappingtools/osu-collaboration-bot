@@ -19,6 +19,8 @@ namespace CollaborationBot.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal? UniqueRoleId { get; set; }
+        // TODO: add this to the database
+        public decimal? ManagerRoleId { get; set; }
         public ProjectStatus? Status { get; set; }
         public bool SelfAssignmentAllowed { get; set; }
         public int? MaxAssignments { get; set; }

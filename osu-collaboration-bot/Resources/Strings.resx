@@ -207,6 +207,12 @@
   <data name="ChangeAliasSuccess" xml:space="preserve">
     <value>Changed alias of {0} to '{1}'.</value>
   </data>
+  <data name="ChangeManagerRoleFail" xml:space="preserve">
+    <value>Could not change manager role for project '{0}'.</value>
+  </data>
+  <data name="ChangeManagerRoleSuccess" xml:space="preserve">
+    <value>Changed manager role for project '{0}' to {1}.</value>
+  </data>
   <data name="ChangeProjectRoleFail" xml:space="preserve">
     <value>Could not change role for project '{0}'.</value>
   </data>
@@ -227,6 +233,9 @@
   </data>
   <data name="DeletedChannel" xml:space="preserve">
     <value>Deleted channel</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
   </data>
   <data name="EditPartFail" xml:space="preserve">
     <value>Could not edit part.</value>

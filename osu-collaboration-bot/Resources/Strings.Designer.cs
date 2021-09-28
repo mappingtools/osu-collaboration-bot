@@ -331,6 +331,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not change manager role for project &apos;{0}&apos;..
+        /// </summary>
+        public static string ChangeManagerRoleFail {
+            get {
+                return ResourceManager.GetString("ChangeManagerRoleFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed manager role for project &apos;{0}&apos; to {1}..
+        /// </summary>
+        public static string ChangeManagerRoleSuccess {
+            get {
+                return ResourceManager.GetString("ChangeManagerRoleSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not change role for project &apos;{0}&apos;..
         /// </summary>
         public static string ChangeProjectRoleFail {
@@ -390,6 +408,15 @@ namespace CollaborationBot.Resources {
         public static string DeletedChannel {
             get {
                 return ResourceManager.GetString("DeletedChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
