@@ -271,7 +271,37 @@ namespace CollaborationBot.Commands {
                 _fileHandler.DeleteProjectDirectory(Context.Guild, projectName);
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateRemoveProjectMessage(projectName));
 
-                // TODO: Delete channels and role
+                // Delete channels and roles
+                if (project.CleanupOnDeletion) {
+                    // Main channel
+                    if (project.MainChannelId.HasValue) {
+                        var mainChannel = Context.Guild.GetTextChannel((ulong) project.MainChannelId);
+                        if (mainChannel != null) {
+                            await mainChannel.DeleteAsync();
+                        }
+                    }
+                    // Info channel
+                    if (project.InfoChannelId.HasValue) {
+                        var infoChannel = Context.Guild.GetTextChannel((ulong) project.InfoChannelId);
+                        if (infoChannel != null) {
+                            await infoChannel.DeleteAsync();
+                        }
+                    }
+                    // Participant role
+                    if (project.UniqueRoleId.HasValue) {
+                        var role = Context.Guild.GetRole((ulong) project.UniqueRoleId);
+                        if (role != null) {
+                            await role.DeleteAsync();
+                        }
+                    }
+                    // Manager role
+                    if (project.ManagerRoleId.HasValue) {
+                        var role = Context.Guild.GetRole((ulong) project.ManagerRoleId);
+                        if (role != null) {
+                            await role.DeleteAsync();
+                        }
+                    }
+                }
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -295,11 +325,17 @@ namespace CollaborationBot.Commands {
             var guild = project.Guild;
 
             try {
+                bool createdRole = false;
+                bool createdManagerRole = false;
+                bool createdInfo = false;
+                bool createdMain = false;
+
                 // Get/Create project role
                 IRole role;
                 if (!project.UniqueRoleId.HasValue) {
                     role = await Context.Guild.CreateRoleAsync($"{project.Name}-Participant", isMentionable:true);
                     project.UniqueRoleId = role.Id;
+                    createdRole = true;
                 } else {
                     role = Context.Guild.GetRole((ulong) project.UniqueRoleId.Value);
                 }
@@ -309,12 +345,11 @@ namespace CollaborationBot.Commands {
                 if (!project.ManagerRoleId.HasValue) {
                     managerRole = await Context.Guild.CreateRoleAsync($"{project.Name}-Manager", isMentionable:true);
                     project.ManagerRoleId = role.Id;
+                    createdManagerRole = true;
                 } else {
                     managerRole = Context.Guild.GetRole((ulong) project.ManagerRoleId.Value);
                 }
 
-                bool createdInfo = false;
-                bool createdMain = false;
                 if (guild.CollabCategoryId.HasValue) {
                     // Create info channel
                     ITextChannel infoChannel;
@@ -346,7 +381,7 @@ namespace CollaborationBot.Commands {
                     }
 
                     // Allow auto cleanup if both channels were created
-                    project.CleanupOnDeletion = createdMain && createdInfo;
+                    project.CleanupOnDeletion = createdMain && createdInfo && createdRole && createdManagerRole;
 
                     // Send the description in the info channel
                     if (!string.IsNullOrEmpty(project.Description)) {
