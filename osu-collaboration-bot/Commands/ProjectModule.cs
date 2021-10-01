@@ -538,7 +538,8 @@ namespace CollaborationBot.Commands {
         #region members
 
         [Command("members")]
-        public async Task Members(string projectName) {
+        [Summary("Lists all members of the project")]
+        public async Task Members([Summary("The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -552,12 +553,15 @@ namespace CollaborationBot.Commands {
 
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("join")]
-        public async Task JoinProject(string projectName) {
+        [Summary("Lets you become a member of the project")]
+        public async Task JoinProject([Summary("The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
                 return;
             }
+
+            // TODO: Make this only possible when looking for members
 
             if (_context.Members.Any(o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id)) {
                 await Context.Channel.SendMessageAsync(Strings.AlreadyJoinedMessage);
@@ -615,7 +619,8 @@ namespace CollaborationBot.Commands {
         }
 
         [Command("leave")]
-        public async Task LeaveProject(string projectName) {
+        [Summary("Lets you leave the project")]
+        public async Task LeaveProject([Summary("The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -652,7 +657,9 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("add")]
-        public async Task AddMember(string projectName, IGuildUser user) {
+        [Summary("Adds a new member to the project")]
+        public async Task AddMember([Summary("The project")]string projectName, 
+            [Summary("The user to add")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -680,7 +687,9 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("remove")]
-        public async Task RemoveMember(string projectName, IGuildUser user) {
+        [Summary("Removes a member from the project")]
+        public async Task RemoveMember([Summary("The project")]string projectName,
+            [Summary("The user to remove")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -717,7 +726,9 @@ namespace CollaborationBot.Commands {
         [RequireProjectOwner(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("promote")]
-        public async Task AddManager(string projectName, IGuildUser user) {
+        [Summary("Promotes a member to a manager of the project")]
+        public async Task AddManager([Summary("The project")]string projectName,
+            [Summary("The user to promote")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -759,7 +770,9 @@ namespace CollaborationBot.Commands {
         [RequireProjectOwner(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("demote")]
-        public async Task RemoveManager(string projectName, IGuildUser user) {
+        [Summary("Demotes a manager to a regular member of the project")]
+        public async Task RemoveManager([Summary("The project")]string projectName,
+            [Summary("The user to demote")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -802,7 +815,9 @@ namespace CollaborationBot.Commands {
         //[RequireProjectOwner(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("set-owner")]
-        public async Task SetOwner(string projectName, IGuildUser user) {
+        [Summary("Changes the owner of the project")]
+        public async Task SetOwner([Summary("The project")]string projectName,
+            [Summary("The new owner")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -846,14 +861,18 @@ namespace CollaborationBot.Commands {
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("alias")]
-        public async Task Alias(string projectName, string alias) {
+        [Summary("Changes your alias in the project")]
+        public async Task Alias([Summary("The project")]string projectName,
+            [Summary("The new alias")]string alias) {
             await Alias(projectName, Context.User, alias);
         }
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("alias")]
-        public async Task Alias(string projectName, IUser user, string alias) {
+        [Summary("Changes the alias of a member of the project")]
+        public async Task Alias([Summary("The project")]string projectName,
+            [Summary("The member")]IUser user, [Summary("The new alias")]string alias) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -882,14 +901,18 @@ namespace CollaborationBot.Commands {
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("tags")]
-        public async Task Tags(string projectName, string tags) {
+        [Summary("Changes your tags in the project")]
+        public async Task Tags([Summary("The project")]string projectName,
+            [Summary("The new tags")]string tags) {
             await Alias(projectName, Context.User, tags);
         }
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("tags")]
-        public async Task Tags(string projectName, IUser user, string tags) {
+        [Summary("Changes the tags of a member of the project")]
+        public async Task Tags([Summary("The project")]string projectName,
+            [Summary("The member")]IUser user, [Summary("The new tags")]string tags) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -918,7 +941,8 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("tags")]
-        public async Task Tags(string projectName) {
+        [Summary("Gets all the tags of the project")]
+        public async Task Tags([Summary("The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -940,7 +964,9 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("priority")]
-        public async Task Priority(string projectName, IUser user, int? priority) {
+        [Summary("Changes the priority of a member of the project")]
+        public async Task Priority([Summary("The project")]string projectName,
+            [Summary("The member")]IUser user, [Summary("The new priority")]int? priority) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -968,7 +994,9 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("generate-priorities")]
-        public async Task GeneratePriorities(string projectName, int timeWeight = 1) {
+        [Summary("Automatically generates priorities for all members of the project based on total number of days they've been on the server")]
+        public async Task GeneratePriorities([Summary("The project")]string projectName,
+            [Summary("The priority value of one day")]int timeWeight = 1) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
