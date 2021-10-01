@@ -562,7 +562,10 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            // TODO: Make this only possible when looking for members
+            if (project.Status != ProjectStatus.SearchingForMembers) {
+                await Context.Channel.SendMessageAsync(Strings.NotLookingForMembers);
+                return;
+            }
 
             if (_context.Members.Any(o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id)) {
                 await Context.Channel.SendMessageAsync(Strings.AlreadyJoinedMessage);

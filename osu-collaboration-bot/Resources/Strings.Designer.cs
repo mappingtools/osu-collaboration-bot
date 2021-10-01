@@ -655,6 +655,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The project is currently not looking for members..
+        /// </summary>
+        public static string NotLookingForMembers {
+            get {
+                return ResourceManager.GetString("NotLookingForMembers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This user is owner of project &apos;{0}&apos; and can&apos;t be demoted. Transfer ownership with `set-owner` first..
         /// </summary>
         public static string OwnerCannotBeDemotedMessage {
