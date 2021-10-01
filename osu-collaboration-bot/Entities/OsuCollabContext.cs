@@ -54,6 +54,8 @@ namespace CollaborationBot.Entities
 
                 entity.Property(e => e.Deadline).HasColumnName("deadline");
 
+                entity.Property(e => e.LastReminder).HasColumnName("last_reminder");
+
                 entity.Property(e => e.MemberId).HasColumnName("member_id");
 
                 entity.Property(e => e.PartId).HasColumnName("part_id");
@@ -79,6 +81,8 @@ namespace CollaborationBot.Entities
 
                 entity.Property(e => e.Cooldown).HasColumnName("cooldown");
 
+                entity.Property(e => e.LastTime).HasColumnName("last_time");
+
                 entity.Property(e => e.DoPing).HasColumnName("do_ping");
 
                 entity.Property(e => e.ProjectId).HasColumnName("project_id");
@@ -102,6 +106,10 @@ namespace CollaborationBot.Entities
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.UniqueGuildId).HasColumnName("unique_guild_id");
+
+                entity.Property(e => e.CollabCategoryId).HasColumnName("collab_category_id");
+
+                entity.Property(e => e.MaxCollabsPerPerson).HasColumnName("max_collabs_per_person");
             });
 
             modelBuilder.Entity<Member>(entity =>
@@ -178,9 +186,19 @@ namespace CollaborationBot.Entities
 
                 entity.Property(e => e.UniqueRoleId).HasColumnName("unique_role_id");
 
+                entity.Property(e => e.ManagerRoleId).HasColumnName("manager_role_id");
+
                 entity.Property(e => e.Status).HasColumnName("status");
 
                 entity.Property(e => e.AssignmentLifetime).HasColumnName("assignment_lifetime");
+
+                entity.Property(e => e.MainChannelId).HasColumnName("main_channel_id");
+
+                entity.Property(e => e.InfoChannelId).HasColumnName("info_channel_id");
+
+                entity.Property(e => e.CleanupOnDeletion).HasColumnName("cleanup_on_deletion");
+
+                entity.Property(e => e.DoReminders).HasColumnName("do_reminders");
 
                 entity.HasOne(d => d.Guild)
                     .WithMany(p => p.Projects)
