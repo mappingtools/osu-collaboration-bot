@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 namespace CollaborationBot.Commands {
     [Group("au")]
+    [Summary("Everything about automatic update notifications")]
     public class AutoUpdateModule : ModuleBase<SocketCommandContext> {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;

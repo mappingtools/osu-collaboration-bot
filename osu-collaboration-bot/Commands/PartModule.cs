@@ -14,6 +14,7 @@ using CsvHelper;
 
 namespace CollaborationBot.Commands {
     [Group("part")]
+    [Summary("Everything about parts")]
     public class PartModule : ModuleBase<SocketCommandContext> {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;

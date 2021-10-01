@@ -11,6 +11,7 @@ using System;
 
 namespace CollaborationBot.Commands {
     [Group("asn")]
+    [Summary("Everything about assignments")]
     public class AssignmentModule : ModuleBase<SocketCommandContext> {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
@@ -26,7 +27,8 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("list")]
-        public async Task List(string projectName) {
+        [Summary("Lists all the assignments in the project")]
+        public async Task List([Summary("The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -47,7 +49,11 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("add")]
-        public async Task Add(string projectName, IGuildUser user, DateTime? deadline = null, params string[] partNames) {
+        [Summary("Adds one or more assignments")]
+        public async Task Add([Summary("The project")]string projectName,
+            [Summary("The member to assign to")]IGuildUser user,
+            [Summary("The deadline for the assignment (can be null)")]DateTime? deadline = null, 
+            [Summary("The parts to assign to the member")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -85,7 +91,10 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("remove")]
-        public async Task Remove(string projectName, IUser user, params string[] partNames) {
+        [Summary("Removes one or more assignments")]
+        public async Task Remove([Summary("The project")]string projectName,
+            [Summary("The member to remove assignments from")]IUser user,
+            [Summary("The parts to unassign from the member")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -113,7 +122,11 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("deadline")]
-        public async Task Deadline(string projectName, string partName, IGuildUser user, DateTime? deadline) {
+        [Summary("Changes the deadline of the assignment")]
+        public async Task Deadline([Summary("The project")]string projectName,
+            [Summary("The part of the assignment")]string partName,
+            [Summary("The member of the assignment")]IGuildUser user,
+            [Summary("The new deadline (can be null)")]DateTime? deadline) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -142,7 +155,9 @@ namespace CollaborationBot.Commands {
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("claim")]
-        public async Task Claim(string projectName, params string[] partNames) {
+        [Summary("Claims one or more parts and assigns them to you")]
+        public async Task Claim([Summary("The project")]string projectName,
+            [Summary("The parts to claim")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -214,14 +229,18 @@ namespace CollaborationBot.Commands {
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("unclaim")]
-        public async Task Unclaim(string projectName, params string[] partNames) {
+        [Summary("Unclaims one or more parts and unassigns them")]
+        public async Task Unclaim([Summary("The project")]string projectName,
+            [Summary("The parts to unclaim")]params string[] partNames) {
             await Remove(projectName, Context.User, partNames);
         }
 
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("done")]
-        public async Task Done(string projectName, params string[] partNames) {
+        [Summary("Marks one or more parts as done")]
+        public async Task Done([Summary("The project")]string projectName,
+            [Summary("The parts to complete")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {

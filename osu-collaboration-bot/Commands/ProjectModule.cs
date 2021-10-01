@@ -16,6 +16,7 @@ using System.Collections.Generic;
 
 namespace CollaborationBot.Commands {
     [Group]
+    [Summary("Main module with project and member related stuff")]
     public class ProjectModule : ModuleBase<SocketCommandContext> {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;

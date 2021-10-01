@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CollaborationBot.Commands {
     [Group("guild")]
+    [Summary("Everything about guild settings")]
     public class GuildModule : ModuleBase<SocketCommandContext> {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
