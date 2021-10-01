@@ -25,6 +25,7 @@ namespace CollaborationBot.Commands {
 
         [RequireUserPermission(GuildPermission.Administrator)]
         [Command("init")]
+        [Summary("Initializes compatibility with the server")]
         public async Task Init() {
             try {
                 if (_context.Guilds.Any(o => o.UniqueGuildId == Context.Guild.Id)) {
@@ -46,7 +47,8 @@ namespace CollaborationBot.Commands {
 
         [RequireUserPermission(GuildPermission.Administrator)]
         [Command("collab-category")]
-        public async Task CollabCategory(ICategoryChannel category) {
+        [Summary("Changes the category in which project channels will be automatically generated")]
+        public async Task CollabCategory([Summary("The category")]ICategoryChannel category) {
             var guild = await GetGuildAsync();
 
             if (guild == null) {
@@ -66,7 +68,8 @@ namespace CollaborationBot.Commands {
 
         [RequireUserPermission(GuildPermission.Administrator)]
         [Command("max-collabs")]
-        public async Task MaxCollabs(int count) {
+        [Summary("Changes the maximum number of projects a regular member can create")]
+        public async Task MaxCollabs([Summary("The maximum number of projects")]int count) {
             var guild = await GetGuildAsync();
 
             if (guild == null) {
