@@ -273,6 +273,9 @@
   <data name="GuildNotExistsMessage" xml:space="preserve">
     <value>Your server is not registered! You can add it via command '!!guild add'.</value>
   </data>
+  <data name="ListCommandsMessage" xml:space="preserve">
+    <value>Here's a list of commands and their description:</value>
+  </data>
   <data name="MaxAssignmentsReached" xml:space="preserve">
     <value>You are only allowed to have {0} active assignments.</value>
   </data>
@@ -299,6 +302,9 @@
   </data>
   <data name="NoAttachedFile" xml:space="preserve">
     <value>Could not find an attached file.</value>
+  </data>
+  <data name="NoDescription" xml:space="preserve">
+    <value>No description available</value>
   </data>
   <data name="NoPartsToSubmit" xml:space="preserve">
     <value>Could not find any assigned parts to submit to.</value>

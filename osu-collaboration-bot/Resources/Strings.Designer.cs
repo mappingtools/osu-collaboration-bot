@@ -529,6 +529,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Here&apos;s a list of commands and their description:.
+        /// </summary>
+        public static string ListCommandsMessage {
+            get {
+                return ResourceManager.GetString("ListCommandsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are only allowed to have {0} active assignments..
         /// </summary>
         public static string MaxAssignmentsReached {
@@ -606,6 +615,15 @@ namespace CollaborationBot.Resources {
         public static string NoAttachedFile {
             get {
                 return ResourceManager.GetString("NoAttachedFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No description available.
+        /// </summary>
+        public static string NoDescription {
+            get {
+                return ResourceManager.GetString("NoDescription", resourceCulture);
             }
         }
         

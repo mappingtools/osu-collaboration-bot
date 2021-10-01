@@ -20,12 +20,31 @@ namespace CollaborationBot.Commands {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
+        private readonly CommandService _commandService;
 
         public ProjectModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService) {
+            ResourceService resourceService, CommandService commandService) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
+            _commandService = commandService;
+        }
+
+        [Command("help")]
+        public async Task Help()
+        {
+            List<CommandInfo> commands = _commandService.Commands.ToList();
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+
+            foreach (CommandInfo command in commands)
+            {
+                // Get the command Summary attribute information
+                string embedFieldText = command.Summary ?? Strings.NoDescription + Environment.NewLine;
+
+                embedBuilder.AddField(command.Name, embedFieldText);
+            }
+
+            await ReplyAsync(Strings.ListCommandsMessage, false, embedBuilder.Build());
         }
 
         #region files
@@ -33,7 +52,9 @@ namespace CollaborationBot.Commands {
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("submit")]
-        public async Task SubmitPart(string projectName, string partName=null) {
+        [Summary("Submits a part of beatmap")]
+        public async Task SubmitPart([Summary("The project")]string projectName, 
+            [Summary("The part name to submit to (optional)")]string partName=null) {
             // Find out which parts this member is allowed to edit in the project
             // Download the attached file and put it in the member's folder
             // Merge it into the base file
@@ -162,7 +183,8 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("uploadBaseFile")]
-        public async Task UploadBaseFile(string projectName) {
+        [Summary("Replaces the current beatmap state with attached .osu file")]
+        public async Task UploadBaseFile([Summary("The project")]string projectName) {
             var attachment = Context.Message.Attachments.SingleOrDefault();
 
             if (attachment == null) {
@@ -191,7 +213,8 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("getBaseFile")]
-        public async Task GetBaseFile(string projectName) {
+        [Summary("Gets the current beatmap state.")]
+        public async Task GetBaseFile(["The project"]string projectName) {
             try {
                 var projectBaseFilePath = _fileHandler.GetProjectBaseFilePath(Context.Guild, projectName);
                 await Context.Channel.SendFileAsync(projectBaseFilePath, string.Format(Strings.ShowBaseFile, projectName));
