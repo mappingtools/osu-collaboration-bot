@@ -11,7 +11,6 @@ namespace CollaborationBot.Entities
         public int ProjectId { get; set; }
         public decimal UniqueChannelId { get; set; }
         public TimeSpan? Cooldown { get; set; }
-        // TODO: Add this to the database
         public DateTime? LastTime { get; set; }
         public bool DoPing { get; set; }
         public bool ShowOsu { get; set; }

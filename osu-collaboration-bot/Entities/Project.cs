@@ -19,7 +19,6 @@ namespace CollaborationBot.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal? UniqueRoleId { get; set; }
-        // TODO: add this to the database
         public decimal? ManagerRoleId { get; set; }
         public ProjectStatus? Status { get; set; }
         public bool SelfAssignmentAllowed { get; set; }
@@ -27,13 +26,9 @@ namespace CollaborationBot.Entities
         public bool PriorityPicking { get; set; }
         public bool PartRestrictedUpload { get; set; }
         public TimeSpan? AssignmentLifetime { get; set; }
-        // TODO: add this to the database
         public decimal? MainChannelId { get; set; }
-        // TODO: add this to the database
         public decimal? InfoChannelId { get; set; }
-        // TODO: add this to the database
         public bool CleanupOnDeletion { get; set; }
-        // TODO: add this to the database
         public bool DoReminders { get; set; }
 
         public virtual Guild Guild { get; set; }
