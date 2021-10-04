@@ -236,7 +236,7 @@ namespace CollaborationBot.Commands {
             var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 
             if (guild == null) {
-                await Context.Channel.SendMessageAsync(_resourceService.GuildNotExistsMessage);
+                await Context.Channel.SendMessageAsync(Strings.GuildNotExistsMessage);
                 return null;
             }
 
