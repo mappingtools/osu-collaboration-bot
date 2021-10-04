@@ -352,7 +352,7 @@ namespace CollaborationBot.Commands {
                 // Get/Create project role
                 IRole role;
                 if (!project.UniqueRoleId.HasValue) {
-                    role = await Context.Guild.CreateRoleAsync($"{project.Name}-Participant", isMentionable:true);
+                    role = await Context.Guild.CreateRoleAsync($"{project.Name} Participant", isMentionable:true);
                     await Role(projectName, role, true);
                     createdRole = true;
                 } else {
@@ -362,7 +362,7 @@ namespace CollaborationBot.Commands {
                 // Get/Create manager role
                 IRole managerRole;
                 if (!project.ManagerRoleId.HasValue) {
-                    managerRole = await Context.Guild.CreateRoleAsync($"{project.Name}-Manager", isMentionable:true);
+                    managerRole = await Context.Guild.CreateRoleAsync($"{project.Name} Manager", isMentionable:true);
                     await ManagerRole(projectName, managerRole, true);
                     createdManagerRole = true;
                 } else {
