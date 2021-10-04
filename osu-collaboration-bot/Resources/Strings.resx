@@ -211,7 +211,7 @@
     <value>Could not change manager role for project '{0}'.</value>
   </data>
   <data name="ChangeManagerRoleSuccess" xml:space="preserve">
-    <value>Changed manager role for project '{0}' to {1}.</value>
+    <value>Changed manager role for project '{0}' to `{1}`.</value>
   </data>
   <data name="ChangeProjectRoleFail" xml:space="preserve">
     <value>Could not change role for project '{0}'.</value>
@@ -256,10 +256,10 @@
     <value>Generated priorities for member of project '{0}'.</value>
   </data>
   <data name="GuildCollabCategoryFail" xml:space="preserve">
-    <value>Could not change collab category to {0}.</value>
+    <value>Could not change collab category to `{0}`.</value>
   </data>
   <data name="GuildCollabCategorySuccess" xml:space="preserve">
-    <value>Changed collab category to {0}.</value>
+    <value>Changed collab category to `{0}`.</value>
   </data>
   <data name="GuildExistsMessage" xml:space="preserve">
     <value>Server is already registered.</value>
