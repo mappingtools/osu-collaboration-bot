@@ -544,7 +544,7 @@ namespace CollaborationBot.Commands {
             await Context.Channel.SendMessageAsync(_resourceService.GenerateMembersListMessage(members));
         }
 
-        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        //[RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("join")]
         [Summary("Lets you become a member of the project")]
         public async Task JoinProject([Summary("The project")]string projectName) {
