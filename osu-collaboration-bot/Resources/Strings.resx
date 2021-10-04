@@ -129,6 +129,12 @@
   <data name="AddAutoUpdateSuccess" xml:space="preserve">
     <value>Added update notification for project '{0}' to channel {1}.</value>
   </data>
+  <data name="AddGuildFail" xml:space="preserve">
+    <value>Could not add this server.</value>
+  </data>
+  <data name="AddGuildSuccess" xml:space="preserve">
+    <value>Added this server.</value>
+  </data>
   <data name="AddManagerFailMessage" xml:space="preserve">
     <value>Could not promote {0} to manager of project '{1}'.</value>
   </data>
@@ -147,6 +153,12 @@
   <data name="AddPartSuccess" xml:space="preserve">
     <value>Added part '{0}' to project '{1}'.</value>
   </data>
+  <data name="AddProjectFail" xml:space="preserve">
+    <value>Could not add project with name '{0}'.</value>
+  </data>
+  <data name="AddProjectSuccess" xml:space="preserve">
+    <value>Added project with name '{0}'.</value>
+  </data>
   <data name="Aliases" xml:space="preserve">
     <value>Aliases:</value>
   </data>
@@ -158,6 +170,9 @@
   </data>
   <data name="AssignmentDeadlinePassed" xml:space="preserve">
     <value>{0} could not finish part '{1}' of project '{1}' before the deadline. The part is now available for claiming again.</value>
+  </data>
+  <data name="AssignmentListMessage" xml:space="preserve">
+    <value>Here are all the assignments of the project:</value>
   </data>
   <data name="AssignmentNotExists" xml:space="preserve">
     <value>This assignment does not exist.</value>
@@ -231,6 +246,9 @@
   <data name="CommandNotFound" xml:space="preserve">
     <value>Command `{0}` could not be found.</value>
   </data>
+  <data name="CommandUnauthorized" xml:space="preserve">
+    <value>{0}, you are not authorized to use this command.</value>
+  </data>
   <data name="CouldNotReadPartCSV" xml:space="preserve">
     <value>Could not read the CSV file with the part information. Make sure it uses the correct format.</value>
   </data>
@@ -291,6 +309,9 @@
   <data name="MemberExistsMessage" xml:space="preserve">
     <value>This user is already a member of the project.</value>
   </data>
+  <data name="MemberListMessage" xml:space="preserve">
+    <value>Here are all members of the project:</value>
+  </data>
   <data name="MemberNotExistsMessage" xml:space="preserve">
     <value>This user is not a member of the project.</value>
   </data>
@@ -306,14 +327,26 @@
   <data name="MultiRemovePartSuccess" xml:space="preserve">
     <value>Removed {0} parts from project '{1}'.</value>
   </data>
+  <data name="NoAssignments" xml:space="preserve">
+    <value>There are no assignments in this project.</value>
+  </data>
   <data name="NoAttachedFile" xml:space="preserve">
     <value>Could not find an attached file.</value>
   </data>
   <data name="NoDescription" xml:space="preserve">
     <value>No description available.</value>
   </data>
+  <data name="NoMembers" xml:space="preserve">
+    <value>There are no members of this project.</value>
+  </data>
+  <data name="NoParts" xml:space="preserve">
+    <value>There are no parts in this project.</value>
+  </data>
   <data name="NoPartsToSubmit" xml:space="preserve">
     <value>Could not find any assigned parts to submit to.</value>
+  </data>
+  <data name="NoProjects" xml:space="preserve">
+    <value>There are no projects in this server.</value>
   </data>
   <data name="NotAssigned" xml:space="preserve">
     <value>You are not assigned to this part.</value>
@@ -347,6 +380,9 @@
   </data>
   <data name="PartFromCSVSuccess" xml:space="preserve">
     <value>Imported parts from the CSV file into project '{0}'.</value>
+  </data>
+  <data name="PartListMessage" xml:space="preserve">
+    <value>Here are all the parts of the project:</value>
   </data>
   <data name="PartNotExists" xml:space="preserve">
     <value>A part named '{0}' does not exist in project '{1}'.</value>
@@ -389,6 +425,9 @@
   </data>
   <data name="ProjectInfoChannelSuccess" xml:space="preserve">
     <value>Changed project info channel to {0}.</value>
+  </data>
+  <data name="ProjectListMessage" xml:space="preserve">
+    <value>Here are all the projects in the server:</value>
   </data>
   <data name="ProjectMainChannelFail" xml:space="preserve">
     <value>Could not change project main channel to {0}.</value>
@@ -455,6 +494,12 @@
   </data>
   <data name="RemovePartSuccess" xml:space="preserve">
     <value>Removed part '{0}' from project '{1}'.</value>
+  </data>
+  <data name="RemoveProjectFail" xml:space="preserve">
+    <value>Could not remove project '{0}'.</value>
+  </data>
+  <data name="RemoveProjectSuccess" xml:space="preserve">
+    <value>Removed project '{0}'.</value>
   </data>
   <data name="SelfAssignmentNotAllowed" xml:space="preserve">
     <value>Self-assignment is not allowed at the moment.</value>

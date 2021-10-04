@@ -97,6 +97,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not add this server..
+        /// </summary>
+        public static string AddGuildFail {
+            get {
+                return ResourceManager.GetString("AddGuildFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Added this server..
+        /// </summary>
+        public static string AddGuildSuccess {
+            get {
+                return ResourceManager.GetString("AddGuildSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not promote {0} to manager of project &apos;{1}&apos;..
         /// </summary>
         public static string AddManagerFailMessage {
@@ -151,6 +169,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not add project with name &apos;{0}&apos;..
+        /// </summary>
+        public static string AddProjectFail {
+            get {
+                return ResourceManager.GetString("AddProjectFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Added project with name &apos;{0}&apos;..
+        /// </summary>
+        public static string AddProjectSuccess {
+            get {
+                return ResourceManager.GetString("AddProjectSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aliases:.
         /// </summary>
         public static string Aliases {
@@ -183,6 +219,15 @@ namespace CollaborationBot.Resources {
         public static string AssignmentDeadlinePassed {
             get {
                 return ResourceManager.GetString("AssignmentDeadlinePassed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Here are all the assignments of the project:.
+        /// </summary>
+        public static string AssignmentListMessage {
+            get {
+                return ResourceManager.GetString("AssignmentListMessage", resourceCulture);
             }
         }
         
@@ -403,6 +448,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}, you are not authorized to use this command..
+        /// </summary>
+        public static string CommandUnauthorized {
+            get {
+                return ResourceManager.GetString("CommandUnauthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not read the CSV file with the part information. Make sure it uses the correct format..
         /// </summary>
         public static string CouldNotReadPartCSV {
@@ -583,6 +637,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Here are all members of the project:.
+        /// </summary>
+        public static string MemberListMessage {
+            get {
+                return ResourceManager.GetString("MemberListMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This user is not a member of the project..
         /// </summary>
         public static string MemberNotExistsMessage {
@@ -628,6 +691,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are no assignments in this project..
+        /// </summary>
+        public static string NoAssignments {
+            get {
+                return ResourceManager.GetString("NoAssignments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find an attached file..
         /// </summary>
         public static string NoAttachedFile {
@@ -646,11 +718,38 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are no members of this project..
+        /// </summary>
+        public static string NoMembers {
+            get {
+                return ResourceManager.GetString("NoMembers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no parts in this project..
+        /// </summary>
+        public static string NoParts {
+            get {
+                return ResourceManager.GetString("NoParts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find any assigned parts to submit to..
         /// </summary>
         public static string NoPartsToSubmit {
             get {
                 return ResourceManager.GetString("NoPartsToSubmit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no projects in this server..
+        /// </summary>
+        public static string NoProjects {
+            get {
+                return ResourceManager.GetString("NoProjects", resourceCulture);
             }
         }
         
@@ -744,6 +843,15 @@ namespace CollaborationBot.Resources {
         public static string PartFromCSVSuccess {
             get {
                 return ResourceManager.GetString("PartFromCSVSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Here are all the parts of the project:.
+        /// </summary>
+        public static string PartListMessage {
+            get {
+                return ResourceManager.GetString("PartListMessage", resourceCulture);
             }
         }
         
@@ -870,6 +978,15 @@ namespace CollaborationBot.Resources {
         public static string ProjectInfoChannelSuccess {
             get {
                 return ResourceManager.GetString("ProjectInfoChannelSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Here are all the projects in the server:.
+        /// </summary>
+        public static string ProjectListMessage {
+            get {
+                return ResourceManager.GetString("ProjectListMessage", resourceCulture);
             }
         }
         
@@ -1068,6 +1185,24 @@ namespace CollaborationBot.Resources {
         public static string RemovePartSuccess {
             get {
                 return ResourceManager.GetString("RemovePartSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not remove project &apos;{0}&apos;..
+        /// </summary>
+        public static string RemoveProjectFail {
+            get {
+                return ResourceManager.GetString("RemoveProjectFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removed project &apos;{0}&apos;..
+        /// </summary>
+        public static string RemoveProjectSuccess {
+            get {
+                return ResourceManager.GetString("RemoveProjectSuccess", resourceCulture);
             }
         }
         

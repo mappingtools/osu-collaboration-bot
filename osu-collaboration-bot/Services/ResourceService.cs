@@ -12,11 +12,6 @@ namespace CollaborationBot.Services {
     public class ResourceService {
         private readonly DiscordSocketClient _client;
 
-        public string BackendErrorMessage = Strings.BackendErrorMessage;
-        public string GuildExistsMessage = Strings.GuildExistsMessage;
-
-        public string GuildNotExistsMessage = Strings.GuildNotExistsMessage;
-
         public ResourceService(DiscordSocketClient client) {
             _client = client;
         }
@@ -29,20 +24,20 @@ namespace CollaborationBot.Services {
 
         public string GenerateAddProjectMessage(string projectName, bool isSuccessful = true) {
             if (isSuccessful)
-                return $"Added project with name '{projectName}'.";
-            return $"Could not add project with name '{projectName}'.";
+                return string.Format(Strings.AddProjectSuccess, projectName);
+            return string.Format(Strings.AddProjectFail, projectName);
         }
 
         public string GenerateRemoveProjectMessage(string projectName, bool isSuccessful = true) {
             if (isSuccessful)
-                return $"Removed project with name '{projectName}'.";
-            return $"Could not remove project with name '{projectName}'.";
+                return string.Format(Strings.RemoveProjectSuccess, projectName);
+            return string.Format(Strings.RemoveProjectFail, projectName);
         }
 
         public string GenerateAddGuildMessage(bool isSuccessful = true) {
             if (isSuccessful)
-                return "Added this server.";
-            return "Could not add this server.";
+                return Strings.AddGuildSuccess;
+            return Strings.AddGuildFail;
         }
 
         public string GenerateAddMemberToProject(IMentionable user, string projectName, bool isSuccessful = true) {
@@ -76,24 +71,24 @@ namespace CollaborationBot.Services {
         }
 
         public string GenerateUnauthorizedMessage(IMentionable mention) {
-            return $"{mention.Mention}, you are not authorized to use this command.";
+            return string.Format(Strings.CommandUnauthorized, mention.Mention);
         }
         
         public string GenerateProjectListMessage(List<Project> projects) {
-            if (projects.Count <= 0) return "There are no projects in this server."; 
-            return GenerateListMessage("Here are all the projects in the server:", projects.Select(p => $"{p.Name}{(p.Status.HasValue ? $" ({p.Status})" : string.Empty)}"));
+            if (projects.Count <= 0) return Strings.NoProjects; 
+            return GenerateListMessage(Strings.ProjectListMessage, projects.Select(p => $"{p.Name}{(p.Status.HasValue ? $" ({p.Status})" : string.Empty)}"));
         }
 
         public string GenerateMembersListMessage(List<Member> members) {
-            if (members.Count <= 0) return "There are no members of this project.";
-            return GenerateListMessage("Here are all members of the project:", 
+            if (members.Count <= 0) return Strings.NoMembers;
+            return GenerateListMessage(Strings.MemberListMessage, 
                 members.Select(o =>
                     $"{MemberName(o)}{(o.Priority.HasValue ? $" ({o.Priority.Value})" : string.Empty)} [{o.ProjectRole}]"));
         }
 
         public string GeneratePartsListMessage(List<Part> parts) {
-            if (parts.Count <= 0) return "There are no parts in this project.";
-            return GenerateListMessage("Here are all the parts of the project:",
+            if (parts.Count <= 0) return Strings.NoParts;
+            return GenerateListMessage(Strings.PartListMessage,
                 parts.Select(o => {
                     string str = $"{o.Name} ({TimeToString(o.Start)} - {TimeToString(o.End)}): {o.Status}";
                     if (o.Assignments.Count > 0) {
@@ -107,8 +102,8 @@ namespace CollaborationBot.Services {
         }
 
         public string GenerateAssignmentListMessage(List<Assignment> assignments) {
-            if (assignments.Count <= 0) return "There are no assignments in this project.";
-            return GenerateListMessage("Here are all the assignments of the project:",
+            if (assignments.Count <= 0) return Strings.NoAssignments;
+            return GenerateListMessage(Strings.AssignmentListMessage,
                 assignments.Select(o => $"{o.Part.Name}: {MemberName(o.Member)}{(o.Deadline.HasValue ? " - " + o.Deadline.Value.ToString("yyyy-MM-dd") : string.Empty)}"));
         }
 
