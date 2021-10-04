@@ -109,6 +109,7 @@ namespace CollaborationBot {
         private async Task Connected() {
             await _client.DownloadUsersAsync(guildList);
             guildList.Clear();
+            await _client.SetGameAsync(_appSettings.Prefix + "help");
         }
 
         private Task GuildAvailable(SocketGuild arg) {
