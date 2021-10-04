@@ -33,20 +33,31 @@ namespace CollaborationBot.Commands {
 
         [Command("help")]
         [Summary("Shows command information")]
-        public async Task Help()
-        {
+        public async Task Help() {
             List<CommandInfo> commands = _commandService.Commands.ToList();
             EmbedBuilder embedBuilder = new EmbedBuilder();
 
-            foreach (CommandInfo command in commands)
-            {
+            int c = 0;
+            bool first = true;
+            foreach (CommandInfo command in commands) {
                 // Get the command Summary attribute information
                 string embedFieldText = command.Summary ?? Strings.NoDescription + Environment.NewLine;
+                string nameWithArguments = command.Name + string.Concat(command.Parameters.Select(o => $" [{o.Name}]"));
 
-                embedBuilder.AddField(command.Name, embedFieldText);
+                embedBuilder.AddField(nameWithArguments, embedFieldText);
+                c++;
+
+                if (c == 25) {
+                    await ReplyAsync(first ? Strings.ListCommandsMessage : string.Empty, false, embedBuilder.Build());
+                    embedBuilder = new EmbedBuilder();
+                    first = false;
+                    c = 0;
+                }
             }
 
-            await ReplyAsync(Strings.ListCommandsMessage, false, embedBuilder.Build());
+            if (c > 0) {
+                await ReplyAsync(first ? Strings.ListCommandsMessage : string.Empty, false, embedBuilder.Build());
+            }
         }
 
         #region files
