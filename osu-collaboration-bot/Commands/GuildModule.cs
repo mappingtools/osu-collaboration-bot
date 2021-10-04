@@ -28,8 +28,8 @@ namespace CollaborationBot.Commands {
 
         [Command("help")]
         [Summary("Shows command information")]
-        public async Task Help() {
-            await _userHelpService.DoHelp(Context, "Guild module", "guild");
+        public async Task Help(string command = "") {
+            await _userHelpService.DoHelp(Context, "Guild module", "guild", command);
         }
 
         [RequireUserPermission(GuildPermission.Administrator)]

@@ -34,8 +34,8 @@ namespace CollaborationBot.Commands {
 
         [Command("help")]
         [Summary("Shows command information")]
-        public async Task Help() {
-            await _userHelpService.DoHelp(Context, "Project module", "", true);
+        public async Task Help(string command = "") {
+            await _userHelpService.DoHelp(Context, "Project module", "", command, true);
         }
 
         #region files

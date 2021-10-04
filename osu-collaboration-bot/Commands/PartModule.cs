@@ -32,8 +32,8 @@ namespace CollaborationBot.Commands {
 
         [Command("help")]
         [Summary("Shows command information")]
-        public async Task Help() {
-            await _userHelpService.DoHelp(Context, "Part module", "part");
+        public async Task Help(string command = "") {
+            await _userHelpService.DoHelp(Context, "Part module", "part", command);
         }
 
         [RequireProjectMember(Group = "Permission")]

@@ -151,6 +151,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aliases:.
+        /// </summary>
+        public static string Aliases {
+            get {
+                return ResourceManager.GetString("Aliases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All member tags: ```{0}``` .
         /// </summary>
         public static string AllMemberTags {
@@ -381,6 +390,15 @@ namespace CollaborationBot.Resources {
         public static string ChangeTagsSuccess {
             get {
                 return ResourceManager.GetString("ChangeTagsSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command `{0}` could not be found..
+        /// </summary>
+        public static string CommandNotFound {
+            get {
+                return ResourceManager.GetString("CommandNotFound", resourceCulture);
             }
         }
         
@@ -619,7 +637,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No description available.
+        ///   Looks up a localized string similar to No description available..
         /// </summary>
         public static string NoDescription {
             get {
@@ -676,7 +694,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use the help command on other modules for more information.
+        ///   Looks up a localized string similar to Use the help command on other modules for more information:.
         /// </summary>
         public static string OtherModuleHelpReference {
             get {

@@ -30,8 +30,8 @@ namespace CollaborationBot.Commands {
 
         [Command("help")]
         [Summary("Shows command information")]
-        public async Task Help() {
-            await _userHelpService.DoHelp(Context, "Auto-update module", "au");
+        public async Task Help(string command = "") {
+            await _userHelpService.DoHelp(Context, "Auto-update module", "au", command);
         }
 
         [RequireProjectManager(Group = "Permission")]

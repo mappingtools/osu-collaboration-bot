@@ -17,11 +17,27 @@ namespace CollaborationBot.Services {
             _appSettings = appSettings;
         }
 
-        public async Task DoHelp(SocketCommandContext context, string moduleName, string modulePrefix, bool showReference = false) {
+        public async Task DoHelp(SocketCommandContext context,
+                                 string moduleName,
+                                 string modulePrefix,
+                                 string commandName = "",
+                                 bool showReference = false) {
             List<CommandInfo> commands = _commandService.Modules.First(o => o.Name == moduleName).Commands.ToList();
-            EmbedBuilder embedBuilder = new EmbedBuilder();
             string prefix = _appSettings.Prefix + modulePrefix + (string.IsNullOrWhiteSpace(modulePrefix) ? string.Empty : " ");
 
+            if (!string.IsNullOrEmpty(commandName)) {
+                var command = commands.FirstOrDefault(o => string.Equals(o.Name, commandName, StringComparison.OrdinalIgnoreCase));
+
+                if (command == null) {
+                    await context.Channel.SendMessageAsync(string.Format(Strings.CommandNotFound, prefix + commandName));
+                    return;
+                }
+
+                await DoCommandHelp(context, prefix, command);
+                return;
+            }
+
+            EmbedBuilder embedBuilder = new EmbedBuilder();
             int c = 0;
             bool first = true;
             foreach (CommandInfo command in commands) {
@@ -49,6 +65,27 @@ namespace CollaborationBot.Services {
                 embedBuilder.AddField(Strings.OtherModuleHelpReference, string.Format(Strings.OtherModuleHelpGuide, prefix));
                 await context.Channel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
             }
+        }
+
+        private async Task DoCommandHelp(SocketCommandContext context, string prefix, CommandInfo command) {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+
+            // Get the command Summary attribute information
+            string embedFieldText = command.Summary ?? Strings.NoDescription + Environment.NewLine;
+            string nameWithArguments = prefix + command.Name + string.Concat(command.Parameters.Select(o => $" [{o.Name}]"));
+
+            embedBuilder.AddField(nameWithArguments, embedFieldText);
+
+            if (command.Aliases.Count > 0) {
+                embedBuilder.AddField(Strings.Aliases, string.Join(", ", command.Aliases));
+            }
+            
+            foreach (var parameter in command.Parameters) {
+                string parameterEmbedFieldText = parameter.Summary ?? Strings.NoDescription + Environment.NewLine;
+                embedBuilder.AddField($"[{parameter.Name}]", parameterEmbedFieldText);
+            }
+
+            await context.Channel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
         }
     }
 }
