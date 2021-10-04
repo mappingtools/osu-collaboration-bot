@@ -169,7 +169,7 @@
     <value>You are already a member of this project.</value>
   </data>
   <data name="AssignmentDeadlinePassed" xml:space="preserve">
-    <value>{0} could not finish part '{1}' of project '{1}' before the deadline. The part is now available for claiming again.</value>
+    <value>{0} could not finish part '{1}' of project '{2}' before the deadline. The part is now available for claiming again.</value>
   </data>
   <data name="AssignmentListMessage" xml:space="preserve">
     <value>Here are all the assignments of the project:</value>

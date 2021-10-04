@@ -75,10 +75,10 @@ namespace CollaborationBot {
                 var channel = _client.GetChannel((ulong) assignment.Part.Project.MainChannelId!.Value);
                 var user = _client.GetUser((ulong) assignment.Member.UniqueMemberId);
                 
-                if (channel is not ITextChannel textChannel) continue;
+                if (channel is not ITextChannel textChannel || user == null) continue;
 
                 await textChannel.SendMessageAsync(string.Format(Strings.DeadlineReminder, user.Mention,
-                    assignment.Part, assignment.Part.Project.Name));
+                    assignment.Part.Name, assignment.Part.Project.Name));
                 
                 assignment.LastReminder = DateTime.UtcNow;
             }
@@ -95,9 +95,9 @@ namespace CollaborationBot {
                     var channel = _client.GetChannel((ulong) assignment.Part.Project.MainChannelId!.Value);
                     var user = _client.GetUser((ulong) assignment.Member.UniqueMemberId);
                 
-                    if (channel is ITextChannel textChannel) {
+                    if (channel is ITextChannel textChannel && user != null) {
                         await textChannel.SendMessageAsync(string.Format(Strings.AssignmentDeadlinePassed, user.Mention,
-                            assignment.Part, assignment.Part.Project.Name));
+                            assignment.Part.Name, assignment.Part.Project.Name));
                     }
                 }
                 

@@ -214,7 +214,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} could not finish part &apos;{1}&apos; of project &apos;{1}&apos; before the deadline. The part is now available for claiming again..
+        ///   Looks up a localized string similar to {0} could not finish part &apos;{1}&apos; of project &apos;{2}&apos; before the deadline. The part is now available for claiming again..
         /// </summary>
         public static string AssignmentDeadlinePassed {
             get {
