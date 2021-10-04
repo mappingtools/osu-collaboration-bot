@@ -361,7 +361,7 @@ namespace CollaborationBot.Commands {
                 IRole managerRole;
                 if (!project.ManagerRoleId.HasValue) {
                     managerRole = await Context.Guild.CreateRoleAsync($"{project.Name}-Manager", isMentionable:true);
-                    project.ManagerRoleId = role.Id;
+                    await ManagerRole(projectName, managerRole, true);
                     createdManagerRole = true;
                 } else {
                     managerRole = Context.Guild.GetRole((ulong) project.ManagerRoleId.Value);
