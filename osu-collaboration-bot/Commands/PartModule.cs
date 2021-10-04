@@ -325,14 +325,21 @@ namespace CollaborationBot.Commands {
             try {
                 var parts = await _context.Parts.AsQueryable().Where(o => o.ProjectId == project.Id).ToListAsync();
 
-                await using var dataStream = new MemoryStream();
-                await using (var writer = new StreamWriter(dataStream))
-                await using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture)) {
-                    await csv.WriteRecordsAsync(parts.Select(o => new FileHandlingService.PartRecord
-                        {Name = o.Name, Start = o.Start, End = o.End, Status = o.Status}));
-                }
+                using var dataStream = new MemoryStream();
+                var writer = new StreamWriter(dataStream);
+                using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+                await csv.WriteRecordsAsync(parts.Select(o => new FileHandlingService.PartRecord {
+                    Name = o.Name,
+                    Start = o.Start,
+                    End = o.End,
+                    Status = o.Status
+                }));
 
-                await Context.Channel.SendFileAsync(dataStream, string.Format(Strings.PartToCSVSuccess, projectName));
+                writer.Flush();
+                dataStream.Position = 0;
+
+                await Context.Channel.SendFileAsync(dataStream, projectName + "_parts.csv",
+                    string.Format(Strings.PartToCSVSuccess, projectName));
             } catch (Exception e) {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.PartToCSVFail, projectName));
