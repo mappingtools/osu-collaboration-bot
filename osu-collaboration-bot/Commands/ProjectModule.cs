@@ -1171,7 +1171,7 @@ namespace CollaborationBot.Commands {
         [Command("status")]
         [Summary("Changes the status of the project")]
         public async Task Status([Summary("The project")]string projectName,
-            [Summary("The new status")]ProjectStatus? status) {
+            [Summary("The new status")]ProjectStatus status) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
