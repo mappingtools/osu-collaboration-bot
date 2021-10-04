@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using CollaborationBot.Entities;
@@ -93,7 +94,7 @@ namespace CollaborationBot.Services {
             public PartStatus? Status { get; set; }
         }
 
-        public async Task<IEnumerable<PartRecord>> DownloadPartsCSV(Attachment att, bool hasHeaders = true) {
+        public async Task<List<PartRecord>> DownloadPartsCSV(Attachment att, bool hasHeaders = true) {
             try {
                 if (!IsFilePermissible(att.Url, PermissibleFileType.DOT_CSV)) return null;
 
@@ -109,7 +110,7 @@ namespace CollaborationBot.Services {
                 };
                 using var reader = new StreamReader(new MemoryStream(result));
                 using var csv = new CsvReader(reader, config);
-                var records = csv.GetRecords<PartRecord>();
+                var records = csv.GetRecords<PartRecord>().ToList();
 
                 return records;
             } catch (Exception e) {
