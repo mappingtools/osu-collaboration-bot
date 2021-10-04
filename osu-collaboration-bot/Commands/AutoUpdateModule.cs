@@ -12,17 +12,26 @@ using System.Collections.Generic;
 
 namespace CollaborationBot.Commands {
     [Group("au")]
+    [Name("Auto-update module")]
     [Summary("Everything about automatic update notifications")]
     public class AutoUpdateModule : ModuleBase<SocketCommandContext> {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
+        private readonly UserHelpService _userHelpService;
 
         public AutoUpdateModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService) {
+            ResourceService resourceService, UserHelpService userHelpService) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
+            _userHelpService = userHelpService;
+        }
+
+        [Command("help")]
+        [Summary("Shows command information")]
+        public async Task Help() {
+            await _userHelpService.DoHelp(Context, "Auto-update module", "au");
         }
 
         [RequireProjectManager(Group = "Permission")]

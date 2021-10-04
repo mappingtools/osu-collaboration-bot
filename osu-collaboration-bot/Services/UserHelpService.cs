@@ -1,0 +1,54 @@
+﻿using CollaborationBot.Resources;
+using Discord;
+using Discord.Commands;
+using Discord.WebSocket;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace CollaborationBot.Services {
+    public class UserHelpService {
+        private readonly CommandService _commandService;
+        private readonly AppSettings _appSettings;
+
+        public UserHelpService(CommandService commands, AppSettings appSettings) {
+            _commandService = commands;
+            _appSettings = appSettings;
+        }
+
+        public async Task DoHelp(SocketCommandContext context, string moduleName, string modulePrefix, bool showReference = false) {
+            List<CommandInfo> commands = _commandService.Modules.First(o => o.Name == moduleName).Commands.ToList();
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            string prefix = _appSettings.Prefix + modulePrefix + " ";
+
+            int c = 0;
+            bool first = true;
+            foreach (CommandInfo command in commands) {
+                // Get the command Summary attribute information
+                string embedFieldText = command.Summary ?? Strings.NoDescription + Environment.NewLine;
+                string nameWithArguments = command.Name + string.Concat(command.Parameters.Select(o => $" [{o.Name}]"));
+
+                embedBuilder.AddField(nameWithArguments, embedFieldText);
+                c++;
+
+                if (c == 25) {
+                    await context.Channel.SendMessageAsync(first ? Strings.ListCommandsMessage : string.Empty, false, embedBuilder.Build());
+                    embedBuilder = new EmbedBuilder();
+                    first = false;
+                    c = 0;
+                }
+            }
+
+            if (c > 0) {
+                await context.Channel.SendMessageAsync(first ? Strings.ListCommandsMessage : string.Empty, false, embedBuilder.Build());
+            }
+
+            if (showReference) {
+                embedBuilder = new EmbedBuilder();
+                embedBuilder.AddField(Strings.OtherModuleHelpReference, string.Format(Strings.OtherModuleHelpGuide, prefix));
+                await context.Channel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
+            }
+        }
+    }
+}

@@ -1,27 +1,35 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using CollaborationBot.Entities;
+﻿using CollaborationBot.Entities;
 using CollaborationBot.Resources;
 using CollaborationBot.Services;
 using Discord;
 using Discord.Commands;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CollaborationBot.Commands {
     [Group("guild")]
+    [Name("Guild module")]
     [Summary("Everything about guild settings")]
     public class GuildModule : ModuleBase<SocketCommandContext> {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
+        private readonly UserHelpService _userHelpService;
 
         public GuildModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService) {
+            ResourceService resourceService, UserHelpService userHelpService) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
+            _userHelpService = userHelpService;
+        }
+
+        [Command("help")]
+        [Summary("Shows command information")]
+        public async Task Help() {
+            await _userHelpService.DoHelp(Context, "Guild module", "guild");
         }
 
         [RequireUserPermission(GuildPermission.Administrator)]

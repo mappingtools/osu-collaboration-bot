@@ -132,6 +132,7 @@ namespace CollaborationBot {
             services.AddSingleton<DiscordSocketClient>();
             services.AddSingleton<CommandService>();
             services.AddSingleton<CommandHandlerService>();
+            services.AddSingleton<UserHelpService>();
 
             return services.BuildServiceProvider();
         }

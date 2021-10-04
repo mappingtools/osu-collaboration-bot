@@ -11,17 +11,26 @@ using System;
 
 namespace CollaborationBot.Commands {
     [Group("asn")]
+    [Name("Assignment module")]
     [Summary("Everything about assignments")]
     public class AssignmentModule : ModuleBase<SocketCommandContext> {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
+        private readonly UserHelpService _userHelpService;
 
         public AssignmentModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService) {
+            ResourceService resourceService, UserHelpService userHelpService) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
+            _userHelpService = userHelpService;
+        }
+
+        [Command("help")]
+        [Summary("Shows command information")]
+        public async Task Help() {
+            await _userHelpService.DoHelp(Context, "Assignment module", "asn");
         }
 
         [RequireProjectManager(Group = "Permission")]

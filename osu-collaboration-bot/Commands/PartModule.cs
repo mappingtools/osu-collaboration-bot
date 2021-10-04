@@ -14,17 +14,26 @@ using CsvHelper;
 
 namespace CollaborationBot.Commands {
     [Group("part")]
+    [Name("Part module")]
     [Summary("Everything about parts")]
     public class PartModule : ModuleBase<SocketCommandContext> {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
+        private readonly UserHelpService _userHelpService;
 
         public PartModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService) {
+            ResourceService resourceService, UserHelpService userHelpService) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
+            _userHelpService = userHelpService;
+        }
+
+        [Command("help")]
+        [Summary("Shows command information")]
+        public async Task Help() {
+            await _userHelpService.DoHelp(Context, "Part module", "part");
         }
 
         [RequireProjectMember(Group = "Permission")]

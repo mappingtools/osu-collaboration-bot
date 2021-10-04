@@ -664,6 +664,27 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}guild help
+        ///{0}part help
+        ///{0}asn help
+        ///{0}au help.
+        /// </summary>
+        public static string OtherModuleHelpGuide {
+            get {
+                return ResourceManager.GetString("OtherModuleHelpGuide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the help command on other modules for more information.
+        /// </summary>
+        public static string OtherModuleHelpReference {
+            get {
+                return ResourceManager.GetString("OtherModuleHelpReference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This user is owner of project &apos;{0}&apos; and can&apos;t be demoted. Transfer ownership with `set-owner` first..
         /// </summary>
         public static string OwnerCannotBeDemotedMessage {

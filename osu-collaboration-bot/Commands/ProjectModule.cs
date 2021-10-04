@@ -16,48 +16,26 @@ using System.Collections.Generic;
 
 namespace CollaborationBot.Commands {
     [Group]
+    [Name("Project module")]
     [Summary("Main module with project and member related stuff")]
     public class ProjectModule : ModuleBase<SocketCommandContext> {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
-        private readonly CommandService _commandService;
+        private readonly UserHelpService _userHelpService;
 
         public ProjectModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService, CommandService commandService) {
+            ResourceService resourceService, UserHelpService userHelpService) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
-            _commandService = commandService;
+            _userHelpService = userHelpService;
         }
 
         [Command("help")]
         [Summary("Shows command information")]
         public async Task Help() {
-            List<CommandInfo> commands = _commandService.Commands.ToList();
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-
-            int c = 0;
-            bool first = true;
-            foreach (CommandInfo command in commands) {
-                // Get the command Summary attribute information
-                string embedFieldText = command.Summary ?? Strings.NoDescription + Environment.NewLine;
-                string nameWithArguments = command.Name + string.Concat(command.Parameters.Select(o => $" [{o.Name}]"));
-
-                embedBuilder.AddField(nameWithArguments, embedFieldText);
-                c++;
-
-                if (c == 25) {
-                    await ReplyAsync(first ? Strings.ListCommandsMessage : string.Empty, false, embedBuilder.Build());
-                    embedBuilder = new EmbedBuilder();
-                    first = false;
-                    c = 0;
-                }
-            }
-
-            if (c > 0) {
-                await ReplyAsync(first ? Strings.ListCommandsMessage : string.Empty, false, embedBuilder.Build());
-            }
+            await _userHelpService.DoHelp(Context, "Project module", "", true);
         }
 
         #region files

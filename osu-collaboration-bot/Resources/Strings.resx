@@ -318,6 +318,15 @@
   <data name="NotLookingForMembers" xml:space="preserve">
     <value>The project is currently not looking for members.</value>
   </data>
+  <data name="OtherModuleHelpGuide" xml:space="preserve">
+    <value>{0}guild help
+{0}part help
+{0}asn help
+{0}au help</value>
+  </data>
+  <data name="OtherModuleHelpReference" xml:space="preserve">
+    <value>Use the help command on other modules for more information</value>
+  </data>
   <data name="OwnerCannotBeDemotedMessage" xml:space="preserve">
     <value>This user is owner of project '{0}' and can't be demoted. Transfer ownership with `set-owner` first.</value>
   </data>
