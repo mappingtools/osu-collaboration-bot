@@ -151,7 +151,8 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("mention")]
+        [Command("do-ping")]
+        [Alias("mention")]
         [Summary("Changes whether the update notification pings all members")]
         public async Task DoPing([Summary("The project")]string projectName,
             [Summary("The channel the notification is in")]ITextChannel channel,

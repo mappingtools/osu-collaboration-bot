@@ -173,7 +173,8 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("uploadBaseFile")]
+        [Command("setBaseFile")]
+        [Alias("set-base-file", "uploadBaseFile", "upload-base-file")]
         [Summary("Replaces the current beatmap state of the project with attached .osu file")]
         public async Task UploadBaseFile([Summary("The project")]string projectName) {
             var attachment = Context.Message.Attachments.SingleOrDefault();
@@ -204,6 +205,7 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("getBaseFile")]
+        [Alias("get-base-file", "downloadBaseFile", "download-base-file")]
         [Summary("Gets the current beatmap state of the project")]
         public async Task GetBaseFile([Summary("The project")]string projectName) {
             try {
