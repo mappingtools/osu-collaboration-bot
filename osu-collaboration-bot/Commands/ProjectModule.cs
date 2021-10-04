@@ -362,7 +362,7 @@ namespace CollaborationBot.Commands {
                 IRole role;
                 if (!project.UniqueRoleId.HasValue) {
                     role = await Context.Guild.CreateRoleAsync($"{project.Name}-Participant", isMentionable:true);
-                    project.UniqueRoleId = role.Id;
+                    await Role(projectName, role, true);
                     createdRole = true;
                 } else {
                     role = Context.Guild.GetRole((ulong) project.UniqueRoleId.Value);
@@ -409,7 +409,8 @@ namespace CollaborationBot.Commands {
                     }
 
                     // Allow auto cleanup if both channels were created
-                    project.CleanupOnDeletion = createdMain && createdInfo && createdRole && createdManagerRole;
+                    project.CleanupOnDeletion = project.CleanupOnDeletion ||
+                        createdMain && createdInfo && createdRole && createdManagerRole;
 
                     // Send the description in the info channel
                     if (!string.IsNullOrEmpty(project.Description)) {

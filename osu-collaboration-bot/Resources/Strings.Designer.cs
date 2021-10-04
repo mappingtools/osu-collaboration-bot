@@ -763,6 +763,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This project has already been set-up..
+        /// </summary>
+        public static string ProjectAlreadySetup {
+            get {
+                return ResourceManager.GetString("ProjectAlreadySetup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not change default lifetime of assignments in project &apos;{0}&apos;..
         /// </summary>
         public static string ProjectAssignmentLifetimeFail {
