@@ -81,7 +81,7 @@ namespace CollaborationBot.Services {
         
         public string GenerateProjectListMessage(List<Project> projects) {
             if (projects.Count <= 0) return "There are no projects in this server."; 
-            return GenerateListMessage("Here are all the projects in the server:", projects.Select(p => p.Name));
+            return GenerateListMessage("Here are all the projects in the server:", projects.Select(p => $"{p.Name}{(p.Status.HasValue ? $" ({p.Status})" : string.Empty)}"));
         }
 
         public string GenerateMembersListMessage(List<Member> members) {
