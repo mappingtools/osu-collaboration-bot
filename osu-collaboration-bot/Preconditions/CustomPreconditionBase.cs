@@ -31,7 +31,7 @@ namespace CollaborationBot.Preconditions {
 
             var parseResult = await command.ParseAsync(
                 context,
-                appSettings.Prefix.Length + command.Module.Name.Length + command.Name.Length + 2,
+                appSettings.Prefix.Length + (command.Module.Group?.Length ?? 0) + command.Name.Length + 2,
                 SearchResult.FromSuccess(context.Message.Content, Array.Empty<CommandMatch>())
                 );
 
