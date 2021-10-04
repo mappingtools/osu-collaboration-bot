@@ -69,7 +69,7 @@ namespace CollaborationBot.Commands {
         [Summary("Adds a new update notification to the project")]
         public async Task Add([Summary("The project")]string projectName,
             [Summary("The channel to post the notification in")]ITextChannel channel,
-            [Summary("The cooldown on the notification (can be null)")]TimeSpan? cooldown = null,
+            [Summary("The cooldown on the notification (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? cooldown = null,
             [Summary("Whether to ping members on an update notification")]bool doPing = false) {
             var project = await GetProjectAsync(projectName);
 
@@ -126,7 +126,7 @@ namespace CollaborationBot.Commands {
         [Summary("Changes the cooldown of the update notification")]
         public async Task Cooldown([Summary("The project")]string projectName,
             [Summary("The channel the notification is in")]ITextChannel channel,
-            [Summary("The new cooldown (can be null)")]TimeSpan? cooldown) {
+            [Summary("The new cooldown (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? cooldown) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {

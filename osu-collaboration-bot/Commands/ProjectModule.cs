@@ -1262,7 +1262,7 @@ namespace CollaborationBot.Commands {
         [Command("assignment-lifetime")]
         [Summary("Changes the default duration of assignments of the project")]
         public async Task AssignmentLifetime([Summary("The project")]string projectName, 
-            [Summary("The new duration of assignments (can be null)")]TimeSpan? lifetime) {
+            [Summary("The new duration of assignments (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? lifetime) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
