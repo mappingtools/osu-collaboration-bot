@@ -1146,6 +1146,7 @@ namespace CollaborationBot.Commands {
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("description")]
+        [Alias("desc")]
         [Summary("Changes the description of the project")]
         public async Task Description([Summary("The project")]string projectName,
             [Summary("The new description")]string description) {
