@@ -20,14 +20,14 @@ namespace CollaborationBot.Services {
         public async Task DoHelp(SocketCommandContext context, string moduleName, string modulePrefix, bool showReference = false) {
             List<CommandInfo> commands = _commandService.Modules.First(o => o.Name == moduleName).Commands.ToList();
             EmbedBuilder embedBuilder = new EmbedBuilder();
-            string prefix = _appSettings.Prefix + modulePrefix + " ";
+            string prefix = _appSettings.Prefix + modulePrefix + (string.IsNullOrWhiteSpace(modulePrefix) ? string.Empty : " ");
 
             int c = 0;
             bool first = true;
             foreach (CommandInfo command in commands) {
                 // Get the command Summary attribute information
                 string embedFieldText = command.Summary ?? Strings.NoDescription + Environment.NewLine;
-                string nameWithArguments = command.Name + string.Concat(command.Parameters.Select(o => $" [{o.Name}]"));
+                string nameWithArguments = prefix + command.Name + string.Concat(command.Parameters.Select(o => $" [{o.Name}]"));
 
                 embedBuilder.AddField(nameWithArguments, embedFieldText);
                 c++;
