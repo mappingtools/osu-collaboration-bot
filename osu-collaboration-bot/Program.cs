@@ -16,6 +16,8 @@ using CollaborationBot.Resources;
 
 namespace CollaborationBot {
     public class Program {
+        private const string SETTINGS_NAME = "appsettings.Development.json";
+
         private DiscordSocketClient _client;
         private CommandHandlerService _commandHandler;
         private AppSettings _appSettings;
@@ -126,7 +128,7 @@ namespace CollaborationBot {
             var services = new ServiceCollection();
             services.AddSingleton(
                 JsonConvert.DeserializeObject<AppSettings>(
-                    File.ReadAllText("appsettings.Development.json")));
+                    File.ReadAllText(SETTINGS_NAME)));
             services.AddSingleton<ResourceService>();
             services.AddDbContext<OsuCollabContext>();
             services.AddSingleton<FileHandlingService>();
