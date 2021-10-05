@@ -601,7 +601,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your server is not registered! You can add it via command &apos;!!guild add&apos;..
+        ///   Looks up a localized string similar to Your server is not registered! You can add it via command &apos;!!guild init&apos;..
         /// </summary>
         public static string GuildNotExistsMessage {
             get {

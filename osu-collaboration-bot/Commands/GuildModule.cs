@@ -34,6 +34,7 @@ namespace CollaborationBot.Commands {
 
         [RequireUserPermission(GuildPermission.Administrator)]
         [Command("init")]
+        [Alias("add")]
         [Summary("Initializes compatibility with the server")]
         public async Task Init() {
             try {

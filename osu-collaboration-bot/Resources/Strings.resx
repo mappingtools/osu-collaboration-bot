@@ -298,7 +298,7 @@
     <value>Changed max collab count per person to {0}.</value>
   </data>
   <data name="GuildNotExistsMessage" xml:space="preserve">
-    <value>Your server is not registered! You can add it via command '!!guild add'.</value>
+    <value>Your server is not registered! You can add it via command '!!guild init'.</value>
   </data>
   <data name="IllegalProjectName" xml:space="preserve">
     <value>'{0}' is not a valid project name.</value>
