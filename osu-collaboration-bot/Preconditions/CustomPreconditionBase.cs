@@ -28,10 +28,13 @@ namespace CollaborationBot.Preconditions {
             }
 
             var appSettings = services.GetService<AppSettings>();
+            var prefixLength = command.Module.Group == null ? 
+                appSettings.Prefix.Length + command.Name.Length + 1 : 
+                appSettings.Prefix.Length + command.Module.Group.Length + command.Name.Length + 2;
 
             var parseResult = await command.ParseAsync(
                 context,
-                appSettings.Prefix.Length + (command.Module.Group?.Length ?? 0) + command.Name.Length + 2,
+                prefixLength,
                 SearchResult.FromSuccess(context.Message.Content, Array.Empty<CommandMatch>())
                 );
 
