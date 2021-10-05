@@ -135,6 +135,10 @@ namespace CollaborationBot.Services {
             return GetProjectBaseFilePath(guild, projectName) != null;
         }
 
+        public void MoveProjectPath(IGuild guild, string projectName, string newProjectName) {
+            Directory.Move(GetProjectPath(guild, projectName), GetProjectPath(guild, newProjectName));
+        }
+
         public string GetGuildPath(IGuild guild) {
             return Path.Combine(_path, guild.Id.ToString());
         }

@@ -1154,6 +1154,10 @@ namespace CollaborationBot.Commands {
             try {
                 project.Name = newProjectName;
                 await _context.SaveChangesAsync();
+
+                // Change folder name
+                _fileHandler.MoveProjectPath(Context.Guild, projectName, newProjectName);
+
                 await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectRenameSuccess, projectName, newProjectName));
             } 
             catch (Exception e) {
