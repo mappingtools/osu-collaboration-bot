@@ -34,4 +34,4 @@ jobs:
       run: dotnet build -c Release -o ./release --no-restore
       
     - name: Deploy with rsync
-      run: rsync -avz --chmod=770 --exclude={'appsettings.*','*.pdb','*.dev','*.dev*'} ./release/ ${{ secrets.deploy_username }}@${{ secrets.deploy_host }}:/var/webservice/
+      run: rsync -avz --chmod=770 --exclude={'appsettings.*','*.pdb','*.dev','*.dev*'} ./release/ ${{ secrets.deploy_username }}@${{ secrets.deploy_host }}:/var/collabbot/
