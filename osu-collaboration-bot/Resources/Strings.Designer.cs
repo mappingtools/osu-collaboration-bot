@@ -601,6 +601,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; is not a valid project name..
+        /// </summary>
+        public static string IllegalProjectName {
+            get {
+                return ResourceManager.GetString("IllegalProjectName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Here&apos;s a list of commands and their description:.
         /// </summary>
         public static string ListCommandsMessage {

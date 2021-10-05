@@ -13,6 +13,7 @@ using Mapping_Tools_Core.Tools.PatternGallery;
 using Mapping_Tools_Core.BeatmapHelper.IO.Editor;
 using Mapping_Tools_Core.Exceptions;
 using System.Collections.Generic;
+using System.IO;
 
 namespace CollaborationBot.Commands {
     [Group]
@@ -241,6 +242,11 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
+            if (!IsValidProjectName(projectName)) {
+                await Context.Channel.SendMessageAsync(string.Format(Strings.IllegalProjectName, projectName));
+                return;
+            }
+
             // Check administrator or max collab count
             if (Context.User is not IGuildUser {GuildPermissions: {Administrator: true}} && guild.MaxCollabsPerPerson <=
                 _context.Members.AsQueryable().Count(o =>
@@ -269,6 +275,12 @@ namespace CollaborationBot.Commands {
             
             _fileHandler.GenerateProjectDirectory(Context.Guild, projectName);
             await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName));
+        }
+
+        private bool IsValidProjectName(string projectName) {
+            return !string.IsNullOrWhiteSpace(projectName) && 
+                (System.Text.Encoding.UTF8.GetByteCount(projectName) == projectName.Length) &&
+                !Path.GetInvalidFileNameChars().Any(o => projectName.Contains(o));
         }
 
         [RequireProjectOwner(Group = "Permission")]
@@ -1112,6 +1124,11 @@ namespace CollaborationBot.Commands {
         [Summary("Renames the project")]
         public async Task Rename([Summary("The old project name")]string projectName,
             [Summary("The new project name")]string newProjectName) {
+            if (!IsValidProjectName(newProjectName)) {
+                await Context.Channel.SendMessageAsync(string.Format(Strings.IllegalProjectName, newProjectName));
+                return;
+            }
+
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
