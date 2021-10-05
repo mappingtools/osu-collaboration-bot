@@ -16,7 +16,7 @@ using CollaborationBot.Resources;
 
 namespace CollaborationBot {
     public class Program {
-        private const string SETTINGS_NAME = "appsettings.Development.json";
+        private const string SETTINGS_NAME = "appsettings.json";
 
         private DiscordSocketClient _client;
         private CommandHandlerService _commandHandler;
