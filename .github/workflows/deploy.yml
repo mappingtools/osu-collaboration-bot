@@ -1,0 +1,37 @@
+name: Deploy
+
+on:
+ push:
+  branches:
+    - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install SSH Key
+      uses: shimataro/ssh-key-action@v2
+      with:
+       key: ${{ secrets.deploy_ssh_key }} 
+       known_hosts: 'placeholder'
+       
+    - name: Adding Known Hosts
+      run: ssh-keyscan -H ${{ secrets.deploy_host }} >> ~/.ssh/known_hosts
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build -c Release -o ./release --no-restore
+      
+    - name: Deploy with rsync
+      run: rsync -avz --chmod=770 --exclude={'appsettings.*','*.pdb','*.dev','*.dev*'} ./release/ ${{ secrets.deploy_username }}@${{ secrets.deploy_host }}:/var/webservice/
