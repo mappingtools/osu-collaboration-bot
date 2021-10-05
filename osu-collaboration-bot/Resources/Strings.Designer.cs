@@ -430,6 +430,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not change color of roles of project &apos;{0}&apos; to {1}..
+        /// </summary>
+        public static string ChangeRoleColorFail {
+            get {
+                return ResourceManager.GetString("ChangeRoleColorFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed color of roles of project &apos;{0}&apos; to {1}..
+        /// </summary>
+        public static string ChangeRoleColorSuccess {
+            get {
+                return ResourceManager.GetString("ChangeRoleColorSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not change tags..
         /// </summary>
         public static string ChangeTagsFail {

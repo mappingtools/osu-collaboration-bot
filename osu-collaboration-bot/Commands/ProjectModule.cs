@@ -1127,7 +1127,37 @@ namespace CollaborationBot.Commands {
                 await Context.Channel.SendMessageAsync(string.Format(Strings.ChangeManagerRoleFail, projectName));
             }
         }
-        
+
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("role-color")]
+        [Summary("Changes the color of the roles of the project")]
+        public async Task RoleColor([Summary("The project")] string projectName,
+            [Summary("The new color")] Color color) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                var mainRole = project.UniqueRoleId.HasValue ? Context.Guild.GetRole((ulong)project.UniqueRoleId.Value) : null;
+                var managerRole = project.ManagerRoleId.HasValue ? Context.Guild.GetRole((ulong)project.ManagerRoleId.Value) : null;
+
+                if (mainRole != null) {
+                    await mainRole.ModifyAsync(o => o.Color = color);
+                }
+                if (managerRole != null) {
+                    await managerRole.ModifyAsync(o => o.Color = color);
+                }
+
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ChangeRoleColorSuccess, projectName, color));
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ChangeRoleColorFail, projectName, color));
+            }
+        }
+
         [RequireProjectOwner(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("rename")]

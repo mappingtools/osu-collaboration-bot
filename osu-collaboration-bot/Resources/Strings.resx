@@ -240,6 +240,12 @@
   <data name="ChangeProjectRoleSuccess" xml:space="preserve">
     <value>Changed role for project '{0}' to `{1}`.</value>
   </data>
+  <data name="ChangeRoleColorFail" xml:space="preserve">
+    <value>Could not change color of roles of project '{0}' to {1}.</value>
+  </data>
+  <data name="ChangeRoleColorSuccess" xml:space="preserve">
+    <value>Changed color of roles of project '{0}' to {1}.</value>
+  </data>
   <data name="ChangeTagsFail" xml:space="preserve">
     <value>Could not change tags.</value>
   </data>
