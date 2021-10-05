@@ -74,6 +74,11 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
+            if (!_fileHandler.ProjectBaseFileExists(Context.Guild, project.Name)) {
+                await Context.Channel.SendMessageAsync(Strings.BaseFileNotExists);
+                return;
+            }
+
             List<Part> parts = null;
             if (project.PartRestrictedUpload || partName != null) {
                 if (partName == null) {
@@ -209,6 +214,11 @@ namespace CollaborationBot.Commands {
         [Alias("get-base-file", "downloadBaseFile", "download-base-file")]
         [Summary("Gets the current beatmap state of the project")]
         public async Task GetBaseFile([Summary("The project")]string projectName) {
+            if (!_fileHandler.ProjectBaseFileExists(Context.Guild, projectName)) {
+                await Context.Channel.SendMessageAsync(Strings.BaseFileNotExists);
+                return;
+            }
+
             try {
                 var projectBaseFilePath = _fileHandler.GetProjectBaseFilePath(Context.Guild, projectName);
                 await Context.Channel.SendFileAsync(projectBaseFilePath, string.Format(Strings.ShowBaseFile, projectName));

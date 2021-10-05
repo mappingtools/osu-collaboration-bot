@@ -190,6 +190,11 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
+            if (!_fileHandler.ProjectBaseFileExists(Context.Guild, project.Name)) {
+                await Context.Channel.SendMessageAsync(Strings.BaseFileNotExists);
+                return;
+            }
+
             try {
                 await HandleAutoUpdates(project, Context, _context, _fileHandler);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateTriggerSuccess, projectName));
@@ -200,6 +205,10 @@ namespace CollaborationBot.Commands {
         }
 
         public static async Task HandleAutoUpdates(Project project, SocketCommandContext context, OsuCollabContext _context, FileHandlingService fileHandler) {
+            if (!fileHandler.ProjectBaseFileExists(context.Guild, project.Name)) {
+                return;
+            }
+            
             // Maybe not use cooldown on the trigger command
             var updates = await _context.AutoUpdates.AsQueryable()
                 .Where(o => o.ProjectId == project.Id)

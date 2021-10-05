@@ -216,6 +216,9 @@
   <data name="BackendErrorMessage" xml:space="preserve">
     <value>Something went wrong while processing the request on our backend.</value>
   </data>
+  <data name="BaseFileNotExists" xml:space="preserve">
+    <value>Base file of the project is missing.</value>
+  </data>
   <data name="BeatmapParseFail" xml:space="preserve">
     <value>Could not parse osu! beatmap: ```{0}```</value>
   </data>

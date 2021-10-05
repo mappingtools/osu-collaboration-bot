@@ -358,6 +358,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Base file of the project is missing..
+        /// </summary>
+        public static string BaseFileNotExists {
+            get {
+                return ResourceManager.GetString("BaseFileNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not parse osu! beatmap: ```{0}```.
         /// </summary>
         public static string BeatmapParseFail {

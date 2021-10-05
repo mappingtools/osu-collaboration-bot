@@ -126,9 +126,13 @@ namespace CollaborationBot.Services {
             var osuFiles = Directory.GetFiles(localProjectPath, BaseFilename);
 
             if (osuFiles.Length == 0)
-                throw new FileNotFoundException("No .osu files found in project directory.");
+                return null;
 
             return osuFiles[0];
+        }
+
+        public bool ProjectBaseFileExists(IGuild guild, string projectName) {
+            return GetProjectBaseFilePath(guild, projectName) != null;
         }
 
         public string GetGuildPath(IGuild guild) {
