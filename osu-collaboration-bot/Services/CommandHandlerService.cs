@@ -22,6 +22,7 @@ namespace CollaborationBot.Services {
 
             // Add custom type readers
             _commands.AddTypeReader<TimeSpan>(new OsuTimeTypeReader());
+            _commands.AddTypeReader<Discord.Color>(new ColorTypeReader());
         }
 
         public async Task InstallCommandsAsync() {

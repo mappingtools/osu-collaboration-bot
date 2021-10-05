@@ -1133,7 +1133,7 @@ namespace CollaborationBot.Commands {
         [Command("role-color")]
         [Summary("Changes the color of the roles of the project")]
         public async Task RoleColor([Summary("The project")] string projectName,
-            [Summary("The new color")] Color color) {
+            [Summary("The new color as Hex code")] Color color) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
