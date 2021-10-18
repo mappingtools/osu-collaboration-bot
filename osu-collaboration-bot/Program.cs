@@ -136,6 +136,7 @@ namespace CollaborationBot {
             services.AddSingleton<CommandService>();
             services.AddSingleton<CommandHandlerService>();
             services.AddSingleton<UserHelpService>();
+            services.AddSingleton<InputSanitizingService>();
 
             return services.BuildServiceProvider();
         }

@@ -306,8 +306,14 @@
   <data name="GuildNotExistsMessage" xml:space="preserve">
     <value>Your server is not registered! You can add it via command '!!guild init'.</value>
   </data>
+  <data name="IllegalFilename" xml:space="preserve">
+    <value>That is not a valid filename.</value>
+  </data>
+  <data name="IllegalInput" xml:space="preserve">
+    <value>That is not a valid input.</value>
+  </data>
   <data name="IllegalProjectName" xml:space="preserve">
-    <value>'{0}' is not a valid project name.</value>
+    <value>That is not a valid project name.</value>
   </data>
   <data name="ListCommandsMessage" xml:space="preserve">
     <value>Here's a list of commands and their description:</value>

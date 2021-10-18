@@ -1,19 +1,19 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using CollaborationBot.Entities;
+﻿using CollaborationBot.Entities;
 using CollaborationBot.Preconditions;
 using CollaborationBot.Resources;
 using CollaborationBot.Services;
 using Discord;
 using Discord.Commands;
-using Microsoft.EntityFrameworkCore;
 using Mapping_Tools_Core.BeatmapHelper.IO.Decoding;
-using Mapping_Tools_Core.Tools.PatternGallery;
 using Mapping_Tools_Core.BeatmapHelper.IO.Editor;
 using Mapping_Tools_Core.Exceptions;
+using Mapping_Tools_Core.Tools.PatternGallery;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace CollaborationBot.Commands {
     [Group]
@@ -24,13 +24,15 @@ namespace CollaborationBot.Commands {
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
         private readonly UserHelpService _userHelpService;
+        private readonly InputSanitizingService _inputSanitizer;
 
         public ProjectModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService, UserHelpService userHelpService) {
+            ResourceService resourceService, UserHelpService userHelpService, InputSanitizingService inputSanitizingService) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
             _userHelpService = userHelpService;
+            _inputSanitizer = inputSanitizingService;
         }
 
         [Command("help")]
@@ -190,6 +192,11 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
+            if (!_inputSanitizer.IsValidName(attachment.Filename)) {
+                await Context.Channel.SendMessageAsync(Strings.IllegalFilename);
+                return;
+            }
+
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -252,7 +259,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            if (!IsValidProjectName(projectName)) {
+            if (!_inputSanitizer.IsValidProjectName(projectName)) {
                 await Context.Channel.SendMessageAsync(string.Format(Strings.IllegalProjectName, projectName));
                 return;
             }
@@ -285,12 +292,6 @@ namespace CollaborationBot.Commands {
             
             _fileHandler.GenerateProjectDirectory(Context.Guild, projectName);
             await Context.Channel.SendMessageAsync(_resourceService.GenerateAddProjectMessage(projectName));
-        }
-
-        private bool IsValidProjectName(string projectName) {
-            return !string.IsNullOrWhiteSpace(projectName) && 
-                (System.Text.Encoding.UTF8.GetByteCount(projectName) == projectName.Length) &&
-                !Path.GetInvalidFileNameChars().Any(o => projectName.Contains(o));
         }
 
         [RequireProjectOwner(Group = "Permission")]
@@ -897,6 +898,11 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
+            if (!_inputSanitizer.IsValidName(alias)) {
+                await Context.Channel.SendMessageAsync(Strings.IllegalInput);
+                return;
+            }
+
             var member = await _context.Members.AsQueryable()
                 .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == user.Id);
 
@@ -934,6 +940,11 @@ namespace CollaborationBot.Commands {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
+                return;
+            }
+
+            if (!_inputSanitizer.IsValidName(tags)) {
+                await Context.Channel.SendMessageAsync(Strings.IllegalInput);
                 return;
             }
 
@@ -1164,7 +1175,7 @@ namespace CollaborationBot.Commands {
         [Summary("Renames the project")]
         public async Task Rename([Summary("The old project name")]string projectName,
             [Summary("The new project name")]string newProjectName) {
-            if (!IsValidProjectName(newProjectName)) {
+            if (!_inputSanitizer.IsValidProjectName(newProjectName)) {
                 await Context.Channel.SendMessageAsync(string.Format(Strings.IllegalProjectName, newProjectName));
                 return;
             }
@@ -1206,6 +1217,11 @@ namespace CollaborationBot.Commands {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
+                return;
+            }
+
+            if (!_inputSanitizer.IsValidName(description)) {
+                await Context.Channel.SendMessageAsync(Strings.IllegalInput);
                 return;
             }
 

@@ -21,13 +21,15 @@ namespace CollaborationBot.Commands {
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
         private readonly UserHelpService _userHelpService;
+        private readonly InputSanitizingService _inputSanitizer;
 
         public PartModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService, UserHelpService userHelpService) {
+            ResourceService resourceService, UserHelpService userHelpService, InputSanitizingService inputSanitizingService) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
             _userHelpService = userHelpService;
+            _inputSanitizer = inputSanitizingService;
         }
 
         [Command("help")]
@@ -73,6 +75,11 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
+            if (!_inputSanitizer.IsValidName(name)) {
+                await Context.Channel.SendMessageAsync(Strings.IllegalInput);
+                return;
+            }
+
             try {
                 int? intStart = start.HasValue ? (int)start.Value.TotalMilliseconds : null;
                 int? intEnd = end.HasValue ? (int)end.Value.TotalMilliseconds : null;
@@ -97,6 +104,11 @@ namespace CollaborationBot.Commands {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
+                return;
+            }
+
+            if (!_inputSanitizer.IsValidName(newName)) {
+                await Context.Channel.SendMessageAsync(Strings.IllegalInput);
                 return;
             }
 
@@ -292,6 +304,11 @@ namespace CollaborationBot.Commands {
 
             if (newParts == null) {
                 await Context.Channel.SendMessageAsync(Strings.CouldNotReadPartCSV);
+                return;
+            }
+
+            if (newParts.Any(o => !_inputSanitizer.IsValidName(o.Name))) {
+                await Context.Channel.SendMessageAsync(Strings.IllegalInput);
                 return;
             }
 
