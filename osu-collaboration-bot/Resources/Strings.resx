@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddAssignmentFail" xml:space="preserve">
-    <value>Could not assign part '{0}' to user '{1}'.</value>
+    <value>Could not assign part `{0}` to user `{1}`.</value>
   </data>
   <data name="AddAssignmentSuccess" xml:space="preserve">
-    <value>Assigned part '{0}' to user '{1}'.</value>
+    <value>Assigned part `{0}` to user `{1}`.</value>
   </data>
   <data name="AddAutoUpdateFail" xml:space="preserve">
-    <value>Could not add update notification for project '{0}' to channel {1}.</value>
+    <value>Could not add update notification for project `{0}` to channel {1}.</value>
   </data>
   <data name="AddAutoUpdateSuccess" xml:space="preserve">
-    <value>Added update notification for project '{0}' to channel {1}.</value>
+    <value>Added update notification for project `{0}` to channel {1}.</value>
   </data>
   <data name="AddGuildFail" xml:space="preserve">
     <value>Could not add this server.</value>
@@ -136,28 +136,28 @@
     <value>Added this server.</value>
   </data>
   <data name="AddManagerFailMessage" xml:space="preserve">
-    <value>Could not promote {0} to manager of project '{1}'.</value>
+    <value>Could not promote {0} to manager of project `{1}`.</value>
   </data>
   <data name="AddManagerSuccessMessage" xml:space="preserve">
-    <value>Promoted {0} to manager of project '{1}'.</value>
+    <value>Promoted {0} to manager of project `{1}`.</value>
   </data>
   <data name="AddMemberFailMessage" xml:space="preserve">
-    <value>Could not add {0} to project '{1}'.</value>
+    <value>Could not add {0} to project `{1}`.</value>
   </data>
   <data name="AddMemberSuccessMessage" xml:space="preserve">
-    <value>Added {0} to project '{1}'.</value>
+    <value>Added {0} to project `{1}`.</value>
   </data>
   <data name="AddPartFail" xml:space="preserve">
-    <value>Could not add part '{0}' to project '{1}'.</value>
+    <value>Could not add part `{0}` to project `{1}`.</value>
   </data>
   <data name="AddPartSuccess" xml:space="preserve">
-    <value>Added part '{0}' to project '{1}'.</value>
+    <value>Added part `{0}` to project `{1}`.</value>
   </data>
   <data name="AddProjectFail" xml:space="preserve">
-    <value>Could not add project with name '{0}'.</value>
+    <value>Could not add project with name `{0}`.</value>
   </data>
   <data name="AddProjectSuccess" xml:space="preserve">
-    <value>Added project with name '{0}'.</value>
+    <value>Added project with name `{0}`.</value>
   </data>
   <data name="Aliases" xml:space="preserve">
     <value>Aliases:</value>
@@ -169,7 +169,7 @@
     <value>You are already a member of this project.</value>
   </data>
   <data name="AssignmentDeadlinePassed" xml:space="preserve">
-    <value>{0} could not finish part '{1}' of project '{2}' before the deadline. The part is now available for claiming again.</value>
+    <value>{0} could not finish part `{1}` of project `{2}` before the deadline. The part is now available for claiming again.</value>
   </data>
   <data name="AssignmentListMessage" xml:space="preserve">
     <value>Here are all the assignments of the project:</value>
@@ -181,16 +181,16 @@
     <value>The attached file is invalid.</value>
   </data>
   <data name="AutoCleanupChangeFail" xml:space="preserve">
-    <value>Could not change `auto cleanup` of project '{0}' to {1}.</value>
+    <value>Could not change `auto cleanup` of project `{0}` to {1}.</value>
   </data>
   <data name="AutoCleanupChangeSuccess" xml:space="preserve">
-    <value>Changed `auto cleanup` of project '{0}' to {1}.</value>
+    <value>Changed `auto cleanup` of project `{0}` to {1}.</value>
   </data>
   <data name="AutoUpdateCooldownFail" xml:space="preserve">
     <value>Could not change cooldown for update notification.</value>
   </data>
   <data name="AutoUpdateCooldownSuccess" xml:space="preserve">
-    <value>Changed cooldown for update notification for project '{0}' to {1}.</value>
+    <value>Changed cooldown for update notification for project `{0}` to {1}.</value>
   </data>
   <data name="AutoUpdateDoPingFail" xml:space="preserve">
     <value>Could not change mention configuration for update notification.</value>
@@ -199,19 +199,19 @@
     <value>Changed mention configuration for update notification to {0}.</value>
   </data>
   <data name="AutoUpdateLatest" xml:space="preserve">
-    <value>Here's the latest .osu beatmap version of project '{0}'.</value>
+    <value>Here's the latest .osu beatmap version of project `{0}`.</value>
   </data>
   <data name="AutoUpdateLatestMention" xml:space="preserve">
-    <value>{0} Here's the latest .osu beatmap version of project '{1}'.</value>
+    <value>{0} Here's the latest .osu beatmap version of project `{1}`.</value>
   </data>
   <data name="AutoUpdateNotExists" xml:space="preserve">
-    <value>There is no update notification for project '{0}' and channel {1}.</value>
+    <value>There is no update notification for project `{0}` and channel {1}.</value>
   </data>
   <data name="AutoUpdateTriggerFail" xml:space="preserve">
-    <value>Could not trigger update notification for project '{0}'.</value>
+    <value>Could not trigger update notification for project `{0}`.</value>
   </data>
   <data name="AutoUpdateTriggerSuccess" xml:space="preserve">
-    <value>Triggered update notification for project '{0}'.</value>
+    <value>Triggered update notification for project `{0}`.</value>
   </data>
   <data name="BackendErrorMessage" xml:space="preserve">
     <value>Something went wrong while processing the request on our backend.</value>
@@ -226,25 +226,25 @@
     <value>Could not change alias.</value>
   </data>
   <data name="ChangeAliasSuccess" xml:space="preserve">
-    <value>Changed alias of {0} to '{1}'.</value>
+    <value>Changed alias of {0} to `{1}`.</value>
   </data>
   <data name="ChangeManagerRoleFail" xml:space="preserve">
-    <value>Could not change manager role for project '{0}'.</value>
+    <value>Could not change manager role for project `{0}`.</value>
   </data>
   <data name="ChangeManagerRoleSuccess" xml:space="preserve">
-    <value>Changed manager role for project '{0}' to `{1}`.</value>
+    <value>Changed manager role for project `{0}` to `{1}`.</value>
   </data>
   <data name="ChangeProjectRoleFail" xml:space="preserve">
-    <value>Could not change role for project '{0}'.</value>
+    <value>Could not change role for project `{0}`.</value>
   </data>
   <data name="ChangeProjectRoleSuccess" xml:space="preserve">
-    <value>Changed role for project '{0}' to `{1}`.</value>
+    <value>Changed role for project `{0}` to `{1}`.</value>
   </data>
   <data name="ChangeRoleColorFail" xml:space="preserve">
-    <value>Could not change color of roles of project '{0}' to {1}.</value>
+    <value>Could not change color of roles of project `{0}` to {1}.</value>
   </data>
   <data name="ChangeRoleColorSuccess" xml:space="preserve">
-    <value>Changed color of roles of project '{0}' to {1}.</value>
+    <value>Changed color of roles of project `{0}` to {1}.</value>
   </data>
   <data name="ChangeTagsFail" xml:space="preserve">
     <value>Could not change tags.</value>
@@ -262,7 +262,7 @@
     <value>Could not read the CSV file with the part information. Make sure it uses the correct format.</value>
   </data>
   <data name="DeadlineReminder" xml:space="preserve">
-    <value>{0}, you have 48 hours left to complete part '{1}' for project '{2}'.</value>
+    <value>{0}, you have 48 hours left to complete part `{1}` for project `{2}`.</value>
   </data>
   <data name="DeletedChannel" xml:space="preserve">
     <value>Deleted channel</value>
@@ -280,13 +280,13 @@
     <value>Could not mark part as finished.</value>
   </data>
   <data name="FinishPartSuccess" xml:space="preserve">
-    <value>Part '{0}' is now finished.</value>
+    <value>Part `{0}` is now finished.</value>
   </data>
   <data name="GeneratePrioritiesFail" xml:space="preserve">
-    <value>Could not generate priorities for members of project '{0}'.</value>
+    <value>Could not generate priorities for members of project `{0}`.</value>
   </data>
   <data name="GeneratePrioritiesSuccess" xml:space="preserve">
-    <value>Generated priorities for member of project '{0}'.</value>
+    <value>Generated priorities for member of project `{0}`.</value>
   </data>
   <data name="GuildCollabCategoryFail" xml:space="preserve">
     <value>Could not change collab category to `{0}`.</value>
@@ -304,7 +304,7 @@
     <value>Changed max collab count per person to {0}.</value>
   </data>
   <data name="GuildNotExistsMessage" xml:space="preserve">
-    <value>Your server is not registered! You can add it via command '!!guild init'.</value>
+    <value>Your server is not registered! You can add it via command `!!guild init`.</value>
   </data>
   <data name="IllegalFilename" xml:space="preserve">
     <value>That is not a valid filename.</value>
@@ -340,10 +340,10 @@
     <value>Moved deadline to {0}.</value>
   </data>
   <data name="MultiRemovePartFail" xml:space="preserve">
-    <value>Could not remove parts from project '{0}'.</value>
+    <value>Could not remove parts from project `{0}`.</value>
   </data>
   <data name="MultiRemovePartSuccess" xml:space="preserve">
-    <value>Removed {0} parts from project '{1}'.</value>
+    <value>Removed {0} parts from project `{1}`.</value>
   </data>
   <data name="NoAssignments" xml:space="preserve">
     <value>There are no assignments in this project.</value>
@@ -385,7 +385,7 @@
     <value>Use the help command on other modules for more information:</value>
   </data>
   <data name="OwnerCannotBeDemotedMessage" xml:space="preserve">
-    <value>This user is owner of project '{0}' and can't be demoted. Transfer ownership with `set-owner` first.</value>
+    <value>This user is owner of project `{0}` and can't be demoted. Transfer ownership with `set-owner` first.</value>
   </data>
   <data name="OwnerCannotLeaveMessage" xml:space="preserve">
     <value>A project owner can't leave their own project. Transfer ownership with `set-owner` first.</value>
@@ -394,22 +394,22 @@
     <value>This part has been claimed already.</value>
   </data>
   <data name="PartFromCSVFail" xml:space="preserve">
-    <value>Could not import parts from the CSV file into project '{0}'.</value>
+    <value>Could not import parts from the CSV file into project `{0}`.</value>
   </data>
   <data name="PartFromCSVSuccess" xml:space="preserve">
-    <value>Imported parts from the CSV file into project '{0}'.</value>
+    <value>Imported parts from the CSV file into project `{0}`.</value>
   </data>
   <data name="PartListMessage" xml:space="preserve">
     <value>Here are all the parts of the project:</value>
   </data>
   <data name="PartNotExists" xml:space="preserve">
-    <value>A part named '{0}' does not exist in project '{1}'.</value>
+    <value>A part named `{0}` does not exist in project `{1}`.</value>
   </data>
   <data name="PartToCSVFail" xml:space="preserve">
-    <value>Could not export all parts of project '{0}' to CSV.</value>
+    <value>Could not export all parts of project `{0}` to CSV.</value>
   </data>
   <data name="PartToCSVSuccess" xml:space="preserve">
-    <value>Exported all parts of project '{0}' to CSV:</value>
+    <value>Exported all parts of project `{0}` to CSV:</value>
   </data>
   <data name="PriorityChangeFail" xml:space="preserve">
     <value>Could not change priority of member {0} to {1}.</value>
@@ -424,16 +424,16 @@
     <value>This project has already been set-up.</value>
   </data>
   <data name="ProjectAssignmentLifetimeFail" xml:space="preserve">
-    <value>Could not change default lifetime of assignments in project '{0}'.</value>
+    <value>Could not change default lifetime of assignments in project `{0}`.</value>
   </data>
   <data name="ProjectAssignmentLifetimeSuccess" xml:space="preserve">
-    <value>Changed default lifetime of assignments in project '{0}' to {1}.</value>
+    <value>Changed default lifetime of assignments in project `{0}` to {1}.</value>
   </data>
   <data name="ProjectDescriptionFail" xml:space="preserve">
-    <value>Could not change description for project '{0}'.</value>
+    <value>Could not change description for project `{0}`.</value>
   </data>
   <data name="ProjectDescriptionSuccess" xml:space="preserve">
-    <value>Changed description for project '{0}'.</value>
+    <value>Changed description for project `{0}`.</value>
   </data>
   <data name="ProjectExistsMessage" xml:space="preserve">
     <value>This project already exists.</value>
@@ -454,97 +454,97 @@
     <value>Changed project main channel to {0}.</value>
   </data>
   <data name="ProjectMaxAssignmentsFail" xml:space="preserve">
-    <value>Could not change max assignment count of project '{0}'.</value>
+    <value>Could not change max assignment count of project `{0}`.</value>
   </data>
   <data name="ProjectMaxAssignmentsSuccess" xml:space="preserve">
-    <value>Changed max assignment count of project '{0}' to {1}.</value>
+    <value>Changed max assignment count of project `{0}` to {1}.</value>
   </data>
   <data name="ProjectNotExistMessage" xml:space="preserve">
     <value>This project does not exist.</value>
   </data>
   <data name="ProjectOptionsFail" xml:space="preserve">
-    <value>Could not change options of project '{0}'.</value>
+    <value>Could not change options of project `{0}`.</value>
   </data>
   <data name="ProjectOptionsSuccess" xml:space="preserve">
-    <value>Changed {0} options of project '{1}'.</value>
+    <value>Changed {0} options of project `{1}`.</value>
   </data>
   <data name="ProjectRenameFail" xml:space="preserve">
-    <value>Could not rename project '{0}' to project '{1}'.</value>
+    <value>Could not rename project `{0}` to project `{1}`.</value>
   </data>
   <data name="ProjectRenameSuccess" xml:space="preserve">
-    <value>Renamed project '{0}' to project '{1}'.</value>
+    <value>Renamed project `{0}` to project `{1}`.</value>
   </data>
   <data name="ProjectStatusFail" xml:space="preserve">
-    <value>Could not change status of project '{0}' to '{1}'.</value>
+    <value>Could not change status of project `{0}` to `{1}`.</value>
   </data>
   <data name="ProjectStatusSuccess" xml:space="preserve">
-    <value>Changed status of project '{0}' to '{1}'.</value>
+    <value>Changed status of project `{0}` to `{1}`.</value>
   </data>
   <data name="RemoveAssignmentFail" xml:space="preserve">
-    <value>Could not remove assignment from user '{0}'.</value>
+    <value>Could not remove assignment from user `{0}`.</value>
   </data>
   <data name="RemoveAssignmentSuccess" xml:space="preserve">
-    <value>Removed assignment from user '{0}'.</value>
+    <value>Removed assignment from user `{0}`.</value>
   </data>
   <data name="RemoveAutoUpdateFail" xml:space="preserve">
-    <value>Could not remove update notification for project '{0}' from channel {1}.</value>
+    <value>Could not remove update notification for project `{0}` from channel {1}.</value>
   </data>
   <data name="RemoveAutoUpdateSuccess" xml:space="preserve">
-    <value>Removed update notification for project '{0}' from channel {1}.</value>
+    <value>Removed update notification for project `{0}` from channel {1}.</value>
   </data>
   <data name="RemoveDeadlineSuccess" xml:space="preserve">
-    <value>Removed deadline for user '{0}'.</value>
+    <value>Removed deadline for user `{0}`.</value>
   </data>
   <data name="RemoveManagerFailMessage" xml:space="preserve">
-    <value>Could not demote {0} to a regular member of '{1}'.</value>
+    <value>Could not demote {0} to a regular member of `{1}`.</value>
   </data>
   <data name="RemoveManagerSuccessMessage" xml:space="preserve">
-    <value>Demoted {0} to a regular member of '{1}'.</value>
+    <value>Demoted {0} to a regular member of `{1}`.</value>
   </data>
   <data name="RemoveMemberFailMessage" xml:space="preserve">
-    <value>Could not remove {0} from project '{1}'.</value>
+    <value>Could not remove {0} from project `{1}`.</value>
   </data>
   <data name="RemoveMemberSuccessMessage" xml:space="preserve">
-    <value>Removed {0} from project '{1}'.</value>
+    <value>Removed {0} from project `{1}`.</value>
   </data>
   <data name="RemovePartFail" xml:space="preserve">
-    <value>Could not remove part '{0}' from project '{1}'.</value>
+    <value>Could not remove part `{0}` from project `{1}`.</value>
   </data>
   <data name="RemovePartSuccess" xml:space="preserve">
-    <value>Removed part '{0}' from project '{1}'.</value>
+    <value>Removed part `{0}` from project `{1}`.</value>
   </data>
   <data name="RemoveProjectFail" xml:space="preserve">
-    <value>Could not remove project '{0}'.</value>
+    <value>Could not remove project `{0}`.</value>
   </data>
   <data name="RemoveProjectSuccess" xml:space="preserve">
-    <value>Removed project '{0}'.</value>
+    <value>Removed project `{0}`.</value>
   </data>
   <data name="SelfAssignmentNotAllowed" xml:space="preserve">
     <value>Self-assignment is not allowed at the moment.</value>
   </data>
   <data name="SetOwnerFailMessage" xml:space="preserve">
-    <value>Could not transfer ownership of project '{0}' to {1}.</value>
+    <value>Could not transfer ownership of project `{0}` to {1}.</value>
   </data>
   <data name="SetOwnerSuccessMessage" xml:space="preserve">
-    <value>Transfered ownership of project '{0}' to {1}.</value>
+    <value>Transfered ownership of project `{0}` to {1}.</value>
   </data>
   <data name="SetupFail" xml:space="preserve">
-    <value>Could not set-up project '{0}'.</value>
+    <value>Could not set-up project `{0}`.</value>
   </data>
   <data name="SetupSuccess" xml:space="preserve">
-    <value>Successfully set-up project '{0}'.</value>
+    <value>Successfully set-up project `{0}`.</value>
   </data>
   <data name="ShowBaseFile" xml:space="preserve">
-    <value>Compiled .osu file of project '{0}':</value>
+    <value>Compiled .osu file of project `{0}`:</value>
   </data>
   <data name="SubmitNoHitObjects" xml:space="preserve">
     <value>Submitted file has no hit objects or you have no open assignments for the submitted parts.</value>
   </data>
   <data name="SubmitPartFailMessage" xml:space="preserve">
-    <value>Something went wrong when submitting part for project '{0}'.</value>
+    <value>Something went wrong when submitting part for project `{0}`.</value>
   </data>
   <data name="SubmitPartSuccessMessage" xml:space="preserve">
-    <value>Successfully submitted {0} hit objects to project '{1}'.</value>
+    <value>Successfully submitted {0} hit objects to project `{1}`.</value>
   </data>
   <data name="TestString" xml:space="preserve">
     <value>This is a test string! The quick brown fox jumped over the lazy dog.</value>
@@ -556,15 +556,15 @@
     <value>Something went wrong while trying to upload the base file.</value>
   </data>
   <data name="UploadBaseFileSuccess" xml:space="preserve">
-    <value>Successfully uploaded `{0}` as base file for project '{1}'.</value>
+    <value>Successfully uploaded `{0}` as base file for project `{1}`.</value>
   </data>
   <data name="UserAlreadyManagerMessage" xml:space="preserve">
-    <value>This user is already a manager of project '{0}'.</value>
+    <value>This user is already a manager of project `{0}`.</value>
   </data>
   <data name="UserAlreadyOwnerMessage" xml:space="preserve">
-    <value>This user is already owner of project '{0}'.</value>
+    <value>This user is already owner of project `{0}`.</value>
   </data>
   <data name="UserNotManagerMessage" xml:space="preserve">
-    <value>This user is not a manager of project '{0}'.</value>
+    <value>This user is not a manager of project `{0}`.</value>
   </data>
 </root>

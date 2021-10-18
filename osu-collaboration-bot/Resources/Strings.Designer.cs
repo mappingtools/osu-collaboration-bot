@@ -61,7 +61,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not assign part &apos;{0}&apos; to user &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Could not assign part `{0}` to user `{1}`..
         /// </summary>
         public static string AddAssignmentFail {
             get {
@@ -70,7 +70,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assigned part &apos;{0}&apos; to user &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Assigned part `{0}` to user `{1}`..
         /// </summary>
         public static string AddAssignmentSuccess {
             get {
@@ -79,7 +79,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not add update notification for project &apos;{0}&apos; to channel {1}..
+        ///   Looks up a localized string similar to Could not add update notification for project `{0}` to channel {1}..
         /// </summary>
         public static string AddAutoUpdateFail {
             get {
@@ -88,7 +88,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Added update notification for project &apos;{0}&apos; to channel {1}..
+        ///   Looks up a localized string similar to Added update notification for project `{0}` to channel {1}..
         /// </summary>
         public static string AddAutoUpdateSuccess {
             get {
@@ -115,7 +115,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not promote {0} to manager of project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Could not promote {0} to manager of project `{1}`..
         /// </summary>
         public static string AddManagerFailMessage {
             get {
@@ -124,7 +124,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Promoted {0} to manager of project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Promoted {0} to manager of project `{1}`..
         /// </summary>
         public static string AddManagerSuccessMessage {
             get {
@@ -133,7 +133,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not add {0} to project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Could not add {0} to project `{1}`..
         /// </summary>
         public static string AddMemberFailMessage {
             get {
@@ -142,7 +142,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Added {0} to project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Added {0} to project `{1}`..
         /// </summary>
         public static string AddMemberSuccessMessage {
             get {
@@ -151,7 +151,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not add part &apos;{0}&apos; to project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Could not add part `{0}` to project `{1}`..
         /// </summary>
         public static string AddPartFail {
             get {
@@ -160,7 +160,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Added part &apos;{0}&apos; to project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Added part `{0}` to project `{1}`..
         /// </summary>
         public static string AddPartSuccess {
             get {
@@ -169,7 +169,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not add project with name &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not add project with name `{0}`..
         /// </summary>
         public static string AddProjectFail {
             get {
@@ -178,7 +178,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Added project with name &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Added project with name `{0}`..
         /// </summary>
         public static string AddProjectSuccess {
             get {
@@ -214,7 +214,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} could not finish part &apos;{1}&apos; of project &apos;{2}&apos; before the deadline. The part is now available for claiming again..
+        ///   Looks up a localized string similar to {0} could not finish part `{1}` of project `{2}` before the deadline. The part is now available for claiming again..
         /// </summary>
         public static string AssignmentDeadlinePassed {
             get {
@@ -250,7 +250,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not change `auto cleanup` of project &apos;{0}&apos; to {1}..
+        ///   Looks up a localized string similar to Could not change `auto cleanup` of project `{0}` to {1}..
         /// </summary>
         public static string AutoCleanupChangeFail {
             get {
@@ -259,7 +259,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changed `auto cleanup` of project &apos;{0}&apos; to {1}..
+        ///   Looks up a localized string similar to Changed `auto cleanup` of project `{0}` to {1}..
         /// </summary>
         public static string AutoCleanupChangeSuccess {
             get {
@@ -277,7 +277,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changed cooldown for update notification for project &apos;{0}&apos; to {1}..
+        ///   Looks up a localized string similar to Changed cooldown for update notification for project `{0}` to {1}..
         /// </summary>
         public static string AutoUpdateCooldownSuccess {
             get {
@@ -304,7 +304,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Here&apos;s the latest .osu beatmap version of project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Here&apos;s the latest .osu beatmap version of project `{0}`..
         /// </summary>
         public static string AutoUpdateLatest {
             get {
@@ -313,7 +313,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} Here&apos;s the latest .osu beatmap version of project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to {0} Here&apos;s the latest .osu beatmap version of project `{1}`..
         /// </summary>
         public static string AutoUpdateLatestMention {
             get {
@@ -322,7 +322,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There is no update notification for project &apos;{0}&apos; and channel {1}..
+        ///   Looks up a localized string similar to There is no update notification for project `{0}` and channel {1}..
         /// </summary>
         public static string AutoUpdateNotExists {
             get {
@@ -331,7 +331,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not trigger update notification for project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not trigger update notification for project `{0}`..
         /// </summary>
         public static string AutoUpdateTriggerFail {
             get {
@@ -340,7 +340,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Triggered update notification for project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Triggered update notification for project `{0}`..
         /// </summary>
         public static string AutoUpdateTriggerSuccess {
             get {
@@ -385,7 +385,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changed alias of {0} to &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Changed alias of {0} to `{1}`..
         /// </summary>
         public static string ChangeAliasSuccess {
             get {
@@ -394,7 +394,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not change manager role for project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not change manager role for project `{0}`..
         /// </summary>
         public static string ChangeManagerRoleFail {
             get {
@@ -403,7 +403,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changed manager role for project &apos;{0}&apos; to `{1}`..
+        ///   Looks up a localized string similar to Changed manager role for project `{0}` to `{1}`..
         /// </summary>
         public static string ChangeManagerRoleSuccess {
             get {
@@ -412,7 +412,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not change role for project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not change role for project `{0}`..
         /// </summary>
         public static string ChangeProjectRoleFail {
             get {
@@ -421,7 +421,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changed role for project &apos;{0}&apos; to `{1}`..
+        ///   Looks up a localized string similar to Changed role for project `{0}` to `{1}`..
         /// </summary>
         public static string ChangeProjectRoleSuccess {
             get {
@@ -430,7 +430,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not change color of roles of project &apos;{0}&apos; to {1}..
+        ///   Looks up a localized string similar to Could not change color of roles of project `{0}` to {1}..
         /// </summary>
         public static string ChangeRoleColorFail {
             get {
@@ -439,7 +439,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changed color of roles of project &apos;{0}&apos; to {1}..
+        ///   Looks up a localized string similar to Changed color of roles of project `{0}` to {1}..
         /// </summary>
         public static string ChangeRoleColorSuccess {
             get {
@@ -493,7 +493,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}, you have 48 hours left to complete part &apos;{1}&apos; for project &apos;{2}&apos;..
+        ///   Looks up a localized string similar to {0}, you have 48 hours left to complete part `{1}` for project `{2}`..
         /// </summary>
         public static string DeadlineReminder {
             get {
@@ -547,7 +547,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Part &apos;{0}&apos; is now finished..
+        ///   Looks up a localized string similar to Part `{0}` is now finished..
         /// </summary>
         public static string FinishPartSuccess {
             get {
@@ -556,7 +556,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not generate priorities for members of project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not generate priorities for members of project `{0}`..
         /// </summary>
         public static string GeneratePrioritiesFail {
             get {
@@ -565,7 +565,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Generated priorities for member of project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Generated priorities for member of project `{0}`..
         /// </summary>
         public static string GeneratePrioritiesSuccess {
             get {
@@ -619,7 +619,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your server is not registered! You can add it via command &apos;!!guild init&apos;..
+        ///   Looks up a localized string similar to Your server is not registered! You can add it via command `!!guild init`..
         /// </summary>
         public static string GuildNotExistsMessage {
             get {
@@ -727,7 +727,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not remove parts from project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not remove parts from project `{0}`..
         /// </summary>
         public static string MultiRemovePartFail {
             get {
@@ -736,7 +736,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removed {0} parts from project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Removed {0} parts from project `{1}`..
         /// </summary>
         public static string MultiRemovePartSuccess {
             get {
@@ -856,7 +856,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This user is owner of project &apos;{0}&apos; and can&apos;t be demoted. Transfer ownership with `set-owner` first..
+        ///   Looks up a localized string similar to This user is owner of project `{0}` and can&apos;t be demoted. Transfer ownership with `set-owner` first..
         /// </summary>
         public static string OwnerCannotBeDemotedMessage {
             get {
@@ -883,7 +883,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not import parts from the CSV file into project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not import parts from the CSV file into project `{0}`..
         /// </summary>
         public static string PartFromCSVFail {
             get {
@@ -892,7 +892,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Imported parts from the CSV file into project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Imported parts from the CSV file into project `{0}`..
         /// </summary>
         public static string PartFromCSVSuccess {
             get {
@@ -910,7 +910,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A part named &apos;{0}&apos; does not exist in project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to A part named `{0}` does not exist in project `{1}`..
         /// </summary>
         public static string PartNotExists {
             get {
@@ -919,7 +919,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not export all parts of project &apos;{0}&apos; to CSV..
+        ///   Looks up a localized string similar to Could not export all parts of project `{0}` to CSV..
         /// </summary>
         public static string PartToCSVFail {
             get {
@@ -928,7 +928,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exported all parts of project &apos;{0}&apos; to CSV:.
+        ///   Looks up a localized string similar to Exported all parts of project `{0}` to CSV:.
         /// </summary>
         public static string PartToCSVSuccess {
             get {
@@ -973,7 +973,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not change default lifetime of assignments in project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not change default lifetime of assignments in project `{0}`..
         /// </summary>
         public static string ProjectAssignmentLifetimeFail {
             get {
@@ -982,7 +982,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changed default lifetime of assignments in project &apos;{0}&apos; to {1}..
+        ///   Looks up a localized string similar to Changed default lifetime of assignments in project `{0}` to {1}..
         /// </summary>
         public static string ProjectAssignmentLifetimeSuccess {
             get {
@@ -991,7 +991,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not change description for project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not change description for project `{0}`..
         /// </summary>
         public static string ProjectDescriptionFail {
             get {
@@ -1000,7 +1000,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changed description for project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Changed description for project `{0}`..
         /// </summary>
         public static string ProjectDescriptionSuccess {
             get {
@@ -1063,7 +1063,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not change max assignment count of project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not change max assignment count of project `{0}`..
         /// </summary>
         public static string ProjectMaxAssignmentsFail {
             get {
@@ -1072,7 +1072,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changed max assignment count of project &apos;{0}&apos; to {1}..
+        ///   Looks up a localized string similar to Changed max assignment count of project `{0}` to {1}..
         /// </summary>
         public static string ProjectMaxAssignmentsSuccess {
             get {
@@ -1090,7 +1090,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not change options of project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not change options of project `{0}`..
         /// </summary>
         public static string ProjectOptionsFail {
             get {
@@ -1099,7 +1099,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changed {0} options of project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Changed {0} options of project `{1}`..
         /// </summary>
         public static string ProjectOptionsSuccess {
             get {
@@ -1108,7 +1108,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not rename project &apos;{0}&apos; to project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Could not rename project `{0}` to project `{1}`..
         /// </summary>
         public static string ProjectRenameFail {
             get {
@@ -1117,7 +1117,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Renamed project &apos;{0}&apos; to project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Renamed project `{0}` to project `{1}`..
         /// </summary>
         public static string ProjectRenameSuccess {
             get {
@@ -1126,7 +1126,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not change status of project &apos;{0}&apos; to &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Could not change status of project `{0}` to `{1}`..
         /// </summary>
         public static string ProjectStatusFail {
             get {
@@ -1135,7 +1135,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changed status of project &apos;{0}&apos; to &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Changed status of project `{0}` to `{1}`..
         /// </summary>
         public static string ProjectStatusSuccess {
             get {
@@ -1144,7 +1144,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not remove assignment from user &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not remove assignment from user `{0}`..
         /// </summary>
         public static string RemoveAssignmentFail {
             get {
@@ -1153,7 +1153,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removed assignment from user &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Removed assignment from user `{0}`..
         /// </summary>
         public static string RemoveAssignmentSuccess {
             get {
@@ -1162,7 +1162,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not remove update notification for project &apos;{0}&apos; from channel {1}..
+        ///   Looks up a localized string similar to Could not remove update notification for project `{0}` from channel {1}..
         /// </summary>
         public static string RemoveAutoUpdateFail {
             get {
@@ -1171,7 +1171,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removed update notification for project &apos;{0}&apos; from channel {1}..
+        ///   Looks up a localized string similar to Removed update notification for project `{0}` from channel {1}..
         /// </summary>
         public static string RemoveAutoUpdateSuccess {
             get {
@@ -1180,7 +1180,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removed deadline for user &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Removed deadline for user `{0}`..
         /// </summary>
         public static string RemoveDeadlineSuccess {
             get {
@@ -1189,7 +1189,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not demote {0} to a regular member of &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Could not demote {0} to a regular member of `{1}`..
         /// </summary>
         public static string RemoveManagerFailMessage {
             get {
@@ -1198,7 +1198,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Demoted {0} to a regular member of &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Demoted {0} to a regular member of `{1}`..
         /// </summary>
         public static string RemoveManagerSuccessMessage {
             get {
@@ -1207,7 +1207,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not remove {0} from project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Could not remove {0} from project `{1}`..
         /// </summary>
         public static string RemoveMemberFailMessage {
             get {
@@ -1216,7 +1216,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removed {0} from project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Removed {0} from project `{1}`..
         /// </summary>
         public static string RemoveMemberSuccessMessage {
             get {
@@ -1225,7 +1225,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not remove part &apos;{0}&apos; from project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Could not remove part `{0}` from project `{1}`..
         /// </summary>
         public static string RemovePartFail {
             get {
@@ -1234,7 +1234,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removed part &apos;{0}&apos; from project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Removed part `{0}` from project `{1}`..
         /// </summary>
         public static string RemovePartSuccess {
             get {
@@ -1243,7 +1243,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not remove project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not remove project `{0}`..
         /// </summary>
         public static string RemoveProjectFail {
             get {
@@ -1252,7 +1252,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removed project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Removed project `{0}`..
         /// </summary>
         public static string RemoveProjectSuccess {
             get {
@@ -1270,7 +1270,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not transfer ownership of project &apos;{0}&apos; to {1}..
+        ///   Looks up a localized string similar to Could not transfer ownership of project `{0}` to {1}..
         /// </summary>
         public static string SetOwnerFailMessage {
             get {
@@ -1279,7 +1279,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transfered ownership of project &apos;{0}&apos; to {1}..
+        ///   Looks up a localized string similar to Transfered ownership of project `{0}` to {1}..
         /// </summary>
         public static string SetOwnerSuccessMessage {
             get {
@@ -1288,7 +1288,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not set-up project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Could not set-up project `{0}`..
         /// </summary>
         public static string SetupFail {
             get {
@@ -1297,7 +1297,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfully set-up project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Successfully set-up project `{0}`..
         /// </summary>
         public static string SetupSuccess {
             get {
@@ -1306,7 +1306,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compiled .osu file of project &apos;{0}&apos;:.
+        ///   Looks up a localized string similar to Compiled .osu file of project `{0}`:.
         /// </summary>
         public static string ShowBaseFile {
             get {
@@ -1324,7 +1324,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Something went wrong when submitting part for project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Something went wrong when submitting part for project `{0}`..
         /// </summary>
         public static string SubmitPartFailMessage {
             get {
@@ -1333,7 +1333,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfully submitted {0} hit objects to project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Successfully submitted {0} hit objects to project `{1}`..
         /// </summary>
         public static string SubmitPartSuccessMessage {
             get {
@@ -1369,7 +1369,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfully uploaded `{0}` as base file for project &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Successfully uploaded `{0}` as base file for project `{1}`..
         /// </summary>
         public static string UploadBaseFileSuccess {
             get {
@@ -1378,7 +1378,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This user is already a manager of project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to This user is already a manager of project `{0}`..
         /// </summary>
         public static string UserAlreadyManagerMessage {
             get {
@@ -1387,7 +1387,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This user is already owner of project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to This user is already owner of project `{0}`..
         /// </summary>
         public static string UserAlreadyOwnerMessage {
             get {
@@ -1396,7 +1396,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This user is not a manager of project &apos;{0}&apos;..
+        ///   Looks up a localized string similar to This user is not a manager of project `{0}`..
         /// </summary>
         public static string UserNotManagerMessage {
             get {
