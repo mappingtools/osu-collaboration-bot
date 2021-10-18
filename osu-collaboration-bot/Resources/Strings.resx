@@ -307,13 +307,13 @@
     <value>Your server is not registered! You can add it via command `!!guild init`.</value>
   </data>
   <data name="IllegalFilename" xml:space="preserve">
-    <value>That is not a valid filename.</value>
+    <value>Illegal filename found.</value>
   </data>
   <data name="IllegalInput" xml:space="preserve">
-    <value>That is not a valid input.</value>
+    <value>Illegal input found.</value>
   </data>
   <data name="IllegalProjectName" xml:space="preserve">
-    <value>That is not a valid project name.</value>
+    <value>Illegal project name found.</value>
   </data>
   <data name="ListCommandsMessage" xml:space="preserve">
     <value>Here's a list of commands and their description:</value>

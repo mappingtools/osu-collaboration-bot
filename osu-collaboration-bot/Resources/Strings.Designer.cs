@@ -628,7 +628,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to That is not a valid filename..
+        ///   Looks up a localized string similar to Illegal filename found..
         /// </summary>
         public static string IllegalFilename {
             get {
@@ -637,7 +637,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to That is not a valid input..
+        ///   Looks up a localized string similar to Illegal input found..
         /// </summary>
         public static string IllegalInput {
             get {
@@ -646,7 +646,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to That is not a valid project name..
+        ///   Looks up a localized string similar to Illegal project name found..
         /// </summary>
         public static string IllegalProjectName {
             get {
