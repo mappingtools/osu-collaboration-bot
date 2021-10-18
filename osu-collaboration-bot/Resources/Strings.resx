@@ -418,7 +418,7 @@
     <value>Changed priority of member {0} to {1}.</value>
   </data>
   <data name="PriorityPartSteal" xml:space="preserve">
-    <value>{0} ({1}) stole part {2} from {3} ({4}), oh the humanity!</value>
+    <value>{0} ({1}) stole part `{2}` from {3} ({4}), oh the humanity!</value>
   </data>
   <data name="ProjectAlreadySetup" xml:space="preserve">
     <value>This project has already been set-up.</value>
