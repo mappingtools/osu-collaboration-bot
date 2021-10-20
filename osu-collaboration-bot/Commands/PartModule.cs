@@ -332,6 +332,7 @@ namespace CollaborationBot.Commands {
 
                     if (i != 0 || !hasStart) {
                         newParts.Add(new Part {
+                            ProjectId = project.Id,
                             Name = $"Part{++partCount}",
                             Start = start,
                             End = end,
@@ -343,6 +344,7 @@ namespace CollaborationBot.Commands {
 
                     if (i == count -1 && !hasEnd) {
                         newParts.Add(new Part {
+                            ProjectId = project.Id,
                             Name = $"Part{++partCount}",
                             Start = start,
                             End = -1,
