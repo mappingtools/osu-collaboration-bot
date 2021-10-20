@@ -928,7 +928,7 @@ namespace CollaborationBot.Commands {
         [Summary("Changes your tags in the project")]
         public async Task Tags([Summary("The project")]string projectName,
             [Summary("The new tags")]string tags) {
-            await Alias(projectName, Context.User, tags);
+            await Tags(projectName, Context.User, tags);
         }
 
         [RequireProjectManager(Group = "Permission")]
