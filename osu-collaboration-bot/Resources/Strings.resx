@@ -351,6 +351,9 @@
   <data name="NoAttachedFile" xml:space="preserve">
     <value>Could not find an attached file.</value>
   </data>
+  <data name="NoBookmarksFound" xml:space="preserve">
+    <value>The beatmap contains no bookmarks.</value>
+  </data>
   <data name="NoDescription" xml:space="preserve">
     <value>No description available.</value>
   </data>
@@ -392,6 +395,12 @@
   </data>
   <data name="PartClaimedAlready" xml:space="preserve">
     <value>This part has been claimed already.</value>
+  </data>
+  <data name="PartFromBookmarkFail" xml:space="preserve">
+    <value>Could not import parts from the beatmap.</value>
+  </data>
+  <data name="PartFromBookmarkSuccess" xml:space="preserve">
+    <value>Imported parts from the beatmap into project `{0}`.</value>
   </data>
   <data name="PartFromCSVFail" xml:space="preserve">
     <value>Could not import parts from the CSV file into project `{0}`.</value>

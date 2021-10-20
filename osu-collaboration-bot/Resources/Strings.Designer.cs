@@ -763,6 +763,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The beatmap contains no bookmarks..
+        /// </summary>
+        public static string NoBookmarksFound {
+            get {
+                return ResourceManager.GetString("NoBookmarksFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No description available..
         /// </summary>
         public static string NoDescription {
@@ -879,6 +888,24 @@ namespace CollaborationBot.Resources {
         public static string PartClaimedAlready {
             get {
                 return ResourceManager.GetString("PartClaimedAlready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not import parts from the beatmap..
+        /// </summary>
+        public static string PartFromBookmarkFail {
+            get {
+                return ResourceManager.GetString("PartFromBookmarkFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Imported parts from the beatmap into project `{0}`..
+        /// </summary>
+        public static string PartFromBookmarkSuccess {
+            get {
+                return ResourceManager.GetString("PartFromBookmarkSuccess", resourceCulture);
             }
         }
         

@@ -11,6 +11,9 @@ using System;
 using System.Globalization;
 using System.IO;
 using CsvHelper;
+using System.Collections.Generic;
+using Mapping_Tools_Core.BeatmapHelper.IO.Decoding;
+using Mapping_Tools_Core.Exceptions;
 
 namespace CollaborationBot.Commands {
     [Group("part")]
@@ -277,6 +280,102 @@ namespace CollaborationBot.Commands {
             } catch (Exception e) {
                 Console.WriteLine(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.MultiRemovePartFail, projectName));
+            }
+        }
+
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("from-bookmarks")]
+        [Summary("Imports parts from a beatmap's bookmarks")]
+        public async Task FromCSV([Summary("The project")] string projectName,
+            [Summary("Whether there is a bookmark indicating the start of the first part")] bool hasStart = true,
+            [Summary("Whether there is a bookmark indicating the end of the last part")] bool hasEnd = false,
+            [Summary("Whether to clear the existing parts before importing")] bool replace = true) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            var attachment = Context.Message.Attachments.SingleOrDefault();
+
+            if (attachment == null) {
+                await Context.Channel.SendMessageAsync(Strings.NoAttachedFile);
+                return;
+            }
+
+            string beatmapString = await _fileHandler.DownloadPartSubmit(Context.Guild, projectName, attachment);
+
+            if (beatmapString == null) {
+                await Context.Channel.SendMessageAsync(Strings.AttachedFileInvalid);
+                return;
+            }
+
+            var newParts = new List<Part>();
+            try {
+                var beatmap = new OsuBeatmapDecoder().Decode(beatmapString);
+                var bookmarks = beatmap.Editor.Bookmarks;
+                var count = bookmarks.Count;
+
+                if (count == 0) {
+                    await Context.Channel.SendMessageAsync(Strings.NoBookmarksFound);
+                    return;
+                }
+
+                int start = -1;
+                int end = -1;
+                int partCount = 0;
+
+                for (int i = 0; i < count; i++){
+                    int b = (int)bookmarks[i];
+                    end = b;
+
+                    if (i != 0 || !hasStart) {
+                        newParts.Add(new Part {
+                            Name = $"Part{++partCount}",
+                            Start = start,
+                            End = end,
+                            Status = PartStatus.NotFinished
+                        });
+                    }
+
+                    start = b;
+
+                    if (i == count -1 && !hasEnd) {
+                        newParts.Add(new Part {
+                            Name = $"Part{++partCount}",
+                            Start = start,
+                            End = -1,
+                            Status = PartStatus.NotFinished
+                        });
+                    }
+                }
+            } catch (BeatmapParsingException e) {
+                await Context.Channel.SendMessageAsync(string.Format(Strings.BeatmapParseFail, e.Message));
+                return;
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(Strings.PartFromBookmarkFail);
+                return;
+            }
+
+            if (newParts.Any(o => !_inputSanitizer.IsValidName(o.Name))) {
+                await Context.Channel.SendMessageAsync(Strings.IllegalInput);
+                return;
+            }
+
+            try {
+                var oldParts = await _context.Parts.AsQueryable().Where(o => o.ProjectId == project.Id).ToListAsync();
+
+                if (replace)
+                    _context.Parts.RemoveRange(oldParts);
+
+                _context.Parts.AddRange(newParts);
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.PartFromBookmarkSuccess, projectName));
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.PartFromBookmarkFail));
             }
         }
 
