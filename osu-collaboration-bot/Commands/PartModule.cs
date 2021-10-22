@@ -325,13 +325,12 @@ namespace CollaborationBot.Commands {
                     return;
                 }
 
-                int start = -1;
-                int end = -1;
+                int? start = null;
                 int partCount = 0;
 
                 for (int i = 0; i < count; i++){
                     int b = (int)bookmarks[i];
-                    end = b;
+                    int? end = b;
 
                     if (i != 0 || !hasStart) {
                         newParts.Add(new Part {
@@ -350,7 +349,7 @@ namespace CollaborationBot.Commands {
                             ProjectId = project.Id,
                             Name = $"part{++partCount}",
                             Start = start,
-                            End = -1,
+                            End = null,
                             Status = PartStatus.NotFinished
                         });
                     }
