@@ -18,13 +18,16 @@ namespace CollaborationBot.Commands {
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
         private readonly UserHelpService _userHelpService;
+        private readonly AppSettings _appSettings;
 
         public AssignmentModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService, UserHelpService userHelpService) {
+            ResourceService resourceService, UserHelpService userHelpService,
+            AppSettings appSettings) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
             _userHelpService = userHelpService;
+            _appSettings = appSettings;
         }
 
         [Command("help")]
@@ -317,7 +320,7 @@ namespace CollaborationBot.Commands {
             var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 
             if (guild == null) {
-                await Context.Channel.SendMessageAsync(Strings.GuildNotExistsMessage);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.GuildNotExistsMessage, _appSettings.Prefix));
                 return null;
             }
 
