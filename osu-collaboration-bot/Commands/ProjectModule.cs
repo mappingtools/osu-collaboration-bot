@@ -43,6 +43,24 @@ namespace CollaborationBot.Commands {
             await _userHelpService.DoHelp(Context, "Project module", "", command, true);
         }
 
+        #region guides
+
+        [Command("admin-guide")]
+        [Alias("guild-guide", "server-guide")]
+        [Summary("Shows a guide for server admins on how to set-up the bot")]
+        public async Task AdminGuide() {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+
+            string title = Strings.AdminGuideTitle;
+            string content = string.Format(Strings.AdminGuideContent, _appSettings.Prefix);
+
+            embedBuilder.AddField(title, content);
+            
+            await Context.Channel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
+        }
+
+        #endregion
+
         #region files
 
         [RequireProjectMember(Group = "Permission")]

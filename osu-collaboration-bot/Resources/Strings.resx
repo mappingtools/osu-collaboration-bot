@@ -159,6 +159,14 @@
   <data name="AddProjectSuccess" xml:space="preserve">
     <value>Added project with name `{0}`.</value>
   </data>
+  <data name="AdminGuideContent" xml:space="preserve">
+    <value>1. Enable the bot in the server: `{0}guild init`.
+2. Assign a category for collab channels to appear in: `{0}guild collab-category [CATEGORY]`.
+3. Allow regular members to create collabs: `{0}guild max-collabs 1`.</value>
+  </data>
+  <data name="AdminGuideTitle" xml:space="preserve">
+    <value>Server admin guide</value>
+  </data>
   <data name="Aliases" xml:space="preserve">
     <value>Aliases:</value>
   </data>

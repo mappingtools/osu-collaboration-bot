@@ -187,6 +187,26 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1. Enable the bot in the server: `{0}guild init`.
+        ///2. Assign a category for collab channels to appear in: `{0}guild collab-category [CATEGORY]`.
+        ///3. Allow regular members to create collabs: `{0}guild max-collabs 1`..
+        /// </summary>
+        public static string AdminGuideContent {
+            get {
+                return ResourceManager.GetString("AdminGuideContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server admin guide.
+        /// </summary>
+        public static string AdminGuideTitle {
+            get {
+                return ResourceManager.GetString("AdminGuideTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aliases:.
         /// </summary>
         public static string Aliases {
