@@ -738,10 +738,10 @@ namespace CollaborationBot.Resources {
         ///3. See which parts are available `{0}part list {1}`
         ///4. Claim a part `{0}asn claim {1} [PART NAME]`
         ///5. Submit your mapping progress to your part: `{0}submit {1}` with your .osu file attached
-        ///6. When done, mark your part as finished: `{0}!asn done {1} [PART NAME]`
+        ///6. When done, mark your part as finished: `{0}asn done {1} [PART NAME]`
         ///7. Repeat from step 4
         ///
-        ///Replace the part with the [square brackets] with the relevant value and KEEP the quotat [rest of string was truncated]&quot;;.
+        ///Replace the part with the [square brackets] with the relevant value and KEEP the quotati [rest of string was truncated]&quot;;.
         /// </summary>
         public static string MemberGuideContent {
             get {
