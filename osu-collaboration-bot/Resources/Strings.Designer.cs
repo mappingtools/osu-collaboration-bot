@@ -187,9 +187,9 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1. Enable the bot in the server: `{0}guild init`.
-        ///2. Assign a category for collab channels to appear in: `{0}guild collab-category [CATEGORY]`.
-        ///3. Allow regular members to create collabs: `{0}guild max-collabs 1`..
+        ///   Looks up a localized string similar to 1. Enable the bot in the server: `{0}guild init`
+        ///2. Assign a category for collab channels to appear in: `{0}guild collab-category [CATEGORY]`
+        ///3. Allow regular members to create collabs: `{0}guild max-collabs 1`.
         /// </summary>
         public static string AdminGuideContent {
             get {
@@ -486,11 +486,11 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1. Create a new project: `{0}create [PROJECT NAME]`. Choose a simple name which is easy to type and doesn&apos;t contant any spaces.
-        ///2. Set-up the project channels and roles: `{0}setup [PROJECT NAME]`.
-        ///3. Create a base beatmap with timing, bookmarks, and difficulty settings and upload it to the bot: `{0}setbasefile [PROJECT NAME]` with .osu file attached.
-        ///4. Generate parts from the bookmarks: `{0}part from-bookmarks [PROJECT NAME]` with .osu file attached.
-        ///5. Edit the parts in Excel: `{0}part to-csv [PROJECT [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 1. Create a new project: `{0}create [PROJECT NAME]` (Choose a simple name which is easy to type and doesn&apos;t contant any spaces)
+        ///2. Set-up the project channels and roles: `{0}setup [PROJECT NAME]`
+        ///3. Create a base beatmap with timing, bookmarks, and difficulty settings and upload it to the bot: `{0}setbasefile [PROJECT NAME]` with .osu file attached
+        ///4. Generate parts from the bookmarks: `{0}part from-bookmarks [PROJECT NAME]` with .osu file attached
+        ///5. Edit the parts in Excel: `{0}part to-csv [PROJECT NA [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CollabGuideContent {
             get {
