@@ -73,6 +73,25 @@ namespace CollaborationBot.Commands {
             await Context.Channel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
         }
 
+        [Command("participant-guide")]
+        [Alias("member-guide")]
+        [Summary("Shows a guide for collab participants on how to use the bot")]
+        public async Task ParticipantGuide(string projectName = null) {
+            if (!_inputSanitizer.IsValidProjectName(projectName)) {
+                await Context.Channel.SendMessageAsync(string.Format(Strings.IllegalProjectName, projectName));
+                return;
+            }
+
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+
+            string title = Strings.MemberGuideTitle;
+            string content = string.Format(Strings.MemberGuideContent, _appSettings.Prefix, projectName ?? @"[PROJECT NAME]");
+
+            embedBuilder.AddField(title, content);
+            
+            await Context.Channel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
+        }
+
         #endregion
 
         #region files
