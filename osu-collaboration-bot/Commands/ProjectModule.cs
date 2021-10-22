@@ -84,8 +84,14 @@ namespace CollaborationBot.Commands {
 
             EmbedBuilder embedBuilder = new EmbedBuilder();
 
+            // Make sure the project name is in between quotation marks if it contains spaces so members dont mess it up
+            string projectNameEdit = projectName ?? "[PROJECT NAME]";
+            if (projectNameEdit.Any(char.IsWhiteSpace)) {
+                projectNameEdit = $"\"{projectNameEdit}\"";
+            }
+
             string title = Strings.MemberGuideTitle;
-            string content = string.Format(Strings.MemberGuideContent, _appSettings.Prefix, projectName ?? @"[PROJECT NAME]");
+            string content = string.Format(Strings.MemberGuideContent, _appSettings.Prefix, projectNameEdit);
 
             embedBuilder.AddField(title, content);
             
