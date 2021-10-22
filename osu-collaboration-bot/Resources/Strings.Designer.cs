@@ -198,7 +198,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Server admin guide.
+        ///   Looks up a localized string similar to Server set-up guide.
         /// </summary>
         public static string AdminGuideTitle {
             get {
@@ -750,7 +750,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Collab participant guide.
+        ///   Looks up a localized string similar to Collab participation guide.
         /// </summary>
         public static string MemberGuideTitle {
             get {

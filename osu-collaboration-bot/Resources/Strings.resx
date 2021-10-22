@@ -165,7 +165,7 @@
 3. Allow regular members to create collabs: `{0}guild max-collabs 1`</value>
   </data>
   <data name="AdminGuideTitle" xml:space="preserve">
-    <value>Server admin guide</value>
+    <value>Server set-up guide</value>
   </data>
   <data name="Aliases" xml:space="preserve">
     <value>Aliases:</value>
@@ -360,7 +360,7 @@
 Replace the part with the [square brackets] with the relevant value and KEEP the quotation marks.</value>
   </data>
   <data name="MemberGuideTitle" xml:space="preserve">
-    <value>Collab participant guide</value>
+    <value>Collab participation guide</value>
   </data>
   <data name="MemberListMessage" xml:space="preserve">
     <value>Here are all members of the project:</value>
