@@ -77,7 +77,7 @@ namespace CollaborationBot.Commands {
         [Alias("member-guide")]
         [Summary("Shows a guide for collab participants on how to use the bot")]
         public async Task ParticipantGuide(string projectName = null) {
-            if (!_inputSanitizer.IsValidProjectName(projectName)) {
+            if (projectName != null && !_inputSanitizer.IsValidProjectName(projectName)) {
                 await Context.Channel.SendMessageAsync(string.Format(Strings.IllegalProjectName, projectName));
                 return;
             }
