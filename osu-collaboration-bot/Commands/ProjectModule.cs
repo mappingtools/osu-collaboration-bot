@@ -59,6 +59,20 @@ namespace CollaborationBot.Commands {
             await Context.Channel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
         }
 
+        [Command("collab-guide")]
+        [Alias("collab-manager-guide", "owner-guide")]
+        [Summary("Shows a guide for collab organisers on how to set-up a collab with the bot")]
+        public async Task CollabGuide() {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+
+            string title = Strings.CollabGuideTitle;
+            string content = string.Format(Strings.CollabGuideContent, _appSettings.Prefix);
+
+            embedBuilder.AddField(title, content);
+            
+            await Context.Channel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
+        }
+
         #endregion
 
         #region files

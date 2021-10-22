@@ -486,6 +486,28 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1. Create a new project: `{0}create [PROJECT NAME]`. Choose a simple name which is easy to type.
+        ///2. Set-up the project channels and roles: `{0}setup [PROJECT NAME]`.
+        ///3. Create a base beatmap with timing, bookmarks, and difficulty settings and upload it to the bot: `{0}setbasefile [PROJECT NAME]` with .osu file attached.
+        ///4. Generate parts from the bookmarks: `{0}part from-bookmarks [PROJECT NAME]` with .osu file attached.
+        ///5. Edit the parts in Excel: `{0}part to-csv [PROJECT NAME]` and `{0}part from-csv [ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string CollabGuideContent {
+            get {
+                return ResourceManager.GetString("CollabGuideContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collab set-up guide.
+        /// </summary>
+        public static string CollabGuideTitle {
+            get {
+                return ResourceManager.GetString("CollabGuideTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Command `{0}` could not be found..
         /// </summary>
         public static string CommandNotFound {
