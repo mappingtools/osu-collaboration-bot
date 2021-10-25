@@ -56,7 +56,7 @@ namespace CollaborationBot.Commands {
             }
             catch (Exception ex) {
                 await Context.Channel.SendMessageAsync(_resourceService.GenerateAddGuildMessage(false));
-                Console.WriteLine(ex);
+                logger.Error(ex);
             }
         }
 
