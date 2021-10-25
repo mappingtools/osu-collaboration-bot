@@ -2,6 +2,7 @@
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace CollaborationBot.Services {
     public class UserHelpService {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly CommandService _commandService;
         private readonly AppSettings _appSettings;
 

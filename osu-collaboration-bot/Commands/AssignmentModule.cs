@@ -8,12 +8,14 @@ using System.Linq;
 using Discord;
 using CollaborationBot.Preconditions;
 using System;
+using NLog;
 
 namespace CollaborationBot.Commands {
     [Group("asn")]
     [Name("Assignment module")]
     [Summary("Everything about assignments")]
     public class AssignmentModule : ModuleBase<SocketCommandContext> {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
@@ -91,7 +93,7 @@ namespace CollaborationBot.Commands {
                     await _context.SaveChangesAsync();
                     await Context.Channel.SendMessageAsync(string.Format(Strings.AddAssignmentSuccess, partName, user.Username));
                 } catch (Exception e) {
-                    Console.WriteLine(e);
+                    logger.Error(e);
                     await Context.Channel.SendMessageAsync(string.Format(Strings.AddAssignmentFail, partName, user.Username));
                 }
             }
@@ -122,7 +124,7 @@ namespace CollaborationBot.Commands {
                     await _context.SaveChangesAsync();
                     await Context.Channel.SendMessageAsync(string.Format(Strings.RemoveAssignmentSuccess, user.Username));
                 } catch (Exception e) {
-                    Console.WriteLine(e);
+                    logger.Error(e);
                     await Context.Channel.SendMessageAsync(string.Format(Strings.RemoveAssignmentFail, user.Username));
                 }
             }
@@ -156,7 +158,7 @@ namespace CollaborationBot.Commands {
                 else
                     await Context.Channel.SendMessageAsync(string.Format(Strings.RemoveDeadlineSuccess, user.Username));
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.MoveDeadlineFail, deadline));
             }
         }
@@ -229,7 +231,7 @@ namespace CollaborationBot.Commands {
                     await _context.SaveChangesAsync();
                     await Context.Channel.SendMessageAsync(string.Format(Strings.AddAssignmentSuccess, partName, Context.User.Username));
                 } catch (Exception e) {
-                    Console.WriteLine(e);
+                    logger.Error(e);
                     await Context.Channel.SendMessageAsync(string.Format(Strings.AddAssignmentFail, partName, Context.User.Username));
                 }
             }
@@ -287,7 +289,7 @@ namespace CollaborationBot.Commands {
                     await _context.SaveChangesAsync();
                     await Context.Channel.SendMessageAsync(string.Format(Strings.FinishPartSuccess, part.Name));
                 } catch (Exception e) {
-                    Console.WriteLine(e);
+                    logger.Error(e);
                     await Context.Channel.SendMessageAsync(string.Format(Strings.FinishPartFail));
                 }
             }

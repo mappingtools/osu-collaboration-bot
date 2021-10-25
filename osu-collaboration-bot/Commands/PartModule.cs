@@ -14,12 +14,14 @@ using CsvHelper;
 using System.Collections.Generic;
 using Mapping_Tools_Core.BeatmapHelper.IO.Decoding;
 using Mapping_Tools_Core.Exceptions;
+using NLog;
 
 namespace CollaborationBot.Commands {
     [Group("part")]
     [Name("Part module")]
     [Summary("Everything about parts")]
     public class PartModule : ModuleBase<SocketCommandContext> {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
@@ -90,7 +92,7 @@ namespace CollaborationBot.Commands {
                 await _context.SaveChangesAsync();
                 await Context.Channel.SendMessageAsync(string.Format(Strings.AddPartSuccess, name, projectName));
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.AddPartFail, name, projectName));
             }
         }
@@ -128,7 +130,7 @@ namespace CollaborationBot.Commands {
                 await _context.SaveChangesAsync();
                 await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartSuccess));
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartFail));
             }
         }
@@ -159,7 +161,7 @@ namespace CollaborationBot.Commands {
                 await _context.SaveChangesAsync();
                 await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartSuccess));
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartFail));
             }
         }
@@ -190,7 +192,7 @@ namespace CollaborationBot.Commands {
                 await _context.SaveChangesAsync();
                 await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartSuccess));
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartFail));
             }
         }
@@ -221,7 +223,7 @@ namespace CollaborationBot.Commands {
                 await _context.SaveChangesAsync();
                 await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartSuccess));
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartFail));
             }
         }
@@ -254,7 +256,7 @@ namespace CollaborationBot.Commands {
                     await _context.SaveChangesAsync();
                     await Context.Channel.SendMessageAsync(string.Format(Strings.RemovePartSuccess, partName, projectName));
                 } catch (Exception e) {
-                    Console.WriteLine(e);
+                    logger.Error(e);
                     await Context.Channel.SendMessageAsync(string.Format(Strings.RemovePartFail, partName, projectName));
                 }
             }
@@ -278,7 +280,7 @@ namespace CollaborationBot.Commands {
                 await _context.SaveChangesAsync();
                 await Context.Channel.SendMessageAsync(string.Format(Strings.MultiRemovePartSuccess, parts.Count, projectName));
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.MultiRemovePartFail, projectName));
             }
         }
@@ -356,7 +358,7 @@ namespace CollaborationBot.Commands {
                 await Context.Channel.SendMessageAsync(string.Format(Strings.BeatmapParseFail, e.Message));
                 return;
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(Strings.PartFromBookmarkFail);
                 return;
             }
@@ -376,7 +378,7 @@ namespace CollaborationBot.Commands {
                 await _context.SaveChangesAsync();
                 await Context.Channel.SendMessageAsync(string.Format(Strings.PartFromBookmarkSuccess, projectName));
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.PartFromBookmarkFail));
             }
         }
@@ -424,7 +426,7 @@ namespace CollaborationBot.Commands {
                 await _context.SaveChangesAsync();
                 await Context.Channel.SendMessageAsync(string.Format(Strings.PartFromCSVSuccess, projectName));
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.PartFromCSVFail, projectName));
             }
         }
@@ -459,7 +461,7 @@ namespace CollaborationBot.Commands {
                 await Context.Channel.SendFileAsync(dataStream, projectName + "_parts.csv",
                     string.Format(Strings.PartToCSVSuccess, projectName));
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.PartToCSVFail, projectName));
             }
         }

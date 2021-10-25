@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using CollaborationBot.Resources;
 using CollaborationBot.TypeReaders;
 using Discord.Commands;
 using Discord.WebSocket;
+using NLog;
 
 namespace CollaborationBot.Services {
     public class CommandHandlerService {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commands;
         private readonly AppSettings _appSettings;
@@ -51,7 +54,10 @@ namespace CollaborationBot.Services {
                 argPos,
                 _services);
 
-            if (!result.IsSuccess) await context.Channel.SendMessageAsync(result.ErrorReason);
+            if (!result.IsSuccess) {
+                logger.Error("Unhandled exception of type {type} caused by {@message}: {reason}", result.Error, message.Content, result.ErrorReason);
+                await context.Channel.SendMessageAsync(Strings.BackendErrorMessage);
+            }
         }
     }
 }

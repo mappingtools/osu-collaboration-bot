@@ -13,10 +13,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using CollaborationBot.Resources;
+using Microsoft.Extensions.Configuration;
+using NLog;
+using NLog.Extensions.Logging;
 
 namespace CollaborationBot {
     public class Program {
-        private const string SETTINGS_NAME = "appsettings.json";
+        private static IConfigurationRoot config;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private DiscordSocketClient _client;
         private CommandHandlerService _commandHandler;
@@ -28,7 +32,25 @@ namespace CollaborationBot {
         private readonly Timer checkupTimer = new();
 
         public static void Main(string[] args) {
-            new Program().MainAsync().GetAwaiter().GetResult();
+             config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.Development.json", optional: true)
+                .AddJsonFile("appsettings.Development.json", optional: true)
+                .AddEnvironmentVariables().Build();
+            LogManager.Configuration = new NLogLoggingConfiguration(config.GetSection("NLog"));
+
+            try {
+                logger.Info("Starting program");
+                new Program().MainAsync().GetAwaiter().GetResult();
+            } catch (Exception exception) {
+                //NLog: catch setup errors
+                logger.Error(exception, "Stopped program because of exception");
+                throw;
+            } finally {
+                // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+                LogManager.Shutdown();
+            }
         }
 
         public async Task MainAsync() {
@@ -120,15 +142,13 @@ namespace CollaborationBot {
         }
 
         private Task Log(LogMessage msg) {
-            Console.WriteLine(msg.ToString());
+            logger.Info(msg.ToString());
             return Task.CompletedTask;
         }
 
         private ServiceProvider ConfigureServices() {
             var services = new ServiceCollection();
-            services.AddSingleton(
-                JsonConvert.DeserializeObject<AppSettings>(
-                    File.ReadAllText(SETTINGS_NAME)));
+            services.AddSingleton(GetAppSettings());
             services.AddSingleton<ResourceService>();
             services.AddDbContext<OsuCollabContext>();
             services.AddSingleton<FileHandlingService>();
@@ -139,6 +159,10 @@ namespace CollaborationBot {
             services.AddSingleton<InputSanitizingService>();
 
             return services.BuildServiceProvider();
+        }
+
+        private AppSettings GetAppSettings() {
+            return config.Get<AppSettings>();
         }
     }
 }

@@ -4,6 +4,7 @@ using CollaborationBot.Services;
 using Discord;
 using Discord.Commands;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace CollaborationBot.Commands {
     [Name("Guild module")]
     [Summary("Everything about guild settings")]
     public class GuildModule : ModuleBase<SocketCommandContext> {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
@@ -72,7 +74,7 @@ namespace CollaborationBot.Commands {
             }
             catch (Exception ex) {
                 await Context.Channel.SendMessageAsync(string.Format(Strings.GuildCollabCategoryFail, category.Name));
-                Console.WriteLine(ex);
+                logger.Error(ex);
             }
         }
 
@@ -93,7 +95,7 @@ namespace CollaborationBot.Commands {
             }
             catch (Exception ex) {
                 await Context.Channel.SendMessageAsync(string.Format(Strings.GuildMaxCollabsFail, count));
-                Console.WriteLine(ex);
+                logger.Error(ex);
             }
         }
 

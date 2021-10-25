@@ -9,12 +9,14 @@ using Discord;
 using CollaborationBot.Preconditions;
 using System;
 using System.Collections.Generic;
+using NLog;
 
 namespace CollaborationBot.Commands {
     [Group("au")]
     [Name("Auto-update module")]
     [Summary("Everything about automatic update notifications")]
     public class AutoUpdateModule : ModuleBase<SocketCommandContext> {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
@@ -87,7 +89,7 @@ namespace CollaborationBot.Commands {
                 await _context.SaveChangesAsync();
                 await Context.Channel.SendMessageAsync(string.Format(Strings.AddAutoUpdateSuccess, projectName, channel.Mention));
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.AddAutoUpdateFail, projectName, channel.Mention));
             }
         }
@@ -115,7 +117,7 @@ namespace CollaborationBot.Commands {
                 await _context.SaveChangesAsync();
                 await Context.Channel.SendMessageAsync(string.Format(Strings.RemoveAutoUpdateSuccess, projectName, channel.Mention));
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.RemoveAutoUpdateFail, projectName, channel.Mention));
             }
         }
@@ -144,7 +146,7 @@ namespace CollaborationBot.Commands {
                 await _context.SaveChangesAsync();
                 await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateCooldownSuccess, projectName, cooldown));
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateCooldownFail, projectName));
             }
         }
@@ -174,7 +176,7 @@ namespace CollaborationBot.Commands {
                 await _context.SaveChangesAsync();
                 await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateDoPingSuccess, doPing));
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateDoPingFail));
             }
         }
@@ -199,7 +201,7 @@ namespace CollaborationBot.Commands {
                 await HandleAutoUpdates(project, Context, _context, _fileHandler);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateTriggerSuccess, projectName));
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateTriggerFail, projectName));
             }
         }

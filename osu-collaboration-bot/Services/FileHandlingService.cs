@@ -10,9 +10,11 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 using Discord;
+using NLog;
 
 namespace CollaborationBot.Services {
     public class FileHandlingService {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         public const string BaseFilename = "basefile.osu";
 
         public enum PermissibleFileType {
@@ -51,7 +53,7 @@ namespace CollaborationBot.Services {
                 return true;
             }
             catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 return false;
             }
         }
@@ -73,7 +75,7 @@ namespace CollaborationBot.Services {
 
                 return result;
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 return null;
             }
         }
@@ -114,7 +116,7 @@ namespace CollaborationBot.Services {
 
                 return records;
             } catch (Exception e) {
-                Console.WriteLine(e);
+                logger.Error(e);
                 return null;
             }
         }
