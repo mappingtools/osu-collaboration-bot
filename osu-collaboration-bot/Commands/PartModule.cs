@@ -27,14 +27,17 @@ namespace CollaborationBot.Commands {
         private readonly ResourceService _resourceService;
         private readonly UserHelpService _userHelpService;
         private readonly InputSanitizingService _inputSanitizer;
+        private readonly AppSettings _appSettings;
 
         public PartModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService, UserHelpService userHelpService, InputSanitizingService inputSanitizingService) {
+            ResourceService resourceService, UserHelpService userHelpService, InputSanitizingService inputSanitizingService,
+            AppSettings appSettings) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
             _userHelpService = userHelpService;
             _inputSanitizer = inputSanitizingService;
+            _appSettings = appSettings;
         }
 
         [Command("help")]
@@ -324,18 +327,17 @@ namespace CollaborationBot.Commands {
                     return;
                 }
 
-                int start = -1;
-                int end = -1;
+                int? start = null;
                 int partCount = 0;
 
                 for (int i = 0; i < count; i++){
                     int b = (int)bookmarks[i];
-                    end = b;
+                    int? end = b;
 
                     if (i != 0 || !hasStart) {
                         newParts.Add(new Part {
                             ProjectId = project.Id,
-                            Name = $"Part{++partCount}",
+                            Name = $"part{++partCount}",
                             Start = start,
                             End = end,
                             Status = PartStatus.NotFinished
@@ -347,9 +349,9 @@ namespace CollaborationBot.Commands {
                     if (i == count -1 && !hasEnd) {
                         newParts.Add(new Part {
                             ProjectId = project.Id,
-                            Name = $"Part{++partCount}",
+                            Name = $"part{++partCount}",
                             Start = start,
-                            End = -1,
+                            End = null,
                             Status = PartStatus.NotFinished
                         });
                     }
@@ -470,7 +472,7 @@ namespace CollaborationBot.Commands {
             var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 
             if (guild == null) {
-                await Context.Channel.SendMessageAsync(Strings.GuildNotExistsMessage);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.GuildNotExistsMessage, _appSettings.Prefix));
                 return null;
             }
 

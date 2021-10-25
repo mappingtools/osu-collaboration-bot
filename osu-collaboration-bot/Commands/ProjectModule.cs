@@ -13,7 +13,6 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CollaborationBot.Commands {
@@ -27,14 +26,17 @@ namespace CollaborationBot.Commands {
         private readonly ResourceService _resourceService;
         private readonly UserHelpService _userHelpService;
         private readonly InputSanitizingService _inputSanitizer;
+        private readonly AppSettings _appSettings;
 
         public ProjectModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService, UserHelpService userHelpService, InputSanitizingService inputSanitizingService) {
+            ResourceService resourceService, UserHelpService userHelpService, InputSanitizingService inputSanitizingService,
+            AppSettings appSettings) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
             _userHelpService = userHelpService;
             _inputSanitizer = inputSanitizingService;
+            _appSettings = appSettings;
         }
 
         [Command("help")]
@@ -42,6 +44,63 @@ namespace CollaborationBot.Commands {
         public async Task Help(string command = "") {
             await _userHelpService.DoHelp(Context, "Project module", "", command, true);
         }
+
+        #region guides
+
+        [Command("admin-guide")]
+        [Alias("guild-guide", "server-guide")]
+        [Summary("Shows a guide for server admins on how to set-up the bot")]
+        public async Task AdminGuide() {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+
+            string title = Strings.AdminGuideTitle;
+            string content = string.Format(Strings.AdminGuideContent, _appSettings.Prefix);
+
+            embedBuilder.AddField(title, content);
+            
+            await Context.Channel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
+        }
+
+        [Command("collab-guide")]
+        [Alias("collab-manager-guide", "owner-guide")]
+        [Summary("Shows a guide for collab organisers on how to set-up a collab with the bot")]
+        public async Task CollabGuide() {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+
+            string title = Strings.CollabGuideTitle;
+            string content = string.Format(Strings.CollabGuideContent, _appSettings.Prefix);
+
+            embedBuilder.AddField(title, content);
+            
+            await Context.Channel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
+        }
+
+        [Command("participant-guide")]
+        [Alias("member-guide")]
+        [Summary("Shows a guide for collab participants on how to use the bot")]
+        public async Task ParticipantGuide(string projectName = null) {
+            if (projectName != null && !_inputSanitizer.IsValidProjectName(projectName)) {
+                await Context.Channel.SendMessageAsync(string.Format(Strings.IllegalProjectName, projectName));
+                return;
+            }
+
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+
+            // Make sure the project name is in between quotation marks if it contains spaces so members dont mess it up
+            string projectNameEdit = projectName ?? "[PROJECT NAME]";
+            if (projectNameEdit.Any(char.IsWhiteSpace)) {
+                projectNameEdit = $"\"{projectNameEdit}\"";
+            }
+
+            string title = Strings.MemberGuideTitle;
+            string content = string.Format(Strings.MemberGuideContent, _appSettings.Prefix, projectNameEdit);
+
+            embedBuilder.AddField(title, content);
+            
+            await Context.Channel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
+        }
+
+        #endregion
 
         #region files
 
@@ -1431,7 +1490,7 @@ namespace CollaborationBot.Commands {
             var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 
             if (guild == null) {
-                await Context.Channel.SendMessageAsync(Strings.GuildNotExistsMessage);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.GuildNotExistsMessage, _appSettings.Prefix));
                 return null;
             }
 

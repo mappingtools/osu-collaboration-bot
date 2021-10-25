@@ -159,6 +159,14 @@
   <data name="AddProjectSuccess" xml:space="preserve">
     <value>Added project with name `{0}`.</value>
   </data>
+  <data name="AdminGuideContent" xml:space="preserve">
+    <value>1. Enable the bot in the server: `{0}guild init`
+2. Assign a category for collab channels to appear in: `{0}guild collab-category [CATEGORY]`
+3. Allow regular members to create collabs: `{0}guild max-collabs 1`</value>
+  </data>
+  <data name="AdminGuideTitle" xml:space="preserve">
+    <value>Server set-up guide</value>
+  </data>
   <data name="Aliases" xml:space="preserve">
     <value>Aliases:</value>
   </data>
@@ -252,6 +260,19 @@
   <data name="ChangeTagsSuccess" xml:space="preserve">
     <value>Changed tags of {0} to `{1}`.</value>
   </data>
+  <data name="CollabGuideContent" xml:space="preserve">
+    <value>1. Create a new project: `{0}create [PROJECT NAME]` (Choose a simple name which is easy to type and doesn't contant any spaces)
+2. Set-up the project channels and roles: `{0}setup [PROJECT NAME]`
+3. Create a base beatmap with timing, bookmarks, and difficulty settings and upload it to the bot: `{0}setbasefile [PROJECT NAME]` with .osu file attached
+4. Generate parts from the bookmarks: `{0}part from-bookmarks [PROJECT NAME]` with .osu file attached
+5. Edit the parts in Excel: `{0}part to-csv [PROJECT NAME]` and `{0}part from-csv [PROJECT NAME]` with attached .csv file
+6. Upload your .osz and lay out the rules in your info channel and use `{0}member-guide [PROJECT NAME]` to show your participants how to use the bot
+7. Allow anyone to join your collab: `{0}status [PROJECT NAME] SearchingForMembers`
+8. Allow members to claim parts on their own: `{0}options [PROJECT NAME] SelfAssignmentAllowed:true` and `{0}max-assignments [PROJECT NAME] 1`</value>
+  </data>
+  <data name="CollabGuideTitle" xml:space="preserve">
+    <value>Collab set-up guide</value>
+  </data>
   <data name="CommandNotFound" xml:space="preserve">
     <value>Command `{0}` could not be found.</value>
   </data>
@@ -304,7 +325,7 @@
     <value>Changed max collab count per person to {0}.</value>
   </data>
   <data name="GuildNotExistsMessage" xml:space="preserve">
-    <value>Your server is not registered! You can add it via command `!!guild init`.</value>
+    <value>Your server is not registered! You can add it via command `{0}guild init`.</value>
   </data>
   <data name="IllegalFilename" xml:space="preserve">
     <value>Illegal filename found.</value>
@@ -326,6 +347,20 @@
   </data>
   <data name="MemberExistsMessage" xml:space="preserve">
     <value>This user is already a member of the project.</value>
+  </data>
+  <data name="MemberGuideContent" xml:space="preserve">
+    <value>1. Set your mapper name: `{0}alias {1} "[YOUR OSU NAME]"`
+2. Set your tags (like old names and stuff): `{0}tags {1} "[YOUR TAGS]"`
+3. See which parts are available `{0}part list {1}`
+4. Claim a part `{0}asn claim {1} [PART NAME]`
+5. Submit your mapping progress to your part: `{0}submit {1}` with your .osu file attached
+6. When done, mark your part as finished: `{0}asn done {1} [PART NAME]`
+7. Repeat from step 4
+
+Replace the part with the [square brackets] with the relevant value and KEEP the quotation marks.</value>
+  </data>
+  <data name="MemberGuideTitle" xml:space="preserve">
+    <value>Collab participation guide</value>
   </data>
   <data name="MemberListMessage" xml:space="preserve">
     <value>Here are all members of the project:</value>

@@ -187,6 +187,26 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1. Enable the bot in the server: `{0}guild init`
+        ///2. Assign a category for collab channels to appear in: `{0}guild collab-category [CATEGORY]`
+        ///3. Allow regular members to create collabs: `{0}guild max-collabs 1`.
+        /// </summary>
+        public static string AdminGuideContent {
+            get {
+                return ResourceManager.GetString("AdminGuideContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server set-up guide.
+        /// </summary>
+        public static string AdminGuideTitle {
+            get {
+                return ResourceManager.GetString("AdminGuideTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aliases:.
         /// </summary>
         public static string Aliases {
@@ -466,6 +486,28 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1. Create a new project: `{0}create [PROJECT NAME]` (Choose a simple name which is easy to type and doesn&apos;t contant any spaces)
+        ///2. Set-up the project channels and roles: `{0}setup [PROJECT NAME]`
+        ///3. Create a base beatmap with timing, bookmarks, and difficulty settings and upload it to the bot: `{0}setbasefile [PROJECT NAME]` with .osu file attached
+        ///4. Generate parts from the bookmarks: `{0}part from-bookmarks [PROJECT NAME]` with .osu file attached
+        ///5. Edit the parts in Excel: `{0}part to-csv [PROJECT NA [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string CollabGuideContent {
+            get {
+                return ResourceManager.GetString("CollabGuideContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collab set-up guide.
+        /// </summary>
+        public static string CollabGuideTitle {
+            get {
+                return ResourceManager.GetString("CollabGuideTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Command `{0}` could not be found..
         /// </summary>
         public static string CommandNotFound {
@@ -619,7 +661,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your server is not registered! You can add it via command `!!guild init`..
+        ///   Looks up a localized string similar to Your server is not registered! You can add it via command `{0}guild init`..
         /// </summary>
         public static string GuildNotExistsMessage {
             get {
@@ -687,6 +729,32 @@ namespace CollaborationBot.Resources {
         public static string MemberExistsMessage {
             get {
                 return ResourceManager.GetString("MemberExistsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1. Set your mapper name: `{0}alias {1} &quot;[YOUR OSU NAME]&quot;`
+        ///2. Set your tags (like old names and stuff): `{0}tags {1} &quot;[YOUR TAGS]&quot;`
+        ///3. See which parts are available `{0}part list {1}`
+        ///4. Claim a part `{0}asn claim {1} [PART NAME]`
+        ///5. Submit your mapping progress to your part: `{0}submit {1}` with your .osu file attached
+        ///6. When done, mark your part as finished: `{0}asn done {1} [PART NAME]`
+        ///7. Repeat from step 4
+        ///
+        ///Replace the part with the [square brackets] with the relevant value and KEEP the quotati [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string MemberGuideContent {
+            get {
+                return ResourceManager.GetString("MemberGuideContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collab participation guide.
+        /// </summary>
+        public static string MemberGuideTitle {
+            get {
+                return ResourceManager.GetString("MemberGuideTitle", resourceCulture);
             }
         }
         
