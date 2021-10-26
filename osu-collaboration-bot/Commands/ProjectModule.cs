@@ -1040,11 +1040,14 @@ namespace CollaborationBot.Commands {
             }
 
             try {
-                var tags = (await _context.Members.AsQueryable()
-                 .Where(predicate: o => o.ProjectId == project.Id && o.Tags != null).ToListAsync())
-                 .SelectMany(o => o.Tags.Split(' ', StringSplitOptions.RemoveEmptyEntries)).Select(o => o.Trim()).Distinct();
+                var tags = await _context.Members.AsQueryable()
+                    .Where(o => o.ProjectId == project.Id && o.Tags != null).Select(o => o.Tags).ToListAsync();
+                var aliases = await _context.Members.AsQueryable()
+                    .Where(o => o.ProjectId == project.Id && o.Alias != null).Select(o => o.Alias).ToListAsync();
+                var tagsClean = tags.Concat(aliases)
+                 .SelectMany(o => o.Split(' ', StringSplitOptions.RemoveEmptyEntries)).Select(o => o.Trim()).Distinct();
 
-                await Context.Channel.SendMessageAsync(string.Format(Strings.AllMemberTags, string.Join(' ', tags)));
+                await Context.Channel.SendMessageAsync(string.Format(Strings.AllMemberTags, string.Join(' ', tagsClean)));
             } catch (Exception e) {
                 logger.Error(e);
                 await Context.Channel.SendMessageAsync(Strings.BackendErrorMessage);
