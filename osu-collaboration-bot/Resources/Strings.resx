@@ -285,6 +285,9 @@
   <data name="DeadlineReminder" xml:space="preserve">
     <value>{0}, you have 48 hours left to complete part `{1}` for project `{2}`.</value>
   </data>
+  <data name="DeadlineReminderCombined" xml:space="preserve">
+    <value>{0}, you have 48 hours left to complete your part for project `{1}`.</value>
+  </data>
   <data name="DeletedChannel" xml:space="preserve">
     <value>Deleted channel</value>
   </data>
