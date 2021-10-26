@@ -39,6 +39,7 @@ namespace CollaborationBot.Services {
                 return;
             }
 
+            var dmChannel = await context.User.GetOrCreateDMChannelAsync();
             EmbedBuilder embedBuilder = new EmbedBuilder();
             int c = 0;
             bool first = true;
@@ -51,7 +52,7 @@ namespace CollaborationBot.Services {
                 c++;
 
                 if (c == 25) {
-                    await context.Channel.SendMessageAsync(first ? Strings.ListCommandsMessage : string.Empty, false, embedBuilder.Build());
+                    await dmChannel.SendMessageAsync(first ? Strings.ListCommandsMessage : string.Empty, false, embedBuilder.Build());
                     embedBuilder = new EmbedBuilder();
                     first = false;
                     c = 0;
@@ -59,13 +60,13 @@ namespace CollaborationBot.Services {
             }
 
             if (c > 0) {
-                await context.Channel.SendMessageAsync(first ? Strings.ListCommandsMessage : string.Empty, false, embedBuilder.Build());
+                await dmChannel.SendMessageAsync(first ? Strings.ListCommandsMessage : string.Empty, false, embedBuilder.Build());
             }
 
             if (showReference) {
                 embedBuilder = new EmbedBuilder();
                 embedBuilder.AddField(Strings.OtherModuleHelpReference, string.Format(Strings.OtherModuleHelpGuide, prefix));
-                await context.Channel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
+                await dmChannel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
             }
         }
 
