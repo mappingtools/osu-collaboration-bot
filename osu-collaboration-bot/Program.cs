@@ -32,7 +32,7 @@ namespace CollaborationBot {
         private readonly Timer checkupTimer = new();
 
         public static void Main(string[] args) {
-             config = new ConfigurationBuilder()
+            config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile("appsettings.Development.json", optional: true)
@@ -162,7 +162,7 @@ namespace CollaborationBot {
         }
 
         private AppSettings GetAppSettings() {
-            return config.Get<AppSettings>();
+            return config.GetSection("App").Get<AppSettings>();
         }
     }
 }
