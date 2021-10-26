@@ -1089,7 +1089,8 @@ namespace CollaborationBot.Commands {
         [Command("generate-priorities")]
         [Summary("Automatically generates priorities for all members of the project based on total number of days they've been on the server")]
         public async Task GeneratePriorities([Summary("The project")]string projectName,
-            [Summary("The priority value of one day")]int timeWeight = 1) {
+            [Summary("The priority value of one day")]int timeWeight = 1,
+            [Summary("Whether to replace all the existing priority values")]bool replace = false) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1101,8 +1102,12 @@ namespace CollaborationBot.Commands {
                     .Where(o => o.ProjectId == project.Id).ToListAsync();
 
                 foreach (var member in members) {
+                    if (member.Priority.HasValue && !replace) {
+                        continue;
+                    }
+
                     var memberUser = Context.Guild.GetUser((ulong) member.UniqueMemberId);
-                    if (memberUser is not IGuildUser gu || !gu.JoinedAt.HasValue) {
+                    if (memberUser is not IGuildUser {JoinedAt: { }} gu) {
                         member.Priority = 0;
                         continue;
                     }
