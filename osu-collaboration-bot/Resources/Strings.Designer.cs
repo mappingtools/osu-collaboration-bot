@@ -562,6 +562,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not load the diffname words file..
+        /// </summary>
+        public static string DiffnameLoadFail {
+            get {
+                return ResourceManager.GetString("DiffnameLoadFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not edit part..
         /// </summary>
         public static string EditPartFail {

@@ -291,6 +291,9 @@
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="DiffnameLoadFail" xml:space="preserve">
+    <value>Could not load the diffname words file.</value>
+  </data>
   <data name="EditPartFail" xml:space="preserve">
     <value>Could not edit part.</value>
   </data>

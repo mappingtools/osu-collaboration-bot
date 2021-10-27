@@ -12,7 +12,10 @@ using Microsoft.EntityFrameworkCore;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CollaborationBot.Commands {
@@ -21,6 +24,7 @@ namespace CollaborationBot.Commands {
     [Summary("Main module with project and member related stuff")]
     public class ProjectModule : ModuleBase<SocketCommandContext> {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Random random = new();
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
@@ -1485,7 +1489,45 @@ namespace CollaborationBot.Commands {
         }
 
         #endregion
-        
+
+        #region misc
+
+        private static readonly int[] wordCounts = { 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 10 };
+
+        [Command("diffname")]
+        [Summary("Generates a random difficulty name")]
+        public async Task Diffname() {
+            List<string> words = new List<string>();
+            try {
+                var assembly = Assembly.GetExecutingAssembly();
+                const string resourceName = "CollaborationBot.Resources.Diffname Words.txt";
+
+                using Stream stream = assembly.GetManifestResourceStream(resourceName);
+                using StreamReader reader = new StreamReader(stream);
+                while (true) {
+                    string word = await reader.ReadLineAsync();
+                    if (word is null) break;
+                    words.Add(word.Trim());
+                }  
+            } catch (Exception e) {
+                logger.Error(e);
+                await Context.Channel.SendMessageAsync(Strings.DiffnameLoadFail);
+                return;
+            }
+
+            int n_words = wordCounts[random.Next(wordCounts.Length - 1)];
+            StringBuilder diffname = new StringBuilder();
+            for (int i = 0; i < n_words; i++) {
+                if (i != 0)
+                    diffname.Append(' ');
+                diffname.Append(words[random.Next(words.Count)]);
+            }
+
+            await Context.Channel.SendMessageAsync(diffname.ToString());
+        }
+
+        #endregion
+
         private async Task<Project> GetProjectAsync(string projectName) {
             var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 
