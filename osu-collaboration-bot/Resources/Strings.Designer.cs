@@ -544,6 +544,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}, you have 48 hours left to complete your part for project `{1}`..
+        /// </summary>
+        public static string DeadlineReminderCombined {
+            get {
+                return ResourceManager.GetString("DeadlineReminderCombined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deleted channel.
         /// </summary>
         public static string DeletedChannel {

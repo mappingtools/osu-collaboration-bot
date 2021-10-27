@@ -1,21 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Timers;
-using System.Threading.Tasks;
 using CollaborationBot.Entities;
+using CollaborationBot.Resources;
 using CollaborationBot.Services;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using CollaborationBot.Resources;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using NLog;
 using NLog.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Timers;
 
 namespace CollaborationBot {
     public class Program {
@@ -86,23 +85,38 @@ namespace CollaborationBot {
             // Check assignments and give reminders
             var remindingTime = TimeSpan.FromDays(2);
 
+            // Query is grouped by project so multiple reminders in one channel can be combined to one message
             var assignmentsToRemind = await _context.Assignments.AsQueryable().Where(
                 o => o.Deadline.HasValue && o.Deadline - remindingTime < DateTime.UtcNow &&
                      (!o.LastReminder.HasValue || o.LastReminder + remindingTime < DateTime.UtcNow) &&
                      o.Part.Project.DoReminders && o.Part.Project.MainChannelId.HasValue)
                 .Include(o => o.Part).ThenInclude(p => p.Project)
-                .Include(o => o.Member).ToListAsync();
+                .Include(o => o.Member)
+                .GroupBy(o => o.Part.Project).ToListAsync();
 
-            foreach (var assignment in assignmentsToRemind) {
-                var channel = _client.GetChannel((ulong) assignment.Part.Project.MainChannelId!.Value);
-                var user = _client.GetUser((ulong) assignment.Member.UniqueMemberId);
+            foreach (var assignmentGroup in assignmentsToRemind) {
+                ulong channelId = (ulong) assignmentGroup.Key.MainChannelId!.Value;
+                var channel = _client.GetChannel(channelId);
+                var users = assignmentGroup
+                    .Select(o => _client.GetUser((ulong) o.Member.UniqueMemberId))
+                    .Where(o => o is not null).Distinct().ToList();
                 
-                if (channel is not ITextChannel textChannel || user == null) continue;
+                if (channel is not ITextChannel textChannel || users.Count == 0) continue;
 
-                await textChannel.SendMessageAsync(string.Format(Strings.DeadlineReminder, user.Mention,
-                    assignment.Part.Name, assignment.Part.Project.Name));
-                
-                assignment.LastReminder = DateTime.UtcNow;
+                var mentions = string.Join(' ', users.Select(o => o.Mention));
+                var parts = assignmentGroup.Select(o => o.Part).Distinct().ToList();
+                var projectName = assignmentGroup.Key.Name;
+
+                if (parts.Count != 1) {
+                    await textChannel.SendMessageAsync(string.Format(Strings.DeadlineReminderCombined, mentions, projectName));
+                } else {
+                    await textChannel.SendMessageAsync(string.Format(Strings.DeadlineReminder, mentions,
+                        parts.First().Name, projectName));
+                }
+
+                foreach (var assignment in assignmentGroup) {
+                    assignment.LastReminder = DateTime.UtcNow;
+                }
             }
 
             // Check passed deadlines
