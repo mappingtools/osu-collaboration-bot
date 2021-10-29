@@ -55,8 +55,14 @@ namespace CollaborationBot.Services {
                 _services);
 
             if (!result.IsSuccess) {
-                logger.Error("Unhandled exception of type {type} caused by {@message}: {reason}", result.Error, message.Content, result.ErrorReason);
-                await context.Channel.SendMessageAsync(Strings.BackendErrorMessage);
+                logger.Error("Error of type {type} caused by {@message}: {reason}", result.Error, message.Content, result.ErrorReason);
+
+                // We dont want to send Exception reasons in discord chat
+                if (result.Error == CommandError.Exception) {
+                    await context.Channel.SendMessageAsync(Strings.BackendErrorMessage);
+                } else {
+                    await context.Channel.SendMessageAsync(result.ErrorReason);
+                }
             }
         }
     }
