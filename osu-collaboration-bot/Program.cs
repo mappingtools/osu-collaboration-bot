@@ -82,6 +82,8 @@ namespace CollaborationBot {
         }
 
         private async void CheckupTimerOnElapsed(object sender, ElapsedEventArgs e) {
+            logger.Info("Checking for late deadlines...");
+
             // Check assignments and give reminders
             var remindingTime = TimeSpan.FromDays(2);
 
@@ -93,6 +95,8 @@ namespace CollaborationBot {
                 .Include(o => o.Part).ThenInclude(p => p.Project)
                 .Include(o => o.Member)
                 .GroupBy(o => o.Part.Project).ToListAsync();
+
+            logger.Debug("Found {count} assignments to remind.", assignmentsToRemind.Count);
 
             foreach (var assignmentGroup in assignmentsToRemind) {
                 ulong channelId = (ulong) assignmentGroup.Key.MainChannelId!.Value;
@@ -124,6 +128,8 @@ namespace CollaborationBot {
                     o => o.Deadline.HasValue && o.Deadline < DateTime.UtcNow)
                 .Include(o => o.Part).ThenInclude(p => p.Project)
                 .Include(o => o.Member).ToListAsync();
+            
+            logger.Debug("Found {count} assignments overdue.", deadAssignments.Count);
 
             foreach (var assignment in deadAssignments) {
                 if (assignment.Part.Project.MainChannelId.HasValue) {
