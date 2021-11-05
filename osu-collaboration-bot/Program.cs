@@ -88,15 +88,15 @@ namespace CollaborationBot {
             var remindingTime = TimeSpan.FromDays(2);
 
             // Query is grouped by project so multiple reminders in one channel can be combined to one message
-            var assignmentsToRemind = await _context.Assignments.AsQueryable().Where(
+            var assignmentsToRemind = (await _context.Assignments.AsQueryable().Where(
                 o => o.Deadline.HasValue && o.Deadline - remindingTime < DateTime.UtcNow &&
                      (!o.LastReminder.HasValue || o.LastReminder + remindingTime < DateTime.UtcNow) &&
                      o.Part.Project.DoReminders && o.Part.Project.MainChannelId.HasValue)
                 .Include(o => o.Part).ThenInclude(p => p.Project)
                 .Include(o => o.Member)
-                .GroupBy(o => o.Part.Project).ToListAsync();
+                .ToListAsync()).GroupBy(o => o.Part.Project).ToList();
 
-            logger.Debug("Found {count} assignments to remind.", assignmentsToRemind.Count);
+            logger.Debug("Found {count} assignments to remind.", assignmentsToRemind.SelectMany(o => o).Count());
 
             foreach (var assignmentGroup in assignmentsToRemind) {
                 ulong channelId = (ulong) assignmentGroup.Key.MainChannelId!.Value;
