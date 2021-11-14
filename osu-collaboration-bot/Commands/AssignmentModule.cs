@@ -38,7 +38,7 @@ namespace CollaborationBot.Commands {
             await _userHelpService.DoHelp(Context, "Assignment module", "asn", command);
         }
 
-        [RequireProjectManager(Group = "Permission")]
+        [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("list")]
         [Summary("Lists all the assignments in the project")]
