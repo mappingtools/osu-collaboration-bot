@@ -464,7 +464,7 @@ namespace CollaborationBot.Commands {
                         infoChannel = await Context.Guild.CreateTextChannelAsync($"{project.Name}-info",
                             prop => prop.CategoryId = (ulong) guild.CollabCategoryId);
                         
-                        await infoChannel.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, GetNoPermissions());
+                        await infoChannel.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, GetNoPermissions(infoChannel));
                         await infoChannel.AddPermissionOverwriteAsync(role, GetReadPermissions());
                         await infoChannel.AddPermissionOverwriteAsync(managerRole, GetPartialAdminPermissions());
 
@@ -479,7 +479,7 @@ namespace CollaborationBot.Commands {
                         var mainChannel = await Context.Guild.CreateTextChannelAsync($"{project.Name}-general",
                             prop => prop.CategoryId = (ulong) guild.CollabCategoryId);
                         
-                        await mainChannel.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, GetNoPermissions());
+                        await mainChannel.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, GetNoPermissions(mainChannel));
                         await mainChannel.AddPermissionOverwriteAsync(role, GetWritePermissions());
                         await mainChannel.AddPermissionOverwriteAsync(managerRole, GetPartialAdminPermissions());
 
@@ -589,27 +589,8 @@ namespace CollaborationBot.Commands {
                 PermValue.Deny);
         }
 
-        public static OverwritePermissions GetNoPermissions() {
-            return new (PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny, // This parameter is for the 'viewChannel' permission
-                PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny,
-                PermValue.Deny);
+        public static OverwritePermissions GetNoPermissions(IChannel channel) {
+            return OverwritePermissions.DenyAll(channel);
         }
 
         #endregion
