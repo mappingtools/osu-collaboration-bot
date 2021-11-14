@@ -213,7 +213,7 @@ namespace CollaborationBot.Commands {
                     PartingDistance = 4,
                     FixColourHax = true,
                     FixBpmSv = false,
-                    FixStackLeniency = true,
+                    FixStackLeniency = false,
                     FixTickRate = false,
                     FixGlobalSv = true,
                     SnapToNewTiming = false,
