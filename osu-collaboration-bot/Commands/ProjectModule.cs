@@ -623,13 +623,14 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            if (project.Status != ProjectStatus.SearchingForMembers) {
-                await Context.Channel.SendMessageAsync(Strings.NotLookingForMembers);
+            if (_context.Members.Any(o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id)) {
+                await GrantProjectRole(Context.User, project);
+                await Context.Channel.SendMessageAsync(Strings.AlreadyJoinedMessage);
                 return;
             }
 
-            if (_context.Members.Any(o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id)) {
-                await Context.Channel.SendMessageAsync(Strings.AlreadyJoinedMessage);
+            if (project.Status != ProjectStatus.SearchingForMembers) {
+                await Context.Channel.SendMessageAsync(Strings.NotLookingForMembers);
                 return;
             }
 
