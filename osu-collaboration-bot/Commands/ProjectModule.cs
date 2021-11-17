@@ -1486,10 +1486,19 @@ namespace CollaborationBot.Commands {
         [Command("diffname")]
         [Summary("Generates a random difficulty name")]
         public async Task Diffname() {
+            await DoRandomString(@"CollaborationBot.Resources.Diffname Words.txt");
+        }
+
+        [Command("blixys")]
+        [Summary("Generates some inspiration")]
+        public async Task Blixys() {
+            await DoRandomString(@"CollaborationBot.Resources.blixys.txt");
+        }
+
+        private async Task DoRandomString(string resourceName) {
             List<string> words = new List<string>();
             try {
                 var assembly = Assembly.GetExecutingAssembly();
-                const string resourceName = "CollaborationBot.Resources.Diffname Words.txt";
 
                 using Stream stream = assembly.GetManifestResourceStream(resourceName);
                 using StreamReader reader = new StreamReader(stream);
@@ -1497,7 +1506,7 @@ namespace CollaborationBot.Commands {
                     string word = await reader.ReadLineAsync();
                     if (word is null) break;
                     words.Add(word.Trim());
-                }  
+                }
             } catch (Exception e) {
                 logger.Error(e);
                 await Context.Channel.SendMessageAsync(Strings.DiffnameLoadFail);

@@ -13,10 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\blixys.txt" />
     <None Remove="Resources\Diffname Words.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\blixys.txt" />
     <EmbeddedResource Include="Resources\Diffname Words.txt" />
   </ItemGroup>
 
