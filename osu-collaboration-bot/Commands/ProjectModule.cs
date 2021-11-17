@@ -983,14 +983,16 @@ namespace CollaborationBot.Commands {
         [Command("tags")]
         [Summary("Changes the tags of a member of the project")]
         public async Task Tags([Summary("The project")]string projectName,
-            [Summary("The member")]IUser user, [Summary("The new tags")]string tags) {
+            [Summary("The member")]IUser user, [Summary("The new tags")]params string[] tags) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
                 return;
             }
 
-            if (!_inputSanitizer.IsValidName(tags)) {
+            string tagsString = string.Join(' ', tags);
+
+            if (!_inputSanitizer.IsValidName(tagsString)) {
                 await Context.Channel.SendMessageAsync(Strings.IllegalInput);
                 return;
             }
@@ -1004,7 +1006,7 @@ namespace CollaborationBot.Commands {
             }
 
             try {
-                member.Tags = tags;
+                member.Tags = tagsString;
 
                 await _context.SaveChangesAsync();
                 await Context.Channel.SendMessageAsync(string.Format(Strings.ChangeTagsSuccess, user.Mention, tags));
