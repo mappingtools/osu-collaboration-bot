@@ -192,10 +192,10 @@ namespace CollaborationBot.Commands {
                     partBeatmap.HitObjects = partBeatmap.HitObjects
                         .Where(ho => parts!.Any(p =>
                             p.Status != PartStatus.Locked &&
-                            ho.StartTime >= p.Start - 5 &&
-                            ho.StartTime <= p.End + 5 &&
-                            ho.EndTime >= p.Start - 5 &&
-                            ho.EndTime <= p.End + 5))
+                            (ho.StartTime >= p.Start - 5 || !p.Start.HasValue) &&
+                            (ho.StartTime <= p.End + 5 || !p.End.HasValue) &&
+                            (ho.EndTime >= p.Start - 5 || !p.Start.HasValue) &&
+                            (ho.EndTime <= p.End + 5 || !p.End.HasValue)))
                         .ToList();
                 }
 
