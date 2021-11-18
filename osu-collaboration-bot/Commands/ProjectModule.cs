@@ -17,6 +17,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Mapping_Tools_Core.BeatmapHelper.Contexts;
+using Mapping_Tools_Core.MathUtil;
 
 namespace CollaborationBot.Commands {
     [Group]
@@ -206,6 +208,26 @@ namespace CollaborationBot.Commands {
                     return;
                 }
 
+                var editor = new BeatmapEditor(_fileHandler.GetProjectBaseFilePath(Context.Guild, projectName));
+                var beatmap = editor.ReadFile();
+
+                // Check the global SV and stack leniency and warn the user if problems arise
+                double svFactor = partBeatmap.Difficulty.SliderMultiplier / beatmap.Difficulty.SliderMultiplier;
+                if (!Precision.AlmostEquals(svFactor, 1) &&
+                    partBeatmap.HitObjects.Any(o => {
+                        var newSV = svFactor * MathHelper.Clamp(o.GetContext<TimingContext>().SliderVelocity, 0.1, 10);
+                        return double.IsNaN(newSV) ||
+                               Precision.DefinitelySmaller(newSV, 0.1) ||
+                               Precision.DefinitelyBigger(newSV, 10);
+                    })) {
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.GlobalSVMismatchWarning));
+                }
+
+                if (!Precision.AlmostEquals(partBeatmap.General.StackLeniency, beatmap.General.StackLeniency)) {
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.StackLeniencyMismatchWarning));
+                }
+
+                // Merge the part and save
                 var placer = new OsuPatternPlacer {
                     PatternOverwriteMode = PatternOverwriteMode.PartitionedOverwrite,
                     TimingOverwriteMode = TimingOverwriteMode.PatternTimingOnly,
@@ -222,10 +244,6 @@ namespace CollaborationBot.Commands {
                     IncludeKiai = true,
                     ScaleToNewCircleSize = false,
                 };
-
-                var editor = new BeatmapEditor(_fileHandler.GetProjectBaseFilePath(Context.Guild, projectName));
-                var beatmap = editor.ReadFile();
-            
                 placer.PlaceOsuPattern(partBeatmap, beatmap);
 
                 editor.WriteFile(beatmap);

@@ -634,6 +634,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Detected a mismatch in global slider velocity multiplier between the submitted part and the base beatmap which can&apos;t be resolved automatically. The submitted part may not work correctly!.
+        /// </summary>
+        public static string GlobalSVMismatchWarning {
+            get {
+                return ResourceManager.GetString("GlobalSVMismatchWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not change collab category to `{0}`..
         /// </summary>
         public static string GuildCollabCategoryFail {
@@ -1424,6 +1433,15 @@ namespace CollaborationBot.Resources {
         public static string ShowBaseFile {
             get {
                 return ResourceManager.GetString("ShowBaseFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detected a mismatch in stacking leniency between the submitted part and the base beatmap. The submitted part may not work correctly!.
+        /// </summary>
+        public static string StackLeniencyMismatchWarning {
+            get {
+                return ResourceManager.GetString("StackLeniencyMismatchWarning", resourceCulture);
             }
         }
         

@@ -315,6 +315,9 @@
   <data name="GeneratePrioritiesSuccess" xml:space="preserve">
     <value>Generated priorities for member of project `{0}`.</value>
   </data>
+  <data name="GlobalSVMismatchWarning" xml:space="preserve">
+    <value>Detected a mismatch in global slider velocity multiplier between the submitted part and the base beatmap which can't be resolved automatically. The submitted part may not work correctly!</value>
+  </data>
   <data name="GuildCollabCategoryFail" xml:space="preserve">
     <value>Could not change collab category to `{0}`.</value>
   </data>
@@ -586,6 +589,9 @@ Replace the part with the [square brackets] with the relevant value and KEEP the
   </data>
   <data name="ShowBaseFile" xml:space="preserve">
     <value>Compiled .osu file of project `{0}`:</value>
+  </data>
+  <data name="StackLeniencyMismatchWarning" xml:space="preserve">
+    <value>Detected a mismatch in stacking leniency between the submitted part and the base beatmap. The submitted part may not work correctly!</value>
   </data>
   <data name="SubmitNoHitObjects" xml:space="preserve">
     <value>Submitted file has no hit objects or you have no open assignments for the submitted parts.</value>
