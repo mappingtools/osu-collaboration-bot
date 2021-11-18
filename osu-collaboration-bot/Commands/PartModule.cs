@@ -68,6 +68,29 @@ namespace CollaborationBot.Commands {
             await Context.Channel.SendMessageAsync(_resourceService.GeneratePartsListMessage(parts));
         }
 
+        [RequireProjectMember(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("list-unclaimed")]
+        [Alias("listunclaimed")]
+        [Summary("Lists all the unclaimed parts of the project")]
+        public async Task ListUnclaimed([Summary("The project")]string projectName) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            var parts = await _context.Parts.AsQueryable()
+                .Where(o => o.ProjectId == project.Id && o.Assignments.Count == 0)
+                .Include(o => o.Assignments)
+                .ThenInclude(o => o.Member)
+                .ToListAsync();
+
+            parts.Sort();
+
+            await Context.Channel.SendMessageAsync(_resourceService.GeneratePartsListMessage(parts));
+        }
+
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("add")]
