@@ -292,7 +292,7 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("from-bookmarks")]
         [Summary("Imports parts from a beatmap's bookmarks")]
-        public async Task FromCSV([Summary("The project")] string projectName,
+        public async Task FromBookmarks([Summary("The project")] string projectName,
             [Summary("Whether there is a bookmark indicating the start of the first part")] bool hasStart = true,
             [Summary("Whether there is a bookmark indicating the end of the last part")] bool hasEnd = false,
             [Summary("Whether to clear the existing parts before importing")] bool replace = true) {
