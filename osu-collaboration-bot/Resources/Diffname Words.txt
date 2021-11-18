@@ -19,8 +19,6 @@ NOLD
 Nyquill
 Myouren
 Hijiri
-lepidon!
-lepidon!
 Muzu
 BeStyle
 Heavy
@@ -463,7 +461,6 @@ Happy
 End
 Club
 Mix
-lepidon!
 Ruby
 Mix
 Street
@@ -473,7 +470,6 @@ Best
 map
 ever
 created
-Special
 Chroche
 Luca
 Centuries
@@ -487,7 +483,6 @@ The
 end
 Sedang
 Susah
-lepidon!
 Gladi
 Lucifer
 Psycho
@@ -555,9 +550,7 @@ VOICE
 extr@
 CRN
 Oyasumi
-lepidon!
 style
-lepidon!
 Ultra
 Hi-Speed
 Ultra
@@ -600,7 +593,6 @@ Spy
 Soft
 Dan
 True
-EX
 Freak
 Out
 Asteroid
@@ -624,7 +616,6 @@ Teke
 Juice
 Delicious
 Juice
-Special
 Juice
 Sweet
 Juice
@@ -718,8 +709,6 @@ Time
 EUPHORIC
 Heaven
 Impact
-lepidon!
-lepidon!
 Maou
 DONS
 JUMP
@@ -782,8 +771,6 @@ Torture
 Lesjuh
 Rebirth
 Happy
-DoKo
-DoKo
 LIKE
 THE
 JUSTICE
@@ -835,7 +822,6 @@ Daze!
 Faisane
 FAI
 Fasy
-EX
 Wake
 Up
 Kyokuchuuhatto
@@ -857,7 +843,6 @@ Finale
 Inny
 !ignore
 this
-Ex
 Relaxing
 Time
 _loliplus+
@@ -903,8 +888,6 @@ Backdrop
 Super
 Nyaten
 World
-DoKo
-DoKo
 Salut.soleil!
 Ghostly
 Baka
@@ -913,14 +896,12 @@ Hentai
 Sukebe
 EUPHORIA
 Gangsta
-lepidon!
 Possessed
 Malevolence
 Cherry
 Deluge
 HappyMix
 Sliders
-Special
 Revelation
 Redemption
 Chill
@@ -976,7 +957,6 @@ Yuraki
 Heaven
 Guest
 Diff
-lepidon!
 Serenade
 ExTream
 Jumping
@@ -1002,7 +982,6 @@ Unexpected
 Black
 Hell
 Promise
-SPECIAL
 Adept
 Intermediate
 Terror
@@ -1075,7 +1054,6 @@ Pianist
 Mad
 Pianist
 Affection
-lepidon!
 Donphin
 Fubuki
 Twin
@@ -1117,14 +1095,8 @@ Burning
 Fighting
 Fighter
 Hell
-DoKo
-DoKo
 Concerto
 Light
-EX
-EX
-EX
-EX
 jump
 life
 Donatello
@@ -1137,13 +1109,11 @@ Dance
 Serene
 Eira
 Sanya
-lepidon!
 Princess
 Fely
 SEX
 Alazy
 AngelHoney
-lepidon!
 Force
 Lumiere
 Princess
@@ -1173,7 +1143,6 @@ vs.
 creativity^tm
 Minuet
 Fatfan
-lepidon!
 Atomic
 Radium
 CrossOver
@@ -1197,7 +1166,6 @@ Intermediate
 Mittens
 Doomsday
 Furry
-lepidon!
 Kneesocks
 Kneesocks
 HOS
@@ -1232,7 +1200,6 @@ Style
 Jumping
 Clash
 Clash
-SPECIAL
 Realization
 Trail
 of
@@ -1247,7 +1214,6 @@ Ace
 Mirai
 Softcore
 Rave!
-lepidon!
 Lunakuren
 Challenge
 Heavy
@@ -1411,7 +1377,6 @@ Style
 Extream
 Jumping
 Style
-Pittig
 New
 World
 Grief
@@ -1422,8 +1387,6 @@ Szeretet
 Close
 Phantasm
 Draw
-DoKo
-DoKo
 BeginNa
 FOUR
 DIMENSIONS
@@ -1449,22 +1412,16 @@ Prayed
 Aspire
 Eternal
 Yume
-DoKo
-DoKo
 Isomer
 Rin
 Drop
 it
-Pittig
 Remap
-Pittig
-lepidon!
 Chaos
 Moon
 Red
 Mist
 Revenant
-lepidon!
 +Rosenkreuz+
 Waltz
 Snow
@@ -1497,9 +1454,6 @@ Lisa
 Pokie
 Sins
 iNatsane
-Niat
-lepidon!
-Special
 Birth
 Death
 Heaven
@@ -1548,9 +1502,7 @@ Time
 STACKS
 BABYYYY
 Eternity
-DoKo
 Kana
-DoKo
 Japanese
 RuRu
 quin
@@ -1567,7 +1519,6 @@ HIGHTEC
 HIKA
 KSHRO
 MYSTERY
-PITTIG
 REMAP
 SMITH
 TAKU
@@ -1611,7 +1562,6 @@ Negai
 Ichi
 Aspiration
 Super
-Pittig
 Prism
 Prism
 Tail
@@ -1639,11 +1589,9 @@ Life
 Light
 Heavy
 Anomaly
-lepidon!
 Prologue
 Taik-On!!
 Aphotic
-lepidon!
 Relax
 Lonley
 Gintoki
@@ -1652,7 +1600,6 @@ Katsura
 Takasugi
 Sir
 Average
-lepidon!
 Relaxing
 Tough
 Birdcage
@@ -1733,7 +1680,6 @@ Faithful
 Impossibly
 Sleeping
 Knights
-lepidon!
 End
 Hanasaki
 of
@@ -1787,27 +1733,23 @@ Kaleid
 Liner
 Flandre
 NTK
-lepidon!
 Absolute
 Duo
 Light
 Touching
 Lovers
 Deuterium
-lepidon!
 Protium
 Tritium
 CLICLI
 Zetsubou
 Liner
-lepidon!
 Rosenkreuz
 Spicy
 Fein-chan!
 Eternal
 Heroine
 gowww
-lepidon!
 Count
 Death
 Kitsuneko
@@ -1820,7 +1762,6 @@ Sanae
 Light
 Hana
 Machi
-lepidon!
 Challenging
 Relaxing
 AngelHoney
@@ -1859,7 +1800,6 @@ Dream
 In
 and
 Sane
-Special
 Rave
 Softcore
 Feeling
@@ -1957,7 +1897,6 @@ Valhalla
 Lolis
 Revolver
 yuca
-lepidon!
 Depravity
 PsYcHo
 Satori
@@ -1976,7 +1915,6 @@ Psikyoh
 Courage
 No
 Wrath
-DoKo
 Kurai
 yami
 Bitch
@@ -2001,7 +1939,6 @@ Remix
 galv
 Kriers
 Button
-EX
 Magic
 Orb
 Orb
@@ -2011,7 +1948,6 @@ BBS
 Shift
 Radial
 Resonance
-lepidon!
 KIRBY
 Mix
 Deluxe
@@ -2055,7 +1991,6 @@ Mania
 Relax
 Synesthesia
 Pitsane
-Pittig
 Hopeless
 memes
 Ryu
@@ -2072,19 +2007,14 @@ Jumping
 Style
 Jumping
 Style
-lepidon!
 Psycho
 Chaos
-Special
-SPECIAL
 crazy
 Relentless
 Happiness!
-Pittig
 Light
 Ultimate
 AngelHoney
-lepidon!
 style
 TO
 PO
@@ -2230,7 +2160,6 @@ FINAL
 TIME
 GONKANAU
 Kneesocks
-Pittig
 gowww
 +O->
 ULTRA
@@ -2245,10 +2174,8 @@ in
 Korea
 LoLIS
 Suta
-lepidon!
 Ultra
 Ultra
-Pittig
 Bathory
 Effulgence
 NECROH
@@ -2273,7 +2200,6 @@ Coconut
 Maple
 Vanilla
 Kesenai
-Ex
 Saint
 Journey
 on
@@ -2284,7 +2210,6 @@ Torment
 Megumi
 Precious
 Hangover
-Pittig
 Spring
 Gekido
 Chloe
@@ -2292,12 +2217,10 @@ Lemaire
 Chaotic
 Dis
 Kana
-Special
 Emergence
 Angel
 First
 Love
-lepidon!
 High
 Low
 Fusion
@@ -2327,7 +2250,6 @@ Gone
 Victoire
 Euphoria
 Luminous
-Pittig
 MEGA
 LOSERS
 BONUS
@@ -2345,7 +2267,6 @@ SIX
 THREE
 TWO
 Memories
-Special
 Light
 Pochiko
 Ren
@@ -2356,7 +2277,6 @@ Girl
 INTERMEDIATE
 furioso
 furioso
-DoKo
 Spice
 Kana
 Kiiwa
@@ -2369,14 +2289,11 @@ Firework
 Glow
 Collabird
 Light
-Lepidon!
 Magi
 SwYE_
 Master
 Rainbow
 Meoooooooow
-Pittig
-lepidon!
 Forever
 And
 Day
@@ -2418,7 +2335,6 @@ TWO
 DIMENSIONS
 Timing
 Hime
-Pittig
 Malevolence
 Very
 Happiness
@@ -2430,7 +2346,6 @@ idk
 yet
 Six
 Paths
-DoKo
 samp
 la
 Average
@@ -2451,7 +2366,6 @@ Piano
 Piano
 Promise
 Empress
-EX
 Difficilor
 Insanum
 BOUYAAAi
@@ -2466,7 +2380,6 @@ Kawa-E
 Love
 Serenity
 dksslqj
-special
 Hanabi
 Tragic
 Love
@@ -2475,7 +2388,6 @@ Daiguren
 LKs
 Sin
 Comet
-Special
 Kako
 to
 Mirai
@@ -2491,17 +2403,14 @@ Hopeless
 Eternity
 Dis
 Spinboxer
-Pittig
 Yuki
 Freedom
 For
 The
 Win!
 Very
-Pittig
 Ecchi
 Hentai
-lepidon!
 XtrA
 Horror
 feat.
@@ -2521,17 +2430,14 @@ vs
 True
 Holo
 Genuine
-DoKo
 Ultra
 zancers
 ft.
 Survivors
 Survivors
 Tough
-DoKo
 DJ
 VS
-SPECIAL
 Greget
 Itsudatte
 Prophecy
@@ -2549,7 +2455,6 @@ Kenichi
 Katchy
 NC
 Neko
-Ex
 Pangko
 Snowy
 Yuki
@@ -2587,7 +2492,6 @@ Sanguine
 HOLD
 YOUR
 COLOUR
-Pittig
 Lucifer
 Out
 Of
@@ -2641,7 +2545,6 @@ Nightfall
 obj.Kamikaze
 Necrotic
 obj.Kamikaze
-DoKo
 PANIC
 Kombinator
 Grimoire
@@ -2686,7 +2589,6 @@ Tokyo
 Whisper
 Uryu~
 Solitude
-lepidon!
 Lethal
 Nocturne
 Overkill
@@ -2713,7 +2615,6 @@ Vicissitudes
 of
 the
 times
-DoKo
 Absolution
 S-Class
 B-Class
@@ -2731,7 +2632,6 @@ Japanese
 Blossom
 Flower
 BSY
-Pittig
 Daybreak
 Victor!
 Insanium
@@ -2893,7 +2793,6 @@ vs
 Necroh
 Freedom
 Pittigest
-Pittig
 Spicy
 Mega
 Gratitude
@@ -2970,7 +2869,6 @@ DIFFICULTY
 You
 Found
 Me
-DoKo
 Stage
 Disorder
 Noob
@@ -2981,7 +2879,6 @@ osu!
 idol
 Bleeding
 Desire
-Special
 Extremity
 Crippling
 Mania
@@ -2995,8 +2892,6 @@ actor
 Headphone
 actor
 Headphone
-Pittig
-Pittig
 Eternity
 Immortal
 Peace
@@ -3050,7 +2945,6 @@ Yuka
 Freedom
 Stage
 Sunshine
-Pittig
 Spirit
 ULTRA
 JUMP
@@ -3072,7 +2966,6 @@ Yoru
 Game
 Over
 Akali-
-Special
 Flight
 Necroh
 Necroh
@@ -3214,23 +3107,15 @@ Duty
 to
 ai
 SPINNER-MADNESS
-Special
 Splash!!
 SpectorDG
 vs.
 Buttons
-EX
 True
 Meaning
 Overload
 T.High
 Hime
-EX
-EX
-EX
-EX
-EX
-EX
 Runpappa
 Amai
 MAN
@@ -3429,7 +3314,6 @@ SUPER
 fuckjumps
 Kneesocks
 Overdrive!!
-lepidon!
 Noel
 Waiting
 in
@@ -3574,7 +3458,6 @@ Sweet
 Neko
 Splash
 Devil
-DoKo
 Final
 Voyage
 Daybreak
@@ -3585,7 +3468,6 @@ Neko
 Oneesama
 elos
 UMA
-Pittig
 Collapse
 Myth
 ULTIMATE
@@ -3620,7 +3502,6 @@ Memory
 Heavy
 Light
 MADNESS
-DoKo
 Kiss
 Wondering
 First
@@ -3632,7 +3513,6 @@ Uprising
 Awake
 Only
 you
-DoKo
 Huvafen
 Huvafen
 Remap
@@ -3643,7 +3523,6 @@ Absolute
 Duo
 Glory
 Hole
-Pittig
 Seal
 Ultra
 Legend
@@ -3726,7 +3605,6 @@ Kimi
 ni
 Ka
 Na?
-Special
 Promise
 Gobain
 JAMES
@@ -3830,9 +3708,7 @@ Delirium
 Master
 Iets
 Minder
-Pittig
 Pittigst
-Pittig
 CJ
 Mix
 Relaxing
@@ -3899,7 +3775,6 @@ Intro-less
 Battlespace
 Onslaught
 Home
-Special
 Blend
 Drawing
 Memories
@@ -3922,15 +3797,11 @@ qebrus
 cRyo
 DS
 Singer
-Niat
-Niat
 Adrenaline
-Pittig
 Origin
 Boundless
 Kiseki
 Requiem
-lepidon!
 Niseclick
 for
 Necroh
@@ -4021,20 +3892,16 @@ My
 Beloved
 World
 Hime
-Niat
 Light
 Jasmine
 Brilliance
 HAPPY
 END
-DoKo
-DoKo
 Easi
 Normli
 Light
 Tragic
 Love
-Niat
 Sorry,
 But
 We
@@ -4074,7 +3941,6 @@ Ocean
 Edge
 Believe
 Hmm
-Pittig
 Difficult
 Relaxing
 Deception
@@ -4085,7 +3951,6 @@ Nyaten
 Origin
 Saten
 Disintegration
-SPECIAL
 SUMMER
 SPLASH!!
 D.N.Angel
@@ -4093,7 +3958,6 @@ Mayday
 Gone
 Light
 Ultra
-Niat
 NUTS
 Shici
 meets
@@ -4113,7 +3977,6 @@ Masquerade
 Light
 Last
 Wish
-Special
 Night
 World
 Seulgi
@@ -4132,8 +3995,6 @@ Lost
 Above
 the
 Light
-Niat
-Niat
 DETERMINATION
 style
 BISHOP
@@ -4148,7 +4009,6 @@ Hell
 My
 Jewelry
 Box
-Pittig
 lost
 Liqueur
 Lost
@@ -4211,8 +4071,6 @@ Talking
 Can
 Talk
 Talk
-Niat
-Niat
 Cube
 Salsa
 Fragments
@@ -4270,7 +4128,6 @@ Yozora
 Just
 Like
 Me
-Ex
 Hujan
 Seal
 Stupendous
@@ -4320,7 +4177,6 @@ Love
 to
 Grief
 Omnipotent
-DoKo
 Genesis
 Void
 Senitoshi
@@ -4331,7 +4187,6 @@ ZZH
 Joah..
 Bit-shifting
 Corruption
-Niat
 BYE
 BYE
 Bye
@@ -4356,7 +4211,6 @@ Heaven
 Pink
 me
 up
-DoKo
 Timelapse
 style
 Constellation
@@ -4423,7 +4277,6 @@ UnReality
 DETERMINATION
 Climbb
 LITE
-EX
 Timeless
 MANIANIKI
 Decay
@@ -4496,7 +4349,6 @@ Kroytz
 Snow
 White
 Mesosphere
-lepidon!
 of
 the
 Sakura
@@ -4519,7 +4371,6 @@ Gradually
 Yozora
 Deluge
 Moment
-DoKo
 Dan
 Dan
 Emotions
@@ -4568,7 +4419,6 @@ Tranquil
 Happy~!
 Cool
 Skull
-Pittig
 Mobile
 Suit
 Light
@@ -4614,7 +4464,6 @@ Fucking
 Pass
 this
 Legend
-Pittig
 Cloudy
 Snowy
 Sunny
@@ -4643,7 +4492,6 @@ where
 shit
 gets
 real
-DoKo
 Light
 Coll@b
 Jealousy
@@ -4677,7 +4525,6 @@ Beauty
 BLACK
 CHOCOLATE!!
 Average
-Pittig
 Alpha
 Jijou
 Jijou
@@ -4697,7 +4544,6 @@ Light
 Purgatory
 Koi
 Cena
-EX
 YuruYuri
 Pain
 Light
@@ -4721,12 +4567,10 @@ Simple
 Tough
 THALL
 digidai
-Ex
 Haifuri
 Hell
 Lily
 Serendipity
-DoKo
 Imagination
 Romance
 in
@@ -4770,10 +4614,8 @@ listless
 Sir
 Baka
 yyy
-lepidon!
 Bye
 bye~
-DoKo
 Ayo
 Boi
 BITTER
@@ -4792,15 +4634,12 @@ Style
 Smoothie
 Skyloft
 Smoothie
-Niat
 Fatale
 Toyako
 My
 deetz
 AI
 OVERLORD
-EX
-EX
 cappuChino!!
 Captivation
 Cancer
@@ -4906,7 +4745,6 @@ BASSDROP!!
 Light
 Fractal
 Prismatic
-DoKo
 Abyss
 Lake
 Simple
@@ -4987,14 +4825,11 @@ show
 them
 powerful
 stance.
-Pittig
 Tuck
 Fouhou
 A.M.
 A.M.
-Pittig
 Vrij
-Pittig
 Legend
 Hopeless
 Light
@@ -5035,12 +4870,10 @@ Happy
 Zone
 in
 Crime
-DoKo
 LKs
 Ni
 Hao
 Ma
-Pittig
 Light
 Legend
 Possession
@@ -5062,7 +4895,6 @@ fury
 of
 inconvenienced
 german
-Special
 Twinkling
 No!
 No!
@@ -5076,7 +4908,6 @@ Misery
 Coloring
 Relentless
 kokoro.
-Special
 Niamh
 Review
 Hunter
@@ -5162,7 +4993,6 @@ More
 ReLIFE
 Fantaisie
 Rhetoric
-DoKo
 Everlasting
 Memory
 Snow
@@ -5344,8 +5174,6 @@ Snowy
 Time
 Corruption
 Super
-lepidon!
-lepidon!
 Encounter
 Light
 Ex
@@ -5371,7 +5199,6 @@ YOU!
 Hot
 Hentai
 Shuusa
-Special
 Last
 Chance
 Simple
@@ -5480,8 +5307,6 @@ Cygnus
 Terminal
 Light
 Horizon
-Niat
-Niat
 Lugal
 Ki
 En
@@ -5516,7 +5341,6 @@ Avalon
 Kuo
 orb
 Illumination
-DoKo
 Vape
 Naysh
 Yall!
@@ -5672,8 +5496,6 @@ Combustion
 Semi
 Little
 Girl
-Niat
-Niat
 Memories
 Light
 Collapsing
@@ -5709,7 +5531,6 @@ boo
 Promise
 Boss
 Glory
-Special
 Hello,
 Overcute
 In
@@ -5778,7 +5599,6 @@ Omnipotent
 Omnipresent
 Idami
 Ultimate
-Pittig
 Endsane
 Ends
 Conspiracy
@@ -5798,7 +5618,6 @@ Doom!
 Venture
 Master
 Sore
-Special
 Timeless
 Dance
 my
@@ -5897,7 +5716,6 @@ return
 of
 happiness
 Storm
-Special
 Light
 SHSL
 Sigh
@@ -5935,8 +5753,6 @@ Song
 Zettai
 Memories
 Brightness
-Special
-lepidon!
 Imagination
 Blade
 Light
@@ -5952,7 +5768,6 @@ vs
 vs
 vs
 vs
-lepidon!
 test
 MironStyle
 Brilliance
@@ -5972,7 +5787,6 @@ Beyond
 the
 Horizon
 Depression
-Pittig
 Average
 Present
 Relaxing
@@ -6056,7 +5870,6 @@ Jutsu
 Yuri
 Master
 Egao
-DoKo
 gAlv
 Rejection
 With
@@ -6404,7 +6217,6 @@ Ultra
 Illusory
 Folle
 Luminous
-Pittig
 Gift
 Light
 Above
@@ -6457,7 +6269,6 @@ Punky
 Christmas
 hai~!
 Delusion
-Special
 Blessing
 Re
 Predator
@@ -6535,7 +6346,6 @@ it?
 oldloop
 oldnoob
 Chaos
-Special
 vs.
 Kurai
 vs.
@@ -6571,7 +6381,6 @@ Snow!
 Nyan!
 Hatsukoi
 Popipon!
-Special
 Little
 Soldier
 Training
@@ -6665,7 +6474,6 @@ Day!
 Day!
 Day!
 Light
-Special
 Blend
 Hentai
 High
@@ -6734,8 +6542,6 @@ plait
 who
 you
 Heaven
-Pittig
-Pittig
 IDK
 HES
 BIT
@@ -6875,7 +6681,6 @@ Hana
 Incubus
 Last
 Order
-DoKo
 Erotic
 Dance
 Ambiguity
@@ -6896,7 +6701,6 @@ Chaotic
 Banquet
 Dreaming
 Reflection
-Special
 Challenging
 HOT
 Simple
@@ -6919,7 +6723,6 @@ Zgage
 losu
 Poetry
 decomposition
-DoKo
 Silent
 Lonely
 Nights
@@ -7077,7 +6880,6 @@ you
 be
 my
 friend?
-DoKo
 Romance
 Dawn
 HatsuKoi
@@ -7119,7 +6921,6 @@ Wein
 Deity
 Lies
 Spicy
-Pittig
 Master
 Rhythm
 Adept
@@ -7146,14 +6947,12 @@ Diamond
 Light
 Ending?
 Lite
-DoKo
 Wrath
 of
 Wrath
 of
 Demi
 Ultra
-Pittig
 Dead
 on
 Lively
@@ -7393,7 +7192,6 @@ Merciful
 Journey
 tides
 style
-DoKo
 style
 DISHONEST
 last
@@ -7474,7 +7272,6 @@ Chitoge
 Ultimate
 Reverberant
 wtf
-Pittig
 Desperation
 Melancholy
 Brightness
@@ -7638,10 +7435,8 @@ Gem
 Tetraheaven
 BerryLove
 MELANCHOLIA
-Pittig
 Flower
 x.x~
-Niat
 ja
 nhato
 jak
@@ -7744,7 +7539,6 @@ ke
 Hati
 Dank
 Meme
-Pittig
 Challenge
 no
 serif
@@ -7768,7 +7562,6 @@ Past
 Realm
 of
 Ember
-Pittig
 High
 Tension
 Cry
@@ -7808,7 +7601,6 @@ lazy
 dont
 have
 any
-special
 talents
 Black
 White
@@ -7821,8 +7613,6 @@ Shroud
 Shooting
 iiyo
 ya
-Pittig
-DoKo
 no
 Jutsu
 song
@@ -8038,7 +7828,6 @@ Zero
 Force
 of
 Wind
-DoKo
 Wasteland
 Predator
 Breakthrough
@@ -8211,7 +8000,6 @@ Ura
 Masquerade
 Light
 Hime
-DoKo
 ALL
 OUT
 !!
@@ -8246,7 +8034,6 @@ Aishiteru
 Kage
 Bunshin
 Hokage
-Pittig
 Delight
 always
 always
@@ -8378,7 +8165,6 @@ thoughts
 dyed
 in
 crimson
-Pittig
 Revenant
 Cute
 Seal
@@ -8420,13 +8206,11 @@ Yakusoku
 Serpentine
 Pop!
 aL†aiR
-Pittig
 GRAND
 FINAL
 Pain
 Belief
 Challenging
-Pittig
 Empyrean
 Maelstrom
 Our
@@ -8443,7 +8227,6 @@ Challenging
 Future
 Entropy_
 Sakura
-Pittig
 Unstoppable
 Euphoria
 Fatalbern
@@ -8506,13 +8289,11 @@ Born
 to
 Make
 History
-DoKo
 Light
 Mirror
 Forever
 Love
 Light
-Special
 Light
 Pikachu
 DONTSTUP
@@ -8581,7 +8362,6 @@ Perversion
 Satanas
 de
 manibus
-Pittig
 First
 Kingdom
 Ya
@@ -8746,7 +8526,6 @@ Super
 Neko
 Sanctus
 Nexum
-Pittig
 Intermediate
 Tatsujin
 Cha
@@ -8815,7 +8594,6 @@ Strawberry
 Vanilla
 Cream
 Cookies
-Pittig
 Gangsta
 Gero,
 Natsu
@@ -8825,7 +8603,6 @@ VANISHED
 BREWTAL
 BEEST
 Yui
-Pittig
 Freestyle
 Challenging
 Average
@@ -8898,7 +8675,6 @@ Recalling
 Limit
 Breaker
 Conflagration
-Special
 Rasengan
 Calamity
 Satellite
@@ -8981,7 +8757,6 @@ sky
 Light
 the
 Poppy.
-Special
 Possession
 Pressure
 DIVINE
@@ -9193,7 +8968,6 @@ Dance
 Immortal
 Feelings
 MajsterDeeJay`s
-Special
 LOVE
 Desire
 Equinox
@@ -9594,7 +9368,6 @@ to
 me.
 Together
 Stage
-Special
 Kneesocks
 MaMKiH
 XiKKaH
@@ -9755,7 +9528,6 @@ fEAthEr
 light
 Freedom
 Anesthesia
-DoKo
 Master
 Diamond
 thanks
@@ -9859,8 +9631,6 @@ Motto!
 Gangsta
 Ver.
 Pretender
-DoKo
-DoKo
 Spirited
 away
 Inspiration
@@ -9927,8 +9697,6 @@ Mix
 Mix
 Epic
 Exquisite
-lepidon!
-lepidon!
 Lite
 Jubilation
 LOVE
@@ -10013,7 +9781,6 @@ style
 style
 Love
 DX
-Special
 Voice
 of
 Devouring
@@ -10110,14 +9877,12 @@ Kotone
 X-Tra
 Technonationalism
 Light
-DoKo
 No
 One
 But
 No
 One
 But
-DoKo
 HappyMiX
 Cappuccino
 is
@@ -10157,7 +9922,6 @@ Kappa
 Chino
 quality
 mapping
-Special
 small
 loli
 Cataclysmix
@@ -10440,7 +10204,6 @@ Slider
 Madness
 No
 notes
-lepidon!
 Pride
 VS
 Dreaming
@@ -10891,7 +10654,6 @@ thr
 speaks
 conv
 thr
-special
 peaks
 FIVE
 DIMENSIONS
@@ -10959,7 +10721,6 @@ Rhythm
 Champion
 Rhythm
 Champion
-lepidon!
 Princess
 Kroytz
 ily
@@ -11087,8 +10848,6 @@ Love
 Welcome
 Back
 Crystallized
-lepidon!
-lepidon!
 You
 can
 fly
@@ -11384,7 +11143,6 @@ Crossroads
 Peace
 And
 Savage
-Special
 Fantasia
 Drunken
 Master
@@ -12000,3 +11758,11 @@ CTB
 Collab
 Marathon
 Hitsounds
+lepidon!
+Pittig
+pittig
+special
+Special
+SPECIAL
+Niat
+DoKo
