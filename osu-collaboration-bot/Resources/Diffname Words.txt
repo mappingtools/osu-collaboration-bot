@@ -10,7 +10,6 @@ Calm
 Lanttu
 Natteke
 Shiirn
-Light
 hanyuu
 SOGABAKAMO
 Very
@@ -47,7 +46,6 @@ Burst
 Wob-Wob-Wob-Wob-WHEEEEE
 Cherry
 deathstack
-Difficult
 Death
 Stream
 Stream
@@ -66,8 +64,6 @@ LC
 CRN
 Bubb
 Wubb
-Challenge
-Challenge
 Muzu
 style
 woof
@@ -114,9 +110,7 @@ FREEDOM
 iyasine
 Nouk
 Edit
-Challenge
 Heavy
-Light
 Edit
 Misaka
 Crazy!!
@@ -264,7 +258,6 @@ Pro
 Drum
 RD
 RD
-Challenge
 MittenKatsu
 kickslider
 Baka
@@ -275,7 +268,6 @@ Lan
 Regou
 Eternal
 AXION_REBORN
-EX
 Epic
 Exquisite
 Fine
@@ -284,7 +276,6 @@ Shadow
 Dance
 Fantasy
 Fantasy
-EX
 Suicide
 Note
 old
@@ -300,7 +291,6 @@ Claire
 Super
 Natsuki
 Sakura
-Intermediate
 mAp
 what
 Alazy
@@ -308,7 +298,6 @@ yami
 yoru
 Emotion
 Hell
-Light
 Practice
 Fight
 vs.
@@ -370,7 +359,6 @@ WATAAAASHI
 WATAAAASHI
 yy
 yy
-Light
 Rage!!
 Ex.Ag
 Nyan~Nyan~
@@ -381,7 +369,6 @@ Level
 TAG!!
 Aoi
 Kiai
-Relaxing
 Boring
 Chaos
 Muzu
@@ -400,7 +387,6 @@ Blossom
 Cherry
 Blossom
 ULTIMATE
-CHALLENGE
 EAZY
 EAZY
 SOLO
@@ -426,9 +412,6 @@ Crazy
 Crazy
 Challenge
 Challenge
-Challenge
-Difficult
-Relaxing
 Bros
 Michi
 Shinys
@@ -439,7 +422,6 @@ Challenging
 Piece
 of
 Cake
-Relaxing
 Heaven
 Delighted
 Happy
@@ -518,7 +500,6 @@ Judgement
 Rz
 KIRBY
 Mix
-Relaxing
 Style
 Style
 Style
@@ -639,7 +620,6 @@ simple
 visualisation
 Alazy
 Heavy
-Light
 Victoire
 Victoire
 Lycoris
@@ -663,7 +643,6 @@ Complex
 OVERDRIVE
 OVERDRIVE
 Monstrosity
-Relaxing
 Akali
 Club
 Afterword
@@ -751,10 +730,8 @@ Game
 Game
 Daybreak
 Lesjuh
-Difficult
 Holocaust
 Microphone
-Light
 Merry
 Merry
 Love
@@ -783,7 +760,6 @@ stream
 vs
 Alisa
 Eater
-Difficult
 Eternal
 Running
 No
@@ -827,10 +803,8 @@ Up
 Kyokuchuuhatto
 Spec.C
 Rabbit
-Jumping
 Style
 Rabbit
-Jumping
 Style
 Cube
 Mix
@@ -843,7 +817,6 @@ Finale
 Inny
 !ignore
 this
-Relaxing
 Time
 _loliplus+
 CrystLer
@@ -859,19 +832,14 @@ Finale
 Maki
 No
 Legend
-Jumping
-Jumping
 Challenge
 RJs
 Challenge
 RJs
 Challenge
 RJs
-Jumping
 Style
-Jumping
 Style
-Jumping
 Akalistic
 you
 Affinity
@@ -938,14 +906,11 @@ Shredder
 Shredder
 Shredder
 II
-Relaxing
 Calm
 AngelHoney
 Higan
 Torrent
 Dat
-Jumping
-Jumping
 sup
 Maou
 Howl
@@ -969,7 +934,6 @@ Jumping
 Deluge
 Fxtra
 Challenge
-Difficult
 DooMAX
 Epsilon
 DooMAX
@@ -983,7 +947,6 @@ Black
 Hell
 Promise
 Adept
-Intermediate
 Terror
 Alazy
 Orgol
@@ -1014,7 +977,6 @@ Natural
 Swift
 Umbrella
 NNsane
-Light
 Xiao
 Mei
 Allure
@@ -1036,7 +998,6 @@ Simple
 Legend
 Music
 Box
-Difficult
 Horse
 Shit
 KrackenSruster
@@ -1085,7 +1046,6 @@ Epic
 Epic
 Epic
 Epic
-Light
 Upset
 Beat
 Beast
@@ -1096,7 +1056,6 @@ Fighting
 Fighter
 Hell
 Concerto
-Light
 jump
 life
 Donatello
@@ -1148,8 +1107,6 @@ Radium
 CrossOver
 Challenging
 Challenging
-Relaxing
-Relaxing
 Jumping
 Miracle-Lolicle
 Miracle-S
@@ -1159,10 +1116,8 @@ Legend
 Dream
 Burst!
 Insanity
-Intermediate
 Burst!
 Insanity
-Intermediate
 Mittens
 Doomsday
 Furry
@@ -1180,7 +1135,6 @@ Wait
 Ignition
 Ignition
 Maniakali
-INTERMEDIATE
 ULTRA
 Draw
 my
@@ -1217,7 +1171,6 @@ Rave!
 Lunakuren
 Challenge
 Heavy
-Light
 Kokuhaku
 Stage
 KingCore
@@ -1230,7 +1183,6 @@ Walking
 in
 your
 Mastication
-Light
 Angel
 Angel
 Tornado
@@ -1257,7 +1209,6 @@ Invasion
 Yeahteke
 Stage
 AZ
-Light
 Ultra
 Torment
 ALUSTO
@@ -1359,7 +1310,6 @@ Fallen
 Lethal
 Eliminator
 Re
-Light
 Vanities
 Vanities
 Vanities
@@ -1381,7 +1331,6 @@ New
 World
 Grief
 Seed
-Light
 Wife
 Szeretet
 Close
@@ -1445,7 +1394,6 @@ Midday
 Winter
 C.Hero
 G.Hero
-Intermediate
 Ultra
 Rekt!
 My
@@ -1534,7 +1482,6 @@ Hyuuga
 Kagami
 Kiyoshi
 Kuroko
-Light
 Shadow
 Momoi
 Teiko
@@ -1544,7 +1491,6 @@ na
 Nichijou
 Insanity
 Air
-Light
 OverNight
 Expelled
 Amaeru
@@ -1586,7 +1532,6 @@ Unreal
 Definition
 of
 Life
-Light
 Heavy
 Anomaly
 Prologue
@@ -1600,7 +1545,6 @@ Katsura
 Takasugi
 Sir
 Average
-Relaxing
 Tough
 Birdcage
 Moe
@@ -1735,7 +1679,6 @@ Flandre
 NTK
 Absolute
 Duo
-Light
 Touching
 Lovers
 Deuterium
@@ -1759,11 +1702,9 @@ Miiro
 Speed
 Dis
 Sanae
-Light
 Hana
 Machi
 Challenging
-Relaxing
 AngelHoney
 Salty
 Posthumous
@@ -1784,7 +1725,6 @@ Impress
 Lv
 Camouflage
 Phantasm
-Light
 ouran
 Aeon
 Holo
@@ -1812,20 +1752,17 @@ Fantasy
 Daiko
 Dai
 Moe
-Light
 Original
 Divinity
 Skysign
 bit
 jumpy
-Light
 Truth
 Instructions
 Maniac
 Licnect
 wind
 PLATINUM
-Light
 Insanity
 Mafia
 Hot
@@ -1843,7 +1780,6 @@ Happy
 Power
 of
 Stream
-Relaxing
 -the
 clown
 of
@@ -1870,7 +1806,6 @@ Together
 Fallen
 Yuki
 YukI
-Relaxing
 Challenging
 Alice
 Miku
@@ -1953,7 +1888,6 @@ Mix
 Deluxe
 KIRBY
 Mix
-Light
 COCO
 COCO
 INTENSIFIES
@@ -1985,7 +1919,6 @@ Dream
 Calm
 Challenging
 Calm
-Relaxing
 Mania
 Mania
 Relax
@@ -2003,16 +1936,13 @@ Jumping
 Style
 Jumping
 Style
-Jumping
 Style
-Jumping
 Style
 Psycho
 Chaos
 crazy
 Relentless
 Happiness!
-Light
 Ultimate
 AngelHoney
 style
@@ -2046,7 +1976,6 @@ Devil
 Poi
 Emelia
 Retribution
-Light
 Okaeri
 Heaven
 Lolicon
@@ -2067,19 +1996,14 @@ ft.
 Vass_Bass
 Crazy
 Hakeru
-Light
 gowww
 Orchestra
-Light
 ME
-Light
 Challenger
-Jumping
 Style
 SnowDrive
 it.
 Terror
-Light
 Nowhere
 Kappacino
 Frappacino
@@ -2146,14 +2070,12 @@ Mix
 Dis
 Rin
 ULTIMATE
-CHALLENGE
 Hentai
 Shredder
 CB
 reed
 liek
 Super
-Light
 FOUR
 DIMENSIONAL
 FINAL
@@ -2167,7 +2089,6 @@ BERZERK
 ULTRA
 BERZERK
 Banana
-Light
 Simple
 Made
 in
@@ -2267,14 +2188,12 @@ SIX
 THREE
 TWO
 Memories
-Light
 Pochiko
 Ren
 vs.
 Tsuki
 Little
 Girl
-INTERMEDIATE
 furioso
 furioso
 Spice
@@ -2288,7 +2207,6 @@ Tough
 Firework
 Glow
 Collabird
-Light
 Magi
 SwYE_
 Master
@@ -2313,8 +2231,6 @@ Guycat
 Twin
 Chocolate
 MASTER
-Difficult
-Light
 Skydive
 nao
 Knospe
@@ -2357,7 +2273,6 @@ Fen
 Filtered
 sunlight
 FS
-CHALLENGE
 EXTENDED
 LIGHT
 Vanitas
@@ -2416,8 +2331,6 @@ Horror
 feat.
 EvilElvis
 Lemur
-Light
-Light
 Solitude
 Kana
 Vicho
@@ -2441,14 +2354,11 @@ VS
 Greget
 Itsudatte
 Prophecy
-Light
-Light
 Dream
 World
 Legend
 Gangsta
 Life
-Light
 Truth
 Forever
 Kenichi
@@ -2466,7 +2376,6 @@ Legend
 OH
 HELL
 NO
-Light
 Trzymaj
 Fason
 Awakening
@@ -2479,7 +2388,6 @@ Smoothie
 Super
 Tatoe
 Ultra
-Light
 woof
 Dragon
 Dance
@@ -2499,7 +2407,6 @@ Place
 Spaghetti
 Blue
 Dragon
-Light
 Kaiji
 is
 Moe
@@ -2510,7 +2417,6 @@ Triangle
 dksslqj
 Style
 Bakeneko
-Light
 MiLk
 ShAke
 Pure
@@ -2580,7 +2486,6 @@ NyanNyan!
 Juicer
 Game
 Over
-Light
 Laziness
 Twilight
 Welcome
@@ -2774,7 +2679,6 @@ Genuine
 Allegro
 Andante
 Death
-Light
 Monster
 Tamer
 Rewriter
@@ -2903,17 +2807,14 @@ Magical
 AngelHoney
 ft.
 deetz
-Light
 Alluring
 Abyss
-Light
 Spiritual
 Amethyst
 Haze
 Max
 Control!
 skip
-Difficult
 revolution.
 traShiguri
 (Winner!)
@@ -2930,12 +2831,10 @@ Doomsday
 Yuny
 AMATEUR
 HAVOC
-INTERMEDIATE
 MASTER
 The
 World
 Crazy
-Light
 Heavy
 Dance
 Number
@@ -2956,9 +2855,7 @@ be
 late!
 Gradually
 rise
-Light
 Storm
-Light
 Alice
 Gate
 Yami
@@ -2969,14 +2866,12 @@ Akali-
 Flight
 Necroh
 Necroh
-Intermediate
 Survival
 Game
 Isolation
 dnaskjfsadfm????
 OLUTTA
 (NECROH)
-Light
 Path
 of
 Wind
@@ -3155,7 +3050,6 @@ Epidox
 faster
 Angel
 Michiru
-Light
 By
 my
 side
@@ -3258,17 +3152,12 @@ notes
 notes
 base
 Guilt
-Relaxing
 Challenging
-Relaxing
 Tough
 Challenging
-Relaxing
 Tough
 Maki
-Relaxing
 Challenging
-Relaxing
 Calm
 JUST
 WANNA
@@ -3304,7 +3193,6 @@ Ongoing
 Daydream
 of
 Speed
-Light
 Zone
 Aoiko
 EXK
@@ -3342,7 +3230,6 @@ Simple
 Avalon
 Kuo
 Heaven
-CHALLENGE
 Hakone
 ONE
 PUNCH
@@ -3363,7 +3250,6 @@ Pyon
 Tewi
 Usagi
 Usamimi
-Light
 Christmas
 Cold
 Chilly
@@ -3385,7 +3271,6 @@ Blue
 mizuki
 yuzuki
 Euphoria
-Light
 White
 Graduation
 Funky
@@ -3404,7 +3289,6 @@ ReMiX
 Sabamiso!
 Gomenasai,
 Aishiteru.
-Light
 Jumpy
 Route
 Jumpy
@@ -3441,7 +3325,6 @@ High
 Class
 Plebian
 Queen
-Light
 Lemur
 HIGH
 QUALITY
@@ -3477,7 +3360,6 @@ Green
 Eyes
 Djent
 Bystander
-Light
 Shockwave
 Hazy
 Illusion
@@ -3500,13 +3382,11 @@ Commencement
 Everlasting
 Memory
 Heavy
-Light
 MADNESS
 Kiss
 Wondering
 First
 Impact
-Light
 Remake
 Sky
 Uprising
@@ -3535,7 +3415,6 @@ Fengshen
 Yanyi
 Gone
 Burn
-Light
 tyui
 Unsolvable
 Equation
@@ -3543,7 +3422,6 @@ Soup
 Tabetai
 Nightfall
 Ending
-Light
 Firework
 Ultimate
 Firework
@@ -3614,14 +3492,11 @@ Tabetai
 Rabbit
 House
 Wish
-Light
 Rainbow
-Light
 Inherit
 the
 Fun
 Run
-Light
 Tomorrow
 Perfect
 Magic
@@ -3651,7 +3526,6 @@ Memories
 Fever
 Ura
 Night
-Light
 Obsession
 Last
 Trigger
@@ -3669,10 +3543,8 @@ Jagiya!
 Journey
 Prismatic
 Hana
-Light
 Melia
 Stage
-Intermediate
 Azure
 Monsoon
 Conqueror
@@ -3711,15 +3583,12 @@ Minder
 Pittigst
 CJ
 Mix
-Relaxing
 PUMP
 LKR
-Challenge
 -Gay
 GOLD
 FINGER
 -Aniki-
-Light
 Promise
 Momomomomomomomomo
 Gameover
@@ -3855,7 +3724,6 @@ Phantasm
 Quantum
 yf
 Pure
-Light
 Ultra
 Happiness
 WTF
@@ -3892,14 +3760,12 @@ My
 Beloved
 World
 Hime
-Light
 Jasmine
 Brilliance
 HAPPY
 END
 Easi
 Normli
-Light
 Tragic
 Love
 Sorry,
@@ -3918,7 +3784,6 @@ Shin
 Ai
 Himei
 Hell
-Light
 Yuuka
 Hinacle
 Kana
@@ -3942,7 +3807,6 @@ Edge
 Believe
 Hmm
 Difficult
-Relaxing
 Deception
 Level
 Level
@@ -3956,7 +3820,6 @@ SPLASH!!
 D.N.Angel
 Mayday
 Gone
-Light
 Ultra
 NUTS
 Shici
@@ -3966,7 +3829,6 @@ Wish
 Manly
 Amamiya
 Memorial
-Light
 Determination
 ol
 Tempus
@@ -3974,13 +3836,11 @@ Hinacle
 Melancholy
 Cloud
 Masquerade
-Light
 Last
 Wish
 Night
 World
 Seulgi
-Light
 Pokie
 Illusion
 Beyond
@@ -3994,7 +3854,6 @@ NTR
 Lost
 Above
 the
-Light
 DETERMINATION
 style
 BISHOP
@@ -4059,7 +3918,6 @@ Freedom
 Kairos
 Fifth
 Postulate
-Challenge
 Difficult
 Flash
 Conclusion
@@ -4078,7 +3936,6 @@ Of
 Time
 Brain
 Dog?
-Light
 DS
 RSI
 Evil
@@ -4137,7 +3994,6 @@ QQ
 Requiem
 UltraQQ
 Intangible
-Light
 hate
 you,
 die
@@ -4145,7 +4001,6 @@ in
 fire!
 [[REMAP]]
 Me!
-Light
 Untitled
 Title
 Test
@@ -4164,7 +4019,6 @@ Revival
 Chrono
 Collapse
 XR
-Light
 Death
 Blossom
 Serenity
@@ -4194,7 +4048,6 @@ Bye
 BYE!
 BYE!
 Illuminati
-Light
 Relax
 Trust
 Gamu
@@ -4227,7 +4080,6 @@ Usagi
 Grievance
 TWERK
 August
-Light
 Fragile
 Petals
 Zootopia
@@ -4235,19 +4087,16 @@ Spirited
 Away
 Pangko
 Coors
-Light
 cerevisiae
 lucid
 simple
 Red
-Light
 ~CtB~
 Fortissimo
 BMax
 Overdrive
 muffled
 voice
-Light
 CHOCOLATE
 ADDICTION
 Wild
@@ -4298,7 +4147,6 @@ of
 Eternity
 Eternal
 Yuri
-Light
 Snow
 Final
 LoveLive!
@@ -4319,14 +4167,12 @@ of
 Heavens
 SMASH!
 Furious
-Light
 Assurance
 Controllable
 Puppet
 Uncontrollable
 Sakura
-Fuuko-Light
-Keikakudoori
+Fuuko-Keikakudoori
 Stage
 Claustrophobic
 Yumeiro
@@ -4387,7 +4233,6 @@ FuwaFuwa
 Master
 Hallelujah!
 Risk
-Light
 Phantasm
 Cherry
 Ultra
@@ -4421,7 +4266,6 @@ Cool
 Skull
 Mobile
 Suit
-Light
 Cry
 Palms
 Corruption
@@ -4440,10 +4284,8 @@ World
 Perish
 Cherry
 Blossom
-Intermediate
 Ifuuidol
 Addiction
-Light
 Mahou
 Shoujo
 Freedom
@@ -4467,7 +4309,6 @@ Legend
 Cloudy
 Snowy
 Sunny
-Light
 Twin-Renatic
 CONNECTION
 Lactose
@@ -4492,11 +4333,8 @@ where
 shit
 gets
 real
-Light
 Coll@b
 Jealousy
-Light
-Challenge
 Difficult
 Lampoviy
 Nyashniy
@@ -4509,10 +4347,8 @@ Swing~
 Return
 by
 Death
-Light
 Fighting
 Dreamers
-Light
 The
 end
 Lenz
@@ -4540,13 +4376,11 @@ Celestial
 Lamune
 FEROCIOUS
 Lightning
-Light
 Purgatory
 Koi
 Cena
 YuruYuri
 Pain
-Light
 oblivion
 Pain
 Unpaved
@@ -4596,7 +4430,6 @@ Hi-Tech
 Calm!
 Nervous!
 Panic!
-Light
 White
 Fluffy
 Seikon
@@ -4661,11 +4494,9 @@ Ring
 Ring
 Old
 Thing
-EX
 tumour
 Uncrossable
 Borderline
-Ex
 Kitsuneko
 Patche
 Ryafuka
@@ -4681,7 +4512,6 @@ Trio
 of
 Elemia
 HOS,
-Light
 Heavy
 Runaway
 Forced
@@ -4742,7 +4572,6 @@ Shooter!
 Kappa
 GRANDMASTER
 BASSDROP!!
-Light
 Fractal
 Prismatic
 Abyss
@@ -4762,7 +4591,6 @@ Sunshine
 Fruitcore
 Lolicore
 no
-CHALLENGE
 EAZY
 SOLO
 D.N.Angel
@@ -4776,7 +4604,6 @@ heating
 up
 Memories
 Memories
-Light
 Black
 Snow
 Red
@@ -4804,7 +4631,6 @@ Lie
 Dance
 show
 them
-Light
 stance.
 show
 them
@@ -4832,12 +4658,10 @@ A.M.
 Vrij
 Legend
 Hopeless
-Light
 Epic
 Exquisite
 Fine
 Superior
-EX
 Young
 UFO
 Difficile
@@ -4874,18 +4698,15 @@ LKs
 Ni
 Hao
 Ma
-Light
 Legend
 Possession
 Ignite
 Happiness
-Light
 Fireworks
 of
 Flavor
 Over
 Cash
-Challenge
 Voraigon
 GET
 Butterfly
@@ -4901,7 +4722,6 @@ No!
 Overclocked
 Hands
 Break
-Light
 DS
 Elysium
 Misery
@@ -5175,9 +4995,6 @@ Time
 Corruption
 Super
 Encounter
-Light
-Ex
-Ex
 Future
 Master
 Melancholy
@@ -5229,8 +5046,6 @@ DiVE
 Himiko
 perditus
 Abandoned
-EX
-EX
 Super
 Miracle
 who...
@@ -5267,7 +5082,6 @@ remap
 XXL
 Baby
 Small
-Intermediate
 Memory
 Net
 burst
@@ -5281,7 +5095,6 @@ It
 All!!
 Take
 Away
-Ex
 Relapse
 Plus
 Ultra
@@ -5292,11 +5105,9 @@ Relaxing
 Shrine
 Be
 Alive
-Light
 Wish
 HB
 Press
-Ex
 Press
 SELECT
 Simple
@@ -5305,7 +5116,6 @@ Tree
 Repentence
 Cygnus
 Terminal
-Light
 Horizon
 Lugal
 Ki
@@ -5394,7 +5204,6 @@ Gold
 Rust
 Divine
 Retribution
-Light
 Cake
 Ice
 Cream
@@ -5432,7 +5241,6 @@ TOUCH
 THE
 RAINBOW!
 Sigma
-Light
 distortion
 Sick!
 Rika
@@ -5461,7 +5269,6 @@ Impudence
 Insolence
 Impudence
 Hectic
-Intermediate
 Relaxing
 Peninsula
 FuwaFuwa
@@ -5497,7 +5304,6 @@ Semi
 Little
 Girl
 Memories
-Light
 Collapsing
 banana
 sHI)tmapping(TECH)niques(FULL
@@ -5522,8 +5328,6 @@ TRAUMATIC
 TESTIMONY
 LIGHT
 Gabesta
-Light
-Light
 Flight
 Aspire
 Stage
@@ -5555,7 +5359,6 @@ Complex
 Oblivion
 Tragic
 Love
-Light
 Destination
 of
 Life
@@ -5566,7 +5369,6 @@ Xtra
 Young
 Meat
 Sheep
-EX
 Ghost
 Girl
 in
@@ -5574,16 +5376,12 @@ the
 Netherworld
 Tower
 D.N.Angel
-EX
-EX
-EX
 Master
 This
 is
 Dreams
 Kiss
 Despair
-Light
 Memories
 Renaissance
 AQUA
@@ -5659,7 +5457,6 @@ Acquainted
 Kiss
 Slider
 Jumps
-Ex
 Kiss
 Slider
 Jumps
@@ -5716,7 +5513,6 @@ return
 of
 happiness
 Storm
-Light
 SHSL
 Sigh
 Fly!
@@ -5755,7 +5551,6 @@ Memories
 Brightness
 Imagination
 Blade
-Light
 Diamond
 Rolling
 Hell
@@ -5842,7 +5637,6 @@ Exquisite
 Fine
 Nice
 Superior
-Jumping
 Tayutai
 In
 the
@@ -5861,7 +5655,6 @@ Gold
 Master
 Platinum
 Silver
-Light
 Yuri
 Symphony
 Chromatic
@@ -5874,7 +5667,6 @@ gAlv
 Rejection
 With
 You
-Light
 Re
 Diminishing
 Return
@@ -5886,7 +5678,6 @@ Putain!
 Hope
 Galaxy
 Express
-Light
 Valley
 Bijuu
 Through
@@ -5914,15 +5705,11 @@ Challenging
 Simple
 Alone
 Together
-Light
 Heaven
 of
 Miracles
-Challenge
 Necroh
-Challenge
 Yoshi
-Challenge
 Eternity
 upheaval
 Fate
@@ -5951,7 +5738,6 @@ Growing
 Up,
 Next
 Phase
-Light
 Chapter
 FINAL.
 EVIL,
@@ -6130,7 +5916,6 @@ Challenge!
 Average
 Merry
 Snowy
-Relaxing
 Tough
 Attention
 My
@@ -6218,7 +6003,6 @@ Illusory
 Folle
 Luminous
 Gift
-Light
 Above
 The
 Horizon
@@ -6234,7 +6018,6 @@ kommt
 er
 Dir
 nahe
-Light
 Terror
 Slow
 Death
@@ -6262,7 +6045,6 @@ Why
 am
 me?
 Shotgun
-Light
 Delicious
 Intermediate
 Punky
@@ -6272,7 +6054,6 @@ Delusion
 Blessing
 Re
 Predator
-Light
 Error
 Final
 Level
@@ -6386,7 +6167,6 @@ Soldier
 Training
 Diff
 of
-Light
 THE
 KING
 Moonlit
@@ -6452,7 +6232,6 @@ Cruelty
 Click
 the
 Circles!
-Light
 Sonata
 Season
 Bunny
@@ -6473,7 +6252,6 @@ My
 Day!
 Day!
 Day!
-Light
 Blend
 Hentai
 High
@@ -6520,7 +6298,6 @@ Colors
 Istoria
 Raving
 Mad
-Light
 Killer
 Machine
 Original
@@ -6695,7 +6472,6 @@ Eros
 Sore
 wa
 Matteru
-Light
 Reflection
 Chaotic
 Banquet
@@ -6779,7 +6555,6 @@ Ultra
 Incrementally
 Hi-Speed
 unhinged
-Light
 Hime
 Dance
 Unholy
@@ -6797,12 +6572,10 @@ Ciemna
 Strefa
 Hanabi
 Banana
-Challenge
 Life
 Master
 Regret
 From
-Light
 to
 Death
 The
@@ -6865,13 +6638,11 @@ Wedding
 Fortune
 Deep
 Sleep
-Light
 Sleep
 Surreal
 Sleep
 calm
 sunrise
-Light
 Yukirin
 Tenshi
 Reviving
@@ -6912,7 +6683,6 @@ White
 Lily
 Duel
 Fate
-Light
 Shiawase
 style
 Blut
@@ -6944,7 +6714,6 @@ class
 stuff
 Crazy
 Diamond
-Light
 Ending?
 Lite
 Wrath
@@ -6993,7 +6762,6 @@ Game
 Over
 Bunny
 Extinction
-Light
 Wind
 Adidas
 GAYNESIS
@@ -7065,14 +6833,11 @@ Emotions
 Illusory
 Phenomena
 Achromatic
-Light
 Ultra
 Pachiru
 vs.
 Lost
-Light
 Feather
-Light
 Maiden
 Valkyrie
 Miss
@@ -7095,7 +6860,6 @@ Love
 gansijiye
 Last
 Love
-Light
 Melo
 Time
 Manipulation
@@ -7149,7 +6913,6 @@ Platinum
 Rust
 Silver
 Decompensation
-Light
 Shining
 Egao
 Decryption
@@ -7286,7 +7049,6 @@ Ashes
 Challenging
 BakaNA
 Mell
-Light
 Reflection
 Pro+
 Pro
@@ -7311,18 +7073,14 @@ Feat.
 BlackGryphon
 Nocture
 Cloverdose
-Light
 Danger
 No
 Refuge
 Rush
-Light
 Ultimatum
 Fading
 Somnium
-CHALLENGE
 Memory
-Light
 Titan
 Evolution
 FIRE
@@ -7370,7 +7128,6 @@ Club
 Aspire
 Sekai
 Liberation
-Light
 Aspire
 Fenza
 diff
@@ -7402,7 +7159,6 @@ Up
 Eroi
 Love
 Rebound
-Light
 Rika
 Truth
 Is
@@ -7469,7 +7225,6 @@ Melancholy
 bor
 Golden
 Egg
-Light
 My
 Angel
 Norma
@@ -7521,10 +7276,8 @@ Pain
 New
 Game!!!!
 Challenging
-Relaxing
 Dragon
 Grimoire
-Light
 Manga
 Manga
 Universe
@@ -7539,7 +7292,6 @@ ke
 Hati
 Dank
 Meme
-Challenge
 no
 serif
 ver
@@ -7588,7 +7340,6 @@ KINGS
 TaiGu
 Stella
 Flat
-Light
 Delight
 Bravery
 Soul
@@ -7689,7 +7440,6 @@ Event
 Rise,
 Monolithic
 Lord
-Light
 duck.gif
 Rewrite
 Thanks
@@ -7803,7 +7553,6 @@ Magic
 ft
 Cassu
 Broken
-Light
 Treading
 In
 The
@@ -7866,7 +7615,6 @@ Tension
 Tension
 Rising
 Memories
-Light
 Future
 Limbo
 WWW
@@ -7883,7 +7631,6 @@ void
 AWM
 TERROR
 Withered
-Challenge
 Monsoon
 Devious
 conceptualize
@@ -7963,13 +7710,11 @@ Stage
 Notice
 me!
 Conquest
-Light
 Soul
 Suki...
 Suki
 yo...
 Daisuki!
-Light
 Melancholy
 Ultra
 Now
@@ -7998,14 +7743,12 @@ Retribution
 Cyclone
 Ura
 Masquerade
-Light
 Hime
 ALL
 OUT
 !!
 Endless
 Sky
-Light
 One
 Day
 Kira
@@ -8014,7 +7757,6 @@ Naseem
 Kisses
 Glass
 Pattern
-Light
 Demon
 RIDE
 OR
@@ -8121,7 +7863,6 @@ Deep
 Sea
 Teh
 Depression
-Light
 Neko
 Kisses
 Melancholy
@@ -8155,7 +7896,6 @@ Girl!
 REEEEEEEEEEEEEEEEEEEEEE
 Plus
 Ultra
-Light
 Heer
 Red
 Summer
@@ -8171,7 +7911,6 @@ Seal
 owo
 Flame
 Haze
-Light
 Wymlaskaj
 mi
 Pytonga
@@ -8248,7 +7987,6 @@ Hand
 Loneliness
 Isolation
 Heavy
-Light
 Born
 Together
 Midnight
@@ -8289,12 +8027,9 @@ Born
 to
 Make
 History
-Light
 Mirror
 Forever
 Love
-Light
-Light
 Pikachu
 DONTSTUP
 Freedom
@@ -8306,7 +8041,6 @@ KOJIbKA
 KOJIbKA
 KOJIbKA
 KOJIbKA
-Light
 EverlastinG
 Dream!
 Crystal
@@ -8372,7 +8106,6 @@ Third
 Kingdom
 Final
 Level
-Light
 DE
 DE
 DE
@@ -8406,7 +8139,6 @@ Pyrotechnic
 Death
 Donphin
 Donphin
-Light
 Daybreak
 Kamimashita
 The
@@ -8428,17 +8160,14 @@ One
 But
 CRN
 Dance
-Light
 Super
 Saiyan
-Light
 (Winner!)
 Orientalism
 Melancholy
 Guilt
 Fay
 Lechenaultia
-Light
 Fuman
 Kanojo
 Super
@@ -8472,10 +8201,8 @@ Properly
 mapped
 Properly
 mapped
-Light
 Properly
 mapped
-Light
 Stage
 Alazy
 Grace
@@ -8484,7 +8211,6 @@ Average
 Simple
 cmn
 Lan
-Light
 Wish
 yeah
 yeah
@@ -8495,12 +8221,10 @@ Mastery
 of
 Mind
 and
-Light
 Mastery
 of
 Mind
 and
-Light
 Drizzle
 Apollo
 Hoax
@@ -8514,7 +8238,6 @@ Chocopikel
 step
 remix
 Apex
-Light
 Hakuna
 Monstrata
 Ultima
@@ -8562,7 +8285,6 @@ Calypse
 Calypse
 Bittersweet
 Surrender
-Light
 Wongline
 Thorns
 Allegro
@@ -8575,7 +8297,6 @@ KPY
 Dance
 Floor
 Happy
-Light
 Bite
 your
 Decay
@@ -8628,7 +8349,6 @@ dddd
 Glory
 feast
 Waterfall
-DIFFICULT
 ETERNITY
 INTERMEDIATE
 Symphony
@@ -8659,7 +8379,6 @@ Heaven
 PANTS
 WRESTLING
 D.N.Angel
-Relaxing
 Maiden
 diff
 of
@@ -8747,14 +8466,12 @@ Move
 Pain
 Passion
 Dance
-Light
 Milkshake
 Snowfall
 Snowstorm
 SURVIVOR
 End
 sky
-Light
 the
 Poppy.
 Possession
@@ -8796,11 +8513,9 @@ song
 is
 nice
 though
-Difficult
 Flame
 Heated
 Chilled
-Relaxing
 SUKIMA
 AngelHoney
 Dance
@@ -8865,7 +8580,6 @@ Blue
 Dancer
 Unity
 Intermediate
-Light
 Creating
 Snowfall
 Saiyan
@@ -8891,7 +8605,6 @@ December
 December
 December
 Dystopia
-Light
 Reflector
 Program
 -Next
@@ -8922,7 +8635,6 @@ Play
 Despair
 Doubt
 Distance
-Light
 it
 Up!
 Endless
@@ -9087,7 +8799,6 @@ Line
 Line
 Line
 D.N.Angel
-Difficult
 Rhythm
 Death
 That
@@ -9208,8 +8919,6 @@ My
 Pleasure
 EPiLEPTiCAL
 DELUGE
-Light
-Light
 Show
 Time
 if
@@ -9282,7 +8991,6 @@ Sleep
 Stressboxer
 Heatwave
 Deception
-Light
 Blown
 by
 the
@@ -9332,7 +9040,6 @@ Duality
 of
 the
 Contrapositive
-Light
 Vass-RJ
 owo
 Egao
@@ -9436,7 +9143,6 @@ Depression
 Gangsta
 Machinations
 Asphyxiating
-Light
 Rainbows
 (?)
 Wongline
@@ -9473,7 +9179,6 @@ is
 enough.
 Lights
 Off!
-Light
 Pokie
 Rin
 RLC
@@ -9489,7 +9194,6 @@ Perish
 he
 tap
 Endless
-Light
 kid
 Impossibly
 Intense
@@ -9595,7 +9299,6 @@ Defy
 iljaaz
 Next
 Stage
-Light
 Curisu
 Muzu
 S.S
@@ -9618,7 +9321,6 @@ Madness
 O_O
 Craziness
 Funk
-Light
 Nature
 Personality
 Holder
@@ -9785,8 +9487,6 @@ Voice
 of
 Devouring
 Fate
-Challenge
-Light
 Heavy
 lesjuh
 KPY
@@ -9848,7 +9548,6 @@ Pink
 Equatorial
 Calm
 Challenging
-Relaxing
 eveless
 Fang
 Rin
@@ -9876,7 +9575,6 @@ eveless
 Kotone
 X-Tra
 Technonationalism
-Light
 No
 One
 But
@@ -9978,7 +9676,6 @@ Chino-chan
 kawaii~
 cute
 lolis
-Light
 Noob
 Diff
 Lite
@@ -10005,7 +9702,6 @@ chong
 Loli
 Circles
 Mikael
-Light
 Moguelito
 Loves
 Lolis
@@ -10105,7 +9801,6 @@ Loli
 Stream
 Stream
 Streamu
-Jumping
 Style
 The
 Muraxu
@@ -10127,7 +9822,6 @@ eveless
 Dream
 inside
 me
-Light
 Oh
 no!
 Smooth
@@ -10346,7 +10040,6 @@ Of
 The
 End
 Calm
-Relaxing
 Shining
 Muzu
 Secret
@@ -10372,7 +10065,6 @@ cold
 From
 Wind
 to
-Light
 Ultra
 fRiidom
 Cheeky
@@ -10397,7 +10089,6 @@ Ruby
 Sonata
 Sonata
 Hell
-Light
 Piano
 bits?!
 bits
@@ -10432,7 +10123,6 @@ SatelliteFrostMix
 Chewu
 Chewu
 Easier
-Light
 LC
 Nemis
 Exw
@@ -10483,7 +10173,6 @@ Default
 Impossible
 MgRonalds
 ULTIMATE
-CHALLENGE
 Grand
 Finale
 Grand
@@ -10491,7 +10180,6 @@ Finale
 Cherry
 Blossom
 ULTIMATE
-CHALLENGE
 Grand
 Finale
 Cimpoi
@@ -10515,12 +10203,10 @@ jump
 Endsane
 Ends
 broken
-Light
 Ayu
 Nemis
 Rolling!
 L.
-Light
 Time
 Terror
 JauiPakyin
@@ -10738,10 +10424,6 @@ hitsounded
 version
 FallenBomby
 OliBomby
-Light
-Light
-Light
-Light
 Lesjuh
 Abandoned
 Hibachi
@@ -10820,7 +10502,6 @@ Can
 Always
 Fly
 Death
-Light
 ABSOLUTE
 CHAOS
 jumps
@@ -10839,7 +10520,6 @@ pp
 pp
 test
 ultra
-difficult
 ayam
 gaul
 gowww
@@ -10872,17 +10552,11 @@ JUMP
 Yasei
 ni
 ExTream
-Jumping
 Style
 ExTream
-Jumping
 Style
 ExTream
-Jumping
 Style
-Jumping
-Jumping
-Jumping
 StreamJumps
 Big
 Sliders
@@ -11214,7 +10888,6 @@ Elysium
 Rain
 Overdose
 Sky
-Light
 Spring
 Breeze
 Final
@@ -11523,7 +11196,6 @@ Hades
 Incendiary
 Jade
 Jadeite
-Light
 Oath
 Oblivion
 Omni
@@ -12323,3 +11995,14 @@ Special
 SPECIAL
 Niat
 DoKo
+Light
+Light
+Light
+Light
+Light
+Light
+Light
+Light
+Light
+Light
+Light
