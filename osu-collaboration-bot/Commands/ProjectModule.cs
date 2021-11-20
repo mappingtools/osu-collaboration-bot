@@ -1027,7 +1027,7 @@ namespace CollaborationBot.Commands {
                 member.Tags = tagsString;
 
                 await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.ChangeTagsSuccess, user.Mention, tags));
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ChangeTagsSuccess, user.Mention, tagsString));
             } catch (Exception e) {
                 logger.Error(e);
                 await Context.Channel.SendMessageAsync(Strings.ChangeTagsFail);
