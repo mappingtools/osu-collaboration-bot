@@ -1507,7 +1507,7 @@ namespace CollaborationBot.Commands {
         [Command("diffname")]
         [Summary("Generates a random difficulty name")]
         public async Task Diffname() {
-            await DoRandomString(@"CollaborationBot.Resources.Diffname Words.txt");
+            await DoRandomString(@"CollaborationBot.Resources.Diffname Words.txt", 0.3);
         }
 
         [Command("blixys")]
@@ -1516,7 +1516,7 @@ namespace CollaborationBot.Commands {
             await DoRandomString(@"CollaborationBot.Resources.blixys.txt");
         }
 
-        private async Task DoRandomString(string resourceName) {
+        private async Task DoRandomString(string resourceName, double mixChance=0) {
             List<string> words = new List<string>();
             try {
                 var assembly = Assembly.GetExecutingAssembly();
@@ -1539,7 +1539,16 @@ namespace CollaborationBot.Commands {
             for (int i = 0; i < n_words; i++) {
                 if (i != 0)
                     diffname.Append(' ');
-                diffname.Append(words[random.Next(words.Count)]);
+                if (random.NextDouble() < mixChance) {
+                    string word1 = words[random.Next(words.Count)];
+                    string word2 = words[random.Next(words.Count)];
+                    int sp1 = random.Next(Math.Min(word1.Length, 3), word1.Length);
+                    int sp2 = random.Next(0, Math.Max(0, word2.Length - 3));
+                    diffname.Append(word1[..sp1]);
+                    diffname.Append(word2[sp2..]);
+                } else {
+                    diffname.Append(words[random.Next(words.Count)]);
+                }
             }
 
             await Context.Channel.SendMessageAsync(diffname.ToString());
