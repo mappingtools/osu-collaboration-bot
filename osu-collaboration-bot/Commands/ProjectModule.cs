@@ -1506,17 +1506,17 @@ namespace CollaborationBot.Commands {
 
         [Command("diffname")]
         [Summary("Generates a random difficulty name")]
-        public async Task Diffname() {
-            await DoRandomString(@"CollaborationBot.Resources.Diffname Words.txt", 0.3);
+        public async Task Diffname([Summary("The number of words to use in the sentence")] int wordCount = -1) {
+            await DoRandomString(@"CollaborationBot.Resources.Diffname Words.txt", wordCount, 0.3);
         }
 
         [Command("blixys")]
         [Summary("Generates some inspiration")]
-        public async Task Blixys() {
-            await DoRandomString(@"CollaborationBot.Resources.blixys.txt");
+        public async Task Blixys([Summary("The number of words to use in the sentence")]int wordCount=-1) {
+            await DoRandomString(@"CollaborationBot.Resources.blixys.txt", wordCount);
         }
 
-        private async Task DoRandomString(string resourceName, double mixChance=0) {
+        private async Task DoRandomString(string resourceName, int wordCount=-1, double mixChance=0) {
             List<string> words = new List<string>();
             try {
                 var assembly = Assembly.GetExecutingAssembly();
@@ -1534,7 +1534,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            int n_words = wordCounts[random.Next(wordCounts.Length - 1)];
+            int n_words = wordCount >= 0 ? wordCount : wordCounts[random.Next(wordCounts.Length - 1)];
             StringBuilder diffname = new StringBuilder();
             for (int i = 0; i < n_words; i++) {
                 if (i != 0)
