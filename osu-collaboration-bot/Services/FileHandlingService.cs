@@ -15,7 +15,6 @@ using NLog;
 namespace CollaborationBot.Services {
     public class FileHandlingService {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        public const string BaseFilename = "basefile.osu";
 
         public enum PermissibleFileType {
             DOT_OSU,
@@ -45,10 +44,15 @@ namespace CollaborationBot.Services {
 
                 if (!Uri.TryCreate(att.Url, UriKind.Absolute, out var uri)) return false;
 
-                var filePath = Path.Combine(localProjectPath, BaseFilename);
+                var oldFilePath = GetProjectBaseFilePath(guild, projectName);
+                var filePath = Path.Combine(localProjectPath, att.Filename);
 
                 using var client = new WebClient();
                 await client.DownloadFileTaskAsync(uri, filePath);
+
+                if (oldFilePath != filePath) {
+                    File.Delete(oldFilePath);
+                }
 
                 return true;
             }
@@ -67,8 +71,6 @@ namespace CollaborationBot.Services {
                 if (!Directory.Exists(localProjectPath)) return null;
 
                 if (!Uri.TryCreate(att.Url, UriKind.Absolute, out var uri)) return null;
-
-                var filePath = Path.Combine(localProjectPath, att.Filename);
 
                 using var client = new WebClient();
                 var result = await client.DownloadStringTaskAsync(uri);
@@ -128,12 +130,16 @@ namespace CollaborationBot.Services {
 
         public string GetProjectBaseFilePath(IGuild guild, string projectName) {
             var localProjectPath = GetProjectPath(guild, projectName);
-            var osuFiles = Directory.GetFiles(localProjectPath, BaseFilename);
+            var osuFiles = Directory.GetFiles(localProjectPath, "*.osu");
 
             if (osuFiles.Length == 0)
                 return null;
 
             return osuFiles[0];
+        }
+
+        public string GetProjectBaseFileName(IGuild guild, string projectName) {
+            return Path.GetFileName(GetProjectBaseFilePath(guild, projectName));
         }
 
         public bool ProjectBaseFileExists(IGuild guild, string projectName) {
