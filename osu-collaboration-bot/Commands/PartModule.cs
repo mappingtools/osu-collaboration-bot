@@ -474,6 +474,8 @@ namespace CollaborationBot.Commands {
                     .Include(o => o.Assignments)
                     .ThenInclude(o => o.Member).ToListAsync();
 
+                parts.Sort();
+
                 FileHandlingService.PartRecord selector(Part o) => new() {
                     Name = o.Name,
                     Start = o.Start,
