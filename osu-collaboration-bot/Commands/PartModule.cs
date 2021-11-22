@@ -456,7 +456,7 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        [RequireProjectManager(Group = "Permission")]
+        [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("to-csv")]
         [Summary("Exports all parts of the project to a CSV file")]
