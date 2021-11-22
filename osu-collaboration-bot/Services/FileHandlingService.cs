@@ -94,6 +94,9 @@ namespace CollaborationBot.Services {
             [Optional]
             [Index(3)]
             public PartStatus? Status { get; set; }
+            [Optional]
+            [Index(4)]
+            public string MapperNames { get; set; }
         }
 
         public async Task<List<PartRecord>> DownloadPartsCSV(Attachment att, bool hasHeaders = true) {

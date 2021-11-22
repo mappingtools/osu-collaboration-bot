@@ -124,6 +124,13 @@ namespace CollaborationBot.Services {
             return name;
         }
 
+        public string MemberAliasOrName(Member member) {
+            if (member.Alias != null) {
+                return member.Alias;
+            }
+            return _client.GetUser((ulong)member.UniqueMemberId).Username;
+        }
+
         public string TimeToString(int? time) {
             if (!time.HasValue)
                 return "XX:XX:XXX";

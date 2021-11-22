@@ -460,7 +460,8 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("to-csv")]
         [Summary("Exports all parts of the project to a CSV file")]
-        public async Task ToCSV([Summary("The project")]string projectName) {
+        public async Task ToCSV([Summary("The project")]string projectName,
+            [Summary("Whether to include columns showing the mappers assigned to each part")]bool includeMappers=false) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -468,17 +469,23 @@ namespace CollaborationBot.Commands {
             }
 
             try {
-                var parts = await _context.Parts.AsQueryable().Where(o => o.ProjectId == project.Id).ToListAsync();
+                var parts = await _context.Parts.AsQueryable()
+                    .Where(o => o.ProjectId == project.Id)
+                    .Include(o => o.Assignments)
+                    .ThenInclude(o => o.Member).ToListAsync();
+
+                FileHandlingService.PartRecord selector(Part o) => new() {
+                    Name = o.Name,
+                    Start = o.Start,
+                    End = o.End,
+                    Status = o.Status,
+                    MapperNames = includeMappers ? string.Join(";", o.Assignments.Select(a => _resourceService.MemberAliasOrName(a.Member))) : null
+                };
 
                 using var dataStream = new MemoryStream();
                 var writer = new StreamWriter(dataStream);
                 using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
-                await csv.WriteRecordsAsync(parts.Select(o => new FileHandlingService.PartRecord {
-                    Name = o.Name,
-                    Start = o.Start,
-                    End = o.End,
-                    Status = o.Status
-                }));
+                await csv.WriteRecordsAsync(parts.Select(selector));
 
                 writer.Flush();
                 dataStream.Position = 0;
