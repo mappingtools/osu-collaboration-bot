@@ -520,7 +520,7 @@ namespace CollaborationBot.Commands {
                         _context.AutoUpdates.Add(new AutoUpdate {
                             ProjectId = project.Id,
                             UniqueChannelId = infoChannel.Id,
-                            Cooldown = TimeSpan.FromHours(1),
+                            Cooldown = null,
                             DoPing = false,
                             ShowOsu = true
                         });
