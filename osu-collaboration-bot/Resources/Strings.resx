@@ -265,9 +265,9 @@
 2. Set-up the project channels and roles: `{0}setup [PROJECT NAME]`
 3. Create a base beatmap with timing, bookmarks, and difficulty settings and upload it to the bot: `{0}setbasefile [PROJECT NAME]` with .osu file attached
 4. Generate parts from the bookmarks: `{0}part from-bookmarks [PROJECT NAME]` with .osu file attached
-5. Edit the parts in Excel: `{0}part to-csv [PROJECT NAME]` and `{0}part from-csv [PROJECT NAME]` with attached .csv file
-6. Upload your .osz and lay out the rules in your info channel and use `{0}member-guide [PROJECT NAME]` to show your participants how to use the bot
-7. Allow anyone to join your collab: `{0}status [PROJECT NAME] SearchingForMembers`
+5. Upload your .osz and lay out the rules in your info channel and use `{0}member-guide [PROJECT NAME]` to show your participants how to use the bot
+6. Allow anyone to join your collab: `{0}status [PROJECT NAME] SearchingForMembers`
+7. Set a default assignment deadline: `{0}assignment-lifetime [PROJECT NAME] [dd:hh:mm:ss:fff]`
 8. Allow members to claim parts on their own: `{0}options [PROJECT NAME] SelfAssignmentAllowed:true` and `{0}max-assignments [PROJECT NAME] 1`</value>
   </data>
   <data name="CollabGuideTitle" xml:space="preserve">

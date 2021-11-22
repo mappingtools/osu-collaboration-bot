@@ -490,7 +490,7 @@ namespace CollaborationBot.Resources {
         ///2. Set-up the project channels and roles: `{0}setup [PROJECT NAME]`
         ///3. Create a base beatmap with timing, bookmarks, and difficulty settings and upload it to the bot: `{0}setbasefile [PROJECT NAME]` with .osu file attached
         ///4. Generate parts from the bookmarks: `{0}part from-bookmarks [PROJECT NAME]` with .osu file attached
-        ///5. Edit the parts in Excel: `{0}part to-csv [PROJECT NA [rest of string was truncated]&quot;;.
+        ///5. Upload your .osz and lay out the rules in your info  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CollabGuideContent {
             get {
