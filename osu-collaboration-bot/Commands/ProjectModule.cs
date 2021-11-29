@@ -19,6 +19,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Mapping_Tools_Core.BeatmapHelper.Contexts;
 using Mapping_Tools_Core.MathUtil;
+using System.IO.Compression;
+using System.Net;
 
 namespace CollaborationBot.Commands {
     [Group]
@@ -1552,6 +1554,38 @@ namespace CollaborationBot.Commands {
             }
 
             await Context.Channel.SendMessageAsync(diffname.ToString());
+        }
+
+        //[Command("collage")]
+        [Summary("Generates a collage with images from a channel")]
+        public async Task Collage([Summary("The channel to get the images from")]ITextChannel channel,
+            [Summary("The number of messages to use in the collage")] int messageCount = 100) {
+            messageCount = Math.Min(messageCount, 200);
+
+            var messages = channel.GetMessagesAsync(messageCount, CacheMode.AllowDownload);
+
+            var zip = ZipFile.Open("temp.zip", ZipArchiveMode.Create);
+            var mss = new StringBuilder();
+            await foreach (var ms in messages) {
+                foreach (var m in ms) {
+                    foreach (var a in m.Attachments) {
+                        if (!(Path.GetExtension(a.Filename) == ".png" || Path.GetExtension(a.Filename) == ".jpg")) continue;
+                        mss.AppendLine(a.Filename);
+
+                        if (!Uri.TryCreate(a.Url, UriKind.Absolute, out var uri)) continue;
+
+                        using var client = new WebClient();
+                        var name = m.Content + Path.GetExtension(a.Filename);
+                        var tempname = "temp" + Path.GetExtension(a.Filename);
+                        client.DownloadFile(uri, tempname);
+
+                        zip.CreateEntryFromFile(tempname, name, CompressionLevel.Optimal);
+                    }
+                }
+            }
+
+            zip.Dispose();
+            await Context.Channel.SendFileAsync("temp.zip", mss.ToString());
         }
 
         #endregion
