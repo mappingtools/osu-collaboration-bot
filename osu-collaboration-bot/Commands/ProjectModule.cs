@@ -151,28 +151,27 @@ namespace CollaborationBot.Commands {
             }
 
             List<Part> parts = null;
-            if (project.PartRestrictedUpload || partName != null) {
-                if (partName == null) {
+            bool partIsRestricted = project.PartRestrictedUpload || partName is not null;
+            if (partIsRestricted) {
+                if (partName is null) {
                     // Submit to claimed part
                     parts = await _context.Assignments.AsQueryable()
                         .Where(o => o.Part.ProjectId == project.Id && o.Member.UniqueMemberId == Context.User.Id)
                         .Select(o => o.Part)
                         .ToListAsync();
+                } else if (member.ProjectRole == ProjectRole.Member && project.PartRestrictedUpload) {
+                    // Member submit to specific claimed part
+                    parts = await _context.Assignments.AsQueryable()
+                        .Where(o => o.Part.ProjectId == project.Id && o.Member.Id == member.Id &&
+                                    o.Part.Name == partName)
+                        .Select(o => o.Part)
+                        .ToListAsync();
                 } else {
-                    if (member.ProjectRole == ProjectRole.Member && !project.PartRestrictedUpload) {
-                        // Member submit to specific claimed part
-                        parts = await _context.Assignments.AsQueryable()
-                            .Where(o => o.Part.ProjectId == project.Id && o.Member.Id == member.Id &&
-                                        o.Part.Name == partName)
-                            .Select(o => o.Part)
-                            .ToListAsync();
-                    } else {
-                        // Manager submit override
-                        // OR no part restricted upload with part name provided by member
-                        parts = await _context.Parts.AsQueryable()
-                            .Where(o => o.ProjectId == project.Id && o.Name == partName)
-                            .ToListAsync();
-                    }
+                    // Manager submit override
+                    // OR no part restricted upload with part name provided by member
+                    parts = await _context.Parts.AsQueryable()
+                        .Where(o => o.ProjectId == project.Id && o.Name == partName)
+                        .ToListAsync();
                 }
 
                 if (parts.Count == 0) {
@@ -191,7 +190,7 @@ namespace CollaborationBot.Commands {
             try {
                 var partBeatmap = new OsuBeatmapDecoder().Decode(beatmapString);
 
-                if (project.PartRestrictedUpload) {
+                if (partIsRestricted) {
                     // Restrict beatmap to only the hit objects inside any assigned part
                     partBeatmap.HitObjects = partBeatmap.HitObjects
                         .Where(ho => parts!.Any(p =>
