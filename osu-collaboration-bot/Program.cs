@@ -84,6 +84,12 @@ namespace CollaborationBot {
         private async void CheckupTimerOnElapsed(object sender, ElapsedEventArgs e) {
             logger.Info("Checking for late deadlines...");
 
+            logger.Debug("Current connection state: {state}", _client.ConnectionState);
+            logger.Debug("Current login state: {state}", _client.LoginState);
+            logger.Debug("Current latency: {state}", _client.Latency);
+            logger.Debug("Shard ID: {state}", _client.ShardId);
+            logger.Debug("Token type: {state}", _client.TokenType);
+
             // Check assignments and give reminders
             var remindingTime = TimeSpan.FromDays(2);
 

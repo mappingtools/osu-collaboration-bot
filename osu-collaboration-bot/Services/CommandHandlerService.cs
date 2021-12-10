@@ -44,6 +44,8 @@ namespace CollaborationBot.Services {
                 return;
             if (!message.HasStringPrefix(_appSettings.Prefix, ref argPos)) return;
 
+            logger.Debug("Command issued by user {user}: {command}", message.Author.Username, message.Content);
+
             // Create a WebSocket-based command context based on the message
             var context = new SocketCommandContext(_client, message);
 
