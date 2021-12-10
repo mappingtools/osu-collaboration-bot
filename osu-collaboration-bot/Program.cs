@@ -72,7 +72,7 @@ namespace CollaborationBot {
             await _client.LoginAsync(TokenType.Bot, _appSettings.Token);
             await _client.StartAsync();
 
-            checkupTimer.Interval = TimeSpan.FromMinutes(10).TotalMilliseconds;
+            checkupTimer.Interval = TimeSpan.FromMinutes(30).TotalMilliseconds;
             checkupTimer.Elapsed += CheckupTimerOnElapsed;
             checkupTimer.AutoReset = true;
             checkupTimer.Start();
