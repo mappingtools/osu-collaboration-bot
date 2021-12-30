@@ -1508,13 +1508,13 @@ namespace CollaborationBot.Commands {
         [Command("diffname")]
         [Summary("Generates a random difficulty name")]
         public async Task Diffname([Summary("The number of words to use in the sentence")] int wordCount = -1) {
-            await DoRandomString(@"CollaborationBot.Resources.Diffname Words.txt", wordCount, 0.3);
+            await DoRandomString(@"CollaborationBot.Resources.Diffname Words.txt", wordCount, 0.02);
         }
 
         [Command("blixys")]
         [Summary("Generates some inspiration")]
         public async Task Blixys([Summary("The number of words to use in the sentence")]int wordCount=-1) {
-            await DoRandomString(@"CollaborationBot.Resources.blixys.txt", wordCount);
+            await DoRandomString(@"CollaborationBot.Resources.blixys.txt", wordCount, 0.05);
         }
 
         private async Task DoRandomString(string resourceName, int wordCount=-1, double mixChance=0) {
