@@ -104,7 +104,7 @@ namespace CollaborationBot.Services {
         public string GeneratePartsListDescription(List<Part> parts, bool includeMappers = true, bool includePartNames = false) {
             var builder = new StringBuilder("```[notice][box=Parts]\n");
             foreach (Part part in parts) {
-                string mappers = includeMappers ? string.Join(", ", part.Assignments.Select(a => a.Member.ProfileId.HasValue ? $"[profile={a.Member.ProfileId}]{MemberName(a.Member)}[/profile]" : MemberName(a.Member))) + ": " : string.Empty;
+                string mappers = includeMappers ? string.Join(", ", part.Assignments.Select(a => a.Member.ProfileId.HasValue ? $"[profile={a.Member.ProfileId}]{MemberAliasOrName(a.Member)}[/profile]" : MemberAliasOrName(a.Member))) + ": " : string.Empty;
                 string partName = includePartNames ? part.Name + " " : string.Empty;
                 builder.AppendLine($"{mappers}{partName}({TimeToString(part.Start)} - {TimeToString(part.End)})");
             }
