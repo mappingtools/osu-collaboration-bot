@@ -124,6 +124,7 @@ CREATE TABLE public.members
     priority integer,
     alias character varying(255) COLLATE pg_catalog."default",
     tags character varying(255) COLLATE pg_catalog."default",
+    profile_id numeric,
     CONSTRAINT members_pkey PRIMARY KEY (id),
     CONSTRAINT "Single membership" UNIQUE (project_id, unique_member_id),
     CONSTRAINT members_project_id_fkey FOREIGN KEY (project_id)

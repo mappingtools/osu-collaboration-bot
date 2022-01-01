@@ -414,6 +414,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not change osu! profile ID..
+        /// </summary>
+        public static string ChangeIdFail {
+            get {
+                return ResourceManager.GetString("ChangeIdFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed osu! profile ID of {0} to `{1}`..
+        /// </summary>
+        public static string ChangeIdSuccess {
+            get {
+                return ResourceManager.GetString("ChangeIdSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not change manager role for project `{0}`..
         /// </summary>
         public static string ChangeManagerRoleFail {

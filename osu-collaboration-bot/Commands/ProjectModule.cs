@@ -1061,6 +1061,46 @@ namespace CollaborationBot.Commands {
             }
         }
 
+        [RequireProjectMember(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("id")]
+        [Summary("Changes your osu! profile ID in the project")]
+        public async Task Id([Summary("The project")] string projectName,
+            [Summary("The new ID")] ulong id) {
+            await Id(projectName, Context.User, id);
+        }
+
+        [RequireProjectManager(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("id")]
+        [Summary("Changes the osu! profile ID of a member of the project")]
+        public async Task Id([Summary("The project")] string projectName,
+            [Summary("The member")] IUser user, [Summary("The new ID")] ulong id) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            var member = await _context.Members.AsQueryable()
+                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == user.Id);
+
+            if (member == null) {
+                await Context.Channel.SendMessageAsync(Strings.MemberNotExistsMessage);
+                return;
+            }
+
+            try {
+                member.ProfileId = id;
+
+                await _context.SaveChangesAsync();
+                await Context.Channel.SendMessageAsync(string.Format(Strings.ChangeIdSuccess, user.Mention, id));
+            } catch (Exception e) {
+                logger.Error(e);
+                await Context.Channel.SendMessageAsync(Strings.ChangeIdFail);
+            }
+        }
+
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [Command("priority")]
