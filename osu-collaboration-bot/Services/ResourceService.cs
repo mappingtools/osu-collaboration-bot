@@ -101,6 +101,18 @@ namespace CollaborationBot.Services {
                 }));
         }
 
+        public string GeneratePartsListDescription(List<Part> parts, bool includeMappers = true, bool includePartNames = false) {
+            var builder = new StringBuilder("```[notice][box=Parts]\n");
+            foreach (Part part in parts) {
+                string mappers = includeMappers ? string.Join(", ", part.Assignments.Select(a => MemberName(a.Member))) + ": " : string.Empty;
+                string partName = includePartNames ? part.Name + " " : string.Empty;
+                builder.AppendLine($"{mappers}{partName}({TimeToString(part.Start)} - {TimeToString(part.End)})");
+            }
+            builder.Append("[/box][/notice]\n```");
+
+            return builder.ToString();
+        }
+
         public string GenerateAssignmentListMessage(List<Assignment> assignments) {
             if (assignments.Count <= 0) return Strings.NoAssignments;
             return GenerateListMessage(Strings.AssignmentListMessage,

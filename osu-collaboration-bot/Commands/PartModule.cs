@@ -1,20 +1,20 @@
 ﻿using CollaborationBot.Entities;
+using CollaborationBot.Preconditions;
 using CollaborationBot.Resources;
 using CollaborationBot.Services;
-using Discord.Commands;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using System.Linq;
-using Discord;
-using CollaborationBot.Preconditions;
-using System;
-using System.Globalization;
-using System.IO;
 using CsvHelper;
-using System.Collections.Generic;
+using Discord;
+using Discord.Commands;
 using Mapping_Tools_Core.BeatmapHelper.IO.Decoding;
 using Mapping_Tools_Core.Exceptions;
+using Microsoft.EntityFrameworkCore;
 using NLog;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CollaborationBot.Commands {
     [Group("part")]
@@ -497,6 +497,35 @@ namespace CollaborationBot.Commands {
             } catch (Exception e) {
                 logger.Error(e);
                 await Context.Channel.SendMessageAsync(string.Format(Strings.PartToCSVFail, projectName));
+            }
+        }
+
+        [RequireProjectMember(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("to-description")]
+        [Alias("to-desc")]
+        [Summary("Generates an element with all the parts which you can add to your beatmap description.")]
+        public async Task ToDesc([Summary("The project")] string projectName,
+            [Summary("Whether to show the mappers assigned to each part")] bool includeMappers = true,
+            [Summary("Whether to show the name of each part")] bool includePartNames = false) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                var parts = await _context.Parts.AsQueryable()
+                    .Where(o => o.ProjectId == project.Id)
+                    .Include(o => o.Assignments)
+                    .ThenInclude(o => o.Member).ToListAsync();
+
+                parts.Sort();
+
+                await Context.Channel.SendMessageAsync(_resourceService.GeneratePartsListDescription(parts, includeMappers, includePartNames));
+            } catch (Exception e) {
+                logger.Error(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.BackendErrorMessage, projectName));
             }
         }
 
