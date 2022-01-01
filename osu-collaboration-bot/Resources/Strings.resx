@@ -366,11 +366,12 @@
   <data name="MemberGuideContent" xml:space="preserve">
     <value>1. Set your mapper name: `{0}alias {1} "[YOUR OSU NAME]"`
 2. Set your tags (like old names and stuff): `{0}tags {1} "[YOUR TAGS]"`
-3. See which parts are available `{0}part list {1}`
-4. Claim a part `{0}asn claim {1} [PART NAME]`
-5. Submit your mapping progress to your part: `{0}submit {1}` with your .osu file attached
-6. When done, mark your part as finished: `{0}asn done {1} [PART NAME]`
-7. Repeat from step 4
+3. Set your osu! profile ID (the number in the URL to your osu! profile): `{0}id {1} [YOUR ID]`
+4. See which parts are available `{0}part list {1}`
+5. Claim a part `{0}asn claim {1} [PART NAME]`
+6. Submit your mapping progress to your part: `{0}submit {1}` with your .osu file attached
+7. When done, mark your part as finished: `{0}asn done {1} [PART NAME]`
+8. Repeat from step 4
 
 Replace the part with the [square brackets] with the relevant value and KEEP the quotation marks.</value>
   </data>
