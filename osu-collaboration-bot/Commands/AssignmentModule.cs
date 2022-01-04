@@ -9,6 +9,7 @@ using Discord;
 using CollaborationBot.Preconditions;
 using System;
 using NLog;
+using System.Collections.Generic;
 
 namespace CollaborationBot.Commands {
     [Group("asn")]
@@ -295,6 +296,38 @@ namespace CollaborationBot.Commands {
                     logger.Error(e);
                     await Context.Channel.SendMessageAsync(string.Format(Strings.FinishPartFail));
                 }
+            }
+        }
+
+        [RequireProjectMember(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("draintimes")]
+        [Alias("draintime")]
+        [Summary("Calculates the total draintime assigned to each participant.")]
+        public async Task Draintimes([Summary("The project")] string projectName) {
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                var assignments = (await _context.Assignments.AsQueryable()
+                    .Where(o => o.Part.ProjectId == project.Id)
+                    .Include(o => o.Part)
+                    .Include(o => o.Member).ToListAsync())
+                    .GroupBy(o => o.Member);
+
+                var draintimes = new List<KeyValuePair<Member, int>>();
+                foreach (var ass in assignments) {
+                    int draintime = ass.Sum(o => o.Part.End.HasValue && o.Part.Start.HasValue ? o.Part.End.Value - o.Part.Start.Value : 0);
+                    draintimes.Add(new KeyValuePair<Member, int>(ass.Key, draintime));
+                }
+
+                await Context.Channel.SendMessageAsync(_resourceService.GenerateDraintimesListMessage(draintimes.OrderBy(o => o.Value).ToList()));
+            } catch (Exception e) {
+                logger.Error(e);
+                await Context.Channel.SendMessageAsync(string.Format(Strings.BackendErrorMessage, projectName));
             }
         }
 

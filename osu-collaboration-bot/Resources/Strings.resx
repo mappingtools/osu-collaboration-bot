@@ -303,6 +303,9 @@
   <data name="DiffnameLoadFail" xml:space="preserve">
     <value>Could not load the diffname words file.</value>
   </data>
+  <data name="DrainTimeListMessage" xml:space="preserve">
+    <value>Here are all the assigned drain times of the project:</value>
+  </data>
   <data name="EditPartFail" xml:space="preserve">
     <value>Could not edit part.</value>
   </data>
@@ -614,6 +617,9 @@ Replace the part with the [square brackets] with the relevant value and KEEP the
   </data>
   <data name="TextChannelNotExist" xml:space="preserve">
     <value>This text channel does not exist.</value>
+  </data>
+  <data name="UnknownUser" xml:space="preserve">
+    <value>Unknown user</value>
   </data>
   <data name="UploadBaseFileFail" xml:space="preserve">
     <value>Something went wrong while trying to upload the base file.</value>

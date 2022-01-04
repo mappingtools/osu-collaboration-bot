@@ -113,6 +113,12 @@ namespace CollaborationBot.Services {
             return builder.ToString();
         }
 
+        public string GenerateDraintimesListMessage(List<KeyValuePair<Member, int>> draintimes) {
+            if (draintimes.Count <= 0) return Strings.NoAssignments;
+            return GenerateListMessage(Strings.DrainTimeListMessage,
+                draintimes.Select(m => $"{MemberName(m.Key)}: {TimeToString(m.Value)}"));
+        }
+
         public string GenerateAssignmentListMessage(List<Assignment> assignments) {
             if (assignments.Count <= 0) return Strings.NoAssignments;
             return GenerateListMessage(Strings.AssignmentListMessage,
@@ -129,7 +135,8 @@ namespace CollaborationBot.Services {
         }
 
         public string MemberName(Member member) {
-            string name = _client.GetUser((ulong)member.UniqueMemberId).Username;
+            var user = _client.GetUser((ulong)member.UniqueMemberId);
+            string name = user is not null ? user.Username : Strings.UnknownUser;
             if (member.Alias != null) {
                 name += $" \"{member.Alias}\"";
             }
@@ -140,7 +147,9 @@ namespace CollaborationBot.Services {
             if (member.Alias != null) {
                 return member.Alias;
             }
-            return _client.GetUser((ulong)member.UniqueMemberId).Username;
+            var user = _client.GetUser((ulong)member.UniqueMemberId);
+            string name = user is not null ? user.Username : Strings.UnknownUser;
+            return name;
         }
 
         public string TimeToString(int? time) {

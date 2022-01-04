@@ -598,6 +598,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Here are all the assigned drain times of the project:.
+        /// </summary>
+        public static string DrainTimeListMessage {
+            get {
+                return ResourceManager.GetString("DrainTimeListMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not edit part..
         /// </summary>
         public static string EditPartFail {
@@ -1504,6 +1513,15 @@ namespace CollaborationBot.Resources {
         public static string TextChannelNotExist {
             get {
                 return ResourceManager.GetString("TextChannelNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown user.
+        /// </summary>
+        public static string UnknownUser {
+            get {
+                return ResourceManager.GetString("UnknownUser", resourceCulture);
             }
         }
         
