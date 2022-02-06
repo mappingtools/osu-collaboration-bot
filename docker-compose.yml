@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  
+  db:
+    image: postgres
+    restart: unless-stopped
+    environment:
+         - POSTGRES_USER=postgres
+         - POSTGRES_PASSWORD=postgres
+         - POSTGRES_DB=postgres
+    #ports:
+      #- 5432:5432  #dangerous if you use default password
+    volumes:
+      - bot-db:/var/lib/postgresql/data
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+  
+  bot:
+    build: .
+    restart: unless-stopped
+    environment:
+      - App__ConnectionString=Server=host.docker.internal;Port=5432;Database=postgres;User Id=postgres;Password=postgres;
+      - App__Token=<BOT TOKEN HERE>
+      #- App__Prefix=mt! #Optional default set to mt!
+volumes: 
+     bot-db:
