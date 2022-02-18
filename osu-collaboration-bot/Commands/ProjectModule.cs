@@ -336,33 +336,33 @@ namespace CollaborationBot.Commands {
         [Command("create")]
         [Summary("Creates a new project")]
         public async Task Create([Summary("The name of the new project")]string projectName) {
-            var guild = await _context.Guilds.AsAsyncEnumerable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
-
-            if (guild == null) {
-                await Context.Channel.SendMessageAsync(Strings.GuildNotExistsMessage);
-                return;
-            }
-
-            if (!_inputSanitizer.IsValidProjectName(projectName)) {
-                await Context.Channel.SendMessageAsync(string.Format(Strings.IllegalProjectName, projectName));
-                return;
-            }
-
-            // Check administrator or max collab count
-            if (Context.User is not IGuildUser {GuildPermissions: {Administrator: true}} && guild.MaxCollabsPerPerson <=
-                _context.Members.AsQueryable().Count(o =>
-                    o.UniqueMemberId == Context.User.Id && o.ProjectRole == ProjectRole.Owner)) {
-                await Context.Channel.SendMessageAsync(string.Format(Strings.MaxCollabCountReached, guild.MaxCollabsPerPerson));
-                return;
-            }
-
-            if (_context.Projects.AsQueryable()
-                .Any(o => o.GuildId == guild.Id && o.Name == projectName)) {
-                await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectExistsMessage));
-                return;
-            }
-
             try {
+                var guild = await _context.Guilds.AsAsyncEnumerable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
+
+                if (guild == null) {
+                    await Context.Channel.SendMessageAsync(Strings.GuildNotExistsMessage);
+                    return;
+                }
+
+                if (!_inputSanitizer.IsValidProjectName(projectName)) {
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.IllegalProjectName, projectName));
+                    return;
+                }
+
+                // Check administrator or max collab count
+                if (Context.User is not IGuildUser {GuildPermissions: {Administrator: true}} && guild.MaxCollabsPerPerson <=
+                    _context.Members.AsQueryable().Count(o =>
+                        o.UniqueMemberId == Context.User.Id && o.ProjectRole == ProjectRole.Owner)) {
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.MaxCollabCountReached, guild.MaxCollabsPerPerson));
+                    return;
+                }
+
+                if (_context.Projects.AsQueryable()
+                    .Any(o => o.GuildId == guild.Id && o.Name == projectName)) {
+                    await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectExistsMessage));
+                    return;
+                }
+
                 var projectEntry = await _context.Projects.AddAsync(new Project {Name = projectName, GuildId = guild.Id, Status = ProjectStatus.NotStarted});
                 await _context.SaveChangesAsync();
                 await _context.Members.AddAsync(new Member { ProjectId = projectEntry.Entity.Id, UniqueMemberId = Context.User.Id, ProjectRole = ProjectRole.Owner });

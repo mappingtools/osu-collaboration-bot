@@ -71,7 +71,7 @@ CREATE TABLE public.guilds
     max_collabs_per_person integer NOT NULL DEFAULT 1,
     CONSTRAINT guilds_pkey PRIMARY KEY (id),
     CONSTRAINT guilds_unique_id UNIQUE (unique_guild_id)
-)
+);
 
 CREATE TABLE public.projects
 (
@@ -97,7 +97,7 @@ CREATE TABLE public.projects
         REFERENCES public.guilds (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-)
+);
 
 CREATE TABLE public.parts
 (
@@ -113,7 +113,7 @@ CREATE TABLE public.parts
         REFERENCES public.projects (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE
-)
+);
 
 CREATE TABLE public.members
 (
@@ -131,7 +131,7 @@ CREATE TABLE public.members
         REFERENCES public.projects (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE
-)
+);
 
 CREATE TABLE public.assignments
 (
@@ -150,7 +150,7 @@ CREATE TABLE public.assignments
         REFERENCES public.parts (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE
-)
+);
 
 CREATE TABLE public.auto_updates
 (
@@ -167,7 +167,7 @@ CREATE TABLE public.auto_updates
         REFERENCES public.projects (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE
-)
+);
 
 
 COMMENT ON CONSTRAINT "Single membership" ON public.members
