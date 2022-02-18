@@ -50,7 +50,7 @@ namespace CollaborationBot.Services {
                 using var client = new WebClient();
                 await client.DownloadFileTaskAsync(uri, filePath);
 
-                if (oldFilePath != filePath) {
+                if (!string.IsNullOrEmpty(oldFilePath) && oldFilePath != filePath && File.Exists(oldFilePath)) {
                     File.Delete(oldFilePath);
                 }
 
