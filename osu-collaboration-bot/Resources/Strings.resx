@@ -285,6 +285,9 @@
   <data name="CommandUnauthorized" xml:space="preserve">
     <value>{0}, you are not authorized to use this command.</value>
   </data>
+  <data name="CouldNotParseInput" xml:space="preserve">
+    <value>Could not parse input string.</value>
+  </data>
   <data name="CouldNotReadPartCSV" xml:space="preserve">
     <value>Could not read the CSV file with the part information. Make sure it uses the correct format.</value>
   </data>

@@ -1066,6 +1066,21 @@ namespace CollaborationBot.Commands {
         [Command("id")]
         [Summary("Changes your osu! profile ID in the project")]
         public async Task Id([Summary("The project")] string projectName,
+            [Summary("The new ID")] string id) {
+            int slashIndex = id.LastIndexOf('/');
+            ulong id2;
+            if (slashIndex < 0 ? ulong.TryParse(id, out id2) : ulong.TryParse(id.Substring(slashIndex + 1), out id2)) {
+                await Id(projectName, Context.User, id2);
+            } else {
+                await Context.Channel.SendMessageAsync(Strings.CouldNotParseInput);
+            }
+        }
+
+        [RequireProjectMember(Group = "Permission")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        [Command("id")]
+        [Summary("Changes your osu! profile ID in the project")]
+        public async Task Id([Summary("The project")] string projectName,
             [Summary("The new ID")] ulong id) {
             await Id(projectName, Context.User, id);
         }

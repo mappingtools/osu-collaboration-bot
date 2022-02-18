@@ -544,6 +544,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not parse input string..
+        /// </summary>
+        public static string CouldNotParseInput {
+            get {
+                return ResourceManager.GetString("CouldNotParseInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not read the CSV file with the part information. Make sure it uses the correct format..
         /// </summary>
         public static string CouldNotReadPartCSV {
