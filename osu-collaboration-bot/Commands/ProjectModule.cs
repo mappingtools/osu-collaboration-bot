@@ -21,6 +21,7 @@ using Mapping_Tools_Core.BeatmapHelper.Contexts;
 using Mapping_Tools_Core.MathUtil;
 using System.IO.Compression;
 using System.Net;
+using Mapping_Tools_Core.BeatmapHelper;
 
 namespace CollaborationBot.Commands {
     [Group]
@@ -246,6 +247,9 @@ namespace CollaborationBot.Commands {
                     ScaleToNewCircleSize = false,
                 };
                 placer.PlaceOsuPattern(partBeatmap, beatmap);
+
+                // Fix break periods
+                beatmap.FixBreakPeriods();
 
                 editor.WriteFile(beatmap);
 
