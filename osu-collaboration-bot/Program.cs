@@ -3,6 +3,7 @@ using CollaborationBot.Resources;
 using CollaborationBot.Services;
 using Discord;
 using Discord.Commands;
+using Discord.Interactions;
 using Discord.WebSocket;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +23,9 @@ namespace CollaborationBot {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private DiscordSocketClient _client;
+        private InteractionService _interactionService;
         private CommandHandlerService _commandHandler;
+        private InteractionHandlerService _interactionHandler;
         private AppSettings _appSettings;
         private FileHandlingService _fileHandler;
         private OsuCollabContext _context;
@@ -56,7 +59,6 @@ namespace CollaborationBot {
             _appSettings = GetAppSettings();
 
             var discordSocketConfig = new DiscordSocketConfig() {
-                // Other config options can be presented here.
                 GatewayIntents = GatewayIntents.DirectMessages | GatewayIntents.GuildMessages | GatewayIntents.Guilds | GatewayIntents.GuildMembers,
                 DefaultRetryMode = RetryMode.AlwaysRetry,
                 LogLevel = LogSeverity.Debug,
@@ -65,12 +67,21 @@ namespace CollaborationBot {
             _client.Log += Log;
             _client.GuildAvailable += GuildAvailable;
             _client.Connected += Connected;
+            _client.Ready += Ready;
+
+            var interactionServiceConfig = new InteractionServiceConfig() {
+                DefaultRunMode = Discord.Interactions.RunMode.Async
+            };
+            _interactionService = new InteractionService(_client, interactionServiceConfig);
 
             await using var services = ConfigureServices();
 
             _context = services.GetRequiredService<OsuCollabContext>();
             _commandHandler = services.GetRequiredService<CommandHandlerService>();
             await _commandHandler.InstallCommandsAsync();
+
+            _interactionHandler = services.GetRequiredService<InteractionHandlerService>();
+            await _interactionHandler.AddModulesAsync();
 
             _fileHandler = services.GetRequiredService<FileHandlingService>();
             _fileHandler.Initialize(_appSettings.Path);
@@ -85,6 +96,10 @@ namespace CollaborationBot {
 
             // Block this task until the program is closed.
             await Task.Delay(-1);
+        }
+
+        private async Task Ready() {
+            await _interactionHandler.RegisterModulesAsync();
         }
 
         private async void CheckupTimerOnElapsed(object sender, ElapsedEventArgs e) {
@@ -175,6 +190,8 @@ namespace CollaborationBot {
 
         private Task Log(LogMessage msg) {
             logger.Log(LogLevel.FromOrdinal(5 - (int)msg.Severity), msg.Message);
+            if (msg.Exception is not null)
+                logger.Log(LogLevel.FromOrdinal(5 - (int)msg.Severity), msg.Exception);
             return Task.CompletedTask;
         }
 
@@ -186,8 +203,10 @@ namespace CollaborationBot {
             services.AddSingleton<FileHandlingService>();
             services.AddSingleton<DiscordSocketClient>();
             services.AddSingleton<CommandService>();
+            services.AddSingleton(_interactionService);
             services.AddSingleton(_client);
             services.AddSingleton<CommandHandlerService>();
+            services.AddSingleton<InteractionHandlerService>();
             services.AddSingleton<UserHelpService>();
             services.AddSingleton<InputSanitizingService>();
 
