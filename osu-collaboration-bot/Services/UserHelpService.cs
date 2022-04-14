@@ -39,7 +39,7 @@ namespace CollaborationBot.Services {
                 return;
             }
 
-            var dmChannel = await context.User.GetOrCreateDMChannelAsync();
+            var dmChannel = await context.User.CreateDMChannelAsync();
             EmbedBuilder embedBuilder = new EmbedBuilder();
             int c = 0;
             bool first = true;

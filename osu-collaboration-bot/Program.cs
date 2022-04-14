@@ -53,16 +53,22 @@ namespace CollaborationBot {
         }
 
         public async Task MainAsync() {
-            await using var services = ConfigureServices();
+            _appSettings = GetAppSettings();
 
-            _appSettings = services.GetRequiredService<AppSettings>();
-            _context = services.GetRequiredService<OsuCollabContext>();
-
-            _client = services.GetRequiredService<DiscordSocketClient>();
+            var discordSocketConfig = new DiscordSocketConfig() {
+                // Other config options can be presented here.
+                GatewayIntents = GatewayIntents.DirectMessages | GatewayIntents.GuildMessages | GatewayIntents.Guilds | GatewayIntents.GuildMembers,
+                DefaultRetryMode = RetryMode.AlwaysRetry,
+                LogLevel = LogSeverity.Debug,
+            };
+            _client = new DiscordSocketClient(discordSocketConfig);
             _client.Log += Log;
             _client.GuildAvailable += GuildAvailable;
             _client.Connected += Connected;
 
+            await using var services = ConfigureServices();
+
+            _context = services.GetRequiredService<OsuCollabContext>();
             _commandHandler = services.GetRequiredService<CommandHandlerService>();
             await _commandHandler.InstallCommandsAsync();
 
@@ -168,18 +174,19 @@ namespace CollaborationBot {
         }
 
         private Task Log(LogMessage msg) {
-            logger.Info(msg.ToString());
+            logger.Log(LogLevel.FromOrdinal(5 - (int)msg.Severity), msg.Message);
             return Task.CompletedTask;
         }
 
         private ServiceProvider ConfigureServices() {
             var services = new ServiceCollection();
-            services.AddSingleton(GetAppSettings());
+            services.AddSingleton(_appSettings);
             services.AddSingleton<ResourceService>();
             services.AddDbContext<OsuCollabContext>();
             services.AddSingleton<FileHandlingService>();
             services.AddSingleton<DiscordSocketClient>();
             services.AddSingleton<CommandService>();
+            services.AddSingleton(_client);
             services.AddSingleton<CommandHandlerService>();
             services.AddSingleton<UserHelpService>();
             services.AddSingleton<InputSanitizingService>();
