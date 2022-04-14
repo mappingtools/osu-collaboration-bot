@@ -31,7 +31,7 @@ namespace CollaborationBot.Services {
         }
 
         private async Task SlashCommandHandler(SocketSlashCommand command) {
-            var fullCommand = command.Data.Name + string.Join(' ', command.Data.Options.Select(o => o.));
+            var fullCommand = command.Data.Name + string.Join(' ', command.Data.Options.Select(o => o.Name));
             logger.Debug("Slash command issued by user {user}: {command}", command.User.Username, fullCommand);
 
 
