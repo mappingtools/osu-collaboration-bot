@@ -31,11 +31,6 @@ namespace CollaborationBot.Commands {
             _appSettings = appSettings;
         }
 
-        [SlashCommand("help", "Shows command information")]
-        public async Task Help([Summary("command", "Show information about a specific command")]string command = "") {
-            await _userHelpService.DoHelp(Context, "Guild module", "guild", command);
-        }
-
         [RequireUserPermission(GuildPermission.Administrator)]
         [SlashCommand("init", "Initializes compatibility with the server")]
         public async Task Init() {

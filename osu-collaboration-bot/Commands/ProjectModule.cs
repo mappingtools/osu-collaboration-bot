@@ -111,8 +111,8 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [SlashCommand("submit", "Submits a part of beatmap to the project")]
         public async Task SubmitPart([Summary("The project")]string projectName,
-            [Summary("Part", "The part to submit as a .osu file")]Attachment attachment,
-            [Summary("PartName", "The part name to submit to (optional)")]string partName=null) {
+            [Summary("beatmap", "The part to submit as a .osu file")]Attachment attachment,
+            [Summary("part", "The part name to submit to (optional)")]string partName=null) {
             // Find out which parts this member is allowed to edit in the project
             // Download the attached file and put it in the member's folder
             // Merge it into the base file
@@ -263,7 +263,7 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [SlashCommand("setbasefile", "Replaces the current beatmap state of the project with attached .osu file")]
         public async Task UploadBaseFile([Summary("project", "The project")]string projectName,
-            [Summary("Newbasefile", "The new base file as a .osu file.")]Attachment attachment) {
+            [Summary("beatmap", "The new base file as a .osu file.")]Attachment attachment) {
             if (attachment == null) {
                 await Context.Channel.SendMessageAsync(Strings.NoAttachedFile);
                 return;

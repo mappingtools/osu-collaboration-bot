@@ -4,7 +4,7 @@ using CollaborationBot.Resources;
 using CollaborationBot.Services;
 using CsvHelper;
 using Discord;
-using Discord.Commands;
+using Discord.Interactions;
 using Mapping_Tools_Core.BeatmapHelper.IO.Decoding;
 using Mapping_Tools_Core.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -17,10 +17,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace CollaborationBot.Commands {
-    [Group("part")]
-    [Name("Part module")]
-    [Summary("Everything about parts")]
-    public class PartModule : ModuleBase<SocketCommandContext> {
+    [Group("part", "Everything about parts")]
+    public class PartModule : InteractionModuleBase<SocketInteractionContext> {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
@@ -40,17 +38,10 @@ namespace CollaborationBot.Commands {
             _appSettings = appSettings;
         }
 
-        [Command("help")]
-        [Summary("Shows command information")]
-        public async Task Help(string command = "") {
-            await _userHelpService.DoHelp(Context, "Part module", "part", command);
-        }
-
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("list")]
-        [Summary("Lists all the parts of the project")]
-        public async Task List([Summary("The project")]string projectName) {
+        [SlashCommand("list", "Lists all the parts of the project")]
+        public async Task List([Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -70,10 +61,8 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("list-unclaimed")]
-        [Alias("listunclaimed")]
-        [Summary("Lists all the unclaimed parts of the project")]
-        public async Task ListUnclaimed([Summary("The project")]string projectName) {
+        [SlashCommand("listunclaimed", "Lists all the unclaimed parts of the project")]
+        public async Task ListUnclaimed([Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -93,13 +82,12 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("add")]
-        [Summary("Adds a new part to the project")]
-        public async Task Add([Summary("The project")]string projectName,
-            [Summary("The name of the part")]string name,
-            [Summary("The start time (can be null)")]TimeSpan? start,
-            [Summary("The end time (can be null)")]TimeSpan? end,
-            [Summary("The status of the part")]PartStatus status = PartStatus.NotFinished) {
+        [SlashCommand("add", "Adds a new part to the project")]
+        public async Task Add([Summary("project", "The project")]string projectName,
+            [Summary("name", "The name of the part")]string name,
+            [Summary("start", "The start time (can be null)")]TimeSpan? start,
+            [Summary("end", "The end time (can be null)")]TimeSpan? end,
+            [Summary("status", "The status of the part")]PartStatus status = PartStatus.NotFinished) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -127,11 +115,10 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("rename")]
-        [Summary("Changes the name of the part")]
-        public async Task Rename([Summary("The project")]string projectName,
-            [Summary("The part")]string name,
-            [Summary("The new name for the part")]string newName) {
+        [SlashCommand("rename", "Changes the name of the part")]
+        public async Task Rename([Summary("project", "The project")]string projectName,
+            [Summary("part", "The part")]string name,
+            [Summary("newname", "The new name for the part")]string newName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -163,11 +150,10 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("start")]
-        [Summary("Changes the start time of the part")]
-        public async Task Start([Summary("The project")]string projectName,
-            [Summary("The part")]string name, 
-            [Summary("The new start time (can be null)")]TimeSpan? start) {
+        [SlashCommand("start", "Changes the start time of the part")]
+        public async Task Start([Summary("project", "The project")]string projectName,
+            [Summary("part", "The part")]string name, 
+            [Summary("start", "The new start time (can be null)")]TimeSpan? start) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -194,11 +180,10 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("end")]
-        [Summary("Changes the end time of the part")]
-        public async Task End([Summary("The project")]string projectName,
-            [Summary("The part")]string name,
-            [Summary("The new end time (can be null)")]TimeSpan? end) {
+        [SlashCommand("end", "Changes the end time of the part")]
+        public async Task End([Summary("project", "The project")]string projectName,
+            [Summary("part", "The part")]string name,
+            [Summary("end", "The new end time (can be null)")]TimeSpan? end) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -225,11 +210,10 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("status")]
-        [Summary("Changes the status of the part")]
-        public async Task Status([Summary("The project")]string projectName,
-            [Summary("The part")]string name,
-            [Summary("The new status")]PartStatus status) {
+        [SlashCommand("status", "Changes the status of the part")]
+        public async Task Status([Summary("project", "The project")]string projectName,
+            [Summary("part", "The part")]string name,
+            [Summary("status", "The new status")]PartStatus status) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -258,10 +242,9 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("remove")]
-        [Summary("Removes one or more parts from the project")]
-        public async Task Remove([Summary("The project")]string projectName,
-            [Summary("The parts to remove")]params string[] partNames) {
+        [SlashCommand("remove", "Removes one or more parts from the project")]
+        public async Task Remove([Summary("project", "The project")]string projectName,
+            [Summary("parts", "The parts to remove")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -290,9 +273,8 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("clear")]
-        [Summary("Removes all parts from the project")]
-        public async Task Clear([Summary("The project")]string projectName) {
+        [SlashCommand("clear", "Removes all parts from the project")]
+        public async Task Clear([Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -313,19 +295,17 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("from-bookmarks")]
-        [Summary("Imports parts from a beatmap's bookmarks")]
-        public async Task FromBookmarks([Summary("The project")] string projectName,
-            [Summary("Whether there is a bookmark indicating the start of the first part")] bool hasStart = true,
-            [Summary("Whether there is a bookmark indicating the end of the last part")] bool hasEnd = false,
-            [Summary("Whether to clear the existing parts before importing")] bool replace = true) {
+        [SlashCommand("frombookmarks", "Imports parts from a beatmap's bookmarks")]
+        public async Task FromBookmarks([Summary("project", "The project")] string projectName,
+            [Summary("beatmap", "The beatmap .osu to import bookmarks from")]Attachment attachment,
+            [Summary("hasstart", "Whether there is a bookmark indicating the start of the first part")] bool hasStart = true,
+            [Summary("hasend", "Whether there is a bookmark indicating the end of the last part")] bool hasEnd = false,
+            [Summary("replace", "Whether to clear the existing parts before importing")] bool replace = true) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
                 return;
             }
-
-            var attachment = Context.Message.Attachments.SingleOrDefault();
 
             if (attachment == null) {
                 await Context.Channel.SendMessageAsync(Strings.NoAttachedFile);
@@ -410,18 +390,16 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("from-csv")]
-        [Summary("Imports parts from a CSV file")]
-        public async Task FromCSV([Summary("The project")]string projectName,
-            [Summary("Whether the CSV file has explicit headers")]bool hasHeaders = true,
-            [Summary("Whether to clear the existing parts before importing")]bool replace = true) {
+        [SlashCommand("fromcsv", "Imports parts from a CSV file")]
+        public async Task FromCSV([Summary("project", "The project")]string projectName,
+            [Summary("file", "The .csv file to import parts from")]Attachment attachment,
+            [Summary("hasheaders", "Whether the CSV file has explicit headers")]bool hasHeaders = true,
+            [Summary("replace", "Whether to clear the existing parts before importing")]bool replace = true) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
                 return;
             }
-
-            var attachment = Context.Message.Attachments.SingleOrDefault();
 
             if (attachment == null) {
                 await Context.Channel.SendMessageAsync(Strings.NoAttachedFile);
@@ -458,10 +436,9 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("to-csv")]
-        [Summary("Exports all parts of the project to a CSV file")]
-        public async Task ToCSV([Summary("The project")]string projectName,
-            [Summary("Whether to include columns showing the mappers assigned to each part")]bool includeMappers=false) {
+        [SlashCommand("tocsv", "Exports all parts of the project to a CSV file")]
+        public async Task ToCSV([Summary("project", "The project")]string projectName,
+            [Summary("includemappers", "Whether to include columns showing the mappers assigned to each part")]bool includeMappers=false) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -502,12 +479,10 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("to-description")]
-        [Alias("to-desc")]
-        [Summary("Generates an element with all the parts which you can add to your beatmap description.")]
-        public async Task ToDesc([Summary("The project")] string projectName,
-            [Summary("Whether to show the mappers assigned to each part")] bool includeMappers = true,
-            [Summary("Whether to show the name of each part")] bool includePartNames = false) {
+        [SlashCommand("todescription", "Generates an element with all the parts which you can add to your beatmap description.")]
+        public async Task ToDesc([Summary("project", "The project")] string projectName,
+            [Summary("includemappers", "Whether to show the mappers assigned to each part")] bool includeMappers = true,
+            [Summary("includepartnames", "Whether to show the name of each part")] bool includePartNames = false) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
