@@ -3,7 +3,7 @@ using CollaborationBot.Preconditions;
 using CollaborationBot.Resources;
 using CollaborationBot.Services;
 using Discord;
-using Discord.Commands;
+using Discord.Interactions;
 using Mapping_Tools_Core.BeatmapHelper.IO.Decoding;
 using Mapping_Tools_Core.BeatmapHelper.IO.Editor;
 using Mapping_Tools_Core.Exceptions;
@@ -24,10 +24,9 @@ using System.Net;
 using Mapping_Tools_Core.BeatmapHelper;
 
 namespace CollaborationBot.Commands {
-    [Group]
-    [Name("Project module")]
-    [Summary("Main module with project and member related stuff")]
-    public class ProjectModule : ModuleBase<SocketCommandContext> {
+    //[Name("Project module")]
+    //[Summary("Main module with project and member related stuff")]
+    public class ProjectModule : InteractionModuleBase<SocketInteractionContext> {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private static readonly Random random = new();
         private readonly OsuCollabContext _context;
@@ -48,17 +47,15 @@ namespace CollaborationBot.Commands {
             _appSettings = appSettings;
         }
 
-        [Command("help")]
-        [Summary("Shows command information")]
-        public async Task Help(string command = "") {
+        [SlashCommand("help", "Shows command information")]
+        public async Task Help(
+            [Summary("command", "Show information about a specific command")]string command = "") {
             await _userHelpService.DoHelp(Context, "Project module", "", command, true);
         }
 
         #region guides
 
-        [Command("admin-guide")]
-        [Alias("guild-guide", "server-guide")]
-        [Summary("Shows a guide for server admins on how to set-up the bot")]
+        [SlashCommand("adminguide", "Shows a guide for server admins on how to set-up the bot")]
         public async Task AdminGuide() {
             EmbedBuilder embedBuilder = new EmbedBuilder();
 
@@ -70,9 +67,7 @@ namespace CollaborationBot.Commands {
             await Context.Channel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
         }
 
-        [Command("collab-guide")]
-        [Alias("collab-manager-guide", "owner-guide")]
-        [Summary("Shows a guide for collab organisers on how to set-up a collab with the bot")]
+        [SlashCommand("collabguide", "Shows a guide for collab organisers on how to set-up a collab with the bot")]
         public async Task CollabGuide() {
             EmbedBuilder embedBuilder = new EmbedBuilder();
 
@@ -84,10 +79,9 @@ namespace CollaborationBot.Commands {
             await Context.Channel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
         }
 
-        [Command("participant-guide")]
-        [Alias("member-guide")]
-        [Summary("Shows a guide for collab participants on how to use the bot")]
-        public async Task ParticipantGuide(string projectName = null) {
+        [SlashCommand("participantguide", "Shows a guide for collab participants on how to use the bot")]
+        public async Task ParticipantGuide(
+            [Summary("project", "The name of the project to replace occurances of '[PROJECT NAME]' in the guide")]string projectName = null) {
             if (projectName != null && !_inputSanitizer.IsValidProjectName(projectName)) {
                 await Context.Channel.SendMessageAsync(string.Format(Strings.IllegalProjectName, projectName));
                 return;
@@ -115,16 +109,14 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("submit")]
-        [Summary("Submits a part of beatmap to the project")]
-        public async Task SubmitPart([Summary("The project")]string projectName, 
-            [Summary("The part name to submit to (optional)")]string partName=null) {
+        [SlashCommand("submit", "Submits a part of beatmap to the project")]
+        public async Task SubmitPart([Summary("The project")]string projectName,
+            [Summary("Part", "The part to submit as a .osu file")]Attachment attachment,
+            [Summary("PartName", "The part name to submit to (optional)")]string partName=null) {
             // Find out which parts this member is allowed to edit in the project
             // Download the attached file and put it in the member's folder
             // Merge it into the base file
             // Success message
-
-            var attachment = Context.Message.Attachments.SingleOrDefault();
 
             if (attachment == null) {
                 await Context.Channel.SendMessageAsync(Strings.NoAttachedFile);
@@ -269,12 +261,9 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("setBaseFile")]
-        [Alias("set-base-file", "uploadBaseFile", "upload-base-file")]
-        [Summary("Replaces the current beatmap state of the project with attached .osu file")]
-        public async Task UploadBaseFile([Summary("The project")]string projectName) {
-            var attachment = Context.Message.Attachments.SingleOrDefault();
-
+        [SlashCommand("setbasefile", "Replaces the current beatmap state of the project with attached .osu file")]
+        public async Task UploadBaseFile([Summary("project", "The project")]string projectName,
+            [Summary("Newbasefile", "The new base file as a .osu file.")]Attachment attachment) {
             if (attachment == null) {
                 await Context.Channel.SendMessageAsync(Strings.NoAttachedFile);
                 return;
@@ -305,10 +294,8 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("getBaseFile")]
-        [Alias("get-base-file", "downloadBaseFile", "download-base-file")]
-        [Summary("Gets the current beatmap state of the project")]
-        public async Task GetBaseFile([Summary("The project")]string projectName) {
+        [SlashCommand("getbasefile", "Gets the current beatmap state of the project")]
+        public async Task GetBaseFile([Summary("project", "The project")]string projectName) {
             if (!_fileHandler.ProjectBaseFileExists(Context.Guild, projectName)) {
                 await Context.Channel.SendMessageAsync(Strings.BaseFileNotExists);
                 return;
@@ -328,8 +315,7 @@ namespace CollaborationBot.Commands {
 
         #region creation
 
-        [Command("list")]
-        [Summary("Lists all the projects on the server and their status")]
+        [SlashCommand("list", "Lists all the projects on the server and their status")]
         public async Task List() {
             var projects = await _context.Projects.AsQueryable().Where(p => p.Guild.UniqueGuildId == Context.Guild.Id).ToListAsync();
 
@@ -337,9 +323,8 @@ namespace CollaborationBot.Commands {
         }
 
         //[RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("create")]
-        [Summary("Creates a new project")]
-        public async Task Create([Summary("The name of the new project")]string projectName) {
+        [SlashCommand("create", "Creates a new project")]
+        public async Task Create([Summary("project", "The name of the new project")]string projectName) {
             try {
                 var guild = await _context.Guilds.AsAsyncEnumerable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 
@@ -384,9 +369,8 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectOwner(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("delete")]
-        [Summary("Deletes a project")]
-        public async Task Delete([Summary("The project")]string projectName) {
+        [SlashCommand("delete", "Deletes a project")]
+        public async Task Delete([Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -440,9 +424,8 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectOwner(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("setup")]
-        [Summary("Automatically sets-up the project, complete with roles, channels, and update notifications")]
-        public async Task Setup([Summary("The project")]string projectName) {
+        [SlashCommand("setup", "Automatically sets-up the project, complete with roles, channels, and update notifications")]
+        public async Task Setup([Summary("project", "The project")]string projectName) {
             // Make channel, role, and permissions
             // Automatic channels and roles will be marked for deletion on project deletion unless states otherwise
 
@@ -622,9 +605,8 @@ namespace CollaborationBot.Commands {
 
         #region members
 
-        [Command("members")]
-        [Summary("Lists all members of the project")]
-        public async Task Members([Summary("The project")]string projectName) {
+        [SlashCommand("members", "Lists all members of the project")]
+        public async Task Members([Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -637,9 +619,8 @@ namespace CollaborationBot.Commands {
         }
 
         //[RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("join")]
-        [Summary("Lets you become a member of the project")]
-        public async Task JoinProject([Summary("The project")]string projectName) {
+        [SlashCommand("join", "Lets you become a member of the project")]
+        public async Task JoinProject([Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -707,9 +688,8 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        [Command("leave")]
-        [Summary("Lets you leave the project")]
-        public async Task LeaveProject([Summary("The project")]string projectName) {
+        [SlashCommand("leave", "Lets you leave the project")]
+        public async Task LeaveProject([Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -745,9 +725,8 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("add")]
-        [Summary("Adds a new member to the project")]
-        public async Task AddMember([Summary("The project")]string projectName, 
+        [SlashCommand("add", "Adds a new member to the project")]
+        public async Task AddMember([Summary("project", "The project")]string projectName, 
             [Summary("The user to add")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
@@ -775,10 +754,9 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("remove")]
-        [Summary("Removes a member from the project")]
-        public async Task RemoveMember([Summary("The project")]string projectName,
-            [Summary("The user to remove")]IGuildUser user) {
+        [SlashCommand("remove", "Removes a member from the project")]
+        public async Task RemoveMember([Summary("project", "The project")]string projectName,
+            [Summary("user", "The user to remove")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -814,10 +792,9 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectOwner(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("promote")]
-        [Summary("Promotes a member to a manager of the project")]
-        public async Task AddManager([Summary("The project")]string projectName,
-            [Summary("The user to promote")]IGuildUser user) {
+        [SlashCommand("promote", "Promotes a member to a manager of the project")]
+        public async Task AddManager([Summary("project", "The project")]string projectName,
+            [Summary("user", "The user to promote")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -858,10 +835,9 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectOwner(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("demote")]
-        [Summary("Demotes a manager to a regular member of the project")]
-        public async Task RemoveManager([Summary("The project")]string projectName,
-            [Summary("The user to demote")]IGuildUser user) {
+        [SlashCommand("demote", "Demotes a manager to a regular member of the project")]
+        public async Task RemoveManager([Summary("project", "The project")]string projectName,
+            [Summary("user", "The user to demote")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -903,10 +879,9 @@ namespace CollaborationBot.Commands {
         // Revoked regular access for now since this can potentially be abused to create infinite projects
         //[RequireProjectOwner(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("set-owner")]
-        [Summary("Changes the owner of the project")]
-        public async Task SetOwner([Summary("The project")]string projectName,
-            [Summary("The new owner")]IGuildUser user) {
+        [SlashCommand("setowner", "Changes the owner of the project")]
+        public async Task SetOwner([Summary("project", "The project")]string projectName,
+            [Summary("user", "The new owner")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -949,19 +924,18 @@ namespace CollaborationBot.Commands {
         
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("alias")]
-        [Summary("Changes your alias in the project")]
-        public async Task Alias([Summary("The project")]string projectName,
-            [Summary("The new alias")]string alias) {
+        [SlashCommand("alias", "Changes your alias in the project")]
+        public async Task Alias([Summary("project", "The project")]string projectName,
+            [Summary("alias", "The new alias")]string alias) {
             await Alias(projectName, Context.User, alias);
         }
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("alias")]
-        [Summary("Changes the alias of a member of the project")]
-        public async Task Alias([Summary("The project")]string projectName,
-            [Summary("The member")]IUser user, [Summary("The new alias")]string alias) {
+        [SlashCommand("alias", "Changes the alias of a member of the project")]
+        public async Task Alias([Summary("project", "The project")]string projectName,
+            [Summary("user", "The member")]IUser user,
+            [Summary("alias", "The new alias")]string alias) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -994,19 +968,18 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("tags")]
-        [Summary("Changes your tags in the project")]
-        public async Task Tags([Summary("The project")]string projectName,
-            [Summary("The new tags")]string tags) {
+        [SlashCommand("tags", "Changes your tags in the project")]
+        public async Task Tags([Summary("project", "The project")]string projectName,
+            [Summary("tags", "The new tags")]string tags) {
             await Tags(projectName, Context.User, tags);
         }
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("tags")]
-        [Summary("Changes the tags of a member of the project")]
-        public async Task Tags([Summary("The project")]string projectName,
-            [Summary("The member")]IUser user, [Summary("The new tags")]params string[] tags) {
+        [SlashCommand("tags", "Changes the tags of a member of the project")]
+        public async Task Tags([Summary("project", "The project")]string projectName,
+            [Summary("user", "The member")]IUser user,
+            [Summary("tags", "The new tags")]params string[] tags) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1041,9 +1014,8 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("tags")]
-        [Summary("Gets all the tags of the project")]
-        public async Task Tags([Summary("The project")]string projectName) {
+        [SlashCommand("tags", "Gets all the tags of the project")]
+        public async Task Tags([Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1067,10 +1039,9 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("id")]
-        [Summary("Changes your osu! profile ID in the project")]
-        public async Task Id([Summary("The project")] string projectName,
-            [Summary("The new ID")] string id) {
+        [SlashCommand("id", "Changes your osu! profile ID in the project")]
+        public async Task Id([Summary("project", "The project")] string projectName,
+            [Summary("id", "The new ID")] string id) {
             int slashIndex = id.LastIndexOf('/');
             ulong id2;
             if (slashIndex < 0 ? ulong.TryParse(id, out id2) : ulong.TryParse(id.Substring(slashIndex + 1), out id2)) {
@@ -1082,19 +1053,18 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectMember(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("id")]
-        [Summary("Changes your osu! profile ID in the project")]
-        public async Task Id([Summary("The project")] string projectName,
-            [Summary("The new ID")] ulong id) {
+        [SlashCommand("id", "Changes your osu! profile ID in the project")]
+        public async Task Id([Summary("project", "The project")] string projectName,
+            [Summary("id", "The new ID")] ulong id) {
             await Id(projectName, Context.User, id);
         }
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("id")]
-        [Summary("Changes the osu! profile ID of a member of the project")]
-        public async Task Id([Summary("The project")] string projectName,
-            [Summary("The member")] IUser user, [Summary("The new ID")] ulong id) {
+        [SlashCommand("id", "Changes the osu! profile ID of a member of the project")]
+        public async Task Id([Summary("project", "The project")] string projectName,
+            [Summary("user", "The member")] IUser user,
+            [Summary("id", "The new ID")] ulong id) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1122,10 +1092,10 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("priority")]
-        [Summary("Changes the priority of a member of the project")]
-        public async Task Priority([Summary("The project")]string projectName,
-            [Summary("The member")]IUser user, [Summary("The new priority")]int? priority) {
+        [SlashCommand("priority", "Changes the priority of a member of the project")]
+        public async Task Priority([Summary("project", "The project")]string projectName,
+            [Summary("user", "The member")]IUser user,
+            [Summary("priority", "The new priority")]int? priority) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1152,11 +1122,10 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("generate-priorities")]
-        [Summary("Automatically generates priorities for all members of the project based on total number of days they've been on the server")]
-        public async Task GeneratePriorities([Summary("The project")]string projectName,
-            [Summary("The priority value of one day")]int timeWeight = 1,
-            [Summary("Whether to replace all the existing priority values")]bool replace = false) {
+        [SlashCommand("generatepriorities", "Automatically generates priorities for all members of the project based on total number of days they've been on the server")]
+        public async Task GeneratePriorities([Summary("project", "The project")]string projectName,
+            [Summary("timeweight", "The priority value of one day")]int timeWeight = 1,
+            [Summary("replace", "Whether to replace all the existing priority values")]bool replace = false) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1194,11 +1163,10 @@ namespace CollaborationBot.Commands {
 
         // Using admin permissions here to prevent someone assigning @everyone as the project role
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("role")]
-        [Summary("Changes the member role of a project and optionally assigns the new role to all members")]
-        public async Task Role([Summary("The project")]string projectName,
-            [Summary("The new member role")]IRole role,
-            [Summary("Whether to revoke the old role and grant the new role to all members")]bool reassignRoles = true) {
+        [SlashCommand("role", "Changes the member role of a project and optionally assigns the new role to all members")]
+        public async Task Role([Summary("project", "The project")]string projectName,
+            [Summary("role", "The new member role")]IRole role,
+            [Summary("reassignroles", "Whether to revoke the old role and grant the new role to all members")]bool reassignRoles = true) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1235,11 +1203,10 @@ namespace CollaborationBot.Commands {
 
         // Using admin permissions here to prevent someone assigning @everyone as the project role
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("manager-role")]
-        [Summary("Changes the manager role of the project and optionally assigns the new role to all managers")]
-        public async Task ManagerRole([Summary("The project")]string projectName,
-            [Summary("The new manager role")]IRole role,
-            [Summary("Whether to revoke the old manager role and assign the new manager role to all managers")]bool reassignRoles = true) {
+        [SlashCommand("managerrole", "Changes the manager role of the project and optionally assigns the new role to all managers")]
+        public async Task ManagerRole([Summary("project", "The project")]string projectName,
+            [Summary("role", "The new manager role")]IRole role,
+            [Summary("reassignroles", "Whether to revoke the old manager role and assign the new manager role to all managers")]bool reassignRoles = true) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1276,10 +1243,9 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("role-color")]
-        [Summary("Changes the color of the roles of the project")]
-        public async Task RoleColor([Summary("The project")] string projectName,
-            [Summary("The new color as Hex code")] Color color) {
+        [SlashCommand("rolecolor", "Changes the color of the roles of the project")]
+        public async Task RoleColor([Summary("project", "The project")] string projectName,
+            [Summary("color", "The new color as Hex code")] Color color) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1306,10 +1272,9 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectOwner(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("rename")]
-        [Summary("Renames the project")]
-        public async Task Rename([Summary("The old project name")]string projectName,
-            [Summary("The new project name")]string newProjectName) {
+        [SlashCommand("rename", "Renames the project")]
+        public async Task Rename([Summary("project", "The old project name")]string projectName,
+            [Summary("newname", "The new project name")]string newProjectName) {
             if (!_inputSanitizer.IsValidProjectName(newProjectName)) {
                 await Context.Channel.SendMessageAsync(string.Format(Strings.IllegalProjectName, newProjectName));
                 return;
@@ -1344,11 +1309,9 @@ namespace CollaborationBot.Commands {
         
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("description")]
-        [Alias("desc")]
-        [Summary("Changes the description of the project")]
-        public async Task Description([Summary("The project")]string projectName,
-            [Summary("The new description")]string description) {
+        [SlashCommand("description", "Changes the description of the project")]
+        public async Task Description([Summary("project", "The project")]string projectName,
+            [Summary("description", "The new description")]string description) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1373,10 +1336,9 @@ namespace CollaborationBot.Commands {
         
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("status")]
-        [Summary("Changes the status of the project")]
-        public async Task Status([Summary("The project")]string projectName,
-            [Summary("The new status")]ProjectStatus status) {
+        [SlashCommand("status", "Changes the status of the project")]
+        public async Task Status([Summary("project", "The project")]string projectName,
+            [Summary("status", "The new status")]ProjectStatus status) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1408,10 +1370,9 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("options")]
-        [Summary("Configures several boolean project options")]
-        public async Task Options([Summary("The project")]string projectName,
-            [Summary("The options [SelfAssignmentAllowed, PriorityPicking, PartRestrictedUpload, DoReminders]")]NamableOptions options) {
+        [SlashCommand("options", "Configures several boolean project options")]
+        public async Task Options([Summary("project", "The project")]string projectName,
+            [Summary("options", "The options [SelfAssignmentAllowed, PriorityPicking, PartRestrictedUpload, DoReminders]")]NamableOptions options) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1448,10 +1409,9 @@ namespace CollaborationBot.Commands {
         
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("max-assignments")]
-        [Summary("Changes the maximum number of allowed assignments for members of the project")]
-        public async Task MaxAssignments([Summary("The project")]string projectName, 
-            [Summary("The new maximum number of allowed assignments (can be null)")]int? maxAssignments) {
+        [SlashCommand("maxassignments", "Changes the maximum number of allowed assignments for members of the project")]
+        public async Task MaxAssignments([Summary("project", "The project")]string projectName, 
+            [Summary("maxassignments", "The new maximum number of allowed assignments (can be null)")]int? maxAssignments) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1471,10 +1431,9 @@ namespace CollaborationBot.Commands {
         
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("assignment-lifetime")]
-        [Summary("Changes the default duration of assignments of the project")]
-        public async Task AssignmentLifetime([Summary("The project")]string projectName, 
-            [Summary("The new duration of assignments (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? lifetime) {
+        [SlashCommand("assignmentlifetime", "Changes the default duration of assignments of the project")]
+        public async Task AssignmentLifetime([Summary("project", "The project")]string projectName, 
+            [Summary("lifetime", "The new duration of assignments (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? lifetime) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1493,10 +1452,9 @@ namespace CollaborationBot.Commands {
         }
         
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("main-channel")]
-        [Summary("Changes the main channel of the project")]
-        public async Task MainChannel([Summary("The project")]string projectName,
-            [Summary("The new main channel")]ITextChannel channel) {
+        [SlashCommand("mainchannel", "Changes the main channel of the project")]
+        public async Task MainChannel([Summary("project", "The project")]string projectName,
+            [Summary("channel", "The new main channel")]ITextChannel channel) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1515,10 +1473,9 @@ namespace CollaborationBot.Commands {
         }
         
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("info-channel")]
-        [Summary("Changes the info channel of the project")]
-        public async Task InfoChannel([Summary("The project")]string projectName,
-            [Summary("The new info channel")]ITextChannel channel) {
+        [SlashCommand("infochannel", "Changes the info channel of the project")]
+        public async Task InfoChannel([Summary("project", "The project")]string projectName,
+            [Summary("channel", "The new info channel")]ITextChannel channel) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1537,10 +1494,9 @@ namespace CollaborationBot.Commands {
         }
         
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("deletion-cleanup")]
-        [Summary("Changes whether to remove the roles and channels assigned to the project upon project deletion")]
-        public async Task ChangeAutoCleanup([Summary("The project")]string projectName,
-            [Summary("Whether to do cleanup")]bool cleanup) {
+        [SlashCommand("deletioncleanup", "Changes whether to remove the roles and channels assigned to the project upon project deletion")]
+        public async Task ChangeAutoCleanup([Summary("project", "The project")]string projectName,
+            [Summary("cleanup", "Whether to do cleanup")]bool cleanup) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1564,15 +1520,13 @@ namespace CollaborationBot.Commands {
 
         private static readonly int[] wordCounts = { 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 10 };
 
-        [Command("diffname")]
-        [Summary("Generates a random difficulty name")]
-        public async Task Diffname([Summary("The number of words to use in the sentence")] int wordCount = -1) {
+        [SlashCommand("diffname", "Generates a random difficulty name")]
+        public async Task Diffname([Summary("wordcount", "The number of words to use in the sentence")] int wordCount = -1) {
             await DoRandomString(@"CollaborationBot.Resources.Diffname Words.txt", wordCount, 0.02);
         }
 
-        [Command("blixys")]
-        [Summary("Generates some inspiration")]
-        public async Task Blixys([Summary("The number of words to use in the sentence")]int wordCount=-1) {
+        [SlashCommand("blixys", "Generates some inspiration")]
+        public async Task Blixys([Summary("wordcount", "The number of words to use in the sentence")]int wordCount=-1) {
             await DoRandomString(@"CollaborationBot.Resources.blixys.txt", wordCount, 0.05);
         }
 
@@ -1614,10 +1568,9 @@ namespace CollaborationBot.Commands {
             await Context.Channel.SendMessageAsync(diffname.ToString());
         }
 
-        //[Command("collage")]
-        [Summary("Generates a collage with images from a channel")]
-        public async Task Collage([Summary("The channel to get the images from")]ITextChannel channel,
-            [Summary("The number of messages to use in the collage")] int messageCount = 100) {
+        //[SlashCommand("collage", "Generates a collage with images from a channel")]
+        public async Task Collage([Summary("channel", "The channel to get the images from")]ITextChannel channel,
+            [Summary("count", "The number of messages to use in the collage")] int messageCount = 100) {
             messageCount = Math.Min(messageCount, 200);
 
             var messages = channel.GetMessagesAsync(messageCount, CacheMode.AllowDownload);

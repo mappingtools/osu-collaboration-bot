@@ -32,10 +32,8 @@ namespace CollaborationBot.Commands {
         }
 
         [SlashCommand("help", "Shows command information")]
-        public async Task Help(string command = "") {
-            await RespondAsync("test");
-            await ReplyAsync("test");
-            //await _userHelpService.DoHelp(Context, "Guild module", "guild", command);
+        public async Task Help([Summary("command", "Show information about a specific command")]string command = "") {
+            await _userHelpService.DoHelp(Context, "Guild module", "guild", command);
         }
 
         [RequireUserPermission(GuildPermission.Administrator)]
@@ -60,8 +58,8 @@ namespace CollaborationBot.Commands {
         }
 
         [RequireUserPermission(GuildPermission.Administrator)]
-        [SlashCommand("collab-category", "Changes the category in which project channels will be automatically generated")]
-        public async Task CollabCategory([Summary("Category")]ICategoryChannel category) {
+        [SlashCommand("collabcategory", "Changes the category in which project channels will be automatically generated")]
+        public async Task CollabCategory([Summary("category")]ICategoryChannel category) {
             var guild = await GetGuildAsync();
 
             if (guild == null) {
@@ -80,8 +78,8 @@ namespace CollaborationBot.Commands {
         }
 
         [RequireUserPermission(GuildPermission.Administrator)]
-        [SlashCommand("max-collabs", "Changes the maximum number of projects a regular member can create")]
-        public async Task MaxCollabs([Summary("Count", "The maximum number of projects")]int count) {
+        [SlashCommand("maxcollabs", "Changes the maximum number of projects a regular member can create")]
+        public async Task MaxCollabs([Summary("count", "The maximum number of projects")]int count) {
             var guild = await GetGuildAsync();
 
             if (guild == null) {
