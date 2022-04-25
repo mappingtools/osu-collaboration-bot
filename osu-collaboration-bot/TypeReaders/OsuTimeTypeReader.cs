@@ -1,16 +1,17 @@
-using Discord.Commands;
+using Discord.Interactions;
 using System;
 using System.Threading.Tasks;
+using Discord;
 using Mapping_Tools_Core;
 
 namespace CollaborationBot.TypeReaders {
-    public class OsuTimeTypeReader : TypeReader {
-        public override Task<TypeReaderResult> ReadAsync(ICommandContext context, string input, IServiceProvider services) {
+    public class OsuTimeTypeReader : TypeReader<TimeSpan> {
+        public override Task<TypeConverterResult> ReadAsync(IInteractionContext context, string option, IServiceProvider services) {
             try {
-                TimeSpan result = InputParsers.ParseOsuTimestamp(input);
-                return Task.FromResult(TypeReaderResult.FromSuccess(result));
+                TimeSpan result = InputParsers.ParseOsuTimestamp(option);
+                return Task.FromResult(TypeConverterResult.FromSuccess(result));
             } catch {
-                return Task.FromResult(TypeReaderResult.FromError(CommandError.ParseFailed, "Input could not be parsed as an osu! timestamp."));
+                return Task.FromResult(TypeConverterResult.FromError(InteractionCommandError.ParseFailed, "Input could not be parsed as an osu! timestamp."));
             }
         }
     }
