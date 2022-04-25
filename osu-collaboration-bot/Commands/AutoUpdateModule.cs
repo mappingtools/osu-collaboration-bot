@@ -1,7 +1,7 @@
 ﻿using CollaborationBot.Entities;
 using CollaborationBot.Resources;
 using CollaborationBot.Services;
-using Discord.Commands;
+using Discord.Interactions;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;
@@ -12,10 +12,8 @@ using System.Collections.Generic;
 using NLog;
 
 namespace CollaborationBot.Commands {
-    [Group("au")]
-    [Name("Auto-update module")]
-    [Summary("Everything about automatic update notifications")]
-    public class AutoUpdateModule : ModuleBase<SocketCommandContext> {
+    [Group("au", "Everything about automatic update notifications")]
+    public class AutoUpdateModule : InteractionModuleBase<SocketInteractionContext> {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
@@ -33,17 +31,10 @@ namespace CollaborationBot.Commands {
             _appSettings = appSettings;
         }
 
-        [Command("help")]
-        [Summary("Shows command information")]
-        public async Task Help(string command = "") {
-            await _userHelpService.DoHelp(Context, "Auto-update module", "au", command);
-        }
-
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("list")]
-        [Summary("Lists all the update notifications attached to the project")]
-        public async Task List([Summary("The project")]string projectName) {
+        [SlashCommand("list", "Lists all the update notifications attached to the project")]
+        public async Task List([Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -70,12 +61,11 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("add")]
-        [Summary("Adds a new update notification to the project")]
-        public async Task Add([Summary("The project")]string projectName,
-            [Summary("The channel to post the notification in")]ITextChannel channel,
-            [Summary("The cooldown on the notification (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? cooldown = null,
-            [Summary("Whether to ping members on an update notification")]bool doPing = false) {
+        [SlashCommand("add", "Adds a new update notification to the project")]
+        public async Task Add([Summary("project", "The project")]string projectName,
+            [Summary("channel", "The channel to post the notification in")]ITextChannel channel,
+            [Summary("cooldown", "The cooldown on the notification (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? cooldown = null,
+            [Summary("mentions", "Whether to ping members on an update notification")]bool doPing = false) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -99,10 +89,9 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("remove")]
-        [Summary("Removes an update notification from the project")]
-        public async Task Remove([Summary("The project")]string projectName,
-            [Summary("The channel the notification is in")]ITextChannel channel) {
+        [SlashCommand("remove", "Removes an update notification from the project")]
+        public async Task Remove([Summary("project", "The project")]string projectName,
+            [Summary("channel", "The channel the notification is in")]ITextChannel channel) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -127,11 +116,10 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("cooldown")]
-        [Summary("Changes the cooldown of the update notification")]
-        public async Task Cooldown([Summary("The project")]string projectName,
-            [Summary("The channel the notification is in")]ITextChannel channel,
-            [Summary("The new cooldown (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? cooldown) {
+        [SlashCommand("cooldown", "Changes the cooldown of the update notification")]
+        public async Task Cooldown([Summary("project", "The project")]string projectName,
+            [Summary("channel", "The channel the notification is in")]ITextChannel channel,
+            [Summary("cooldown", "The new cooldown (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? cooldown) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -156,12 +144,10 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("do-ping")]
-        [Alias("mention")]
-        [Summary("Changes whether the update notification pings all members")]
-        public async Task DoPing([Summary("The project")]string projectName,
-            [Summary("The channel the notification is in")]ITextChannel channel,
-            [Summary("Whether to ping all members in the update notification")]bool doPing) {
+        [SlashCommand("mentions", "Changes whether the update notification pings all members")]
+        public async Task DoPing([Summary("project", "The project")]string projectName,
+            [Summary("channel", "The channel the notification is in")]ITextChannel channel,
+            [Summary("mentions", "Whether to ping all members in the update notification")]bool doPing) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -186,9 +172,8 @@ namespace CollaborationBot.Commands {
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [Command("trigger")]
-        [Summary("Triggers all update notifications of the project")]
-        public async Task Trigger([Summary("The project")]string projectName) {
+        [SlashCommand("trigger", "Triggers all update notifications of the project")]
+        public async Task Trigger([Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -209,7 +194,7 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        public static async Task HandleAutoUpdates(Project project, SocketCommandContext context, OsuCollabContext _context, FileHandlingService fileHandler) {
+        public static async Task HandleAutoUpdates(Project project, SocketInteractionContext context, OsuCollabContext _context, FileHandlingService fileHandler) {
             if (!fileHandler.ProjectBaseFileExists(context.Guild, project.Name)) {
                 return;
             }
