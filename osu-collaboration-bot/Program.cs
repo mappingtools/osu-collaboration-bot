@@ -2,7 +2,6 @@ using CollaborationBot.Entities;
 using CollaborationBot.Resources;
 using CollaborationBot.Services;
 using Discord;
-using Discord.Commands;
 using Discord.Interactions;
 using Discord.WebSocket;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +23,6 @@ namespace CollaborationBot {
 
         private DiscordSocketClient _client;
         private InteractionService _interactionService;
-        private CommandHandlerService _commandHandler;
         private InteractionHandlerService _interactionHandler;
         private AppSettings _appSettings;
         private FileHandlingService _fileHandler;
@@ -70,7 +68,7 @@ namespace CollaborationBot {
             _client.Ready += Ready;
 
             var interactionServiceConfig = new InteractionServiceConfig() {
-                DefaultRunMode = Discord.Interactions.RunMode.Async
+                DefaultRunMode = RunMode.Async
             };
             _interactionService = new InteractionService(_client, interactionServiceConfig);
 
