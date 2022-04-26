@@ -13,6 +13,9 @@ namespace CollaborationBot.Preconditions {
             if (context.User is not IGuildUser guildUser)
                 return Task.FromResult(ErrorResult(context.User, services));
 
+            if (guildUser.GuildPermissions.Administrator)
+                return Task.FromResult(PreconditionResult.FromSuccess());
+
             if (value is not string projectName)
                 return Task.FromResult(PreconditionResult.FromError("Expected project name to be string type."));
 
