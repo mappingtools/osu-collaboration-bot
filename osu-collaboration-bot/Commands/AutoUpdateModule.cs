@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using CollaborationBot.Autocomplete;
 using NLog;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollaborationBot.Commands {
     [Group("au", "Everything about automatic update notifications")]

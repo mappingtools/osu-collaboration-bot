@@ -3,6 +3,7 @@ using CollaborationBot.Resources;
 using CollaborationBot.Services;
 using Discord;
 using Discord.Interactions;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using System;
 using System.Linq;

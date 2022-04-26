@@ -10,6 +10,7 @@ using System;
 using NLog;
 using System.Collections.Generic;
 using CollaborationBot.Autocomplete;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollaborationBot.Commands {
     [Group("asn", "Everything about assignments")]

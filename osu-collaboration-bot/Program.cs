@@ -119,7 +119,7 @@ namespace CollaborationBot {
                 .Include(o => o.Member)
                 .ToListAsync();
 
-            logger.Debug("Found {count} assignments to remind.", assignmentsToRemind.SelectMany(o => o).Count());
+            logger.Debug("Found {count} assignments to remind.", assignmentsToRemind.Count);
 
             foreach (var assignment in assignmentsToRemind) {
                 var user = _client.GetUser((ulong) assignment.Member.UniqueMemberId);

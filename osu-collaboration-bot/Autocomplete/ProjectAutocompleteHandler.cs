@@ -6,6 +6,7 @@ using CollaborationBot.Entities;
 using CollaborationBot.Preconditions;
 using Discord;
 using Discord.Interactions;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollaborationBot.Autocomplete {
     public class ProjectAutocompleteHandler : AutocompleteHandler {
