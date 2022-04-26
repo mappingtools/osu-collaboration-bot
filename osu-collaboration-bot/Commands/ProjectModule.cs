@@ -1355,24 +1355,15 @@ namespace CollaborationBot.Commands {
                 await Context.Channel.SendMessageAsync(string.Format(Strings.ProjectStatusFail, projectName, status));
             }
         }
-        
-        [NamedArgumentType]
-        public class NamableOptions {
-            //[Summary("Whether members can claim parts on their own")]
-            public bool? SelfAssignmentAllowed { get; set; }
-            //[Summary("Whether priority picking is enabled")]
-            public bool? PriorityPicking { get; set; }
-            //[Summary("Whether to restrict part submission to just the assigned parts")]
-            public bool? PartRestrictedUpload { get; set; }
-            //[Summary("Whether to remind members about their deadlines")]
-            public bool? DoReminders { get; set; }
-        }
 
         [RequireProjectManager(Group = "Permission")]
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [SlashCommand("options", "Configures several boolean project options")]
         public async Task Options([Summary("project", "The project")]string projectName,
-            [Summary("options", "The options [SelfAssignmentAllowed, PriorityPicking, PartRestrictedUpload, DoReminders]")]NamableOptions options) {
+            [Summary("selfassignmentallowed", "Whether members may claim parts on their own")]bool? selfAssignmentAllowed = null,
+            [Summary("prioritypicking", "Whether priority picking is enabled")]bool? priorityPicking = null,
+            [Summary("partrestrictedupload", "Whether to restrict part submission to just the assigned parts")]bool? partRestrictedUpload = null,
+            [Summary("doreminders", "Whether to automatically remind members about their deadlines")]bool? doReminders = null) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1381,20 +1372,20 @@ namespace CollaborationBot.Commands {
 
             try {
                 int n = 0;
-                if (options.SelfAssignmentAllowed.HasValue) {
-                    project.SelfAssignmentAllowed = options.SelfAssignmentAllowed.Value;
+                if (selfAssignmentAllowed.HasValue) {
+                    project.SelfAssignmentAllowed = selfAssignmentAllowed.Value;
                     n++;
                 }
-                if (options.PriorityPicking.HasValue) {
-                    project.PriorityPicking = options.PriorityPicking.Value;
+                if (priorityPicking.HasValue) {
+                    project.PriorityPicking = priorityPicking.Value;
                     n++;
                 }
-                if (options.PartRestrictedUpload.HasValue) {
-                    project.PartRestrictedUpload = options.PartRestrictedUpload.Value;
+                if (partRestrictedUpload.HasValue) {
+                    project.PartRestrictedUpload = partRestrictedUpload.Value;
                     n++;
                 }
-                if (options.DoReminders.HasValue) {
-                    project.DoReminders = options.DoReminders.Value;
+                if (doReminders.HasValue) {
+                    project.DoReminders = doReminders.Value;
                     n++;
                 }
 
@@ -1521,12 +1512,12 @@ namespace CollaborationBot.Commands {
         private static readonly int[] wordCounts = { 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 10 };
 
         [SlashCommand("diffname", "Generates a random difficulty name")]
-        public async Task Diffname([Summary("wordcount", "The number of words to use in the sentence")] int wordCount = -1) {
+        public async Task Diffname([Summary("wordcount", "The number of words to use in the sentence")][MinValue(1)][MaxValue(200)]int wordCount = -1) {
             await DoRandomString(@"CollaborationBot.Resources.Diffname Words.txt", wordCount, 0.02);
         }
 
         [SlashCommand("blixys", "Generates some inspiration")]
-        public async Task Blixys([Summary("wordcount", "The number of words to use in the sentence")]int wordCount=-1) {
+        public async Task Blixys([Summary("wordcount", "The number of words to use in the sentence")][MinValue(1)][MaxValue(200)]int wordCount=-1) {
             await DoRandomString(@"CollaborationBot.Resources.blixys.txt", wordCount, 0.05);
         }
 
@@ -1548,7 +1539,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            int n_words = wordCount >= 0 && wordCount <= 200 ? wordCount : wordCounts[random.Next(wordCounts.Length - 1)];
+            int n_words = wordCount > 0 && wordCount <= 200 ? wordCount : wordCounts[random.Next(wordCounts.Length - 1)];
             StringBuilder diffname = new StringBuilder();
             for (int i = 0; i < n_words; i++) {
                 if (i != 0)
