@@ -19,12 +19,11 @@ namespace CollaborationBot.Services {
         }
 
         public async Task DoHelp(SocketInteractionContext context,
-                                 string moduleName,
-                                 string modulePrefix,
+                                 string moduleName = "",
                                  string commandName = "",
                                  bool showReference = false) {
-            List<SlashCommandInfo> commands = _interactionService.Modules.First(o => o.Name == moduleName).SlashCommands.ToList();
-            string prefix = _appSettings.Prefix + modulePrefix + (string.IsNullOrWhiteSpace(modulePrefix) ? string.Empty : " ");
+            List<SlashCommandInfo> commands = _interactionService.Modules.First(o => o.SlashGroupName == moduleName).SlashCommands.ToList();
+            string prefix = "/" + moduleName + (string.IsNullOrWhiteSpace(moduleName) ? string.Empty : " ");
 
             if (!string.IsNullOrEmpty(commandName)) {
                 var command = commands.FirstOrDefault(o => string.Equals(o.Name, commandName, StringComparison.OrdinalIgnoreCase));
@@ -37,11 +36,11 @@ namespace CollaborationBot.Services {
                 await DoCommandHelp(context, prefix, command);
                 return;
             }
-
-            var dmChannel = await context.User.CreateDMChannelAsync();
-            EmbedBuilder embedBuilder = new EmbedBuilder();
+            
+            Embed[] embeds = new Embed[(commands.Count - 1) / 25 + 1 + (showReference ? 1 : 0)];
+            int e = 0;
             int c = 0;
-            bool first = true;
+            EmbedBuilder embedBuilder = new EmbedBuilder();
             foreach (SlashCommandInfo command in commands) {
                 // Get the command Summary attribute information
                 string embedFieldText = command.Description ?? Strings.NoDescription + Environment.NewLine;
@@ -51,22 +50,23 @@ namespace CollaborationBot.Services {
                 c++;
 
                 if (c == 25) {
-                    await dmChannel.SendMessageAsync(first ? Strings.ListCommandsMessage : string.Empty, false, embedBuilder.Build());
+                    embeds[e++] = embedBuilder.Build();
                     embedBuilder = new EmbedBuilder();
-                    first = false;
                     c = 0;
                 }
             }
 
             if (c > 0) {
-                await dmChannel.SendMessageAsync(first ? Strings.ListCommandsMessage : string.Empty, false, embedBuilder.Build());
+                embeds[e++] = embedBuilder.Build();
             }
 
             if (showReference) {
                 embedBuilder = new EmbedBuilder();
                 embedBuilder.AddField(Strings.OtherModuleHelpReference, string.Format(Strings.OtherModuleHelpGuide, prefix));
-                await dmChannel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
+                embeds[e] = embedBuilder.Build();
             }
+
+            await context.Interaction.RespondAsync(Strings.ListCommandsMessage, embeds);
         }
 
         private async Task DoCommandHelp(SocketInteractionContext context, string prefix, SlashCommandInfo command) {
@@ -83,7 +83,7 @@ namespace CollaborationBot.Services {
                 embedBuilder.AddField($"[{parameter.Name}]", parameterEmbedFieldText);
             }
 
-            await context.Channel.SendMessageAsync(string.Empty, false, embedBuilder.Build());
+            await context.Interaction.RespondAsync(string.Empty, embed: embedBuilder.Build());
         }
     }
 }
