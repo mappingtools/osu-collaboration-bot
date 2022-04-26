@@ -20,9 +20,9 @@ using System.Threading.Tasks;
 using Mapping_Tools_Core.BeatmapHelper.Contexts;
 using Mapping_Tools_Core.MathUtil;
 using System.IO.Compression;
-using System.Net;
 using CollaborationBot.Autocomplete;
 using Mapping_Tools_Core.BeatmapHelper;
+using System.Net.Http;
 
 namespace CollaborationBot.Commands {
     //[Name("Project module")]
@@ -1526,10 +1526,14 @@ namespace CollaborationBot.Commands {
 
                         if (!Uri.TryCreate(a.Url, UriKind.Absolute, out var uri)) continue;
 
-                        using var client = new WebClient();
                         var name = m.Content + Path.GetExtension(a.Filename);
                         var tempname = "temp" + Path.GetExtension(a.Filename);
-                        client.DownloadFile(uri, tempname);
+
+                        using var client = new HttpClient();
+                        var response = await client.GetAsync(uri);
+                        using (var fs = new FileStream(tempname, FileMode.CreateNew)) {
+                            await response.Content.CopyToAsync(fs);
+                        }
 
                         zip.CreateEntryFromFile(tempname, name, CompressionLevel.Optimal);
                     }

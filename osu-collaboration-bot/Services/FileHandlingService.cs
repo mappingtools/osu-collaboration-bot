@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using CollaborationBot.Entities;
 using CsvHelper;
@@ -47,8 +47,11 @@ namespace CollaborationBot.Services {
                 var oldFilePath = GetProjectBaseFilePath(guild, projectName);
                 var filePath = Path.Combine(localProjectPath, att.Filename);
 
-                using var client = new WebClient();
-                await client.DownloadFileTaskAsync(uri, filePath);
+                using var client = new HttpClient();
+                var response = await client.GetAsync(uri);
+                using (var fs = new FileStream(filePath, FileMode.CreateNew)) {
+                    await response.Content.CopyToAsync(fs);
+                }
 
                 if (!string.IsNullOrEmpty(oldFilePath) && oldFilePath != filePath && File.Exists(oldFilePath)) {
                     File.Delete(oldFilePath);
@@ -72,8 +75,8 @@ namespace CollaborationBot.Services {
 
                 if (!Uri.TryCreate(att.Url, UriKind.Absolute, out var uri)) return null;
 
-                using var client = new WebClient();
-                var result = await client.DownloadStringTaskAsync(uri);
+                using var client = new HttpClient();
+                var result = await client.GetStringAsync(uri);
 
                 return result;
             } catch (Exception e) {
@@ -107,15 +110,15 @@ namespace CollaborationBot.Services {
 
                 if (!Uri.TryCreate(att.Url, UriKind.Absolute, out var uri)) return null;
 
-                using var client = new WebClient();
-                var result = await client.DownloadDataTaskAsync(uri);
+                using var client = new HttpClient();
+                var result = await client.GetStreamAsync(uri);
 
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture)
                 {
                     PrepareHeaderForMatch = args => args.Header.ToLower(),
                     HasHeaderRecord = hasHeaders,
                 };
-                using var reader = new StreamReader(new MemoryStream(result));
+                using var reader = new StreamReader(result);
                 using var csv = new CsvReader(reader, config);
                 var records = csv.GetRecords<PartRecord>().ToList();
 
