@@ -610,8 +610,8 @@ namespace CollaborationBot.Commands {
         }
 
         //[RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [SlashCommand("join", "Lets you become a member of the project")]
-        public async Task JoinProject([Summary("project", "The project")]string projectName) {
+        [SlashCommand("join", "Lets you become a member of a project which is looking for members")]
+        public async Task JoinProject([Autocomplete(typeof(ProjectJoinAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
