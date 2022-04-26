@@ -444,7 +444,7 @@ namespace CollaborationBot.Commands {
                 await writer.FlushAsync();
                 dataStream.Position = 0;
 
-                await Context.Channel.SendFileAsync(dataStream, projectName + "_parts.csv",
+                await RespondWithFileAsync(dataStream, projectName + "_parts.csv",
                     string.Format(Strings.PartToCSVSuccess, projectName));
             } catch (Exception e) {
                 logger.Error(e);

@@ -299,11 +299,11 @@ namespace CollaborationBot.Commands {
 
             try {
                 var projectBaseFilePath = _fileHandler.GetProjectBaseFilePath(Context.Guild, projectName);
-                await Context.Channel.SendFileAsync(projectBaseFilePath, string.Format(Strings.ShowBaseFile, projectName));
+                await RespondWithFileAsync(projectBaseFilePath, text: string.Format(Strings.ShowBaseFile, projectName));
             }
             catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendFileAsync(Strings.BackendErrorMessage);
+                await RespondAsync(Strings.BackendErrorMessage);
             }
         }
 
@@ -1541,7 +1541,7 @@ namespace CollaborationBot.Commands {
             }
 
             zip.Dispose();
-            await Context.Channel.SendFileAsync("temp.zip", mss.ToString());
+            await RespondWithFileAsync("temp.zip", text: mss.ToString());
         }
 
         #endregion
