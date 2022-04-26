@@ -443,7 +443,7 @@ namespace CollaborationBot.Commands {
                 using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
                 await csv.WriteRecordsAsync(parts.Select(selector));
 
-                writer.Flush();
+                await writer.FlushAsync();
                 dataStream.Position = 0;
 
                 await Context.Channel.SendFileAsync(dataStream, projectName + "_parts.csv",
