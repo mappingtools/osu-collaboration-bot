@@ -77,8 +77,6 @@ namespace CollaborationBot {
             await using var services = ConfigureServices();
 
             _context = services.GetRequiredService<OsuCollabContext>();
-            _commandHandler = services.GetRequiredService<CommandHandlerService>();
-            await _commandHandler.InstallCommandsAsync();
 
             _interactionHandler = services.GetRequiredService<InteractionHandlerService>();
             await _interactionHandler.AddModulesAsync();
@@ -202,10 +200,8 @@ namespace CollaborationBot {
             services.AddDbContext<OsuCollabContext>();
             services.AddSingleton<FileHandlingService>();
             services.AddSingleton<DiscordSocketClient>();
-            services.AddSingleton<CommandService>();
             services.AddSingleton(_interactionService);
             services.AddSingleton(_client);
-            services.AddSingleton<CommandHandlerService>();
             services.AddSingleton<InteractionHandlerService>();
             services.AddSingleton<UserHelpService>();
             services.AddSingleton<InputSanitizingService>();
