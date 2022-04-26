@@ -1121,7 +1121,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} ({1}) stole part `{2}` from {3} ({4}), oh the humanity!.
+        ///   Looks up a localized string similar to {0} ({1}) stole part `{2}` from you ({3}), oh the humanity!.
         /// </summary>
         public static string PriorityPartSteal {
             get {

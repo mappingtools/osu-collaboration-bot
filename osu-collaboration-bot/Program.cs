@@ -56,8 +56,8 @@ namespace CollaborationBot {
         public async Task MainAsync() {
             _appSettings = GetAppSettings();
 
-            var discordSocketConfig = new DiscordSocketConfig() {
-                GatewayIntents = GatewayIntents.GuildMessages | GatewayIntents.Guilds | GatewayIntents.GuildMembers,
+            var discordSocketConfig = new DiscordSocketConfig {
+                GatewayIntents = GatewayIntents.DirectMessages | GatewayIntents.GuildMessages | GatewayIntents.Guilds | GatewayIntents.GuildMembers,
                 DefaultRetryMode = RetryMode.AlwaysRetry,
                 LogLevel = LogSeverity.Debug,
             };

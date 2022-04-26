@@ -41,7 +41,7 @@ namespace CollaborationBot.Commands {
                 .Where(o => o.ProjectId == project.Id)
                 .ToListAsync();
 
-            await Context.Channel.SendMessageAsync(GenerateAutoUpdateListMessage(autoUpdates));
+            await RespondAsync(GenerateAutoUpdateListMessage(autoUpdates));
         }
 
         public string GenerateAutoUpdateListMessage(List<AutoUpdate> autoUpdates) {
@@ -67,17 +67,17 @@ namespace CollaborationBot.Commands {
             }
             
             if (channel == null) {
-                await Context.Channel.SendMessageAsync(Strings.TextChannelNotExist);
+                await RespondAsync(Strings.TextChannelNotExist);
                 return;
             }
 
             try {
                 await _context.AutoUpdates.AddAsync(new AutoUpdate() { ProjectId = project.Id, Cooldown = cooldown, DoPing = doPing, UniqueChannelId = channel.Id });
                 await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.AddAutoUpdateSuccess, projectName, channel.Mention));
+                await RespondAsync(string.Format(Strings.AddAutoUpdateSuccess, projectName, channel.Mention));
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.AddAutoUpdateFail, projectName, channel.Mention));
+                await RespondAsync(string.Format(Strings.AddAutoUpdateFail, projectName, channel.Mention));
             }
         }
         
@@ -99,10 +99,10 @@ namespace CollaborationBot.Commands {
             try {
                 _context.AutoUpdates.Remove(autoUpdate);
                 await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.RemoveAutoUpdateSuccess, projectName, channel.Mention));
+                await RespondAsync(string.Format(Strings.RemoveAutoUpdateSuccess, projectName, channel.Mention));
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.RemoveAutoUpdateFail, projectName, channel.Mention));
+                await RespondAsync(string.Format(Strings.RemoveAutoUpdateFail, projectName, channel.Mention));
             }
         }
 
@@ -125,10 +125,10 @@ namespace CollaborationBot.Commands {
             try {
                 autoUpdate.Cooldown = cooldown;
                 await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateCooldownSuccess, projectName, cooldown));
+                await RespondAsync(string.Format(Strings.AutoUpdateCooldownSuccess, projectName, cooldown));
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateCooldownFail, projectName));
+                await RespondAsync(string.Format(Strings.AutoUpdateCooldownFail, projectName));
             }
         }
         
@@ -151,10 +151,10 @@ namespace CollaborationBot.Commands {
             try {
                 autoUpdate.DoPing = doPing;
                 await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateDoPingSuccess, doPing));
+                await RespondAsync(string.Format(Strings.AutoUpdateDoPingSuccess, doPing));
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateDoPingFail));
+                await RespondAsync(string.Format(Strings.AutoUpdateDoPingFail));
             }
         }
         
@@ -167,16 +167,16 @@ namespace CollaborationBot.Commands {
             }
 
             if (!_fileHandler.ProjectBaseFileExists(Context.Guild, project.Name)) {
-                await Context.Channel.SendMessageAsync(Strings.BaseFileNotExists);
+                await RespondAsync(Strings.BaseFileNotExists);
                 return;
             }
 
             try {
                 await HandleAutoUpdates(project, Context, _context, _fileHandler);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateTriggerSuccess, projectName));
+                await RespondAsync(string.Format(Strings.AutoUpdateTriggerSuccess, projectName));
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateTriggerFail, projectName));
+                await RespondAsync(string.Format(Strings.AutoUpdateTriggerFail, projectName));
             }
         }
 
@@ -221,14 +221,14 @@ namespace CollaborationBot.Commands {
             var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 
             if (guild == null) {
-                await Context.Channel.SendMessageAsync(string.Format(Strings.GuildNotExistsMessage, _appSettings.Prefix));
+                await RespondAsync(string.Format(Strings.GuildNotExistsMessage, _appSettings.Prefix));
                 return null;
             }
 
             var project = await _context.Projects.AsQueryable().SingleOrDefaultAsync(o => o.GuildId == guild.Id && o.Name == projectName);
 
             if (project == null) {
-                await Context.Channel.SendMessageAsync(Strings.ProjectNotExistMessage);
+                await RespondAsync(Strings.ProjectNotExistMessage);
                 return null;
             }
 
@@ -240,7 +240,7 @@ namespace CollaborationBot.Commands {
                 .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueChannelId == channel.Id);
 
             if (autoUpdate == null) {
-                await Context.Channel.SendMessageAsync(string.Format(Strings.AutoUpdateNotExists, project.Name, channel.Mention));
+                await RespondAsync(string.Format(Strings.AutoUpdateNotExists, project.Name, channel.Mention));
                 return null;
             }
 

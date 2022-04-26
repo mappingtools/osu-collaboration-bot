@@ -29,7 +29,7 @@ namespace CollaborationBot.Services {
                 var command = commands.FirstOrDefault(o => string.Equals(o.Name, commandName, StringComparison.OrdinalIgnoreCase));
 
                 if (command == null) {
-                    await context.Channel.SendMessageAsync(string.Format(Strings.CommandNotFound, prefix + commandName));
+                    await RespondAsync(string.Format(Strings.CommandNotFound, prefix + commandName));
                     return;
                 }
 

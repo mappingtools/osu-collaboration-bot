@@ -53,7 +53,7 @@ namespace CollaborationBot.Commands {
 
             parts.Sort();
 
-            await Context.Channel.SendMessageAsync(_resourceService.GeneratePartsListMessage(parts));
+            await RespondAsync(_resourceService.GeneratePartsListMessage(parts));
         }
         
         [SlashCommand("listunclaimed", "Lists all the unclaimed parts of the project")]
@@ -72,7 +72,7 @@ namespace CollaborationBot.Commands {
 
             parts.Sort();
 
-            await Context.Channel.SendMessageAsync(_resourceService.GeneratePartsListMessage(parts));
+            await RespondAsync(_resourceService.GeneratePartsListMessage(parts));
         }
         
         [SlashCommand("add", "Adds a new part to the project")]
@@ -88,7 +88,7 @@ namespace CollaborationBot.Commands {
             }
 
             if (!_inputSanitizer.IsValidName(name)) {
-                await Context.Channel.SendMessageAsync(Strings.IllegalInput);
+                await RespondAsync(Strings.IllegalInput);
                 return;
             }
 
@@ -97,10 +97,10 @@ namespace CollaborationBot.Commands {
                 int? intEnd = end.HasValue ? (int)end.Value.TotalMilliseconds : null;
                 await _context.Parts.AddAsync(new Part { ProjectId = project.Id, Name = name, Start = intStart, End = intEnd, Status = status });
                 await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.AddPartSuccess, name, projectName));
+                await RespondAsync(string.Format(Strings.AddPartSuccess, name, projectName));
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.AddPartFail, name, projectName));
+                await RespondAsync(string.Format(Strings.AddPartFail, name, projectName));
             }
         }
 
@@ -117,7 +117,7 @@ namespace CollaborationBot.Commands {
             }
 
             if (!_inputSanitizer.IsValidName(newName)) {
-                await Context.Channel.SendMessageAsync(Strings.IllegalInput);
+                await RespondAsync(Strings.IllegalInput);
                 return;
             }
 
@@ -125,17 +125,17 @@ namespace CollaborationBot.Commands {
                 .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == name);
 
             if (part == null) {
-                await Context.Channel.SendMessageAsync(string.Format(Strings.PartNotExists, name, projectName));
+                await RespondAsync(string.Format(Strings.PartNotExists, name, projectName));
                 return;
             }
 
             try {
                 part.Name = newName;
                 await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartSuccess));
+                await RespondAsync(string.Format(Strings.EditPartSuccess));
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartFail));
+                await RespondAsync(string.Format(Strings.EditPartFail));
             }
         }
 
@@ -153,17 +153,17 @@ namespace CollaborationBot.Commands {
                 .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == name);
 
             if (part == null) {
-                await Context.Channel.SendMessageAsync(string.Format(Strings.PartNotExists, name, projectName));
+                await RespondAsync(string.Format(Strings.PartNotExists, name, projectName));
                 return;
             }
 
             try {
                 part.Start = start.HasValue ? (int)start.Value.TotalMilliseconds : null;
                 await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartSuccess));
+                await RespondAsync(string.Format(Strings.EditPartSuccess));
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartFail));
+                await RespondAsync(string.Format(Strings.EditPartFail));
             }
         }
         
@@ -181,17 +181,17 @@ namespace CollaborationBot.Commands {
                 .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == name);
 
             if (part == null) {
-                await Context.Channel.SendMessageAsync(string.Format(Strings.PartNotExists, name, projectName));
+                await RespondAsync(string.Format(Strings.PartNotExists, name, projectName));
                 return;
             }
 
             try {
                 part.End = end.HasValue ? (int)end.Value.TotalMilliseconds : null;
                 await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartSuccess));
+                await RespondAsync(string.Format(Strings.EditPartSuccess));
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartFail));
+                await RespondAsync(string.Format(Strings.EditPartFail));
             }
         }
 
@@ -209,17 +209,17 @@ namespace CollaborationBot.Commands {
                 .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == name);
 
             if (part == null) {
-                await Context.Channel.SendMessageAsync(string.Format(Strings.PartNotExists, name, projectName));
+                await RespondAsync(string.Format(Strings.PartNotExists, name, projectName));
                 return;
             }
 
             try {
                 part.Status = status;
                 await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartSuccess));
+                await RespondAsync(string.Format(Strings.EditPartSuccess));
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.EditPartFail));
+                await RespondAsync(string.Format(Strings.EditPartFail));
             }
         }
 
@@ -239,17 +239,17 @@ namespace CollaborationBot.Commands {
                 .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == partName);
 
                 if (part == null) {
-                    await Context.Channel.SendMessageAsync(string.Format(Strings.PartNotExists, partName, projectName));
+                    await RespondAsync(string.Format(Strings.PartNotExists, partName, projectName));
                     return;
                 }
 
                 try {
                     _context.Parts.Remove(part);
                     await _context.SaveChangesAsync();
-                    await Context.Channel.SendMessageAsync(string.Format(Strings.RemovePartSuccess, partName, projectName));
+                    await RespondAsync(string.Format(Strings.RemovePartSuccess, partName, projectName));
                 } catch (Exception e) {
                     logger.Error(e);
-                    await Context.Channel.SendMessageAsync(string.Format(Strings.RemovePartFail, partName, projectName));
+                    await RespondAsync(string.Format(Strings.RemovePartFail, partName, projectName));
                 }
             }
         }
@@ -267,10 +267,10 @@ namespace CollaborationBot.Commands {
             try {
                 _context.Parts.RemoveRange(parts);
                 await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.MultiRemovePartSuccess, parts.Count, projectName));
+                await RespondAsync(string.Format(Strings.MultiRemovePartSuccess, parts.Count, projectName));
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.MultiRemovePartFail, projectName));
+                await RespondAsync(string.Format(Strings.MultiRemovePartFail, projectName));
             }
         }
 
@@ -287,14 +287,14 @@ namespace CollaborationBot.Commands {
             }
 
             if (attachment == null) {
-                await Context.Channel.SendMessageAsync(Strings.NoAttachedFile);
+                await RespondAsync(Strings.NoAttachedFile);
                 return;
             }
 
             string beatmapString = await _fileHandler.DownloadPartSubmit(Context.Guild, projectName, attachment);
 
             if (beatmapString == null) {
-                await Context.Channel.SendMessageAsync(Strings.AttachedFileInvalid);
+                await RespondAsync(Strings.AttachedFileInvalid);
                 return;
             }
 
@@ -305,7 +305,7 @@ namespace CollaborationBot.Commands {
                 var count = bookmarks.Count;
 
                 if (count == 0) {
-                    await Context.Channel.SendMessageAsync(Strings.NoBookmarksFound);
+                    await RespondAsync(Strings.NoBookmarksFound);
                     return;
                 }
 
@@ -339,16 +339,16 @@ namespace CollaborationBot.Commands {
                     }
                 }
             } catch (BeatmapParsingException e) {
-                await Context.Channel.SendMessageAsync(string.Format(Strings.BeatmapParseFail, e.Message));
+                await RespondAsync(string.Format(Strings.BeatmapParseFail, e.Message));
                 return;
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(Strings.PartFromBookmarkFail);
+                await RespondAsync(Strings.PartFromBookmarkFail);
                 return;
             }
 
             if (newParts.Any(o => !_inputSanitizer.IsValidName(o.Name))) {
-                await Context.Channel.SendMessageAsync(Strings.IllegalInput);
+                await RespondAsync(Strings.IllegalInput);
                 return;
             }
 
@@ -360,10 +360,10 @@ namespace CollaborationBot.Commands {
 
                 _context.Parts.AddRange(newParts);
                 await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.PartFromBookmarkSuccess, projectName));
+                await RespondAsync(string.Format(Strings.PartFromBookmarkSuccess, projectName));
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.PartFromBookmarkFail));
+                await RespondAsync(string.Format(Strings.PartFromBookmarkFail));
             }
         }
 
@@ -379,19 +379,19 @@ namespace CollaborationBot.Commands {
             }
 
             if (attachment == null) {
-                await Context.Channel.SendMessageAsync(Strings.NoAttachedFile);
+                await RespondAsync(Strings.NoAttachedFile);
                 return;
             }
 
             var newParts = await _fileHandler.DownloadPartsCSV(attachment, hasHeaders);
 
             if (newParts == null) {
-                await Context.Channel.SendMessageAsync(Strings.CouldNotReadPartCSV);
+                await RespondAsync(Strings.CouldNotReadPartCSV);
                 return;
             }
 
             if (newParts.Any(o => !_inputSanitizer.IsValidName(o.Name))) {
-                await Context.Channel.SendMessageAsync(Strings.IllegalInput);
+                await RespondAsync(Strings.IllegalInput);
                 return;
             }
 
@@ -404,10 +404,10 @@ namespace CollaborationBot.Commands {
                 _context.Parts.AddRange(newParts.Select(o => new Part
                     {ProjectId = project.Id, Name = o.Name, Start = o.Start, End = o.End, Status = o.Status}));
                 await _context.SaveChangesAsync();
-                await Context.Channel.SendMessageAsync(string.Format(Strings.PartFromCSVSuccess, projectName));
+                await RespondAsync(string.Format(Strings.PartFromCSVSuccess, projectName));
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.PartFromCSVFail, projectName));
+                await RespondAsync(string.Format(Strings.PartFromCSVFail, projectName));
             }
         }
 
@@ -448,7 +448,7 @@ namespace CollaborationBot.Commands {
                     string.Format(Strings.PartToCSVSuccess, projectName));
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.PartToCSVFail, projectName));
+                await RespondAsync(string.Format(Strings.PartToCSVFail, projectName));
             }
         }
 
@@ -470,10 +470,10 @@ namespace CollaborationBot.Commands {
 
                 parts.Sort();
 
-                await Context.Channel.SendMessageAsync(_resourceService.GeneratePartsListDescription(parts, includeMappers, includePartNames));
+                await RespondAsync(_resourceService.GeneratePartsListDescription(parts, includeMappers, includePartNames));
             } catch (Exception e) {
                 logger.Error(e);
-                await Context.Channel.SendMessageAsync(string.Format(Strings.BackendErrorMessage, projectName));
+                await RespondAsync(string.Format(Strings.BackendErrorMessage, projectName));
             }
         }
 
@@ -481,14 +481,14 @@ namespace CollaborationBot.Commands {
             var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 
             if (guild == null) {
-                await Context.Channel.SendMessageAsync(string.Format(Strings.GuildNotExistsMessage, _appSettings.Prefix));
+                await RespondAsync(string.Format(Strings.GuildNotExistsMessage, _appSettings.Prefix));
                 return null;
             }
 
             var project = await _context.Projects.AsQueryable().SingleOrDefaultAsync(o => o.GuildId == guild.Id && o.Name == projectName);
 
             if (project == null) {
-                await Context.Channel.SendMessageAsync(Strings.ProjectNotExistMessage);
+                await RespondAsync(Strings.ProjectNotExistMessage);
                 return null;
             }
 
