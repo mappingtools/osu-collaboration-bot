@@ -438,9 +438,9 @@ namespace CollaborationBot.Commands {
                     MapperNames = includeMappers ? string.Join(";", o.Assignments.Select(a => _resourceService.MemberAliasOrName(a.Member))) : null
                 };
 
-                using var dataStream = new MemoryStream();
+                await using var dataStream = new MemoryStream();
                 var writer = new StreamWriter(dataStream);
-                using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+                await using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
                 await csv.WriteRecordsAsync(parts.Select(selector));
 
                 await writer.FlushAsync();
