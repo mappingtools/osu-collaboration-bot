@@ -21,6 +21,7 @@ using Mapping_Tools_Core.BeatmapHelper.Contexts;
 using Mapping_Tools_Core.MathUtil;
 using System.IO.Compression;
 using System.Net;
+using CollaborationBot.Autocomplete;
 using Mapping_Tools_Core.BeatmapHelper;
 
 namespace CollaborationBot.Commands {
@@ -108,7 +109,7 @@ namespace CollaborationBot.Commands {
         #region files
         
         [SlashCommand("submit", "Submits a part of beatmap to the project")]
-        public async Task SubmitPart([RequireProjectMember][Summary("The project")]string projectName,
+        public async Task SubmitPart([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("The project")]string projectName,
             [Summary("beatmap", "The part to submit as a .osu file")]Attachment attachment,
             [Summary("part", "The part name to submit to (optional)")]string partName=null) {
             // Find out which parts this member is allowed to edit in the project
