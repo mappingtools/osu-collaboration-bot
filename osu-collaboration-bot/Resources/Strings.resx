@@ -639,4 +639,7 @@ Replace the part with the [square brackets] with the relevant value and KEEP the
   <data name="UserNotManagerMessage" xml:space="preserve">
     <value>This user is not a manager of project `{0}`.</value>
   </data>
+  <data name="CommandParameterNotExist" xml:space="preserve">
+    <value>Command has no parameter named `{0}`.</value>
+  </data>
 </root>

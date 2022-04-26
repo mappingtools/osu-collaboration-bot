@@ -535,6 +535,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Command has no parameter named `{0}`..
+        /// </summary>
+        public static string CommandParameterNotExist {
+            get {
+                return ResourceManager.GetString("CommandParameterNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0}, you are not authorized to use this command..
         /// </summary>
         public static string CommandUnauthorized {

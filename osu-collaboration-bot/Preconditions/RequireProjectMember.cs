@@ -1,36 +1,36 @@
-﻿using System;
+﻿using CollaborationBot.Entities;
+using Discord;
+using Discord.Interactions;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Discord.Commands;
-using Discord;
-using CollaborationBot.Entities;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CollaborationBot.Preconditions {
     public class RequireProjectMember : CustomPreconditionBase {
-        private const string PROJECT_PARAM_NAME = "projectName";
-
-        public override async Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context, CommandInfo command,
+        public override Task<PreconditionResult> CheckRequirementsAsync(IInteractionContext context, IParameterInfo parameterInfo, object value,
             IServiceProvider services) {
-            if (context.User is not IGuildUser guildUser) return ErrorResult(context.User, services);
+            if (context.User is not IGuildUser guildUser)
+                return Task.FromResult(ErrorResult(context.User, services));
+
+            if (value is not string projectName)
+                return Task.FromResult(PreconditionResult.FromError("Expected project name to be string type."));
 
             try {
-                string projectName = (string) await GetParameter(PROJECT_PARAM_NAME, context, command, services);
-
                 var dbContext = services.GetService<OsuCollabContext>();
 
                 // Check if the membership exists
                 if (dbContext.Members.Any(o =>
-                o.Project.Name == projectName &&
-                o.Project.Guild.UniqueGuildId == context.Guild.Id &&
-                o.UniqueMemberId == guildUser.Id)) {
-                    return PreconditionResult.FromSuccess();
+                    o.Project.Name == projectName &&
+                    o.Project.Guild.UniqueGuildId == context.Guild.Id &&
+                    o.UniqueMemberId == guildUser.Id)) {
+                    return Task.FromResult(PreconditionResult.FromSuccess());
                 }
-            } catch(Exception e) {
-                return PreconditionResult.FromError(e);
+            } catch (Exception e) {
+                return Task.FromResult(PreconditionResult.FromError(e));
             }
 
-            return ErrorResult(guildUser, services);
+            return Task.FromResult(ErrorResult(guildUser, services));
         }
     }
 }

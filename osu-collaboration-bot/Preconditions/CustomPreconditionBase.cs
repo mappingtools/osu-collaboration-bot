@@ -1,48 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
-using Discord;
-using Discord.Commands;
+﻿using CollaborationBot.Resources;
 using CollaborationBot.Services;
-using CollaborationBot.Entities;
-using Microsoft.Extensions.DependencyInjection;
+using Discord;
+using Discord.Interactions;
+using System;
 
 namespace CollaborationBot.Preconditions {
-    public abstract class CustomPreconditionBase : PreconditionAttribute {
+    public abstract class CustomPreconditionBase : ParameterPreconditionAttribute {
         protected PreconditionResult ErrorResult(IUser user, IServiceProvider services) {
             var resources = services.GetService(typeof(ResourceService)) as ResourceService;
             return PreconditionResult.FromError(resources.GenerateUnauthorizedMessage(user));
-        }
-
-        protected async Task<object> GetParameter(string paramName, ICommandContext context, CommandInfo command, IServiceProvider services) {
-            int projectParamPos = -1;
-            for (int i = 0; i < command.Parameters.Count; i++) {
-                var param = command.Parameters[i];
-                if (param.Name == paramName) {
-                    projectParamPos = i;
-                    break;
-                }
-            }
-
-            if (projectParamPos == -1) {
-                throw new ArgumentException($"Command has no string parameter named '{paramName}'.", nameof(paramName));
-            }
-
-            var appSettings = services.GetService<AppSettings>();
-            var prefixLength = command.Module.Group == null ? 
-                appSettings.Prefix.Length + command.Name.Length + 1 : 
-                appSettings.Prefix.Length + command.Module.Group.Length + command.Name.Length + 2;
-
-            var parseResult = await command.ParseAsync(
-                context,
-                prefixLength,
-                SearchResult.FromSuccess(context.Message.Content, Array.Empty<CommandMatch>())
-                );
-
-            if (!parseResult.IsSuccess) {
-                throw new Exception(parseResult.ErrorReason);
-            }
-
-            return parseResult.ArgValues[projectParamPos].BestMatch;
         }
     }
 }
