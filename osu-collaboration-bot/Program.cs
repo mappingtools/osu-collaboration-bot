@@ -111,39 +111,26 @@ namespace CollaborationBot {
             var remindingTime = TimeSpan.FromDays(2);
 
             // Query is grouped by project so multiple reminders in one channel can be combined to one message
-            var assignmentsToRemind = (await _context.Assignments.AsQueryable().Where(
+            var assignmentsToRemind = await _context.Assignments.AsQueryable().Where(
                 o => o.Deadline.HasValue && o.Deadline - remindingTime < DateTime.UtcNow &&
                      (!o.LastReminder.HasValue || o.LastReminder + remindingTime < DateTime.UtcNow) &&
                      o.Part.Project.DoReminders && o.Part.Project.MainChannelId.HasValue)
                 .Include(o => o.Part).ThenInclude(p => p.Project)
                 .Include(o => o.Member)
-                .ToListAsync()).GroupBy(o => o.Part.Project).ToList();
+                .ToListAsync();
 
             logger.Debug("Found {count} assignments to remind.", assignmentsToRemind.SelectMany(o => o).Count());
 
-            foreach (var assignmentGroup in assignmentsToRemind) {
-                ulong channelId = (ulong) assignmentGroup.Key.MainChannelId!.Value;
-                var channel = _client.GetChannel(channelId);
-                var users = assignmentGroup
-                    .Select(o => _client.GetUser((ulong) o.Member.UniqueMemberId))
-                    .Where(o => o is not null).Distinct().ToList();
+            foreach (var assignment in assignmentsToRemind) {
+                var user = _client.GetUser((ulong) assignment.Member.UniqueMemberId);
+
+                if (user != null) {
+                    var dmChannel = await user.CreateDMChannelAsync();
+                    await dmChannel.SendMessageAsync(string.Format(Strings.DeadlineReminder, user.Mention,
+                        assignment.Part.Name, assignment.Part.Project.Name));
+                }
                 
-                if (channel is not ITextChannel textChannel || users.Count == 0) continue;
-
-                var mentions = string.Join(' ', users.Select(o => o.Mention));
-                var parts = assignmentGroup.Select(o => o.Part).Distinct().ToList();
-                var projectName = assignmentGroup.Key.Name;
-
-                if (parts.Count != 1) {
-                    await textChannel.SendMessageAsync(string.Format(Strings.DeadlineReminderCombined, mentions, projectName));
-                } else {
-                    await textChannel.SendMessageAsync(string.Format(Strings.DeadlineReminder, mentions,
-                        parts.First().Name, projectName));
-                }
-
-                foreach (var assignment in assignmentGroup) {
-                    assignment.LastReminder = DateTime.UtcNow;
-                }
+                assignment.LastReminder = DateTime.UtcNow;
             }
 
             // Check passed deadlines
@@ -162,6 +149,10 @@ namespace CollaborationBot {
                 
                     if (channel is ITextChannel textChannel && user != null) {
                         await textChannel.SendMessageAsync(string.Format(Strings.AssignmentDeadlinePassed, user.Mention,
+                            assignment.Part.Name, assignment.Part.Project.Name));
+                    } else if (user != null) {
+                        var dmChannel = await user.CreateDMChannelAsync();
+                        await dmChannel.SendMessageAsync(string.Format(Strings.AssignmentDeadlinePassed, user.Mention,
                             assignment.Part.Name, assignment.Part.Project.Name));
                     }
                 }
