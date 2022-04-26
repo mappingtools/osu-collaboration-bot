@@ -3,7 +3,6 @@ using CollaborationBot.Resources;
 using CollaborationBot.Services;
 using Discord;
 using Discord.Interactions;
-using Microsoft.EntityFrameworkCore;
 using NLog;
 using System;
 using System.Linq;
@@ -18,16 +17,14 @@ namespace CollaborationBot.Commands {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
-        private readonly UserHelpService _userHelpService;
         private readonly AppSettings _appSettings;
 
         public GuildModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService, UserHelpService userHelpService,
+            ResourceService resourceService,
             AppSettings appSettings) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
-            _userHelpService = userHelpService;
             _appSettings = appSettings;
         }
 

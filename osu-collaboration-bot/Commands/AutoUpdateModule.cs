@@ -2,7 +2,6 @@
 using CollaborationBot.Resources;
 using CollaborationBot.Services;
 using Discord.Interactions;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;
 using Discord;
@@ -19,16 +18,14 @@ namespace CollaborationBot.Commands {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
-        private readonly UserHelpService _userHelpService;
         private readonly AppSettings _appSettings;
 
         public AutoUpdateModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService, UserHelpService userHelpService,
+            ResourceService resourceService,
             AppSettings appSettings) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
-            _userHelpService = userHelpService;
             _appSettings = appSettings;
         }
         

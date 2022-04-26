@@ -24,17 +24,15 @@ namespace CollaborationBot.Commands {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
-        private readonly UserHelpService _userHelpService;
         private readonly InputSanitizingService _inputSanitizer;
         private readonly AppSettings _appSettings;
 
         public PartModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService, UserHelpService userHelpService, InputSanitizingService inputSanitizingService,
+            ResourceService resourceService, InputSanitizingService inputSanitizingService,
             AppSettings appSettings) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
-            _userHelpService = userHelpService;
             _inputSanitizer = inputSanitizingService;
             _appSettings = appSettings;
         }
