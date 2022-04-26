@@ -10,6 +10,7 @@ using CollaborationBot.Preconditions;
 using System;
 using NLog;
 using System.Collections.Generic;
+using CollaborationBot.Autocomplete;
 
 namespace CollaborationBot.Commands {
     [Group("asn", "Everything about assignments")]
@@ -32,7 +33,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("list", "Lists all the assignments in the project")]
-        public async Task List([RequireProjectMember][Summary("The project")]string projectName) {
+        public async Task List([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -51,7 +52,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("add", "Adds one or more assignments")]
-        public async Task Add([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task Add([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member to assign to")]IGuildUser user,
             [Summary("deadline", "The deadline for the assignment (can be null)")]DateTime? deadline = null, 
             [Summary("parts", "The parts to assign to the member")]params string[] partNames) {
@@ -90,7 +91,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("remove", "Removes one or more assignments")]
-        public async Task Remove([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task Remove([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member to remove assignments from")]IUser user,
             [Summary("parts", "The parts to unassign from the member")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);
@@ -118,7 +119,7 @@ namespace CollaborationBot.Commands {
         }
 
         [SlashCommand("deadline", "Changes the deadline of the assignment")]
-        public async Task Deadline([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task Deadline([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("part", "The part of the assignment")]string partName,
             [Summary("user", "The member of the assignment")]IGuildUser user,
             [Summary("deadline", "The new deadline (can be null)")]DateTime? deadline) {
@@ -148,7 +149,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("claim", "Claims one or more parts and assigns them to you")]
-        public async Task Claim([RequireProjectMember][Summary("project", "The project")]string projectName,
+        public async Task Claim([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("parts", "The parts to claim")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
@@ -219,13 +220,13 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("unclaim", "Unclaims one or more parts and unassigns them")]
-        public async Task Unclaim([RequireProjectMember][Summary("project", "The project")]string projectName,
+        public async Task Unclaim([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("parts", "The parts to unclaim")]params string[] partNames) {
             await Remove(projectName, Context.User, partNames);
         }
         
         [SlashCommand("done", "Marks one or more parts as done")]
-        public async Task Done([RequireProjectMember][Summary("project", "The project")]string projectName,
+        public async Task Done([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("parts", "The parts to complete")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
@@ -271,7 +272,7 @@ namespace CollaborationBot.Commands {
         }
 
         [SlashCommand("draintimes", "Calculates the total draintime assigned to each participant.")]
-        public async Task Draintimes([RequireProjectMember][Summary("project", "The project")] string projectName) {
+        public async Task Draintimes([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {

@@ -109,7 +109,7 @@ namespace CollaborationBot.Commands {
         #region files
         
         [SlashCommand("submit", "Submits a part of beatmap to the project")]
-        public async Task SubmitPart([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("The project")]string projectName,
+        public async Task SubmitPart([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("beatmap", "The part to submit as a .osu file")]Attachment attachment,
             [Summary("part", "The part name to submit to (optional)")]string partName=null) {
             // Find out which parts this member is allowed to edit in the project
@@ -259,7 +259,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("setbasefile", "Replaces the current beatmap state of the project with attached .osu file")]
-        public async Task UploadBaseFile([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task UploadBaseFile([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("beatmap", "The new base file as a .osu file.")]Attachment attachment) {
             if (attachment == null) {
                 await Context.Channel.SendMessageAsync(Strings.NoAttachedFile);
@@ -290,7 +290,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("getbasefile", "Gets the current beatmap state of the project")]
-        public async Task GetBaseFile([RequireProjectMember][Summary("project", "The project")]string projectName) {
+        public async Task GetBaseFile([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             if (!_fileHandler.ProjectBaseFileExists(Context.Guild, projectName)) {
                 await Context.Channel.SendMessageAsync(Strings.BaseFileNotExists);
                 return;
@@ -363,7 +363,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("delete", "Deletes a project")]
-        public async Task Delete([RequireProjectOwner][Summary("project", "The project")]string projectName) {
+        public async Task Delete([RequireProjectOwner][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -416,7 +416,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("setup", "Automatically sets-up the project, complete with roles, channels, and update notifications")]
-        public async Task Setup([RequireProjectOwner][Summary("project", "The project")]string projectName) {
+        public async Task Setup([RequireProjectOwner][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             // Make channel, role, and permissions
             // Automatic channels and roles will be marked for deletion on project deletion unless states otherwise
 
@@ -597,7 +597,7 @@ namespace CollaborationBot.Commands {
         #region members
 
         [SlashCommand("members", "Lists all members of the project")]
-        public async Task Members([Summary("project", "The project")]string projectName) {
+        public async Task Members([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -680,7 +680,7 @@ namespace CollaborationBot.Commands {
         }
 
         [SlashCommand("leave", "Lets you leave the project")]
-        public async Task LeaveProject([Summary("project", "The project")]string projectName) {
+        public async Task LeaveProject([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -715,7 +715,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("add", "Adds a new member to the project")]
-        public async Task AddMember([RequireProjectManager][Summary("project", "The project")]string projectName, 
+        public async Task AddMember([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName, 
             [Summary("The user to add")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
@@ -742,7 +742,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("remove", "Removes a member from the project")]
-        public async Task RemoveMember([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task RemoveMember([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The user to remove")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
@@ -778,7 +778,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("promote", "Promotes a member to a manager of the project")]
-        public async Task AddManager([RequireProjectOwner][Summary("project", "The project")]string projectName,
+        public async Task AddManager([RequireProjectOwner][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The user to promote")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
@@ -819,7 +819,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("demote", "Demotes a manager to a regular member of the project")]
-        public async Task RemoveManager([RequireProjectOwner][Summary("project", "The project")]string projectName,
+        public async Task RemoveManager([RequireProjectOwner][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The user to demote")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
@@ -862,7 +862,7 @@ namespace CollaborationBot.Commands {
         // Revoked regular access since this can potentially be abused to create infinite projects by passing new projects to random people
         [RequireUserPermission(GuildPermission.Administrator)]
         [SlashCommand("setowner", "Changes the owner of the project")]
-        public async Task SetOwner([Summary("project", "The project")]string projectName,
+        public async Task SetOwner([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The new owner")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
@@ -905,13 +905,13 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("alias", "Changes your alias in the project")]
-        public async Task Alias([RequireProjectMember][Summary("project", "The project")]string projectName,
+        public async Task Alias([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("alias", "The new alias")]string alias) {
             await Alias(projectName, Context.User, alias);
         }
         
         [SlashCommand("alias", "Changes the alias of a member of the project")]
-        public async Task Alias([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task Alias([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member")]IUser user,
             [Summary("alias", "The new alias")]string alias) {
             var project = await GetProjectAsync(projectName);
@@ -945,13 +945,13 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("tags", "Changes your tags in the project")]
-        public async Task Tags([RequireProjectMember][Summary("project", "The project")]string projectName,
+        public async Task Tags([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("tags", "The new tags")]string tags) {
             await Tags(projectName, Context.User, tags);
         }
         
         [SlashCommand("tags", "Changes the tags of a member of the project")]
-        public async Task Tags([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task Tags([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member")]IUser user,
             [Summary("tags", "The new tags")]params string[] tags) {
             var project = await GetProjectAsync(projectName);
@@ -987,7 +987,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("tags", "Gets all the tags of the project")]
-        public async Task Tags([RequireProjectManager][Summary("project", "The project")]string projectName) {
+        public async Task Tags([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -1010,7 +1010,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("id", "Changes your osu! profile ID in the project")]
-        public async Task Id([RequireProjectMember][Summary("project", "The project")] string projectName,
+        public async Task Id([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("id", "The new ID")] string id) {
             int slashIndex = id.LastIndexOf('/');
             ulong id2;
@@ -1022,13 +1022,13 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("id", "Changes your osu! profile ID in the project")]
-        public async Task Id([RequireProjectMember][Summary("project", "The project")] string projectName,
+        public async Task Id([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("id", "The new ID")] ulong id) {
             await Id(projectName, Context.User, id);
         }
         
         [SlashCommand("id", "Changes the osu! profile ID of a member of the project")]
-        public async Task Id([RequireProjectManager][Summary("project", "The project")] string projectName,
+        public async Task Id([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("user", "The member")] IUser user,
             [Summary("id", "The new ID")] ulong id) {
             var project = await GetProjectAsync(projectName);
@@ -1057,7 +1057,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("priority", "Changes the priority of a member of the project")]
-        public async Task Priority([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task Priority([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member")]IUser user,
             [Summary("priority", "The new priority")]int? priority) {
             var project = await GetProjectAsync(projectName);
@@ -1085,7 +1085,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("generatepriorities", "Automatically generates priorities for all members of the project based on total number of days they've been on the server")]
-        public async Task GeneratePriorities([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task GeneratePriorities([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("timeweight", "The priority value of one day")]int timeWeight = 1,
             [Summary("replace", "Whether to replace all the existing priority values")]bool replace = false) {
             var project = await GetProjectAsync(projectName);
@@ -1126,7 +1126,7 @@ namespace CollaborationBot.Commands {
         // Using admin permissions here to prevent someone assigning @everyone as the project role
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [SlashCommand("role", "Changes the member role of a project and optionally assigns the new role to all members")]
-        public async Task Role([Summary("project", "The project")]string projectName,
+        public async Task Role([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("role", "The new member role")]IRole role,
             [Summary("reassignroles", "Whether to revoke the old role and grant the new role to all members")]bool reassignRoles = true) {
             var project = await GetProjectAsync(projectName);
@@ -1166,7 +1166,7 @@ namespace CollaborationBot.Commands {
         // Using admin permissions here to prevent someone assigning @everyone as the project role
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [SlashCommand("managerrole", "Changes the manager role of the project and optionally assigns the new role to all managers")]
-        public async Task ManagerRole([Summary("project", "The project")]string projectName,
+        public async Task ManagerRole([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("role", "The new manager role")]IRole role,
             [Summary("reassignroles", "Whether to revoke the old manager role and assign the new manager role to all managers")]bool reassignRoles = true) {
             var project = await GetProjectAsync(projectName);
@@ -1205,7 +1205,7 @@ namespace CollaborationBot.Commands {
 
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [SlashCommand("rolecolor", "Changes the color of the roles of the project")]
-        public async Task RoleColor([RequireProjectManager][Summary("project", "The project")] string projectName,
+        public async Task RoleColor([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("color", "The new color as Hex code")] Color color) {
             var project = await GetProjectAsync(projectName);
 
@@ -1267,7 +1267,7 @@ namespace CollaborationBot.Commands {
         }
 
         [SlashCommand("description", "Changes the description of the project")]
-        public async Task Description([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task Description([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("description", "The new description")]string description) {
             var project = await GetProjectAsync(projectName);
 
@@ -1292,7 +1292,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("status", "Changes the status of the project")]
-        public async Task Status([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task Status([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("status", "The new status")]ProjectStatus status) {
             var project = await GetProjectAsync(projectName);
 
@@ -1312,7 +1312,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("options", "Configures several boolean project options")]
-        public async Task Options([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task Options([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("selfassignmentallowed", "Whether members may claim parts on their own")]bool? selfAssignmentAllowed = null,
             [Summary("prioritypicking", "Whether priority picking is enabled")]bool? priorityPicking = null,
             [Summary("partrestrictedupload", "Whether to restrict part submission to just the assigned parts")]bool? partRestrictedUpload = null,
@@ -1352,7 +1352,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("maxassignments", "Changes the maximum number of allowed assignments for members of the project")]
-        public async Task MaxAssignments([RequireProjectManager][Summary("project", "The project")]string projectName, 
+        public async Task MaxAssignments([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName, 
             [Summary("maxassignments", "The new maximum number of allowed assignments (can be null)")]int? maxAssignments) {
             var project = await GetProjectAsync(projectName);
 
@@ -1372,7 +1372,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("assignmentlifetime", "Changes the default duration of assignments of the project")]
-        public async Task AssignmentLifetime([RequireProjectManager][Summary("project", "The project")]string projectName, 
+        public async Task AssignmentLifetime([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName, 
             [Summary("lifetime", "The new duration of assignments (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? lifetime) {
             var project = await GetProjectAsync(projectName);
 
@@ -1393,7 +1393,7 @@ namespace CollaborationBot.Commands {
         
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [SlashCommand("mainchannel", "Changes the main channel of the project")]
-        public async Task MainChannel([Summary("project", "The project")]string projectName,
+        public async Task MainChannel([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("channel", "The new main channel")]ITextChannel channel) {
             var project = await GetProjectAsync(projectName);
 
@@ -1414,7 +1414,7 @@ namespace CollaborationBot.Commands {
         
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [SlashCommand("infochannel", "Changes the info channel of the project")]
-        public async Task InfoChannel([Summary("project", "The project")]string projectName,
+        public async Task InfoChannel([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("channel", "The new info channel")]ITextChannel channel) {
             var project = await GetProjectAsync(projectName);
 
@@ -1435,7 +1435,7 @@ namespace CollaborationBot.Commands {
         
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [SlashCommand("deletioncleanup", "Changes whether to remove the roles and channels assigned to the project upon project deletion")]
-        public async Task ChangeAutoCleanup([Summary("project", "The project")]string projectName,
+        public async Task ChangeAutoCleanup([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("cleanup", "Whether to do cleanup")]bool cleanup) {
             var project = await GetProjectAsync(projectName);
 

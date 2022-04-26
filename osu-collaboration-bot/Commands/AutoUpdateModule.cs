@@ -9,6 +9,7 @@ using Discord;
 using CollaborationBot.Preconditions;
 using System;
 using System.Collections.Generic;
+using CollaborationBot.Autocomplete;
 using NLog;
 
 namespace CollaborationBot.Commands {
@@ -32,7 +33,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("list", "Lists all the update notifications attached to the project")]
-        public async Task List([RequireProjectManager][Summary("project", "The project")]string projectName) {
+        public async Task List([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -58,7 +59,7 @@ namespace CollaborationBot.Commands {
         }
 
         [SlashCommand("add", "Adds a new update notification to the project")]
-        public async Task Add([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task Add([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("channel", "The channel to post the notification in")]ITextChannel channel,
             [Summary("cooldown", "The cooldown on the notification (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? cooldown = null,
             [Summary("mentions", "Whether to ping members on an update notification")]bool doPing = false) {
@@ -84,7 +85,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("remove", "Removes an update notification from the project")]
-        public async Task Remove([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task Remove([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("channel", "The channel the notification is in")]ITextChannel channel) {
             var project = await GetProjectAsync(projectName);
 
@@ -109,7 +110,7 @@ namespace CollaborationBot.Commands {
         }
 
         [SlashCommand("cooldown", "Changes the cooldown of the update notification")]
-        public async Task Cooldown([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task Cooldown([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("channel", "The channel the notification is in")]ITextChannel channel,
             [Summary("cooldown", "The new cooldown (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? cooldown) {
             var project = await GetProjectAsync(projectName);
@@ -135,7 +136,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("mentions", "Changes whether the update notification pings all members")]
-        public async Task DoPing([RequireProjectManager][Summary("project", "The project")]string projectName,
+        public async Task DoPing([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("channel", "The channel the notification is in")]ITextChannel channel,
             [Summary("mentions", "Whether to ping all members in the update notification")]bool doPing) {
             var project = await GetProjectAsync(projectName);
@@ -161,7 +162,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("trigger", "Triggers all update notifications of the project")]
-        public async Task Trigger([RequireProjectManager][Summary("project", "The project")]string projectName) {
+        public async Task Trigger([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
