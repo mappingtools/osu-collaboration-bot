@@ -30,11 +30,9 @@ namespace CollaborationBot.Commands {
             _userHelpService = userHelpService;
             _appSettings = appSettings;
         }
-
-        [RequireProjectMember(Group = "Permission")]
-        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        
         [SlashCommand("list", "Lists all the assignments in the project")]
-        public async Task List([Summary("The project")]string projectName) {
+        public async Task List([RequireProjectMember][Summary("The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -51,11 +49,9 @@ namespace CollaborationBot.Commands {
 
             await Context.Channel.SendMessageAsync(_resourceService.GenerateAssignmentListMessage(assignments));
         }
-
-        [RequireProjectManager(Group = "Permission")]
-        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        
         [SlashCommand("add", "Adds one or more assignments")]
-        public async Task Add([Summary("project", "The project")]string projectName,
+        public async Task Add([RequireProjectManager][Summary("project", "The project")]string projectName,
             [Summary("user", "The member to assign to")]IGuildUser user,
             [Summary("deadline", "The deadline for the assignment (can be null)")]DateTime? deadline = null, 
             [Summary("parts", "The parts to assign to the member")]params string[] partNames) {
@@ -92,11 +88,9 @@ namespace CollaborationBot.Commands {
                 }
             }
         }
-
-        [RequireProjectManager(Group = "Permission")]
-        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        
         [SlashCommand("remove", "Removes one or more assignments")]
-        public async Task Remove([Summary("project", "The project")]string projectName,
+        public async Task Remove([RequireProjectManager][Summary("project", "The project")]string projectName,
             [Summary("user", "The member to remove assignments from")]IUser user,
             [Summary("parts", "The parts to unassign from the member")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);
@@ -123,10 +117,8 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        [RequireProjectManager(Group = "Permission")]
-        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [SlashCommand("deadline", "Changes the deadline of the assignment")]
-        public async Task Deadline([Summary("project", "The project")]string projectName,
+        public async Task Deadline([RequireProjectManager][Summary("project", "The project")]string projectName,
             [Summary("part", "The part of the assignment")]string partName,
             [Summary("user", "The member of the assignment")]IGuildUser user,
             [Summary("deadline", "The new deadline (can be null)")]DateTime? deadline) {
@@ -154,11 +146,9 @@ namespace CollaborationBot.Commands {
                 await Context.Channel.SendMessageAsync(string.Format(Strings.MoveDeadlineFail, deadline));
             }
         }
-
-        [RequireProjectMember(Group = "Permission")]
-        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        
         [SlashCommand("claim", "Claims one or more parts and assigns them to you")]
-        public async Task Claim([Summary("project", "The project")]string projectName,
+        public async Task Claim([RequireProjectMember][Summary("project", "The project")]string projectName,
             [Summary("parts", "The parts to claim")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
@@ -227,19 +217,15 @@ namespace CollaborationBot.Commands {
                 }
             }
         }
-
-        [RequireProjectMember(Group = "Permission")]
-        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        
         [SlashCommand("unclaim", "Unclaims one or more parts and unassigns them")]
-        public async Task Unclaim([Summary("project", "The project")]string projectName,
+        public async Task Unclaim([RequireProjectMember][Summary("project", "The project")]string projectName,
             [Summary("parts", "The parts to unclaim")]params string[] partNames) {
             await Remove(projectName, Context.User, partNames);
         }
-
-        [RequireProjectMember(Group = "Permission")]
-        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
+        
         [SlashCommand("done", "Marks one or more parts as done")]
-        public async Task Done([Summary("project", "The project")]string projectName,
+        public async Task Done([RequireProjectMember][Summary("project", "The project")]string projectName,
             [Summary("parts", "The parts to complete")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
@@ -284,10 +270,8 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        [RequireProjectMember(Group = "Permission")]
-        [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
         [SlashCommand("draintimes", "Calculates the total draintime assigned to each participant.")]
-        public async Task Draintimes([Summary("project", "The project")] string projectName) {
+        public async Task Draintimes([RequireProjectMember][Summary("project", "The project")] string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
