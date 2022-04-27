@@ -78,8 +78,8 @@ namespace CollaborationBot.Commands {
         [SlashCommand("add", "Adds a new part to the project")]
         public async Task Add([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("name", "The name of the part")]string name,
-            [Summary("start", "The start time (can be null)")]TimeSpan? start,
-            [Summary("end", "The end time (can be null)")]TimeSpan? end,
+            [Summary("start", "The start time (can be null)")]TimeSpan? start = null,
+            [Summary("end", "The end time (can be null)")]TimeSpan? end = null,
             [Summary("status", "The status of the part")]PartStatus status = PartStatus.NotFinished) {
             var project = await GetProjectAsync(projectName);
 
@@ -142,7 +142,7 @@ namespace CollaborationBot.Commands {
         [SlashCommand("start", "Changes the start time of the part")]
         public async Task Start([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("part", "The part")]string name, 
-            [Summary("start", "The new start time (can be null)")]TimeSpan? start) {
+            [Summary("start", "The new start time (can be null)")]TimeSpan? start = null) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -170,7 +170,7 @@ namespace CollaborationBot.Commands {
         [SlashCommand("end", "Changes the end time of the part")]
         public async Task End([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("part", "The part")]string name,
-            [Summary("end", "The new end time (can be null)")]TimeSpan? end) {
+            [Summary("end", "The new end time (can be null)")]TimeSpan? end = null) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
