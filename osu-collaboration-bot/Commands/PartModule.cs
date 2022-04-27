@@ -225,7 +225,7 @@ namespace CollaborationBot.Commands {
 
         #endregion
 
-        //[SlashCommand("remove", "Removes one or more parts from the project")]
+        [SlashCommand("remove", "Removes one or more parts from the project")]
         public async Task Remove([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("parts", "The parts to remove")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);

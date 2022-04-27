@@ -47,11 +47,11 @@ namespace CollaborationBot.Commands {
             await RespondAsync(_resourceService.GenerateAssignmentListMessage(assignments));
         }
         
-        //[SlashCommand("add", "Adds one or more assignments")]
+        [SlashCommand("add", "Adds one or more assignments")]
         public async Task Add([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
-            [Summary("user", "The member to assign to")]IGuildUser user,
-            [Summary("deadline", "The deadline for the assignment (can be null)")]DateTime? deadline = null, 
-            [Summary("parts", "The parts to assign to the member")]params string[] partNames) {
+            [Summary("user", "The member to assign to")]IGuildUser user, 
+            [Summary("parts", "The parts to assign to the member")]string[] partNames,
+            [Summary("deadline", "The deadline for the assignment (can be null)")] DateTime? deadline = null) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -86,7 +86,7 @@ namespace CollaborationBot.Commands {
             }
         }
         
-        //[SlashCommand("remove", "Removes one or more assignments")]
+        [SlashCommand("remove", "Removes one or more assignments")]
         public async Task Remove([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member to remove assignments from")]IUser user,
             [Summary("parts", "The parts to unassign from the member")]params string[] partNames) {

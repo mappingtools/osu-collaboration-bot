@@ -985,7 +985,7 @@ namespace CollaborationBot.Commands {
             }
 
             [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-            //[SlashCommand("rolecolor", "Changes the color of the roles of the project")]
+            [SlashCommand("rolecolor", "Changes the color of the roles of the project")]
             public async Task RoleColor([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
                 [Summary("color", "The new color as Hex code")] Color color) {
                 var project = await GetProjectAsync(projectName);

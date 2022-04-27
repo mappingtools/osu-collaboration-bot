@@ -468,7 +468,7 @@ namespace CollaborationBot.Commands {
 
         #region assignments
 
-        //[SlashCommand("claim", "Claims one or more parts and assigns them to you")]
+        [SlashCommand("claim", "Claims one or more parts and assigns them to you")]
         public async Task Claim([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("parts", "The parts to claim")] params string[] partNames) {
             var project = await GetProjectAsync(projectName);
@@ -560,7 +560,7 @@ namespace CollaborationBot.Commands {
             return true;
         }
 
-        //[SlashCommand("unclaim", "Unclaims one or more parts and unassigns them")]
+        [SlashCommand("unclaim", "Unclaims one or more parts and unassigns them")]
         public async Task Unclaim([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("parts", "The parts to unclaim")] params string[] partNames) {
             var project = await GetProjectAsync(projectName);
@@ -587,7 +587,7 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        //[SlashCommand("done", "Marks one or more parts as done")]
+        [SlashCommand("done", "Marks one or more parts as done")]
         public async Task Done([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("parts", "The parts to complete")] params string[] partNames) {
             var project = await GetProjectAsync(projectName);
