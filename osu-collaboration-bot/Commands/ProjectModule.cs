@@ -717,7 +717,7 @@ namespace CollaborationBot.Commands {
         
         [SlashCommand("add", "Adds a new member to the project")]
         public async Task AddMember([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName, 
-            [Summary("The user to add")]IGuildUser user) {
+            [Summary("user", "The user to add")]IGuildUser user) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -911,7 +911,7 @@ namespace CollaborationBot.Commands {
             await Alias(projectName, Context.User, alias);
         }
         
-        [SlashCommand("alias", "Changes the alias of a member of the project")]
+        [SlashCommand("alias2", "Changes the alias of a member of the project")]
         public async Task Alias([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member")]IUser user,
             [Summary("alias", "The new alias")]string alias) {
@@ -951,7 +951,7 @@ namespace CollaborationBot.Commands {
             await Tags(projectName, Context.User, tags);
         }
         
-        [SlashCommand("tags", "Changes the tags of a member of the project")]
+        //[SlashCommand("tags2", "Changes the tags of a member of the project")]
         public async Task Tags([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member")]IUser user,
             [Summary("tags", "The new tags")]params string[] tags) {
@@ -987,7 +987,7 @@ namespace CollaborationBot.Commands {
             }
         }
         
-        [SlashCommand("tags", "Gets all the tags of the project")]
+        [SlashCommand("gettags", "Gets all the tags of the project")]
         public async Task Tags([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
@@ -1022,13 +1022,13 @@ namespace CollaborationBot.Commands {
             }
         }
         
-        [SlashCommand("id", "Changes your osu! profile ID in the project")]
+        //[SlashCommand("id", "Changes your osu! profile ID in the project")]
         public async Task Id([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("id", "The new ID")] ulong id) {
             await Id(projectName, Context.User, id);
         }
         
-        [SlashCommand("id", "Changes the osu! profile ID of a member of the project")]
+        [SlashCommand("id2", "Changes the osu! profile ID of a member of the project")]
         public async Task Id([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("user", "The member")] IUser user,
             [Summary("id", "The new ID")] ulong id) {
@@ -1085,7 +1085,7 @@ namespace CollaborationBot.Commands {
             }
         }
         
-        [SlashCommand("generatepriorities", "Automatically generates priorities for all members of the project based on total number of days they've been on the server")]
+        [SlashCommand("generatepriorities", "Automatically generates priorities for all members based on membership age")]
         public async Task GeneratePriorities([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("timeweight", "The priority value of one day")]int timeWeight = 1,
             [Summary("replace", "Whether to replace all the existing priority values")]bool replace = false) {
@@ -1205,7 +1205,7 @@ namespace CollaborationBot.Commands {
         }
 
         [RequireUserPermission(GuildPermission.Administrator, Group = "Permission")]
-        [SlashCommand("rolecolor", "Changes the color of the roles of the project")]
+        //[SlashCommand("rolecolor", "Changes the color of the roles of the project")]
         public async Task RoleColor([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("color", "The new color as Hex code")] Color color) {
             var project = await GetProjectAsync(projectName);
@@ -1545,7 +1545,7 @@ namespace CollaborationBot.Commands {
         }
 
         #endregion
-
+        
         private async Task<Project> GetProjectAsync(string projectName) {
             var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 

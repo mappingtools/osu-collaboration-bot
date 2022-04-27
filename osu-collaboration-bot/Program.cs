@@ -68,7 +68,8 @@ namespace CollaborationBot {
             _client.Ready += Ready;
 
             var interactionServiceConfig = new InteractionServiceConfig() {
-                DefaultRunMode = RunMode.Async
+                DefaultRunMode = RunMode.Async,
+                UseCompiledLambda = true
             };
             _interactionService = new InteractionService(_client, interactionServiceConfig);
 

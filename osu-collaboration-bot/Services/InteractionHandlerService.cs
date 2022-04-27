@@ -28,6 +28,7 @@ namespace CollaborationBot.Services {
             // Add custom type readers
             _interactions.AddTypeReader<TimeSpan>(new OsuTimeTypeReader());
             _interactions.AddTypeReader<Color>(new ColorTypeReader());
+            _interactions.AddTypeReader<string[]>(new StringArrayReader());
         }
 
         private async Task SlashCommandHandler(SocketSlashCommand command) {

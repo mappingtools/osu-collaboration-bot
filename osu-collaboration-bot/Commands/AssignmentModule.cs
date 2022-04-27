@@ -47,7 +47,7 @@ namespace CollaborationBot.Commands {
             await RespondAsync(_resourceService.GenerateAssignmentListMessage(assignments));
         }
         
-        [SlashCommand("add", "Adds one or more assignments")]
+        //[SlashCommand("add", "Adds one or more assignments")]
         public async Task Add([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member to assign to")]IGuildUser user,
             [Summary("deadline", "The deadline for the assignment (can be null)")]DateTime? deadline = null, 
@@ -86,7 +86,7 @@ namespace CollaborationBot.Commands {
             }
         }
         
-        [SlashCommand("remove", "Removes one or more assignments")]
+        //[SlashCommand("remove", "Removes one or more assignments")]
         public async Task Remove([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member to remove assignments from")]IUser user,
             [Summary("parts", "The parts to unassign from the member")]params string[] partNames) {
@@ -144,7 +144,7 @@ namespace CollaborationBot.Commands {
             }
         }
         
-        [SlashCommand("claim", "Claims one or more parts and assigns them to you")]
+        //[SlashCommand("claim", "Claims one or more parts and assigns them to you")]
         public async Task Claim([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("parts", "The parts to claim")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);
@@ -216,13 +216,13 @@ namespace CollaborationBot.Commands {
             }
         }
         
-        [SlashCommand("unclaim", "Unclaims one or more parts and unassigns them")]
+        //[SlashCommand("unclaim", "Unclaims one or more parts and unassigns them")]
         public async Task Unclaim([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("parts", "The parts to unclaim")]params string[] partNames) {
             await Remove(projectName, Context.User, partNames);
         }
         
-        [SlashCommand("done", "Marks one or more parts as done")]
+        //[SlashCommand("done", "Marks one or more parts as done")]
         public async Task Done([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("parts", "The parts to complete")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);
