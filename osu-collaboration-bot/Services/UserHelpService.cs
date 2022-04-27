@@ -25,9 +25,9 @@ namespace CollaborationBot.Services {
             string prefix = "/" + moduleName + (string.IsNullOrWhiteSpace(moduleName) ? string.Empty : " ");
             IReadOnlyList<SlashCommandInfo> commands;
             if (!string.IsNullOrEmpty(moduleName)) {
-                commands = _interactionService.Modules.First(o => o.SlashGroupName == moduleName).SlashCommands.ToList();
+                commands = _interactionService.Modules.First(o => o.SlashGroupName == moduleName).SlashCommands;
             } else {
-                commands = _interactionService.SlashCommands;
+                commands = _interactionService.SlashCommands.Where(o => o.IsTopLevelCommand).ToList();
             }
             
             if (!string.IsNullOrEmpty(commandName)) {
