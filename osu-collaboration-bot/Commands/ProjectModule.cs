@@ -50,9 +50,8 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("help", "Shows command information")]
         public async Task Help(
-            [Summary("module", "Look for a command in a specific module")]string module = "",
-            [Summary("command", "Show information about a specific command")]string command = "") {
-            await _userHelpService.DoHelp(Context, module, command, string.IsNullOrEmpty(module));
+            [Summary("module", "Look for a command in a specific module")]string module = "") {
+            await _userHelpService.DoHelp(Context, module, "", string.IsNullOrEmpty(module));
         }
 
         #region guides

@@ -22,14 +22,19 @@ namespace CollaborationBot.Services {
                                  string moduleName = "",
                                  string commandName = "",
                                  bool showReference = false) {
-            List<SlashCommandInfo> commands = _interactionService.Modules.First(o => o.SlashGroupName == moduleName).SlashCommands.ToList();
             string prefix = "/" + moduleName + (string.IsNullOrWhiteSpace(moduleName) ? string.Empty : " ");
-
+            IReadOnlyList<SlashCommandInfo> commands;
+            if (!string.IsNullOrEmpty(moduleName)) {
+                commands = _interactionService.Modules.First(o => o.SlashGroupName == moduleName).SlashCommands.ToList();
+            } else {
+                commands = _interactionService.SlashCommands;
+            }
+            
             if (!string.IsNullOrEmpty(commandName)) {
                 var command = commands.FirstOrDefault(o => string.Equals(o.Name, commandName, StringComparison.OrdinalIgnoreCase));
 
                 if (command == null) {
-                    await context.Interaction.RespondAsync(string.Format(Strings.CommandNotFound, prefix + commandName));
+                    await context.Interaction.RespondAsync(string.Format(Strings.CommandNotFound, prefix + commandName), ephemeral: true);
                     return;
                 }
 
@@ -66,7 +71,7 @@ namespace CollaborationBot.Services {
                 embeds[e] = embedBuilder.Build();
             }
 
-            await context.Interaction.RespondAsync(Strings.ListCommandsMessage, embeds);
+            await context.Interaction.RespondAsync(Strings.ListCommandsMessage, embeds, ephemeral: true);
         }
 
         private async Task DoCommandHelp(SocketInteractionContext context, string prefix, SlashCommandInfo command) {
@@ -83,7 +88,7 @@ namespace CollaborationBot.Services {
                 embedBuilder.AddField($"[{parameter.Name}]", parameterEmbedFieldText);
             }
 
-            await context.Interaction.RespondAsync(string.Empty, embed: embedBuilder.Build());
+            await context.Interaction.RespondAsync(string.Empty, embed: embedBuilder.Build(), ephemeral: true);
         }
     }
 }
