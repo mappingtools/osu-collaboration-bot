@@ -188,8 +188,8 @@ namespace CollaborationBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 1. Enable the bot in the server: `{0}guild init`
-        ///2. Assign a category for collab channels to appear in: `{0}guild collab-category [CATEGORY]`
-        ///3. Allow regular members to create collabs: `{0}guild max-collabs 1`.
+        ///2. Assign a category for collab channels to appear in: `{0}guild collabcategory [CATEGORY]`
+        ///3. Allow regular members to create collabs: `{0}guild maxcollabs 1`.
         /// </summary>
         public static string AdminGuideContent {
             get {
@@ -504,11 +504,11 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1. Create a new project: `{0}create [PROJECT NAME]` (Choose a simple name which is easy to type and doesn&apos;t contant any spaces)
-        ///2. Set-up the project channels and roles: `{0}setup [PROJECT NAME]`
-        ///3. Create a base beatmap with timing, bookmarks, and difficulty settings and upload it to the bot: `{0}setbasefile [PROJECT NAME]` with .osu file attached
-        ///4. Generate parts from the bookmarks: `{0}part from-bookmarks [PROJECT NAME]` with .osu file attached
-        ///5. Upload your .osz and lay out the rules in your info  [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 1. Create a new project: `{0}project create [PROJECT NAME]` (Choose a simple name which is easy to type and doesn&apos;t contant any spaces)
+        ///2. Set-up the project channels and roles: `{0}project setup [PROJECT NAME]`
+        ///3. Create a base beatmap with timing, bookmarks, and difficulty settings and upload it to the bot: `{0}project setbasefile [PROJECT NAME]` with .osu file attached
+        ///4. Generate parts from the bookmarks: `{0}part frombookmarks [PROJECT NAME]` with .osu file attached
+        ///5. Upload your .osz and lay out  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CollabGuideContent {
             get {
@@ -805,14 +805,14 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1. Set your mapper name: `{0}alias {1} &quot;[YOUR OSU NAME]&quot;`
-        ///2. Set your tags (like old names and stuff): `{0}tags {1} &quot;[YOUR TAGS]&quot;`
+        ///   Looks up a localized string similar to 1. Set your mapper name: `{0}alias {1} [YOUR OSU NAME]`
+        ///2. Set your tags (like old names and stuff): `{0}tags {1} [YOUR TAGS]`
         ///3. Set your osu! profile ID (the number in the URL to your osu! profile): `{0}id {1} [YOUR ID]`
-        ///4. See which parts are available `{0}part list {1}`
-        ///5. Claim a part `{0}asn claim {1} [PART NAME]`
+        ///4. See which parts are available `{0}part listunclaimed {1}`
+        ///5. Claim a part `{0}claim {1} [PART NAME]`
         ///6. Submit your mapping progress to your part: `{0}submit {1}` with your .osu file attached
-        ///7. When done, mark your part as finished: `{0}asn done {1} [PART NAME]`
-        ///8. Repeat from s [rest of string was truncated]&quot;;.
+        ///7. When done, mark your part as finished: `{0}done {1} [PART NAME]`
+        ///8. Repeat from step [rest of string was truncated]&quot;;.
         /// </summary>
         public static string MemberGuideContent {
             get {
@@ -1005,7 +1005,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This user is owner of project `{0}` and can&apos;t be demoted. Transfer ownership with `set-owner` first..
+        ///   Looks up a localized string similar to This user is owner of project `{0}` and can&apos;t be demoted. Transfer ownership with `/project setowner` first..
         /// </summary>
         public static string OwnerCannotBeDemotedMessage {
             get {
@@ -1014,7 +1014,7 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A project owner can&apos;t leave their own project. Transfer ownership with `set-owner` first..
+        ///   Looks up a localized string similar to A project owner can&apos;t leave their own project. Transfer ownership with `/project setowner` first..
         /// </summary>
         public static string OwnerCannotLeaveMessage {
             get {

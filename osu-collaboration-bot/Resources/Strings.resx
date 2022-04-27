@@ -161,8 +161,8 @@
   </data>
   <data name="AdminGuideContent" xml:space="preserve">
     <value>1. Enable the bot in the server: `{0}guild init`
-2. Assign a category for collab channels to appear in: `{0}guild collab-category [CATEGORY]`
-3. Allow regular members to create collabs: `{0}guild max-collabs 1`</value>
+2. Assign a category for collab channels to appear in: `{0}guild collabcategory [CATEGORY]`
+3. Allow regular members to create collabs: `{0}guild maxcollabs 1`</value>
   </data>
   <data name="AdminGuideTitle" xml:space="preserve">
     <value>Server set-up guide</value>
@@ -267,14 +267,14 @@
     <value>Changed tags of {0} to `{1}`.</value>
   </data>
   <data name="CollabGuideContent" xml:space="preserve">
-    <value>1. Create a new project: `{0}create [PROJECT NAME]` (Choose a simple name which is easy to type and doesn't contant any spaces)
-2. Set-up the project channels and roles: `{0}setup [PROJECT NAME]`
-3. Create a base beatmap with timing, bookmarks, and difficulty settings and upload it to the bot: `{0}setbasefile [PROJECT NAME]` with .osu file attached
-4. Generate parts from the bookmarks: `{0}part from-bookmarks [PROJECT NAME]` with .osu file attached
-5. Upload your .osz and lay out the rules in your info channel and use `{0}member-guide [PROJECT NAME]` to show your participants how to use the bot
-6. Allow anyone to join your collab: `{0}status [PROJECT NAME] SearchingForMembers`
-7. Set a default assignment deadline: `{0}assignment-lifetime [PROJECT NAME] [dd:hh:mm:ss:fff]`
-8. Allow members to claim parts on their own: `{0}options [PROJECT NAME] SelfAssignmentAllowed:true` and `{0}max-assignments [PROJECT NAME] 1`</value>
+    <value>1. Create a new project: `{0}project create [PROJECT NAME]` (Choose a simple name which is easy to type and doesn't contant any spaces)
+2. Set-up the project channels and roles: `{0}project setup [PROJECT NAME]`
+3. Create a base beatmap with timing, bookmarks, and difficulty settings and upload it to the bot: `{0}project setbasefile [PROJECT NAME]` with .osu file attached
+4. Generate parts from the bookmarks: `{0}part frombookmarks [PROJECT NAME]` with .osu file attached
+5. Upload your .osz and lay out the rules in your info channel and use `{0}memberguide [PROJECT NAME]` to show your participants how to use the bot
+6. Allow anyone to join your collab: `{0}project options status [PROJECT NAME] SearchingForMembers`
+7. Set a default assignment deadline: `{0}project options assignmentlifetime [PROJECT NAME] [dd:hh:mm:ss:fff]`
+8. Allow members to claim parts on their own: `{0}project options options [PROJECT NAME] SelfAssignmentAllowed:true` and `{0}project options maxassignments [PROJECT NAME] 1`</value>
   </data>
   <data name="CollabGuideTitle" xml:space="preserve">
     <value>Collab set-up guide</value>
@@ -370,16 +370,16 @@
     <value>This user is already a member of the project.</value>
   </data>
   <data name="MemberGuideContent" xml:space="preserve">
-    <value>1. Set your mapper name: `{0}alias {1} "[YOUR OSU NAME]"`
-2. Set your tags (like old names and stuff): `{0}tags {1} "[YOUR TAGS]"`
+    <value>1. Set your mapper name: `{0}alias {1} [YOUR OSU NAME]`
+2. Set your tags (like old names and stuff): `{0}tags {1} [YOUR TAGS]`
 3. Set your osu! profile ID (the number in the URL to your osu! profile): `{0}id {1} [YOUR ID]`
-4. See which parts are available `{0}part list {1}`
-5. Claim a part `{0}asn claim {1} [PART NAME]`
+4. See which parts are available `{0}part listunclaimed {1}`
+5. Claim a part `{0}claim {1} [PART NAME]`
 6. Submit your mapping progress to your part: `{0}submit {1}` with your .osu file attached
-7. When done, mark your part as finished: `{0}asn done {1} [PART NAME]`
+7. When done, mark your part as finished: `{0}done {1} [PART NAME]`
 8. Repeat from step 4
 
-Replace the part with the [square brackets] with the relevant value and KEEP the quotation marks.</value>
+Replace the part with the [square brackets] with the relevant value.</value>
   </data>
   <data name="MemberGuideTitle" xml:space="preserve">
     <value>Collab participation guide</value>
@@ -446,10 +446,10 @@ Replace the part with the [square brackets] with the relevant value and KEEP the
     <value>Use the help command on other modules for more information:</value>
   </data>
   <data name="OwnerCannotBeDemotedMessage" xml:space="preserve">
-    <value>This user is owner of project `{0}` and can't be demoted. Transfer ownership with `set-owner` first.</value>
+    <value>This user is owner of project `{0}` and can't be demoted. Transfer ownership with `/project setowner` first.</value>
   </data>
   <data name="OwnerCannotLeaveMessage" xml:space="preserve">
-    <value>A project owner can't leave their own project. Transfer ownership with `set-owner` first.</value>
+    <value>A project owner can't leave their own project. Transfer ownership with `/project setowner` first.</value>
   </data>
   <data name="PartClaimedAlready" xml:space="preserve">
     <value>This part has been claimed already.</value>
