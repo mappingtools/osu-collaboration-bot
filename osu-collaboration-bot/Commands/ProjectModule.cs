@@ -577,6 +577,15 @@ namespace CollaborationBot.Commands {
                 PermValue.Deny,
                 PermValue.Deny,
                 PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
                 PermValue.Deny);
         }
 
