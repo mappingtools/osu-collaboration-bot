@@ -342,8 +342,8 @@ namespace CollaborationBot.Commands {
                     return;
                 }
 
-                if (_context.Projects.AsQueryable()
-                    .Any(o => o.GuildId == guild.Id && o.Name == projectName)) {
+                if (await _context.Projects.AsQueryable()
+                    .AnyAsync(o => o.GuildId == guild.Id && o.Name == projectName)) {
                     await RespondAsync(string.Format(Strings.ProjectExistsMessage));
                     return;
                 }
@@ -619,7 +619,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            if (_context.Members.Any(o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id)) {
+            if (await _context.Members.AnyAsync(o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id)) {
                 await GrantProjectRole(Context.User, project);
                 await RespondAsync(Strings.AlreadyJoinedMessage);
                 return;
@@ -724,7 +724,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            if (_context.Members.Any(o => o.ProjectId == project.Id && o.UniqueMemberId == user.Id)) {
+            if (await _context.Members.AnyAsync(o => o.ProjectId == project.Id && o.UniqueMemberId == user.Id)) {
                 await RespondAsync(Strings.MemberExistsMessage);
                 return;
             }
@@ -1246,8 +1246,8 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            if (_context.Projects.AsQueryable()
-                .Any(o => o.Guild.UniqueGuildId == Context.Guild.Id && o.Name == newProjectName)) {
+            if (await _context.Projects.AsQueryable()
+                .AnyAsync(o => o.Guild.UniqueGuildId == Context.Guild.Id && o.Name == newProjectName)) {
                 await RespondAsync(string.Format(Strings.ProjectExistsMessage));
                 return;
             }

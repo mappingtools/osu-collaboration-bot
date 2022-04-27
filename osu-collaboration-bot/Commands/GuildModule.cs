@@ -33,7 +33,7 @@ namespace CollaborationBot.Commands {
         [SlashCommand("init", "Initializes compatibility with the server")]
         public async Task Init() {
             try {
-                if (_context.Guilds.Any(o => o.UniqueGuildId == Context.Guild.Id)) {
+                if (await _context.Guilds.AnyAsync(o => o.UniqueGuildId == Context.Guild.Id)) {
                     await RespondAsync(Strings.GuildExistsMessage);
                     return;
                 }
