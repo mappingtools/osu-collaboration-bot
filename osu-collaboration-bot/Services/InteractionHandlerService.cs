@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using CollaborationBot.Autocomplete;
 using CollaborationBot.Resources;
 using CollaborationBot.TypeReaders;
 using Discord;
@@ -24,11 +26,36 @@ namespace CollaborationBot.Services {
             _appSettings = appSettings;
 
             _client.SlashCommandExecuted += SlashCommandHandler;
+            //_client.AutocompleteExecuted += AutocompleteExecuted;
+
+            _interactions.AutocompleteHandlerExecuted += AutocompleteHandlerExecuted;
 
             // Add custom type readers
             _interactions.AddTypeConverter<TimeSpan>(new OsuTimeTypeReader());
             _interactions.AddTypeConverter<Color>(new ColorTypeReader());
             _interactions.AddTypeConverter<string[]>(new StringArrayReader());
+        }
+
+        private Task AutocompleteHandlerExecuted(IAutocompleteHandler handler, IInteractionContext context, IResult result) {
+            logger.Debug("test123554123");
+            return Task.CompletedTask;
+        }
+
+        private async Task AutocompleteExecuted(SocketAutocompleteInteraction arg) {
+            logger.Debug("Autocomplete issued by user {user}: {command}", arg.User.Username, arg.Data.CommandName);
+            var searchResult = _interactions.SearchAutocompleteCommand(arg);
+
+            if (!searchResult.IsSuccess) {
+                logger.Error("Could not find autocomplete command.");
+                return;
+            }
+
+            var ctx = new SocketInteractionContext(_client, arg);
+            var result = await searchResult.Command.ExecuteAsync(ctx, _services);
+
+            if (!result.IsSuccess) {
+                logger.Error("Autocomplete error of type {type} caused by {@message}: {reason}", result.Error, arg.Data.CommandName, result.ErrorReason);
+            }
         }
 
         private async Task SlashCommandHandler(SocketSlashCommand command) {
