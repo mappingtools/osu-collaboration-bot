@@ -436,10 +436,11 @@ Replace the part with the [square brackets] with the relevant value and KEEP the
     <value>The project is currently not looking for members.</value>
   </data>
   <data name="OtherModuleHelpGuide" xml:space="preserve">
-    <value>{0}guild help
-{0}part help
-{0}asn help
-{0}au help</value>
+    <value>{0}help project
+{0}help guild
+{0}help part
+{0}help asn
+{0}help au</value>
   </data>
   <data name="OtherModuleHelpReference" xml:space="preserve">
     <value>Use the help command on other modules for more information:</value>

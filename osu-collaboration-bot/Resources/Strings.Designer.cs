@@ -19,7 +19,7 @@ namespace CollaborationBot.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
@@ -983,10 +983,11 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}guild help
-        ///{0}part help
-        ///{0}asn help
-        ///{0}au help.
+        ///   Looks up a localized string similar to {0}help project
+        ///{0}help guild
+        ///{0}help part
+        ///{0}help asn
+        ///{0}help au.
         /// </summary>
         public static string OtherModuleHelpGuide {
             get {
