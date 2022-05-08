@@ -36,7 +36,6 @@ namespace CollaborationBot {
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile("appsettings.Development.json", optional: true)
-                .AddJsonFile("appsettings.Development.json", optional: true)
                 .AddEnvironmentVariables().Build();
             LogManager.Configuration = new NLogLoggingConfiguration(config.GetSection("NLog"));
 
@@ -70,7 +69,8 @@ namespace CollaborationBot {
             var interactionServiceConfig = new InteractionServiceConfig() {
                 DefaultRunMode = RunMode.Async,
                 UseCompiledLambda = true,
-                EnableAutocompleteHandlers = true
+                EnableAutocompleteHandlers = true,
+                LogLevel = LogSeverity.Debug,
             };
             _interactionService = new InteractionService(_client, interactionServiceConfig);
 

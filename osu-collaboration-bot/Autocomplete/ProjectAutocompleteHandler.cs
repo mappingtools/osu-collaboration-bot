@@ -20,8 +20,6 @@ namespace CollaborationBot.Autocomplete {
 
         public override async Task<AutocompletionResult> GenerateSuggestionsAsync(IInteractionContext context, IAutocompleteInteraction autocompleteInteraction,
             IParameterInfo parameter, IServiceProvider services) {
-            logger.Debug("test585678");
-
             var permissionLevel = parameter.Preconditions.Any(a => a is RequireProjectOwner) ? 3 : 
                     parameter.Preconditions.Any(a => a is RequireProjectManager) ? 2 :
                     parameter.Preconditions.Any(a => a is RequireProjectMember) ? 1 : 0;
@@ -49,7 +47,7 @@ namespace CollaborationBot.Autocomplete {
                         .ToListAsync()
                 };
 
-            return AutocompletionResult.FromSuccess(projectNames.Select(o => new AutocompleteResult("projectName", o)));
+            return AutocompletionResult.FromSuccess(projectNames.Select(o => new AutocompleteResult(o, o)));
         }
     }
 }

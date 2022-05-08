@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using CollaborationBot.Autocomplete;
 using CollaborationBot.Resources;
 using CollaborationBot.TypeReaders;
 using Discord;
@@ -26,9 +24,8 @@ namespace CollaborationBot.Services {
             _appSettings = appSettings;
 
             _client.SlashCommandExecuted += SlashCommandHandler;
-            //_client.AutocompleteExecuted += AutocompleteExecuted;
-
-            _interactions.AutocompleteHandlerExecuted += AutocompleteHandlerExecuted;
+            _client.AutocompleteExecuted += AutocompleteExecuted;
+            _interactions.Log += Log;
 
             // Add custom type readers
             _interactions.AddTypeConverter<TimeSpan>(new OsuTimeTypeReader());
@@ -36,31 +33,27 @@ namespace CollaborationBot.Services {
             _interactions.AddTypeConverter<string[]>(new StringArrayReader());
         }
 
-        private Task AutocompleteHandlerExecuted(IAutocompleteHandler handler, IInteractionContext context, IResult result) {
-            logger.Debug("test123554123");
+        private Task Log(LogMessage msg) {
+            logger.Log(LogLevel.FromOrdinal(5 - (int)msg.Severity), msg.Message);
+            if (msg.Exception is not null)
+                logger.Log(LogLevel.FromOrdinal(5 - (int)msg.Severity), msg.Exception);
             return Task.CompletedTask;
         }
 
-        private async Task AutocompleteExecuted(SocketAutocompleteInteraction arg) {
-            logger.Debug("Autocomplete issued by user {user}: {command}", arg.User.Username, arg.Data.CommandName);
-            var searchResult = _interactions.SearchAutocompleteCommand(arg);
+        private async Task AutocompleteExecuted(SocketAutocompleteInteraction interaction) {
+            //logger.Debug("Autocomplete issued by user {user}: {command}", interaction.User.Username, interaction.Data.CommandName);
 
-            if (!searchResult.IsSuccess) {
-                logger.Error("Could not find autocomplete command.");
-                return;
-            }
-
-            var ctx = new SocketInteractionContext(_client, arg);
-            var result = await searchResult.Command.ExecuteAsync(ctx, _services);
+            var ctx = new SocketInteractionContext(_client, interaction);
+            var result = await _interactions.ExecuteCommandAsync(ctx, _services);
 
             if (!result.IsSuccess) {
-                logger.Error("Autocomplete error of type {type} caused by {@message}: {reason}", result.Error, arg.Data.CommandName, result.ErrorReason);
+                logger.Error("Autocomplete error of type {type} caused by {@message}: {reason}", result.Error, interaction.Data.CommandName, result.ErrorReason);
             }
         }
 
         private async Task SlashCommandHandler(SocketSlashCommand command) {
             var fullCommand = command.Data.Name + " " + string.Join(' ', command.Data.Options.Select(o => $"{o.Name}:{o.Value}"));
-            logger.Debug("Slash command issued by user {user}: {command}", command.User.Username, fullCommand);
+            //logger.Debug("Slash command issued by user {user}: {command}", command.User.Username, fullCommand);
 
 
             var ctx = new SocketInteractionContext(_client, command);

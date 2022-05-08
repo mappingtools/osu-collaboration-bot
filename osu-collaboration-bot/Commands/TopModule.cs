@@ -115,7 +115,7 @@ namespace CollaborationBot.Commands {
         }
 
         [SlashCommand("members", "Lists all members of the project")]
-        public async Task Members([Autocomplete(typeof(TestAutocompleteHandler))][Summary("project", "The project")] string projectName) {
+        public async Task Members([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
