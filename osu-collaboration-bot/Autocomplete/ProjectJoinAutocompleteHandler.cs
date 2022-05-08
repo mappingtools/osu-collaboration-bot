@@ -16,7 +16,10 @@ namespace CollaborationBot.Autocomplete {
 
         public override async Task<AutocompletionResult> GenerateSuggestionsAsync(IInteractionContext context, IAutocompleteInteraction autocompleteInteraction,
             IParameterInfo parameter, IServiceProvider services) {
-            var projectNames = await _context.Projects.AsQueryable().Where(p => p.Guild.UniqueGuildId == context.Guild.Id && p.Status == ProjectStatus.SearchingForMembers).Select(p => p.Name).ToListAsync();
+            var prefix = (string)autocompleteInteraction.Data.Current.Value;
+            var projectNames = await _context.Projects.AsQueryable()
+                .Where(p => p.Guild.UniqueGuildId == context.Guild.Id && p.Name.StartsWith(prefix) && p.Status == ProjectStatus.SearchingForMembers)
+                .Select(p => p.Name).ToListAsync();
             return AutocompletionResult.FromSuccess(projectNames.Select(o => new AutocompleteResult(o, o)));
         }
     }
