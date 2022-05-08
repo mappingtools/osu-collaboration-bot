@@ -38,7 +38,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("list", "Lists all the parts of the project")]
-        public async Task List([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
+        public async Task List([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -57,7 +57,7 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("listunclaimed", "Lists all the unclaimed parts of the project")]
-        public async Task ListUnclaimed([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
+        public async Task ListUnclaimed([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
