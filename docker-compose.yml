@@ -20,7 +20,6 @@ services:
     environment:
       - App__ConnectionString=Server=host.docker.internal;Port=5432;Database=postgres;User Id=postgres;Password=postgres;
       - App__Token=<BOT TOKEN HERE>
-      #- App__Prefix=mt! #Optional default set to mt!
     volumes:
       - usr/share/osu-collab-bot/logs:/etc/logs
 volumes: 
