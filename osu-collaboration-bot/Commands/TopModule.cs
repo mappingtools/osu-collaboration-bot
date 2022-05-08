@@ -49,7 +49,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("help", "Shows command information")]
         public async Task Help(
-            [Summary("module", "Look for a command in a specific module")]string module = "") {
+            [Autocomplete(typeof(ModuleAutocompleteHandler))][Summary("module", "Look for a command in a specific module")]string module = "") {
             await _userHelpService.DoHelp(Context, module, "", string.IsNullOrEmpty(module));
         }
 
