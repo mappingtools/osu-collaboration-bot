@@ -50,7 +50,7 @@ namespace CollaborationBot.Commands {
         [SlashCommand("add", "Adds one or more assignments")]
         public async Task Add([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member to assign to")]IGuildUser user, 
-            [Summary("parts", "The parts to assign to the member")]string[] partNames,
+            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("parts", "The parts to assign to the member")]string[] partNames,
             [Summary("deadline", "The deadline for the assignment (can be null)")] DateTime? deadline = null) {
             var project = await GetProjectAsync(projectName);
 
@@ -89,7 +89,7 @@ namespace CollaborationBot.Commands {
         [SlashCommand("remove", "Removes one or more assignments")]
         public async Task Remove([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member to remove assignments from")]IUser user,
-            [Summary("parts", "The parts to unassign from the member")]params string[] partNames) {
+            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("parts", "The parts to unassign from the member")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -116,7 +116,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("deadline", "Changes the deadline of the assignment")]
         public async Task Deadline([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
-            [Summary("part", "The part of the assignment")]string partName,
+            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part of the assignment")]string partName,
             [Summary("user", "The member of the assignment")]IGuildUser user,
             [Summary("deadline", "The new deadline (can be null)")]DateTime? deadline) {
             var project = await GetProjectAsync(projectName);

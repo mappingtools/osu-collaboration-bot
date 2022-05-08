@@ -108,7 +108,7 @@ namespace CollaborationBot.Commands {
         
         [SlashCommand("rename", "Changes the name of the part")]
         public async Task Rename([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
-            [Summary("part", "The part")]string name,
+            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part")]string name,
             [Summary("newname", "The new name for the part")]string newName) {
             var project = await GetProjectAsync(projectName);
 
@@ -141,7 +141,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("start", "Changes the start time of the part")]
         public async Task Start([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
-            [Summary("part", "The part")]string name, 
+            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part")]string name,
             [Summary("start", "The new start time (can be null)")]TimeSpan? start = null) {
             var project = await GetProjectAsync(projectName);
 
@@ -169,7 +169,7 @@ namespace CollaborationBot.Commands {
         
         [SlashCommand("end", "Changes the end time of the part")]
         public async Task End([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
-            [Summary("part", "The part")]string name,
+            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part")]string name,
             [Summary("end", "The new end time (can be null)")]TimeSpan? end = null) {
             var project = await GetProjectAsync(projectName);
 
@@ -197,7 +197,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("status", "Changes the status of the part")]
         public async Task Status([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
-            [Summary("part", "The part")]string name,
+            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part")]string name,
             [Summary("status", "The new status")]PartStatus status) {
             var project = await GetProjectAsync(projectName);
 
@@ -227,7 +227,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("remove", "Removes one or more parts from the project")]
         public async Task Remove([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
-            [Summary("parts", "The parts to remove")]params string[] partNames) {
+            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("parts", "The parts to remove")]params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {

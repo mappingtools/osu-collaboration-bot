@@ -299,7 +299,7 @@ namespace CollaborationBot.Commands {
         [SlashCommand("submit", "Submits a part of beatmap to the project")]
         public async Task SubmitPart([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("beatmap", "The part to submit as a .osu file")] Attachment attachment,
-            [Summary("part", "The part name to submit to (optional)")] string partName = null) {
+            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part name to submit to (optional)")] string partName = null) {
             // Find out which parts this member is allowed to edit in the project
             // Download the attached file and put it in the member's folder
             // Merge it into the base file
@@ -471,7 +471,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("claim", "Claims one or more parts and assigns them to you")]
         public async Task Claim([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
-            [Summary("parts", "The parts to claim")] params string[] partNames) {
+            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("parts", "The parts to claim")] params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -563,7 +563,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("unclaim", "Unclaims one or more parts and unassigns them")]
         public async Task Unclaim([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
-            [Summary("parts", "The parts to unclaim")] params string[] partNames) {
+            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("parts", "The parts to unclaim")] params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -590,7 +590,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("done", "Marks one or more parts as done")]
         public async Task Done([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
-            [Summary("parts", "The parts to complete")] params string[] partNames) {
+            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("parts", "The parts to complete")] params string[] partNames) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
