@@ -26,6 +26,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CollaborationBot.Commands {
+    [Group("", "All common commands")]
     public class TopModule : InteractionModuleBase<SocketInteractionContext> {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private static readonly Random random = new();
