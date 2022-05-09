@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -75,10 +76,19 @@ namespace CollaborationBot.Services {
             await _interactions.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
         }
 
-        public async Task RegisterModulesAsync() {
+        public async Task RegisterModulesAsync(IEnumerable<SocketGuild> guilds) {
 #if DEBUG
             await _interactions.RegisterCommandsToGuildAsync(590879727477325865);
 #else
+            foreach (var guild in guilds) {
+                try {
+                    await _interactions.RegisterCommandsToGuildAsync(guild.Id);
+                    logger.Info("Registered commands to guild: {guild}", guild.Name);
+                } catch (Exception ex) {
+                    logger.Error("Could not register commands to guild: {guild}", guild.Name);
+                    logger.Error(ex);
+                }
+            }
             await _interactions.RegisterCommandsGloballyAsync();
 #endif
         }

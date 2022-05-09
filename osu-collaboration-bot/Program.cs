@@ -63,6 +63,7 @@ namespace CollaborationBot {
             _client = new DiscordSocketClient(discordSocketConfig);
             _client.Log += Log;
             _client.GuildAvailable += GuildAvailable;
+            _client.JoinedGuild += ClientOnJoinedGuild;
             _client.Connected += Connected;
             _client.Ready += Ready;
 
@@ -94,10 +95,6 @@ namespace CollaborationBot {
 
             // Block this task until the program is closed.
             await Task.Delay(-1);
-        }
-
-        private async Task Ready() {
-            await _interactionHandler.RegisterModulesAsync();
         }
 
         private async void CheckupTimerOnElapsed(object sender, ElapsedEventArgs e) {
@@ -166,9 +163,17 @@ namespace CollaborationBot {
             await _context.SaveChangesAsync();
         }
 
+        private async Task ClientOnJoinedGuild(SocketGuild arg) {
+            guildList.Add(arg);
+            await _interactionHandler.RegisterModulesAsync(new[] { arg });
+        }
+
+        private async Task Ready() {
+            await _interactionHandler.RegisterModulesAsync(guildList);
+        }
+
         private async Task Connected() {
             await _client.DownloadUsersAsync(guildList);
-            guildList.Clear();
             await _client.SetGameAsync(_appSettings.Prefix + "help");
         }
 
