@@ -76,11 +76,11 @@ namespace CollaborationBot.Services {
             await _interactions.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
         }
 
-        public async Task RegisterModulesAsync(IEnumerable<SocketGuild> guilds) {
+        public async Task RegisterModulesAsync() {
 #if DEBUG
             await _interactions.RegisterCommandsToGuildAsync(590879727477325865);
 #else
-            foreach (var guild in guilds) {
+            /*foreach (var guild in guilds) {
                 try {
                     await _interactions.RegisterCommandsToGuildAsync(guild.Id);
                     logger.Info("Registered commands to guild: {guild}", guild.Name);
@@ -88,7 +88,7 @@ namespace CollaborationBot.Services {
                     logger.Error("Could not register commands to guild: {guild}", guild.Name);
                     logger.Error(ex);
                 }
-            }
+            }*/
             await _interactions.RegisterCommandsGloballyAsync();
 #endif
         }
