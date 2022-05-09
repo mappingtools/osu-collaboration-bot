@@ -163,12 +163,12 @@ namespace CollaborationBot {
         }
 
         private async Task Ready() {
-            await _interactionHandler.RegisterModulesAsync();
+            await _interactionHandler.RegisterModulesAsync(guildList);
         }
 
         private async Task Connected() {
             await _client.DownloadUsersAsync(guildList);
-            guildList.Clear();
+            //guildList.Clear();
             await _client.SetGameAsync(_appSettings.Prefix + "help");
         }
 
