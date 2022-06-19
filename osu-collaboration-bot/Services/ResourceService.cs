@@ -28,12 +28,6 @@ namespace CollaborationBot.Services {
             return string.Format(Strings.AddProjectFail, projectName);
         }
 
-        public string GenerateRemoveProjectMessage(string projectName, bool isSuccessful = true) {
-            if (isSuccessful)
-                return string.Format(Strings.RemoveProjectSuccess, projectName);
-            return string.Format(Strings.RemoveProjectFail, projectName);
-        }
-
         public string GenerateAddGuildMessage(bool isSuccessful = true) {
             if (isSuccessful)
                 return Strings.AddGuildSuccess;

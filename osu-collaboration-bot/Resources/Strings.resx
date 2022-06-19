@@ -584,7 +584,7 @@ Replace the part with the [square brackets] with the relevant value.</value>
     <value>Could not remove project `{0}`.</value>
   </data>
   <data name="RemoveProjectSuccess" xml:space="preserve">
-    <value>Removed project `{0}`.</value>
+    <value>Removed project `{0}` in {1} seconds.</value>
   </data>
   <data name="SelfAssignmentNotAllowed" xml:space="preserve">
     <value>Self-assignment is not allowed at the moment.</value>
@@ -599,7 +599,7 @@ Replace the part with the [square brackets] with the relevant value.</value>
     <value>Could not set-up project `{0}`.</value>
   </data>
   <data name="SetupSuccess" xml:space="preserve">
-    <value>Successfully set-up project `{0}`.</value>
+    <value>Successfully set-up project `{0}` in {1} seconds.</value>
   </data>
   <data name="ShowBaseFile" xml:space="preserve">
     <value>Compiled .osu file of project `{0}`:</value>
@@ -642,5 +642,11 @@ Replace the part with the [square brackets] with the relevant value.</value>
   </data>
   <data name="CommandParameterNotExist" xml:space="preserve">
     <value>Command has no parameter named `{0}`.</value>
+  </data>
+  <data name="SetupStart" xml:space="preserve">
+    <value>Starting set-up for project `{0}`...</value>
+  </data>
+  <data name="RemoveProjectStart" xml:space="preserve">
+    <value>Removing project `{0}`...</value>
   </data>
 </root>

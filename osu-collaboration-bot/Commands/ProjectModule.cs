@@ -8,6 +8,7 @@ using Discord.Interactions;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -140,6 +141,11 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
+            // Start with a response because this operation may take longer than 3 seconds
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            await RespondAsync(string.Format(Strings.RemoveProjectStart, projectName));
+
             try {
                 _context.Projects.Remove(project);
                 await _context.SaveChangesAsync();
@@ -177,11 +183,12 @@ namespace CollaborationBot.Commands {
                         }
                     }
                 }
-                await RespondAsync(_resourceService.GenerateRemoveProjectMessage(projectName));
+                stopwatch.Stop();
+                await FollowupAsync(string.Format(Strings.RemoveProjectSuccess, projectName, stopwatch.Elapsed.TotalSeconds));
             }
             catch (Exception e) {
                 logger.Error(e);
-                await RespondAsync(_resourceService.GenerateRemoveProjectMessage(projectName, false));
+                await FollowupAsync(string.Format(Strings.RemoveProjectFail, projectName));
             }
         }
         
@@ -195,6 +202,11 @@ namespace CollaborationBot.Commands {
             if (project == null) {
                 return;
             }
+
+            // Start with a response because this operation may take longer than 3 seconds
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            await RespondAsync(string.Format(Strings.SetupStart, projectName));
 
             var guild = project.Guild;
 
@@ -302,11 +314,12 @@ namespace CollaborationBot.Commands {
                 }
 
                 await _context.SaveChangesAsync();
-                await RespondAsync(string.Format(Strings.SetupSuccess, projectName));
+                stopwatch.Stop();
+                await FollowupAsync(string.Format(Strings.SetupSuccess, projectName, stopwatch.Elapsed.TotalSeconds));
             }
             catch (Exception e) {
                 logger.Error(e);
-                await RespondAsync(string.Format(Strings.SetupFail, projectName));
+                await FollowupAsync(string.Format(Strings.SetupFail, projectName));
             }
         }
 

@@ -1419,7 +1419,16 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removed project `{0}`..
+        ///   Looks up a localized string similar to Removing project `{0}`....
+        /// </summary>
+        public static string RemoveProjectStart {
+            get {
+                return ResourceManager.GetString("RemoveProjectStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removed project `{0}` in {1} seconds..
         /// </summary>
         public static string RemoveProjectSuccess {
             get {
@@ -1464,7 +1473,16 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfully set-up project `{0}`..
+        ///   Looks up a localized string similar to Starting set-up for project `{0}`....
+        /// </summary>
+        public static string SetupStart {
+            get {
+                return ResourceManager.GetString("SetupStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully set-up project `{0}` in {1} seconds..
         /// </summary>
         public static string SetupSuccess {
             get {
