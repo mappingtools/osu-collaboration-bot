@@ -247,7 +247,7 @@ namespace CollaborationBot.Commands {
 
                     var oldRole = project.ManagerRoleId.HasValue ? Context.Guild.GetRole((ulong)project.ManagerRoleId.Value) : null;
 
-                    project.ManagerRoleId = role.Id;
+                    project.ManagerRoleId = managerRole.Id;
                     await _context.SaveChangesAsync();
 
                     // Give all members the new role and remove the old role if possible
@@ -257,7 +257,7 @@ namespace CollaborationBot.Commands {
 
                     foreach (var member in members.Select(id => Context.Guild.GetUser(id))) {
                         if (member is not IGuildUser gu) continue;
-                        await gu.AddRoleAsync(role);
+                        await gu.AddRoleAsync(managerRole);
                         if (oldRole != null)
                             await gu.RemoveRoleAsync(oldRole);
                     }
