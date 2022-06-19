@@ -11,6 +11,7 @@ using NLog;
 
 namespace CollaborationBot.Autocomplete {
     public class ProjectAutocompleteHandler : AutocompleteHandler {
+        private const int MaxSuggestions = 25;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly OsuCollabContext _context;
 
@@ -29,6 +30,7 @@ namespace CollaborationBot.Autocomplete {
             if (permissionLevel == 0 || context.User is IGuildUser guildUser && guildUser.GuildPermissions.Has(GuildPermission.Administrator)) {
                 projectNames = await _context.Projects.AsQueryable()
                     .Where(p => p.Guild.UniqueGuildId == context.Guild.Id && p.Name.StartsWith(prefix))
+                    .Take(MaxSuggestions)
                     .Select(p => p.Name).ToListAsync();
             } else
                 projectNames = permissionLevel switch {
@@ -36,6 +38,7 @@ namespace CollaborationBot.Autocomplete {
                         .Where(o => o.Project.Guild.UniqueGuildId == context.Guild.Id &&
                                     o.Project.Name.StartsWith(prefix) &&
                                     o.UniqueMemberId == context.User.Id)
+                        .Take(MaxSuggestions)
                         .Select(o => o.Project.Name)
                         .ToListAsync(),
                     2 => await _context.Members.AsQueryable()
@@ -43,12 +46,14 @@ namespace CollaborationBot.Autocomplete {
                                     o.Project.Name.StartsWith(prefix) &&
                                     o.UniqueMemberId == context.User.Id && (o.ProjectRole == ProjectRole.Manager ||
                                                                             o.ProjectRole == ProjectRole.Owner))
+                        .Take(MaxSuggestions)
                         .Select(o => o.Project.Name)
                         .ToListAsync(),
                     _ => await _context.Members.AsQueryable()
                         .Where(o => o.Project.Guild.UniqueGuildId == context.Guild.Id &&
                                     o.Project.Name.StartsWith(prefix) &&
                                     o.UniqueMemberId == context.User.Id && o.ProjectRole == ProjectRole.Owner)
+                        .Take(MaxSuggestions)
                         .Select(o => o.Project.Name)
                         .ToListAsync()
                 };

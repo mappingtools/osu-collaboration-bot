@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace CollaborationBot.Autocomplete {
     public class ProjectJoinAutocompleteHandler : AutocompleteHandler {
+        private const int MaxSuggestions = 25;
         private readonly OsuCollabContext _context;
 
         public ProjectJoinAutocompleteHandler(OsuCollabContext context) {
@@ -19,6 +20,7 @@ namespace CollaborationBot.Autocomplete {
             var prefix = (string)autocompleteInteraction.Data.Current.Value;
             var projectNames = await _context.Projects.AsQueryable()
                 .Where(p => p.Guild.UniqueGuildId == context.Guild.Id && p.Name.StartsWith(prefix) && p.Status == ProjectStatus.SearchingForMembers)
+                .Take(MaxSuggestions)
                 .Select(p => p.Name).ToListAsync();
             return AutocompletionResult.FromSuccess(projectNames.Select(o => new AutocompleteResult(o, o)));
         }
