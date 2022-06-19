@@ -16,7 +16,7 @@ namespace CollaborationBot.Services {
     public class FileHandlingService {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public enum PermissibleFileType {
+        private enum PermissibleFileType {
             DOT_OSU,
             DOT_TSV,
             DOT_CSV
@@ -24,7 +24,7 @@ namespace CollaborationBot.Services {
 
         private string _path;
 
-        public Dictionary<PermissibleFileType, string> PermissibleFileExtensions = new() {
+        private readonly Dictionary<PermissibleFileType, string> _permissibleFileExtensions = new() {
             {PermissibleFileType.DOT_OSU, ".osu"},
             {PermissibleFileType.DOT_TSV, ".tsv"},
             {PermissibleFileType.DOT_CSV, ".csv"},
@@ -49,7 +49,7 @@ namespace CollaborationBot.Services {
 
                 using var client = new HttpClient();
                 var response = await client.GetAsync(uri);
-                using (var fs = new FileStream(filePath, FileMode.CreateNew)) {
+                await using (var fs = new FileStream(filePath, FileMode.Create)) {
                     await response.Content.CopyToAsync(fs);
                 }
 
@@ -180,7 +180,7 @@ namespace CollaborationBot.Services {
         }
 
         private bool IsFilePermissible(string url, PermissibleFileType fileType) {
-            if (!PermissibleFileExtensions.TryGetValue(fileType, out var ext)) return false;
+            if (!_permissibleFileExtensions.TryGetValue(fileType, out var ext)) return false;
 
             return ext == Path.GetExtension(url);
         }
