@@ -332,7 +332,16 @@ namespace CollaborationBot.Commands {
                 PermValue.Deny,
                 PermValue.Allow,
                 PermValue.Deny,
-                PermValue.Deny);
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Deny,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Allow);
         }
 
         public static OverwritePermissions GetWritePermissions() {
@@ -355,7 +364,16 @@ namespace CollaborationBot.Commands {
                 PermValue.Deny,
                 PermValue.Allow,
                 PermValue.Deny,
-                PermValue.Deny);
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Deny,
+                PermValue.Deny,
+                PermValue.Allow,
+                PermValue.Allow,
+                PermValue.Allow);
         }
 
         public static OverwritePermissions GetReadPermissions() {
