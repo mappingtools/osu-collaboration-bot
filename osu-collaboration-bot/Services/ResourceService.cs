@@ -90,7 +90,7 @@ namespace CollaborationBot.Services {
             if (parts.Count <= 0) return Strings.NoParts;
             return GenerateListMessage(Strings.PartListMessage,
                 parts.Select(o => {
-                    string str = $"{o.Name} ({TimeToString(o.Start)} - {TimeToString(o.End)}): {o.Status}";
+                    var str = $"{o.Name} ({TimeToString(o.Start)} - {TimeToString(o.End)}): {o.Status}";
                     if (o.Assignments.Count > 0) {
                         var builder = new StringBuilder(" {");
                         builder.AppendJoin(", ", o.Assignments.Select(a => MemberName(a.Member)));
@@ -99,6 +99,21 @@ namespace CollaborationBot.Services {
                     }
                     return str;
                 }));
+        }
+
+        public Embed[] GeneratePartsListEmbeds(List<Part> parts) {
+            if (parts.Count <= 0) return null;
+            return GenerateListEmbeds(parts.Select(o => {
+                var str = $"({TimeToString(o.Start)} - {TimeToString(o.End)}): {o.Status}";
+                if (o.Assignments.Count > 0) {
+                    var builder = new StringBuilder(" {");
+                    builder.AppendJoin(", ", o.Assignments.Select(a => MemberName(a.Member)));
+                    builder.Append('}');
+                    str += builder.ToString();
+                }
+
+                return (o.Name, str);
+            }));
         }
 
         public string GeneratePartsListDescription(List<Part> parts, bool includeMappers = true, bool includePartNames = false) {
@@ -132,6 +147,29 @@ namespace CollaborationBot.Services {
             foreach (var item in list) builder.AppendLine($"- {item}");
             builder.Append("```");
             return builder.ToString();
+        }
+
+        public Embed[] GenerateListEmbeds(IEnumerable<(string, string)> list) {
+            var array = list.ToArray();
+            var embeds = new Embed[(array.Length - 1) / 25 + 1];
+            var e = 0;
+            var c = 0;
+            var embedBuilder = new EmbedBuilder();
+            foreach (var (name, value) in array) {
+                embedBuilder.AddField(name, value);
+                c++;
+
+                if (c != 25) continue;
+                embeds[e++] = embedBuilder.Build();
+                embedBuilder = new EmbedBuilder();
+                c = 0;
+            }
+
+            if (c > 0) {
+                embeds[e] = embedBuilder.Build();
+            }
+
+            return embeds;
         }
 
         public string MemberName(Member member) {
