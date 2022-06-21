@@ -93,7 +93,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            await RespondAsync(Strings.PartListMessage);
+            await RespondAsync(Strings.PartListUnclaimedMessage);
 
             var paginator = new StaticPaginatorBuilder()
                 .WithPages(_resourceService.GeneratePartsListPages(parts))

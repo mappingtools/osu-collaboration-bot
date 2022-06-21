@@ -649,4 +649,7 @@ Replace the part with the [square brackets] with the relevant value.</value>
   <data name="RemoveProjectStart" xml:space="preserve">
     <value>Removing project `{0}`...</value>
   </data>
+  <data name="PartListUnclaimedMessage" xml:space="preserve">
+    <value>Here are all the unclaimed parts of the project:</value>
+  </data>
 </root>

@@ -1077,6 +1077,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Here are all the unclaimed parts of the project:.
+        /// </summary>
+        public static string PartListUnclaimedMessage {
+            get {
+                return ResourceManager.GetString("PartListUnclaimedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A part named `{0}` does not exist in project `{1}`..
         /// </summary>
         public static string PartNotExists {
