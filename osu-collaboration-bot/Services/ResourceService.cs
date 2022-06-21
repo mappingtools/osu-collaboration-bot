@@ -183,29 +183,26 @@ namespace CollaborationBot.Services {
         }
 
         public IPageBuilder[] GenerateListPages(IEnumerable<(string, string)> list) {
-            const int maxItemsPerPage = 20;
+            const int maxItemsPerPage = 10;
 
             var array = list.ToArray();
             var pages = new IPageBuilder[(array.Length - 1) / maxItemsPerPage + 1];
             var e = 0;
             var c = 0;
             var pageBuilder = new PageBuilder();
-            var stringBuilder = new StringBuilder();
             foreach (var (name, value) in array) {
-                //pageBuilder.AddField(name, value);
-                stringBuilder.AppendLine($"**{name}** {value}");
+                pageBuilder.AddField(name, value);
                 c++;
 
                 if (c != maxItemsPerPage) continue;
-                pageBuilder.AddField($"Parts {e * maxItemsPerPage + 1}-{Math.Min((e + 1) * maxItemsPerPage, array.Length)}", stringBuilder.ToString());
+                pageBuilder.Title = $"Parts {e * maxItemsPerPage + 1}-{Math.Min((e + 1) * maxItemsPerPage, array.Length)}";
                 pages[e++] = pageBuilder;
-                stringBuilder = new StringBuilder();
                 pageBuilder = new PageBuilder();
                 c = 0;
             }
 
             if (c > 0) {
-                pageBuilder.AddField($"Parts {e * maxItemsPerPage + 1}-{Math.Min((e + 1) * maxItemsPerPage, array.Length)}", stringBuilder.ToString());
+                pageBuilder.Title = $"Parts {e * maxItemsPerPage + 1}-{Math.Min((e + 1) * maxItemsPerPage, array.Length)}";
                 pages[e] = pageBuilder;
             }
 
