@@ -78,9 +78,10 @@ namespace CollaborationBot.Services {
 
         public async Task RegisterModulesAsync(IEnumerable<SocketGuild> guilds) {
 #if DEBUG
+            await _interactions.AddCommandsGloballyAsync(true, Array.Empty<IApplicationCommandInfo>());
             await _interactions.RegisterCommandsToGuildAsync(590879727477325865);
 #else
-            foreach (var guild in guilds) {
+            /*foreach (var guild in guilds) {
                 try {
                     await _interactions.AddCommandsToGuildAsync(guild, true, Array.Empty<ICommandInfo>());
                     logger.Info("Removed commands from guild: {guild}", guild.Name);
@@ -88,7 +89,7 @@ namespace CollaborationBot.Services {
                     logger.Error("Could not remove commands from guild: {guild}", guild.Name);
                     logger.Error(ex);
                 }
-            }
+            }*/
             await _interactions.RegisterCommandsGloballyAsync();
 #endif
         }
