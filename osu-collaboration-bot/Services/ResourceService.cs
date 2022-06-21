@@ -7,6 +7,7 @@ using CollaborationBot.Entities;
 using CollaborationBot.Resources;
 using Discord;
 using Discord.WebSocket;
+using Fergun.Interactive;
 
 namespace CollaborationBot.Services {
     public class ResourceService {
@@ -110,6 +111,21 @@ namespace CollaborationBot.Services {
             }));
         }
 
+        public IPageBuilder[] GeneratePartsListPages(List<Part> parts) {
+            if (parts.Count <= 0) return null;
+            return GenerateListPages(parts.Select(o => {
+                var str = $"({TimeToString(o.Start)} - {TimeToString(o.End)}): {o.Status}";
+                if (o.Assignments.Count > 0) {
+                    var builder = new StringBuilder(" {");
+                    builder.AppendJoin(", ", o.Assignments.Select(a => MemberName(a.Member)));
+                    builder.Append('}');
+                    str += builder.ToString();
+                }
+
+                return (o.Name, str);
+            }));
+        }
+
         public string GeneratePartsListDescription(List<Part> parts, bool includeMappers = true, bool includePartNames = false) {
             var builder = new StringBuilder("```[notice][box=Parts]\n");
             foreach (Part part in parts) {
@@ -164,6 +180,36 @@ namespace CollaborationBot.Services {
             }
 
             return embeds;
+        }
+
+        public IPageBuilder[] GenerateListPages(IEnumerable<(string, string)> list) {
+            const int maxItemsPerPage = 20;
+
+            var array = list.ToArray();
+            var pages = new IPageBuilder[(array.Length - 1) / maxItemsPerPage + 1];
+            var e = 0;
+            var c = 0;
+            var pageBuilder = new PageBuilder();
+            var stringBuilder = new StringBuilder();
+            foreach (var (name, value) in array) {
+                //pageBuilder.AddField(name, value);
+                stringBuilder.AppendLine($"**{name}** {value}");
+                c++;
+
+                if (c != maxItemsPerPage) continue;
+                pageBuilder.AddField($"Parts {e * maxItemsPerPage + 1}-{Math.Min((e + 1) * maxItemsPerPage, array.Length)}", stringBuilder.ToString());
+                pages[e++] = pageBuilder;
+                stringBuilder = new StringBuilder();
+                pageBuilder = new PageBuilder();
+                c = 0;
+            }
+
+            if (c > 0) {
+                pageBuilder.AddField($"Parts {e * maxItemsPerPage + 1}-{Math.Min((e + 1) * maxItemsPerPage, array.Length)}", stringBuilder.ToString());
+                pages[e] = pageBuilder;
+            }
+
+            return pages;
         }
 
         public string MemberName(Member member) {

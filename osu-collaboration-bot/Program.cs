@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using Fergun.Interactive;
 
 namespace CollaborationBot {
     public class Program {
@@ -185,17 +186,18 @@ namespace CollaborationBot {
         }
 
         private ServiceProvider ConfigureServices() {
-            var services = new ServiceCollection();
-            services.AddSingleton(_appSettings);
-            services.AddSingleton<ResourceService>();
-            services.AddDbContext<OsuCollabContext>();
-            services.AddSingleton<FileHandlingService>();
-            services.AddSingleton<DiscordSocketClient>();
-            services.AddSingleton(_interactionService);
-            services.AddSingleton(_client);
-            services.AddSingleton<InteractionHandlerService>();
-            services.AddSingleton<UserHelpService>();
-            services.AddSingleton<InputSanitizingService>();
+            var services = new ServiceCollection()
+                .AddSingleton(_appSettings)
+                .AddSingleton<ResourceService>()
+                .AddDbContext<OsuCollabContext>()
+                .AddSingleton<FileHandlingService>()
+                .AddSingleton<DiscordSocketClient>()
+                .AddSingleton(_interactionService)
+                .AddSingleton(_client)
+                .AddSingleton<InteractionHandlerService>()
+                .AddSingleton<UserHelpService>()
+                .AddSingleton<InputSanitizingService>()
+                .AddSingleton<InteractiveService>();
 
             return services.BuildServiceProvider();
         }

@@ -16,6 +16,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CollaborationBot.Autocomplete;
+using Fergun.Interactive;
+using Fergun.Interactive.Pagination;
 
 namespace CollaborationBot.Commands {
     [Group("part", "Everything about parts")]
@@ -26,15 +28,17 @@ namespace CollaborationBot.Commands {
         private readonly ResourceService _resourceService;
         private readonly InputSanitizingService _inputSanitizer;
         private readonly AppSettings _appSettings;
+        private readonly InteractiveService _interactive;
 
         public PartModule(OsuCollabContext context, FileHandlingService fileHandler,
             ResourceService resourceService, InputSanitizingService inputSanitizingService,
-            AppSettings appSettings) {
+            AppSettings appSettings, InteractiveService interactive) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
             _inputSanitizer = inputSanitizingService;
             _appSettings = appSettings;
+            _interactive = interactive;
         }
         
         [SlashCommand("list", "Lists all the parts of the project")]
@@ -53,7 +57,19 @@ namespace CollaborationBot.Commands {
 
             parts.Sort();
 
-            await RespondAsync(_resourceService.GeneratePartsListMessage(parts));
+            if (parts.Count == 0) {
+                await RespondAsync(Strings.NoParts);
+                return;
+            }
+
+            await RespondAsync(Strings.PartListMessage);
+
+            var paginator = new StaticPaginatorBuilder()
+                .WithPages(_resourceService.GeneratePartsListPages(parts))
+                .Build();
+
+            // Send the paginator to the source channel and wait until it times out after 10 minutes.
+            await _interactive.SendPaginatorAsync(paginator, Context.Channel, TimeSpan.FromMinutes(10));
         }
         
         [SlashCommand("listunclaimed", "Lists all the unclaimed parts of the project")]
@@ -72,7 +88,19 @@ namespace CollaborationBot.Commands {
 
             parts.Sort();
 
-            await RespondAsync(_resourceService.GeneratePartsListMessage(parts));
+            if (parts.Count == 0) {
+                await RespondAsync(Strings.NoParts);
+                return;
+            }
+
+            await RespondAsync(Strings.PartListMessage);
+
+            var paginator = new StaticPaginatorBuilder()
+                .WithPages(_resourceService.GeneratePartsListPages(parts))
+                .Build();
+
+            // Send the paginator to the source channel and wait until it times out after 10 minutes.
+            await _interactive.SendPaginatorAsync(paginator, Context.Channel, TimeSpan.FromMinutes(10));
         }
         
         [SlashCommand("add", "Adds a new part to the project")]
