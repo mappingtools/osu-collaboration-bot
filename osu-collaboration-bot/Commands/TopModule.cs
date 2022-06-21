@@ -5,7 +5,6 @@ using CollaborationBot.Resources;
 using CollaborationBot.Services;
 using Discord;
 using Discord.Interactions;
-using Discord.WebSocket;
 using Mapping_Tools_Core.BeatmapHelper;
 using Mapping_Tools_Core.BeatmapHelper.Contexts;
 using Mapping_Tools_Core.BeatmapHelper.IO.Decoding;
@@ -113,6 +112,50 @@ namespace CollaborationBot.Commands {
             var projects = await _context.Projects.AsQueryable().Where(p => p.Guild.UniqueGuildId == Context.Guild.Id).ToListAsync();
 
             await RespondAsync(_resourceService.GenerateProjectListMessage(projects));
+        }
+
+        [SlashCommand("info", "Shows general information of the project")]
+        public async Task Info([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName) {
+            // Name, description, owner, status, member count, part count, completion %, join allowed, self assignment allowed, priority picking,
+            // part restricted upload, reminders, assignment lifetime, max assignments, main channel, info channel
+            // Embed in role color
+            var project = await GetProjectAsync(projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            var memberCount = await _context.Members.AsQueryable().Where(o => o.ProjectId == project.Id).CountAsync();
+            var partCount = await _context.Parts.AsQueryable().Where(o => o.ProjectId == project.Id).CountAsync();
+            var completedPartCount = await _context.Parts.AsQueryable().Where(o => o.ProjectId == project.Id && o.Status == PartStatus.Finished).CountAsync();
+            var completionPercent = 100 * completedPartCount / partCount;
+            var ownerMember = await _context.Members.AsQueryable().Where(o => o.ProjectId == project.Id && o.ProjectRole == ProjectRole.Owner).SingleOrDefaultAsync();
+            var owner = ownerMember is not null ? Context.Guild.GetUser((ulong)ownerMember.UniqueMemberId) : null;
+            var mainRole = project.UniqueRoleId.HasValue ? Context.Guild.GetRole((ulong)project.UniqueRoleId.Value) : null;
+            var infoChannel = project.InfoChannelId.HasValue ? Context.Guild.GetTextChannel((ulong)project.InfoChannelId.Value) : null;
+            var mainChannel = project.MainChannelId.HasValue ? Context.Guild.GetTextChannel((ulong)project.MainChannelId.Value) : null;
+
+            var embed = new EmbedBuilder()
+                .WithTitle(project.Name)
+                .WithDescription(project.Description)
+                .WithFields(
+                    new EmbedFieldBuilder().WithName("Owner").WithValue(owner?.Mention).WithIsInline(true),
+                    new EmbedFieldBuilder().WithName("Info").WithValue(infoChannel?.Mention ?? Strings.None).WithIsInline(true),
+                    new EmbedFieldBuilder().WithName("Chat").WithValue(mainChannel?.Mention ?? Strings.None).WithIsInline(true),
+                    new EmbedFieldBuilder().WithName("Status").WithValue(project.Status.HasValue ? project.Status : Strings.None).WithIsInline(true),
+                    new EmbedFieldBuilder().WithName("Can join").WithValue(project.Status == ProjectStatus.SearchingForMembers).WithIsInline(true),
+                    new EmbedFieldBuilder().WithName("Can claim").WithValue(project.SelfAssignmentAllowed).WithIsInline(true),
+                    new EmbedFieldBuilder().WithName("Priority picking").WithValue(project.PriorityPicking).WithIsInline(true),
+                    new EmbedFieldBuilder().WithName("Restricted submission").WithValue(project.PartRestrictedUpload).WithIsInline(true),
+                    new EmbedFieldBuilder().WithName("Reminders").WithValue(project.DoReminders).WithIsInline(true),
+                    new EmbedFieldBuilder().WithName("Max claims").WithValue(project.MaxAssignments.HasValue ? project.MaxAssignments : Strings.Unbounded).WithIsInline(true),
+                    new EmbedFieldBuilder().WithName("Claim lifetime").WithValue(project.AssignmentLifetime.HasValue ? project.AssignmentLifetime : Strings.Unbounded).WithIsInline(true)
+                    )
+                .WithFooter($"{memberCount} members {partCount} parts {completionPercent}% completed")
+                .WithColor(mainRole?.Color ?? Color.Blue);
+            embed.Color = mainRole?.Color;
+
+            await RespondAsync(embed: embed.Build());
         }
 
         [SlashCommand("members", "Lists all members of the project")]

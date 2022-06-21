@@ -929,6 +929,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are no parts in this project..
         /// </summary>
         public static string NoParts {
@@ -1559,6 +1568,15 @@ namespace CollaborationBot.Resources {
         public static string TextChannelNotExist {
             get {
                 return ResourceManager.GetString("TextChannelNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unbounded.
+        /// </summary>
+        public static string Unbounded {
+            get {
+                return ResourceManager.GetString("Unbounded", resourceCulture);
             }
         }
         
