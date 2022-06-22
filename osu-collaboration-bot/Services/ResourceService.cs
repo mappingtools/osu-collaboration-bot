@@ -3,18 +3,39 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CollaborationBot.Entities;
 using CollaborationBot.Resources;
 using Discord;
+using Discord.Interactions;
 using Discord.WebSocket;
 using Fergun.Interactive;
+using Fergun.Interactive.Pagination;
 
 namespace CollaborationBot.Services {
     public class ResourceService {
         private readonly DiscordSocketClient _client;
+        private readonly InteractiveService _interactive;
 
-        public ResourceService(DiscordSocketClient client) {
+        public ResourceService(DiscordSocketClient client, InteractiveService interactive) {
             _client = client;
+            _interactive = interactive;
+        }
+
+        public async Task RespondPaginator<T>(SocketInteractionContext context, List<T> items,
+        Func<List<T>, IPageBuilder[]> pageMaker, string nothingString, string message) {
+            if (items.Count == 0) {
+                await context.Interaction.RespondAsync(nothingString);
+                return;
+            }
+
+            await context.Interaction.RespondAsync(message);
+
+            var paginator = new StaticPaginatorBuilder()
+                .WithPages(pageMaker(items))
+                .Build();
+
+            await _interactive.SendPaginatorAsync(paginator, context.Channel);
         }
 
         public string GenerateSubmitPartMessage(string projectName, int hitObjectCount, bool isSuccessful = true) {
@@ -70,8 +91,12 @@ namespace CollaborationBot.Services {
         }
         
         public string GenerateProjectListMessage(List<Project> projects) {
-            if (projects.Count <= 0) return Strings.NoProjects; 
-            return GenerateListMessage(Strings.ProjectListMessage, projects.Select(p => $"{p.Name}{(p.Status.HasValue ? $" ({p.Status})" : string.Empty)}"));
+            return projects.Count <= 0 ? Strings.NoProjects : GenerateListMessage(Strings.ProjectListMessage,
+                projects.Select(p => $"{p.Name}{(p.Status.HasValue ? $" ({p.Status})" : string.Empty)}"));
+        }
+
+        public IPageBuilder[] GenerateProjectListPages(List<Project> projects) {
+            return projects.Count <= 0 ? null : GenerateListPages(projects.Select(p => (p.Name, p.Status.ToString())), Strings.Projects);
         }
 
         public string GenerateMembersListMessage(List<Member> members) {
@@ -79,6 +104,12 @@ namespace CollaborationBot.Services {
             return GenerateListMessage(Strings.MemberListMessage, 
                 members.Select(o =>
                     $"{MemberName(o)}{(o.Priority.HasValue ? $" ({o.Priority.Value})" : string.Empty)} [{o.ProjectRole}]"));
+        }
+
+        public IPageBuilder[] GenerateMembersListPages(List<Member> members) {
+            if (members.Count <= 0) return null;
+            return GenerateListPages(members.Select(o =>
+                (MemberName(o), $"{o.ProjectRole}{(o.Priority.HasValue ? $" ({o.Priority.Value})" : string.Empty)}")), Strings.Members);
         }
 
         public string GeneratePartsListMessage(List<Part> parts) {
@@ -123,7 +154,7 @@ namespace CollaborationBot.Services {
                 }
 
                 return (o.Name, str);
-            }));
+            }), Strings.Parts);
         }
 
         public string GeneratePartsListDescription(List<Part> parts, bool includeMappers = true, bool includePartNames = false) {
@@ -144,10 +175,23 @@ namespace CollaborationBot.Services {
                 draintimes.Select(m => $"{MemberName(m.Key)}: {TimeToString(m.Value)}"));
         }
 
+        public IPageBuilder[] GenerateDrainTimePages(List<KeyValuePair<Member, int>> drainTimes) {
+            if (drainTimes.Count <= 0) return null;
+            return GenerateListPages(
+                drainTimes.Select(m => (MemberName(m.Key), TimeToString(m.Value))), Strings.AutoUpdates);
+        }
+
         public string GenerateAssignmentListMessage(List<Assignment> assignments) {
             if (assignments.Count <= 0) return Strings.NoAssignments;
             return GenerateListMessage(Strings.AssignmentListMessage,
                 assignments.Select(o => $"{o.Part.Name}: {MemberName(o.Member)}{(o.Deadline.HasValue ? " - " + o.Deadline.Value.ToString("yyyy-MM-dd") : string.Empty)}"));
+        }
+
+        public IPageBuilder[] GenerateAssignmentListPages(List<Assignment> assignments) {
+            if (assignments.Count <= 0) return null;
+            return GenerateListPages(assignments.Select(o =>
+                    ($"{o.Part.Name}: {MemberName(o.Member)}", $"{(o.Deadline.HasValue ? o.Deadline.Value.ToString("yyyy-MM-dd") : Strings.NoDeadline)}")),
+                Strings.Assignments);
         }
 
         public string GenerateListMessage(string message, IEnumerable<string> list) {
@@ -182,7 +226,7 @@ namespace CollaborationBot.Services {
             return embeds;
         }
 
-        public IPageBuilder[] GenerateListPages(IEnumerable<(string, string)> list) {
+        public IPageBuilder[] GenerateListPages(IEnumerable<(string, string)> list, string itemName) {
             const int maxItemsPerPage = 10;
 
             var array = list.ToArray();
@@ -195,14 +239,14 @@ namespace CollaborationBot.Services {
                 c++;
 
                 if (c != maxItemsPerPage) continue;
-                pageBuilder.Title = $"Parts {e * maxItemsPerPage + 1}-{Math.Min((e + 1) * maxItemsPerPage, array.Length)}";
+                pageBuilder.Title = $"{itemName} {e * maxItemsPerPage + 1}-{Math.Min((e + 1) * maxItemsPerPage, array.Length)}";
                 pages[e++] = pageBuilder;
                 pageBuilder = new PageBuilder();
                 c = 0;
             }
 
             if (c > 0) {
-                pageBuilder.Title = $"Parts {e * maxItemsPerPage + 1}-{Math.Min((e + 1) * maxItemsPerPage, array.Length)}";
+                pageBuilder.Title = $"{itemName} {e * maxItemsPerPage + 1}-{Math.Min((e + 1) * maxItemsPerPage, array.Length)}";
                 pages[e] = pageBuilder;
             }
 

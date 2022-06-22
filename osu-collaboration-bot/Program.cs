@@ -197,6 +197,7 @@ namespace CollaborationBot {
                 .AddSingleton<InteractionHandlerService>()
                 .AddSingleton<UserHelpService>()
                 .AddSingleton<InputSanitizingService>()
+                .AddSingleton(new InteractiveConfig { DefaultTimeout = TimeSpan.FromMinutes(10) })
                 .AddSingleton<InteractiveService>();
 
             return services.BuildServiceProvider();

@@ -28,17 +28,15 @@ namespace CollaborationBot.Commands {
         private readonly ResourceService _resourceService;
         private readonly InputSanitizingService _inputSanitizer;
         private readonly AppSettings _appSettings;
-        private readonly InteractiveService _interactive;
 
         public PartModule(OsuCollabContext context, FileHandlingService fileHandler,
             ResourceService resourceService, InputSanitizingService inputSanitizingService,
-            AppSettings appSettings, InteractiveService interactive) {
+            AppSettings appSettings) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
             _inputSanitizer = inputSanitizingService;
             _appSettings = appSettings;
-            _interactive = interactive;
         }
         
         [SlashCommand("list", "Lists all the parts of the project")]
@@ -57,19 +55,8 @@ namespace CollaborationBot.Commands {
 
             parts.Sort();
 
-            if (parts.Count == 0) {
-                await RespondAsync(Strings.NoParts);
-                return;
-            }
-
-            await RespondAsync(Strings.PartListMessage);
-
-            var paginator = new StaticPaginatorBuilder()
-                .WithPages(_resourceService.GeneratePartsListPages(parts))
-                .Build();
-
-            // Send the paginator to the source channel and wait until it times out after 10 minutes.
-            await _interactive.SendPaginatorAsync(paginator, Context.Channel, TimeSpan.FromMinutes(10));
+            await _resourceService.RespondPaginator(Context, parts, _resourceService.GeneratePartsListPages,
+                Strings.NoParts, Strings.PartListMessage);
         }
         
         [SlashCommand("listunclaimed", "Lists all the unclaimed parts of the project")]
@@ -88,19 +75,8 @@ namespace CollaborationBot.Commands {
 
             parts.Sort();
 
-            if (parts.Count == 0) {
-                await RespondAsync(Strings.NoParts);
-                return;
-            }
-
-            await RespondAsync(Strings.PartListUnclaimedMessage);
-
-            var paginator = new StaticPaginatorBuilder()
-                .WithPages(_resourceService.GeneratePartsListPages(parts))
-                .Build();
-
-            // Send the paginator to the source channel and wait until it times out after 10 minutes.
-            await _interactive.SendPaginatorAsync(paginator, Context.Channel, TimeSpan.FromMinutes(10));
+            await _resourceService.RespondPaginator(Context, parts, _resourceService.GeneratePartsListPages,
+                Strings.NoParts, Strings.PartListUnclaimedMessage);
         }
         
         [SlashCommand("add", "Adds a new part to the project")]

@@ -9,6 +9,7 @@ using CollaborationBot.Preconditions;
 using System;
 using System.Collections.Generic;
 using CollaborationBot.Autocomplete;
+using Fergun.Interactive;
 using NLog;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,13 +43,16 @@ namespace CollaborationBot.Commands {
                 .Where(o => o.ProjectId == project.Id)
                 .ToListAsync();
 
-            await RespondAsync(GenerateAutoUpdateListMessage(autoUpdates));
+            await _resourceService.RespondPaginator(Context, autoUpdates, GenerateAutoUpdateListPages,
+                Strings.NoAutoUpdates, Strings.AutoUpdatesListMessage);
         }
 
-        public string GenerateAutoUpdateListMessage(List<AutoUpdate> autoUpdates) {
-            if (autoUpdates.Count <= 0) return "There are no automatic update notifications for this project.";
-            return _resourceService.GenerateListMessage("Here are all the automatic update notifications for the project:",
-                autoUpdates.Select(o => $"{o.Id}: channel: {ChannelName((ulong)o.UniqueChannelId)}, cooldown: {o.Cooldown}, do ping: {o.DoPing}"));
+        private IPageBuilder[] GenerateAutoUpdateListPages(List<AutoUpdate> autoUpdates) {
+            if (autoUpdates.Count <= 0) return null;
+            return _resourceService.GenerateListPages(
+                autoUpdates.Select(o =>
+                    (o.Id.ToString(), $"channel: {ChannelName((ulong)o.UniqueChannelId)}, cooldown: {o.Cooldown}, do ping: {o.DoPing}")),
+                Strings.AutoUpdates);
         }
 
         public string ChannelName(ulong id) {

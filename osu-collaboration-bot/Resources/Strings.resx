@@ -658,4 +658,28 @@ Replace the part with the [square brackets] with the relevant value.</value>
   <data name="None" xml:space="preserve">
     <value>None</value>
   </data>
+  <data name="Projects" xml:space="preserve">
+    <value>Projects</value>
+  </data>
+  <data name="Parts" xml:space="preserve">
+    <value>Parts</value>
+  </data>
+  <data name="Members" xml:space="preserve">
+    <value>Members</value>
+  </data>
+  <data name="NoAutoUpdates" xml:space="preserve">
+    <value>There are no automatic update notifications for this project.</value>
+  </data>
+  <data name="AutoUpdatesListMessage" xml:space="preserve">
+    <value>Here are all the automatic update notifications for the project:</value>
+  </data>
+  <data name="AutoUpdates" xml:space="preserve">
+    <value>Auto updates</value>
+  </data>
+  <data name="Assignments" xml:space="preserve">
+    <value>Assignments</value>
+  </data>
+  <data name="NoDeadline" xml:space="preserve">
+    <value>No deadline</value>
+  </data>
 </root>

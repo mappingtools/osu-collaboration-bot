@@ -10,6 +10,7 @@ using System;
 using NLog;
 using System.Collections.Generic;
 using CollaborationBot.Autocomplete;
+using Fergun.Interactive;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollaborationBot.Commands {
@@ -44,7 +45,8 @@ namespace CollaborationBot.Commands {
 
             assignments.Sort();
 
-            await RespondAsync(_resourceService.GenerateAssignmentListMessage(assignments));
+            await _resourceService.RespondPaginator(Context, assignments, _resourceService.GenerateAssignmentListPages,
+                Strings.NoAssignments, Strings.AssignmentListMessage);
         }
         
         [SlashCommand("add", "Adds one or more assignments")]
@@ -144,8 +146,8 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        [SlashCommand("draintimes", "Calculates the total draintime assigned to each participant.")]
-        public async Task Draintimes([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName) {
+        [SlashCommand("draintimes", "Calculates the total drain time assigned to each participant.")]
+        public async Task DrainTimes([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName) {
             var project = await GetProjectAsync(projectName);
 
             if (project == null) {
@@ -159,13 +161,16 @@ namespace CollaborationBot.Commands {
                     .Include(o => o.Member).ToListAsync())
                     .GroupBy(o => o.Member);
 
-                var draintimes = new List<KeyValuePair<Member, int>>();
+                var drainTimes = new List<KeyValuePair<Member, int>>();
                 foreach (var ass in assignments) {
-                    int draintime = ass.Sum(o => o.Part.End.HasValue && o.Part.Start.HasValue ? o.Part.End.Value - o.Part.Start.Value : 0);
-                    draintimes.Add(new KeyValuePair<Member, int>(ass.Key, draintime));
+                    int drainTime = ass.Sum(o => o.Part.End.HasValue && o.Part.Start.HasValue ? o.Part.End.Value - o.Part.Start.Value : 0);
+                    drainTimes.Add(new KeyValuePair<Member, int>(ass.Key, drainTime));
                 }
 
-                await RespondAsync(_resourceService.GenerateDraintimesListMessage(draintimes.OrderBy(o => o.Value).ToList()));
+                drainTimes = drainTimes.OrderBy(o => o.Value).ToList();
+
+                await _resourceService.RespondPaginator(Context, drainTimes, _resourceService.GenerateDrainTimePages, Strings.NoAssignments,
+                    Strings.DrainTimeListMessage);
             } catch (Exception e) {
                 logger.Error(e);
                 await RespondAsync(string.Format(Strings.BackendErrorMessage, projectName));

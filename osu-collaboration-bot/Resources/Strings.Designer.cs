@@ -261,6 +261,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assignments.
+        /// </summary>
+        public static string Assignments {
+            get {
+                return ResourceManager.GetString("Assignments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The attached file is invalid..
         /// </summary>
         public static string AttachedFileInvalid {
@@ -347,6 +356,24 @@ namespace CollaborationBot.Resources {
         public static string AutoUpdateNotExists {
             get {
                 return ResourceManager.GetString("AutoUpdateNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto updates.
+        /// </summary>
+        public static string AutoUpdates {
+            get {
+                return ResourceManager.GetString("AutoUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Here are all the automatic update notifications for the project:.
+        /// </summary>
+        public static string AutoUpdatesListMessage {
+            get {
+                return ResourceManager.GetString("AutoUpdatesListMessage", resourceCulture);
             }
         }
         
@@ -848,6 +875,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Members.
+        /// </summary>
+        public static string Members {
+            get {
+                return ResourceManager.GetString("Members", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not move deadline to {0}..
         /// </summary>
         public static string MoveDeadlineFail {
@@ -902,11 +938,29 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are no automatic update notifications for this project..
+        /// </summary>
+        public static string NoAutoUpdates {
+            get {
+                return ResourceManager.GetString("NoAutoUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The beatmap contains no bookmarks..
         /// </summary>
         public static string NoBookmarksFound {
             get {
                 return ResourceManager.GetString("NoBookmarksFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No deadline.
+        /// </summary>
+        public static string NoDeadline {
+            get {
+                return ResourceManager.GetString("NoDeadline", resourceCulture);
             }
         }
         
@@ -1100,6 +1154,15 @@ namespace CollaborationBot.Resources {
         public static string PartNotExists {
             get {
                 return ResourceManager.GetString("PartNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parts.
+        /// </summary>
+        public static string Parts {
+            get {
+                return ResourceManager.GetString("Parts", resourceCulture);
             }
         }
         
@@ -1307,6 +1370,15 @@ namespace CollaborationBot.Resources {
         public static string ProjectRenameSuccess {
             get {
                 return ResourceManager.GetString("ProjectRenameSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Projects.
+        /// </summary>
+        public static string Projects {
+            get {
+                return ResourceManager.GetString("Projects", resourceCulture);
             }
         }
         

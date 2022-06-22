@@ -23,6 +23,8 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Fergun.Interactive;
+using Fergun.Interactive.Pagination;
 
 namespace CollaborationBot.Commands {
     [Group("", "All common commands")]
@@ -111,7 +113,8 @@ namespace CollaborationBot.Commands {
         public async Task List() {
             var projects = await _context.Projects.AsQueryable().Where(p => p.Guild.UniqueGuildId == Context.Guild.Id).ToListAsync();
 
-            await RespondAsync(_resourceService.GenerateProjectListMessage(projects));
+            await _resourceService.RespondPaginator(Context, projects, _resourceService.GenerateProjectListPages,
+                Strings.NoProjects, Strings.ProjectListMessage);
         }
 
         [SlashCommand("info", "Shows general information of the project")]
@@ -168,7 +171,8 @@ namespace CollaborationBot.Commands {
 
             var members = await _context.Members.AsQueryable().Where(o => o.ProjectId == project.Id).ToListAsync();
 
-            await RespondAsync(_resourceService.GenerateMembersListMessage(members));
+            await _resourceService.RespondPaginator(Context, members, _resourceService.GenerateMembersListPages,
+                Strings.NoMembers, Strings.MemberListMessage);
         }
 
         [SlashCommand("join", "Lets you become a member of a project which is looking for members")]
