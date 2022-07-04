@@ -30,6 +30,9 @@ namespace CollaborationBot.Entities
         public decimal? InfoChannelId { get; set; }
         public bool CleanupOnDeletion { get; set; }
         public bool DoReminders { get; set; }
+        public DateTime? LastActivity { get; set; }
+        public bool AutoGeneratePriorities { get; set; }
+        public bool JoinAllowed { get; set; }
 
         public virtual Guild Guild { get; set; }
         public virtual ICollection<AutoUpdate> AutoUpdates { get; set; }

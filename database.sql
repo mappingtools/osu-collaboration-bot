@@ -69,6 +69,8 @@ CREATE TABLE public.guilds
     unique_guild_id numeric NOT NULL,
     collab_category_id numeric,
     max_collabs_per_person integer NOT NULL DEFAULT 1,
+    generate_roles boolean NOT NULL DEFAULT true,
+    inactivity_timer interval,
     CONSTRAINT guilds_pkey PRIMARY KEY (id),
     CONSTRAINT guilds_unique_id UNIQUE (unique_guild_id)
 );
@@ -91,6 +93,9 @@ CREATE TABLE public.projects
     info_channel_id numeric,
     cleanup_on_deletion boolean NOT NULL DEFAULT false,
     do_reminders boolean NOT NULL DEFAULT true,
+    last_activity timestamp without time zone,
+    auto_generate_priorities boolean NOT NULL DEFAULT False,
+    join_allowed boolean NOT NULL DEFAULT false,
     CONSTRAINT projects_pkey PRIMARY KEY (id),
     CONSTRAINT unique_name UNIQUE (guild_id, name),
     CONSTRAINT projects_guild_id_fkey FOREIGN KEY (guild_id)

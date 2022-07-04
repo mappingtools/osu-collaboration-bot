@@ -16,6 +16,8 @@ namespace CollaborationBot.Entities
         public decimal UniqueGuildId { get; set; }
         public decimal? CollabCategoryId { get; set; }
         public int MaxCollabsPerPerson { get; set; }
+        public bool GenerateRoles { get; set; }
+        public TimeSpan? InactivityTimer { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; }
     }

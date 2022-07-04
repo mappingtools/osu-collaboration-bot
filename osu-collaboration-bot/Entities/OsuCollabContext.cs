@@ -110,6 +110,10 @@ namespace CollaborationBot.Entities
                 entity.Property(e => e.CollabCategoryId).HasColumnName("collab_category_id");
 
                 entity.Property(e => e.MaxCollabsPerPerson).HasColumnName("max_collabs_per_person");
+
+                entity.Property(e => e.GenerateRoles).HasColumnName("generate_roles");
+
+                entity.Property(e => e.InactivityTimer).HasColumnName("inactivity_timer");
             });
 
             modelBuilder.Entity<Member>(entity =>
@@ -201,6 +205,12 @@ namespace CollaborationBot.Entities
                 entity.Property(e => e.CleanupOnDeletion).HasColumnName("cleanup_on_deletion");
 
                 entity.Property(e => e.DoReminders).HasColumnName("do_reminders");
+
+                entity.Property(e => e.LastActivity).HasColumnName("last_activity");
+
+                entity.Property(e => e.AutoGeneratePriorities).HasColumnName("auto_generate_priorities");
+
+                entity.Property(e => e.JoinAllowed).HasColumnName("join_allowed");
 
                 entity.HasOne(d => d.Guild)
                     .WithMany(p => p.Projects)

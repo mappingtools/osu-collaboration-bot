@@ -118,7 +118,7 @@ namespace CollaborationBot.Commands {
                     return;
                 }
 
-                var projectEntry = await _context.Projects.AddAsync(new Project {Name = projectName, GuildId = guild.Id, Status = ProjectStatus.NotStarted});
+                var projectEntry = await _context.Projects.AddAsync(new Project {Name = projectName, GuildId = guild.Id, Status = ProjectStatus.NotStarted, LastActivity = DateTime.UtcNow});
                 await _context.SaveChangesAsync();
                 await _context.Members.AddAsync(new Member { ProjectId = projectEntry.Entity.Id, UniqueMemberId = Context.User.Id, ProjectRole = ProjectRole.Owner });
                 await _context.SaveChangesAsync();
