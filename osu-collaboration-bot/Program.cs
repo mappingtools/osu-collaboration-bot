@@ -131,6 +131,7 @@ namespace CollaborationBot {
                 
                 assignment.LastReminder = DateTime.UtcNow;
             }
+            await _context.SaveChangesAsync();
 
             // Check passed deadlines
             var deadAssignments = await _context.Assignments.AsQueryable().Where(
