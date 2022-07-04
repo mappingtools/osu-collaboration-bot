@@ -167,15 +167,17 @@ namespace CollaborationBot {
                         }
                         else {
                             var user = _client.GetUser((ulong)assignment.Member.UniqueMemberId);
-                            var dmChannel = await user.CreateDMChannelAsync();
-                            await dmChannel.SendMessageAsync(string.Format(Strings.AssignmentDeadlinePassed,
-                                user.Mention,
-                                assignment.Part.Name, assignment.Part.Project.Name));
+                            if (user != null) {
+                                var dmChannel = await user.CreateDMChannelAsync();
+                                await dmChannel.SendMessageAsync(string.Format(Strings.AssignmentDeadlinePassed,
+                                    user.Mention,
+                                    assignment.Part.Name, assignment.Part.Project.Name));
+                            }
                         }
                     } catch (Exception ex) {
                         logger.Error(ex, "Failed to send message for overdue assignment {assignment}", assignment.Id);
                     }
-                    
+
                     // Remove the assignment
                     _context.Assignments.Remove(assignment);
                 }
