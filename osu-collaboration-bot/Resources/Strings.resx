@@ -682,4 +682,10 @@ Replace the part with the [square brackets] with the relevant value.</value>
   <data name="NoDeadline" xml:space="preserve">
     <value>No deadline</value>
   </data>
+  <data name="GuildInactivityTimerSuccess" xml:space="preserve">
+    <value>Changed inactivity timer duration to {0}.</value>
+  </data>
+  <data name="GuildInactivityTimerFail" xml:space="preserve">
+    <value>Could not change inactivity timer duration.</value>
+  </data>
 </root>

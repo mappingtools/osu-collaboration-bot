@@ -742,6 +742,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not change inactivity timer duration..
+        /// </summary>
+        public static string GuildInactivityTimerFail {
+            get {
+                return ResourceManager.GetString("GuildInactivityTimerFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed inactivity timer duration to {0}..
+        /// </summary>
+        public static string GuildInactivityTimerSuccess {
+            get {
+                return ResourceManager.GetString("GuildInactivityTimerSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not change max collab count per person to {0}..
         /// </summary>
         public static string GuildMaxCollabsFail {

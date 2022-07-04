@@ -90,6 +90,25 @@ namespace CollaborationBot.Commands {
             }
         }
 
+        [SlashCommand("inactivitytimer", "Changes the duration of inactivity after which a project will be deleted. If null, never deleted")]
+        public async Task InactivityTimer([Summary("time", "The new inactivity timer duration (dd:hh:mm:ss:fff) (can be null)")] TimeSpan? time) {
+            var guild = await GetGuildAsync();
+
+            if (guild == null) {
+                return;
+            }
+
+            try {
+                guild.InactivityTimer = time;
+                await _context.SaveChangesAsync();
+                await RespondAsync(string.Format(Strings.GuildInactivityTimerSuccess, time));
+            }
+            catch (Exception ex) {
+                await RespondAsync(string.Format(Strings.GuildInactivityTimerFail));
+                logger.Error(ex);
+            }
+        }
+
         private async Task<Guild> GetGuildAsync() {
             var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 
