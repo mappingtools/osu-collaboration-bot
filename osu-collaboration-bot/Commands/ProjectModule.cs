@@ -62,6 +62,10 @@ namespace CollaborationBot.Commands {
             }
 
             await RespondAsync(string.Format(Strings.UploadBaseFileSuccess, attachment.Filename, projectName));
+
+            // Reset the activity timer
+            project.LastActivity = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
             
             // Handle auto updates
             await AutoUpdateModule.HandleAutoUpdates(project, Context, _context, _fileHandler);

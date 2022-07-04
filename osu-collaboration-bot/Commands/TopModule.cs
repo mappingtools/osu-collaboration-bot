@@ -152,7 +152,8 @@ namespace CollaborationBot.Commands {
                     new EmbedFieldBuilder().WithName("Restricted submission").WithValue(project.PartRestrictedUpload).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Reminders").WithValue(project.DoReminders).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Max claims").WithValue(project.MaxAssignments.HasValue ? project.MaxAssignments : Strings.Unbounded).WithIsInline(true),
-                    new EmbedFieldBuilder().WithName("Claim lifetime").WithValue(project.AssignmentLifetime.HasValue ? project.AssignmentLifetime : Strings.Unbounded).WithIsInline(true)
+                    new EmbedFieldBuilder().WithName("Claim lifetime").WithValue(project.AssignmentLifetime.HasValue ? project.AssignmentLifetime : Strings.Unbounded).WithIsInline(true),
+                    new EmbedFieldBuilder().WithName("Last activity").WithValue(project.LastActivity.HasValue ? project.LastActivity.Value.ToString("yyyy-MM-dd") : Strings.None).WithIsInline(true)
                     )
                 .WithFooter($"{memberCount} members {partCount} parts {completionPercent}% completed")
                 .WithColor(mainRole?.Color ?? Color.Blue);
@@ -489,6 +490,10 @@ namespace CollaborationBot.Commands {
                 await RespondAsync(_resourceService.GenerateSubmitPartMessage(projectName, 0, false));
                 return;
             }
+
+            // Reset the activity timer
+            project.LastActivity = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
 
             // Handle auto-updates
             await AutoUpdateModule.HandleAutoUpdates(project, Context, _context, _fileHandler);

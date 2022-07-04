@@ -144,7 +144,7 @@ namespace CollaborationBot.Commands {
                     await RespondAsync(string.Format(Strings.RemoveDeadlineSuccess, user.Username));
             } catch (Exception e) {
                 logger.Error(e);
-                await RespondAsync(string.Format(Strings.MoveDeadlineFail, deadline));
+                await RespondAsync(string.Format(Strings.MoveDeadlineFail, deadline.HasValue ? deadline.Value.ToString("yyyy-MM-dd") : Strings.None));
             }
         }
 
