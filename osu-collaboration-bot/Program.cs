@@ -98,70 +98,92 @@ namespace CollaborationBot {
         }
 
         private async void CheckupTimerOnElapsed(object sender, ElapsedEventArgs e) {
-            logger.Info("Checking for late deadlines...");
+            try {
+                logger.Info("Checking for late deadlines...");
 
-            logger.Debug("Current connection state: {state}", _client.ConnectionState);
-            logger.Debug("Current login state: {state}", _client.LoginState);
-            logger.Debug("Current latency: {state}", _client.Latency);
-            logger.Debug("Shard ID: {state}", _client.ShardId);
-            logger.Debug("Token type: {state}", _client.TokenType);
+                logger.Debug("Current connection state: {state}", _client.ConnectionState);
+                logger.Debug("Current login state: {state}", _client.LoginState);
+                logger.Debug("Current latency: {state}", _client.Latency);
+                logger.Debug("Shard ID: {state}", _client.ShardId);
+                logger.Debug("Token type: {state}", _client.TokenType);
 
-            // Check assignments and give reminders
-            var remindingTime = TimeSpan.FromDays(2);
+                // Check assignments and give reminders
+                var remindingTime = TimeSpan.FromDays(2);
 
-            // Query is grouped by project so multiple reminders in one channel can be combined to one message
-            var assignmentsToRemind = await _context.Assignments.AsQueryable().Where(
-                o => o.Deadline.HasValue && o.Deadline - remindingTime < DateTime.UtcNow &&
-                     (!o.LastReminder.HasValue || o.LastReminder + remindingTime < DateTime.UtcNow) &&
-                     o.Part.Project.DoReminders)
-                .Include(o => o.Part).ThenInclude(p => p.Project)
-                .Include(o => o.Member)
-                .ToListAsync();
+                // Query is grouped by project so multiple reminders in one channel can be combined to one message
+                var assignmentsToRemind = await _context.Assignments.AsQueryable().Where(
+                    o => o.Deadline.HasValue && o.Deadline - remindingTime < DateTime.UtcNow &&
+                         (!o.LastReminder.HasValue || o.LastReminder + remindingTime < DateTime.UtcNow) &&
+                         o.Part.Project.DoReminders)
+                    .Include(o => o.Part).ThenInclude(p => p.Project)
+                    .Include(o => o.Member)
+                    .ToListAsync();
 
-            logger.Debug("Found {count} assignments to remind.", assignmentsToRemind.Count);
+                logger.Debug("Found {count} assignments to remind.", assignmentsToRemind.Count);
 
-            foreach (var assignment in assignmentsToRemind) {
-                var user = _client.GetUser((ulong) assignment.Member.UniqueMemberId);
+                foreach (var assignment in assignmentsToRemind) {
+                    try {
+                        var user = _client.GetUser((ulong)assignment.Member.UniqueMemberId);
 
-                if (user != null) {
-                    var dmChannel = await user.CreateDMChannelAsync();
-                    await dmChannel.SendMessageAsync(string.Format(Strings.DeadlineReminder, user.Mention,
-                        assignment.Part.Name, assignment.Part.Project.Name));
-                }
-                
-                assignment.LastReminder = DateTime.UtcNow;
-            }
-            await _context.SaveChangesAsync();
-
-            // Check passed deadlines
-            var deadAssignments = await _context.Assignments.AsQueryable().Where(
-                    o => o.Deadline.HasValue && o.Deadline < DateTime.UtcNow)
-                .Include(o => o.Part).ThenInclude(p => p.Project)
-                .Include(o => o.Member).ToListAsync();
-            
-            logger.Debug("Found {count} assignments overdue.", deadAssignments.Count);
-
-            foreach (var assignment in deadAssignments) {
-                if (assignment.Part.Project.MainChannelId.HasValue) {
-                    // Show deadline passed message
-                    var channel = _client.GetChannel((ulong) assignment.Part.Project.MainChannelId!.Value);
-                    var user = _client.GetUser((ulong) assignment.Member.UniqueMemberId);
-                
-                    if (channel is ITextChannel textChannel && user != null) {
-                        await textChannel.SendMessageAsync(string.Format(Strings.AssignmentDeadlinePassed, user.Mention,
-                            assignment.Part.Name, assignment.Part.Project.Name));
-                    } else if (user != null) {
-                        var dmChannel = await user.CreateDMChannelAsync();
-                        await dmChannel.SendMessageAsync(string.Format(Strings.AssignmentDeadlinePassed, user.Mention,
-                            assignment.Part.Name, assignment.Part.Project.Name));
+                        if (user != null) {
+                            var dmChannel = await user.CreateDMChannelAsync();
+                            await dmChannel.SendMessageAsync(string.Format(Strings.DeadlineReminder, user.Mention,
+                                assignment.Part.Name, assignment.Part.Project.Name));
+                        }
+                    } catch (Exception ex) {
+                        logger.Error(ex, "Failed to send reminder for assignment {assignment}", assignment.Id);
                     }
-                }
-                
-                // Remove the assignment
-                _context.Assignments.Remove(assignment);
-            }
 
-            await _context.SaveChangesAsync();
+                    assignment.LastReminder = DateTime.UtcNow;
+                }
+                await _context.SaveChangesAsync();
+
+                // Check passed deadlines
+                var deadAssignments = await _context.Assignments.AsQueryable().Where(
+                        o => o.Deadline.HasValue && o.Deadline < DateTime.UtcNow)
+                    .Include(o => o.Part).ThenInclude(p => p.Project)
+                    .Include(o => o.Member).ToListAsync();
+
+                logger.Debug("Found {count} assignments overdue.", deadAssignments.Count);
+
+                foreach (var assignment in deadAssignments) {
+                    try {
+                        if (assignment.Part.Project.MainChannelId.HasValue) {
+                            // Show deadline passed message
+                            var channel = _client.GetChannel((ulong)assignment.Part.Project.MainChannelId!.Value);
+                            var user = _client.GetUser((ulong)assignment.Member.UniqueMemberId);
+
+                            if (channel is ITextChannel textChannel && user != null) {
+                                await textChannel.SendMessageAsync(string.Format(Strings.AssignmentDeadlinePassed,
+                                    user.Mention,
+                                    assignment.Part.Name, assignment.Part.Project.Name));
+                            }
+                            else if (user != null) {
+                                var dmChannel = await user.CreateDMChannelAsync();
+                                await dmChannel.SendMessageAsync(string.Format(Strings.AssignmentDeadlinePassed,
+                                    user.Mention,
+                                    assignment.Part.Name, assignment.Part.Project.Name));
+                            }
+                        }
+                        else {
+                            var user = _client.GetUser((ulong)assignment.Member.UniqueMemberId);
+                            var dmChannel = await user.CreateDMChannelAsync();
+                            await dmChannel.SendMessageAsync(string.Format(Strings.AssignmentDeadlinePassed,
+                                user.Mention,
+                                assignment.Part.Name, assignment.Part.Project.Name));
+                        }
+                    } catch (Exception ex) {
+                        logger.Error(ex, "Failed to send message for overdue assignment {assignment}", assignment.Id);
+                    }
+                    
+                    // Remove the assignment
+                    _context.Assignments.Remove(assignment);
+                }
+
+                await _context.SaveChangesAsync();
+            } catch (Exception exception) {
+                logger.Error(exception, "Error in checkup timer");
+            }
         }
 
         private async Task Ready() {
