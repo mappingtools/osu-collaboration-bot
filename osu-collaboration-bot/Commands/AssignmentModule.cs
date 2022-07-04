@@ -78,6 +78,7 @@ namespace CollaborationBot.Commands {
                 }
 
                 try {
+                    deadline = deadline?.ToUniversalTime();
                     await _context.Assignments.AddAsync(new Assignment { MemberId = member.Id, PartId = part.Id, Deadline = deadline, LastReminder = DateTime.UtcNow });
                     await _context.SaveChangesAsync();
                     await RespondAsync(string.Format(Strings.AddAssignmentSuccess, partName, user.Username));
@@ -134,6 +135,7 @@ namespace CollaborationBot.Commands {
             }
 
             try {
+                deadline = deadline?.ToUniversalTime();
                 assignment.Deadline = deadline;
                 await _context.SaveChangesAsync();
                 if (deadline.HasValue)

@@ -113,7 +113,7 @@ namespace CollaborationBot {
             var assignmentsToRemind = await _context.Assignments.AsQueryable().Where(
                 o => o.Deadline.HasValue && o.Deadline - remindingTime < DateTime.UtcNow &&
                      (!o.LastReminder.HasValue || o.LastReminder + remindingTime < DateTime.UtcNow) &&
-                     o.Part.Project.DoReminders && o.Part.Project.MainChannelId.HasValue)
+                     o.Part.Project.DoReminders)
                 .Include(o => o.Part).ThenInclude(p => p.Project)
                 .Include(o => o.Member)
                 .ToListAsync();
