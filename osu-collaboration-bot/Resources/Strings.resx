@@ -688,4 +688,7 @@ Replace the part with the [square brackets] with the relevant value.</value>
   <data name="GuildInactivityTimerFail" xml:space="preserve">
     <value>Could not change inactivity timer duration.</value>
   </data>
+  <data name="InactiveProjectDeletionNotice" xml:space="preserve">
+    <value>Your project `{0}` has been deleted due to inactivity.</value>
+  </data>
 </root>

@@ -11,6 +11,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Discord.WebSocket;
 
 namespace CollaborationBot.Commands {
     [Group("project", "Everything about project and member related stuff")]
@@ -149,48 +150,53 @@ namespace CollaborationBot.Commands {
             await RespondAsync(string.Format(Strings.RemoveProjectStart, projectName));
 
             try {
-                _context.Projects.Remove(project);
-                await _context.SaveChangesAsync();
+                await DeleteProjectAsync(project, Context.Guild, _context, _fileHandler);
 
-                _fileHandler.DeleteProjectDirectory(Context.Guild, projectName);
-
-                // Delete channels and roles
-                if (project.CleanupOnDeletion) {
-                    // Main channel
-                    if (project.MainChannelId.HasValue) {
-                        var mainChannel = Context.Guild.GetTextChannel((ulong) project.MainChannelId);
-                        if (mainChannel != null) {
-                            await mainChannel.DeleteAsync();
-                        }
-                    }
-                    // Info channel
-                    if (project.InfoChannelId.HasValue) {
-                        var infoChannel = Context.Guild.GetTextChannel((ulong) project.InfoChannelId);
-                        if (infoChannel != null) {
-                            await infoChannel.DeleteAsync();
-                        }
-                    }
-                    // Participant role
-                    if (project.UniqueRoleId.HasValue) {
-                        var role = Context.Guild.GetRole((ulong) project.UniqueRoleId);
-                        if (role != null) {
-                            await role.DeleteAsync();
-                        }
-                    }
-                    // Manager role
-                    if (project.ManagerRoleId.HasValue) {
-                        var role = Context.Guild.GetRole((ulong) project.ManagerRoleId);
-                        if (role != null) {
-                            await role.DeleteAsync();
-                        }
-                    }
-                }
                 stopwatch.Stop();
                 await FollowupAsync(string.Format(Strings.RemoveProjectSuccess, projectName, stopwatch.Elapsed.TotalSeconds));
             }
             catch (Exception e) {
                 logger.Error(e);
                 await FollowupAsync(string.Format(Strings.RemoveProjectFail, projectName));
+            }
+        }
+
+        public static async Task DeleteProjectAsync(Project project, SocketGuild guild, OsuCollabContext dbContext, FileHandlingService fileHandler) {
+            dbContext.Projects.Remove(project);
+            await dbContext.SaveChangesAsync();
+
+            fileHandler.DeleteProjectDirectory(guild, project.Name);
+
+            // Delete channels and roles
+            if (project.CleanupOnDeletion) {
+                // Main channel
+                if (project.MainChannelId.HasValue) {
+                    var mainChannel = guild.GetTextChannel((ulong) project.MainChannelId);
+                    if (mainChannel != null) {
+                        await mainChannel.DeleteAsync();
+                    }
+                }
+                // Info channel
+                if (project.InfoChannelId.HasValue) {
+                    var infoChannel = guild.GetTextChannel((ulong) project.InfoChannelId);
+                    if (infoChannel != null) {
+                        await infoChannel.DeleteAsync();
+                    }
+                }
+                // Participant role
+                if (project.UniqueRoleId.HasValue) {
+                    var role = guild.GetRole((ulong) project.UniqueRoleId);
+                    if (role != null) {
+                        await role.DeleteAsync();
+                    }
+                }
+                // Manager role
+                if (project.ManagerRoleId.HasValue) {
+                    var role = guild.GetRole((ulong) project.ManagerRoleId);
+                    if (role != null) {
+                        await role.DeleteAsync();
+                    }
+                }
             }
         }
         
