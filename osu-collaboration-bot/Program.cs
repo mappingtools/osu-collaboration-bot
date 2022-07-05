@@ -194,12 +194,6 @@ namespace CollaborationBot {
                     }
 
                     try {
-                        await ProjectModule.DeleteProjectAsync(project, guild, _context, _fileHandler);
-                    } catch (Exception ex) {
-                        logger.Error(ex, "Failed to delete project {project}", project.Id);
-                    }
-
-                    try {
                         var ownerMember = await _context.Members.Where(
                             o => o.Project.Id == project.Id && o.ProjectRole == ProjectRole.Owner).SingleOrDefaultAsync();
                         var user = _client.GetUser((ulong)ownerMember.UniqueMemberId);
@@ -210,6 +204,12 @@ namespace CollaborationBot {
                         }
                     } catch (Exception ex) {
                         logger.Error(ex, "Failed to send notice for removal inactive project {project}", project.Id);
+                    }
+
+                    try {
+                        await ProjectModule.DeleteProjectAsync(project, guild, _context, _fileHandler);
+                    } catch (Exception ex) {
+                        logger.Error(ex, "Failed to delete project {project}", project.Id);
                     }
                 }
                 await _context.SaveChangesAsync();
