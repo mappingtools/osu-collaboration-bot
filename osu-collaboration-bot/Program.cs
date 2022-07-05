@@ -178,7 +178,7 @@ namespace CollaborationBot {
 
                 // Check inactive projects
                 var inactiveProjects = await _context.Projects.AsQueryable().Where(
-                        o => o.LastActivity.HasValue && o.Guild.InactivityTimer.HasValue &&
+                        o => o.LastActivity.HasValue && o.Guild.InactivityTimer.HasValue && o.CleanupOnDeletion &&
                              o.LastActivity + o.Guild.InactivityTimer < DateTime.UtcNow)
                     .Include(o => o.Guild)
                     .ToListAsync();
