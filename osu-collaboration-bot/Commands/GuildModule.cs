@@ -100,7 +100,7 @@ namespace CollaborationBot.Commands {
             try {
                 guild.InactivityTimer = time;
                 await _context.SaveChangesAsync();
-                await RespondAsync(string.Format(Strings.GuildInactivityTimerSuccess, time));
+                await RespondAsync(string.Format(Strings.GuildInactivityTimerSuccess, time.HasValue ? time.Value.ToString("g") : Strings.None));
             }
             catch (Exception ex) {
                 await RespondAsync(string.Format(Strings.GuildInactivityTimerFail));

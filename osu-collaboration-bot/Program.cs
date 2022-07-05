@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using CollaborationBot.Commands;
 using Fergun.Interactive;
 
 namespace CollaborationBot {
@@ -103,8 +104,6 @@ namespace CollaborationBot {
 
                 // Check assignments and give reminders
                 var remindingTime = TimeSpan.FromDays(2);
-
-                // Query is grouped by project so multiple reminders in one channel can be combined to one message
                 var assignmentsToRemind = await _context.Assignments.AsQueryable().Where(
                     o => o.Deadline.HasValue && o.Deadline - remindingTime < DateTime.UtcNow &&
                          (!o.LastReminder.HasValue || o.LastReminder + remindingTime < DateTime.UtcNow) &&
@@ -175,10 +174,48 @@ namespace CollaborationBot {
                     // Remove the assignment
                     _context.Assignments.Remove(assignment);
                 }
-
                 await _context.SaveChangesAsync();
+
+                // Check inactive projects
+                var inactiveProjects = await _context.Projects.AsQueryable().Where(
+                        o => o.LastActivity.HasValue && o.Guild.InactivityTimer.HasValue &&
+                             o.LastActivity + o.Guild.InactivityTimer < DateTime.UtcNow)
+                    .Include(o => o.Guild)
+                    .ToListAsync();
+
+                logger.Debug("Found {count} inactive projects.", inactiveProjects.Count);
+
+                foreach (var project in inactiveProjects) {
+                    var guild = _client.GetGuild((ulong)project.Guild.UniqueGuildId);
+
+                    if (guild is null) {
+                        logger.Error("Failed to fetch guild for inactive project {project}", project.Id);
+                        continue;
+                    }
+
+                    try {
+                        var ownerMember = await _context.Members.Where(
+                            o => o.Project.Id == project.Id && o.ProjectRole == ProjectRole.Owner).SingleOrDefaultAsync();
+                        var user = _client.GetUser((ulong)ownerMember.UniqueMemberId);
+
+                        if (user != null) {
+                            var dmChannel = await user.CreateDMChannelAsync();
+                            await dmChannel.SendMessageAsync(string.Format(Strings.InactiveProjectDeletionNotice, project.Name));
+                        }
+                    } catch (Exception ex) {
+                        logger.Error(ex, "Failed to send notice for removal inactive project {project}", project.Id);
+                    }
+
+                    try {
+                        await ProjectModule.DeleteProjectAsync(project, guild, _context, _fileHandler);
+                    } catch (Exception ex) {
+                        logger.Error(ex, "Failed to delete project {project}", project.Id);
+                    }
+                }
+                await _context.SaveChangesAsync();
+
             } catch (Exception exception) {
-                logger.Error(exception, "Error in checkup timer");
+                logger.Error(exception);
             }
         }
 

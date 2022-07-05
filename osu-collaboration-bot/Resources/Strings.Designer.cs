@@ -814,6 +814,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your project `{0}` has been deleted due to inactivity..
+        /// </summary>
+        public static string InactiveProjectDeletionNotice {
+            get {
+                return ResourceManager.GetString("InactiveProjectDeletionNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Here&apos;s a list of commands and their description:.
         /// </summary>
         public static string ListCommandsMessage {
