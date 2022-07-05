@@ -148,7 +148,7 @@ namespace CollaborationBot.Commands {
                     new EmbedFieldBuilder().WithName("Info").WithValue(infoChannel?.Mention ?? Strings.None).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Chat").WithValue(mainChannel?.Mention ?? Strings.None).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Status").WithValue(project.Status.HasValue ? project.Status : Strings.None).WithIsInline(true),
-                    new EmbedFieldBuilder().WithName("Can join").WithValue(project.Status == ProjectStatus.SearchingForMembers).WithIsInline(true),
+                    new EmbedFieldBuilder().WithName("Can join").WithValue(project.JoinAllowed).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Can claim").WithValue(project.SelfAssignmentAllowed).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Priority picking").WithValue(project.PriorityPicking).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Restricted submission").WithValue(project.PartRestrictedUpload).WithIsInline(true),
@@ -192,7 +192,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            if (project.Status != ProjectStatus.SearchingForMembers) {
+            if (!project.JoinAllowed) {
                 await RespondAsync(Strings.NotLookingForMembers);
                 return;
             }

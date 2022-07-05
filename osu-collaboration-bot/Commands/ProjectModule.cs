@@ -879,7 +879,8 @@ namespace CollaborationBot.Commands {
 
             [SlashCommand("options", "Configures several boolean project options")]
             public async Task Options([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
-                [Summary("selfassignmentallowed", "Whether members may claim parts on their own")] bool? selfAssignmentAllowed = null,
+                [Summary("canclaim", "Whether members may claim parts on their own")] bool? selfAssignmentAllowed = null,
+                [Summary("canjoin", "Whether anyone may join the project")] bool? anyoneJoinAllowed = null,
                 [Summary("prioritypicking", "Whether priority picking is enabled")] bool? priorityPicking = null,
                 [Summary("partrestrictedupload", "Whether to restrict part submission to just the assigned parts")] bool? partRestrictedUpload = null,
                 [Summary("doreminders", "Whether to automatically remind members about their deadlines")] bool? doReminders = null) {
@@ -893,6 +894,10 @@ namespace CollaborationBot.Commands {
                     int n = 0;
                     if (selfAssignmentAllowed.HasValue) {
                         project.SelfAssignmentAllowed = selfAssignmentAllowed.Value;
+                        n++;
+                    }
+                    if (anyoneJoinAllowed.HasValue) {
+                        project.JoinAllowed = anyoneJoinAllowed.Value;
                         n++;
                     }
                     if (priorityPicking.HasValue) {

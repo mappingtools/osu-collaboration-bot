@@ -19,7 +19,7 @@ namespace CollaborationBot.Autocomplete {
             IParameterInfo parameter, IServiceProvider services) {
             var prefix = (string)autocompleteInteraction.Data.Current.Value;
             var projectNames = await _context.Projects.AsQueryable()
-                .Where(p => p.Guild.UniqueGuildId == context.Guild.Id && p.Name.StartsWith(prefix) && p.Status == ProjectStatus.SearchingForMembers)
+                .Where(p => p.Guild.UniqueGuildId == context.Guild.Id && p.Name.StartsWith(prefix) && p.JoinAllowed)
                 .Take(MaxSuggestions)
                 .Select(p => p.Name).ToListAsync();
             return AutocompletionResult.FromSuccess(projectNames.Select(o => new AutocompleteResult(o, o)));

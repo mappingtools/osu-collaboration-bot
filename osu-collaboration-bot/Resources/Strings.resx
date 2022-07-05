@@ -272,9 +272,9 @@
 3. Create a base beatmap with timing, bookmarks, and difficulty settings and upload it to the bot: `{0}project setbasefile [PROJECT NAME]` with .osu file attached
 4. Generate parts from the bookmarks: `{0}part frombookmarks [PROJECT NAME]` with .osu file attached
 5. Upload your .osz and lay out the rules in your info channel and use `{0}memberguide [PROJECT NAME]` to show your participants how to use the bot
-6. Allow anyone to join your collab: `{0}project options status [PROJECT NAME] SearchingForMembers`
+6. Allow anyone to join your collab: `{0}project options options [PROJECT NAME] canjoin:True`
 7. Set a default assignment deadline: `{0}project options assignmentlifetime [PROJECT NAME] [dd:hh:mm:ss:fff]`
-8. Allow members to claim parts on their own: `{0}project options options [PROJECT NAME] SelfAssignmentAllowed:true` and `{0}project options maxassignments [PROJECT NAME] 1`</value>
+8. Allow members to claim parts on their own: `{0}project options options [PROJECT NAME] selfassignmentallowed:True` and `{0}project options maxassignments [PROJECT NAME] 1`</value>
   </data>
   <data name="CollabGuideTitle" xml:space="preserve">
     <value>Collab set-up guide</value>
