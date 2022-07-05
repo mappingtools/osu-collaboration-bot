@@ -20,20 +20,19 @@ namespace CollaborationBot.Commands {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
-        private readonly AppSettings _appSettings;
+        private readonly CommonService _common;
 
         public AutoUpdateModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService,
-            AppSettings appSettings) {
+            ResourceService resourceService, CommonService common) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
-            _appSettings = appSettings;
+            _common = common;
         }
         
         [SlashCommand("list", "Lists all the update notifications attached to the project")]
         public async Task List([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -55,7 +54,7 @@ namespace CollaborationBot.Commands {
                 Strings.AutoUpdates);
         }
 
-        public string ChannelName(ulong id) {
+        private string ChannelName(ulong id) {
             var channel = Context.Guild.GetChannel(id);
             return channel == null ? Strings.DeletedChannel : channel.Name;
         }
@@ -65,7 +64,7 @@ namespace CollaborationBot.Commands {
             [Summary("channel", "The channel to post the notification in")]ITextChannel channel,
             [Summary("cooldown", "The cooldown on the notification (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? cooldown = null,
             [Summary("mentions", "Whether to ping members on an update notification")]bool doPing = false) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -89,13 +88,13 @@ namespace CollaborationBot.Commands {
         [SlashCommand("remove", "Removes an update notification from the project")]
         public async Task Remove([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("channel", "The channel the notification is in")]ITextChannel channel) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
             }
             
-            var autoUpdate = await GetAutoUpdateAsync(project, channel);
+            var autoUpdate = await _common.GetAutoUpdateAsync(Context, project, channel);
 
             if (autoUpdate == null) {
                 return;
@@ -115,13 +114,13 @@ namespace CollaborationBot.Commands {
         public async Task Cooldown([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("channel", "The channel the notification is in")]ITextChannel channel,
             [Summary("cooldown", "The new cooldown (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? cooldown) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
             }
             
-            var autoUpdate = await GetAutoUpdateAsync(project, channel);
+            var autoUpdate = await _common.GetAutoUpdateAsync(Context, project, channel);
 
             if (autoUpdate == null) {
                 return;
@@ -141,13 +140,13 @@ namespace CollaborationBot.Commands {
         public async Task DoPing([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("channel", "The channel the notification is in")]ITextChannel channel,
             [Summary("mentions", "Whether to ping all members in the update notification")]bool doPing) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
             }
             
-            var autoUpdate = await GetAutoUpdateAsync(project, channel);
+            var autoUpdate = await _common.GetAutoUpdateAsync(Context, project, channel);
 
             if (autoUpdate == null) {
                 return;
@@ -165,7 +164,7 @@ namespace CollaborationBot.Commands {
         
         [SlashCommand("trigger", "Triggers all update notifications of the project")]
         public async Task Trigger([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -220,36 +219,6 @@ namespace CollaborationBot.Commands {
             }
 
             await _context.SaveChangesAsync();
-        }
-
-        private async Task<Project> GetProjectAsync(string projectName) {
-            var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
-
-            if (guild == null) {
-                await RespondAsync(string.Format(Strings.GuildNotExistsMessage, _appSettings.Prefix));
-                return null;
-            }
-
-            var project = await _context.Projects.AsQueryable().SingleOrDefaultAsync(o => o.GuildId == guild.Id && o.Name == projectName);
-
-            if (project == null) {
-                await RespondAsync(Strings.ProjectNotExistMessage);
-                return null;
-            }
-
-            return project;
-        }
-
-        private async Task<AutoUpdate> GetAutoUpdateAsync(Project project, ITextChannel channel) {
-            var autoUpdate = await _context.AutoUpdates.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueChannelId == channel.Id);
-
-            if (autoUpdate == null) {
-                await RespondAsync(string.Format(Strings.AutoUpdateNotExists, project.Name, channel.Mention));
-                return null;
-            }
-
-            return autoUpdate;
         }
     }
 }

@@ -28,20 +28,22 @@ namespace CollaborationBot.Commands {
         private readonly ResourceService _resourceService;
         private readonly InputSanitizingService _inputSanitizer;
         private readonly AppSettings _appSettings;
+        private readonly CommonService _common;
 
         public PartModule(OsuCollabContext context, FileHandlingService fileHandler,
             ResourceService resourceService, InputSanitizingService inputSanitizingService,
-            AppSettings appSettings) {
+            AppSettings appSettings, CommonService common) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
             _inputSanitizer = inputSanitizingService;
             _appSettings = appSettings;
+            _common = common;
         }
         
         [SlashCommand("list", "Lists all the parts of the project")]
         public async Task List([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -61,7 +63,7 @@ namespace CollaborationBot.Commands {
         
         [SlashCommand("listunclaimed", "Lists all the unclaimed parts of the project")]
         public async Task ListUnclaimed([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -85,7 +87,7 @@ namespace CollaborationBot.Commands {
             [Summary("start", "The start time (can be null)")]TimeSpan? start = null,
             [Summary("end", "The end time (can be null)")]TimeSpan? end = null,
             [Summary("status", "The status of the part")]PartStatus status = PartStatus.NotFinished) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -114,7 +116,7 @@ namespace CollaborationBot.Commands {
         public async Task Rename([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part")]string name,
             [Summary("newname", "The new name for the part")]string newName) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -125,11 +127,9 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            var part = await _context.Parts.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == name);
+            var part = await _common.GetPartAsync(Context, project, name);
 
             if (part == null) {
-                await RespondAsync(string.Format(Strings.PartNotExists, name, projectName));
                 return;
             }
 
@@ -147,17 +147,15 @@ namespace CollaborationBot.Commands {
         public async Task Start([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part")]string name,
             [Summary("start", "The new start time (can be null)")]TimeSpan? start = null) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var part = await _context.Parts.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == name);
+            var part = await _common.GetPartAsync(Context, project, name);
 
             if (part == null) {
-                await RespondAsync(string.Format(Strings.PartNotExists, name, projectName));
                 return;
             }
 
@@ -175,17 +173,15 @@ namespace CollaborationBot.Commands {
         public async Task End([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part")]string name,
             [Summary("end", "The new end time (can be null)")]TimeSpan? end = null) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var part = await _context.Parts.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == name);
+            var part = await _common.GetPartAsync(Context, project, name);
 
             if (part == null) {
-                await RespondAsync(string.Format(Strings.PartNotExists, name, projectName));
                 return;
             }
 
@@ -203,17 +199,15 @@ namespace CollaborationBot.Commands {
         public async Task Status([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part")]string name,
             [Summary("status", "The new status")]PartStatus status) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var part = await _context.Parts.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == name);
+            var part = await _common.GetPartAsync(Context, project, name);
 
             if (part == null) {
-                await RespondAsync(string.Format(Strings.PartNotExists, name, projectName));
                 return;
             }
 
@@ -232,18 +226,16 @@ namespace CollaborationBot.Commands {
         [SlashCommand("remove", "Removes one or more parts from the project")]
         public async Task Remove([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Autocomplete(typeof(PartAutocompleteHandler))][Summary("parts", "The parts to remove")]params string[] partNames) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
             }
 
             foreach (var partName in partNames) {
-                var part = await _context.Parts.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == partName);
+                var part = await _common.GetPartAsync(Context, project, partName);
 
                 if (part == null) {
-                    await RespondAsync(string.Format(Strings.PartNotExists, partName, projectName));
                     return;
                 }
 
@@ -260,7 +252,7 @@ namespace CollaborationBot.Commands {
         
         [SlashCommand("clear", "Removes all parts from the project")]
         public async Task Clear([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -284,7 +276,7 @@ namespace CollaborationBot.Commands {
             [Summary("hasstart", "Whether there is a bookmark indicating the start of the first part")] bool hasStart = true,
             [Summary("hasend", "Whether there is a bookmark indicating the end of the last part")] bool hasEnd = false,
             [Summary("replace", "Whether to clear the existing parts before importing")] bool replace = true) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -376,7 +368,7 @@ namespace CollaborationBot.Commands {
             [Summary("file", "The .csv file to import parts from")]Attachment attachment,
             [Summary("hasheaders", "Whether the CSV file has explicit headers")]bool hasHeaders = true,
             [Summary("replace", "Whether to clear the existing parts before importing")]bool replace = true) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -418,7 +410,7 @@ namespace CollaborationBot.Commands {
         [SlashCommand("tocsv", "Exports all parts of the project to a CSV file")]
         public async Task ToCSV([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("includemappers", "Whether to include columns showing the mappers assigned to each part")]bool includeMappers=false) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -460,7 +452,7 @@ namespace CollaborationBot.Commands {
         public async Task ToDesc([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("includemappers", "Whether to show the mappers assigned to each part")] bool includeMappers = true,
             [Summary("includepartnames", "Whether to show the name of each part")] bool includePartNames = false) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -479,24 +471,6 @@ namespace CollaborationBot.Commands {
                 logger.Error(e);
                 await RespondAsync(string.Format(Strings.BackendErrorMessage, projectName));
             }
-        }
-
-        private async Task<Project> GetProjectAsync(string projectName) {
-            var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
-
-            if (guild == null) {
-                await RespondAsync(string.Format(Strings.GuildNotExistsMessage, _appSettings.Prefix));
-                return null;
-            }
-
-            var project = await _context.Projects.AsQueryable().SingleOrDefaultAsync(o => o.GuildId == guild.Id && o.Name == projectName);
-
-            if (project == null) {
-                await RespondAsync(Strings.ProjectNotExistMessage);
-                return null;
-            }
-
-            return project;
         }
     }
 }

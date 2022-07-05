@@ -19,19 +19,18 @@ namespace CollaborationBot.Commands {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly OsuCollabContext _context;
         private readonly ResourceService _resourceService;
-        private readonly AppSettings _appSettings;
+        private readonly CommonService _common;
 
         public AssignmentModule(OsuCollabContext context,
-            ResourceService resourceService,
-            AppSettings appSettings) {
+            ResourceService resourceService, CommonService common) {
             _context = context;
             _resourceService = resourceService;
-            _appSettings = appSettings;
+            _common = common;
         }
         
         [SlashCommand("list", "Lists all the assignments in the project")]
         public async Task List([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -54,26 +53,22 @@ namespace CollaborationBot.Commands {
             [Summary("user", "The member to assign to")]IGuildUser user, 
             [Autocomplete(typeof(PartAutocompleteHandler))][Summary("parts", "The parts to assign to the member")]string[] partNames,
             [Summary("deadline", "The deadline for the assignment (can be null)")] DateTime? deadline = null) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var member = await _context.Members.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == user.Id);
+            var member = await _common.GetMemberAsync(Context, project, user);
 
             if (member == null) {
-                await RespondAsync(Strings.MemberNotExistsMessage);
                 return;
             }
 
             foreach (var partName in partNames) {
-                var part = await _context.Parts.AsQueryable()
-                                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == partName);
+                var part = await _common.GetPartAsync(Context, project, partName);
 
                 if (part == null) {
-                    await RespondAsync(string.Format(Strings.PartNotExists, partName, projectName));
                     return;
                 }
 
@@ -93,14 +88,14 @@ namespace CollaborationBot.Commands {
         public async Task Remove([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member to remove assignments from")]IUser user,
             [Autocomplete(typeof(PartAutocompleteHandler))][Summary("parts", "The parts to unassign from the member")]params string[] partNames) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
             }
 
             foreach (var partName in partNames) {
-                var assignment = await GetAssignmentAsync(project, partName, user);
+                var assignment = await _common.GetAssignmentAsync(Context, project, partName, user);
 
                 if (assignment == null) {
                     return;
@@ -122,13 +117,13 @@ namespace CollaborationBot.Commands {
             [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part of the assignment")]string partName,
             [Summary("user", "The member of the assignment")]IGuildUser user,
             [Summary("deadline", "The new deadline (can be null)")]DateTime? deadline) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var assignment = await GetAssignmentAsync(project, partName, user);
+            var assignment = await _common.GetAssignmentAsync(Context, project, partName, user);
 
             if (assignment == null) {
                 return;
@@ -150,7 +145,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("draintimes", "Calculates the total drain time assigned to each participant.")]
         public async Task DrainTimes([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -177,51 +172,6 @@ namespace CollaborationBot.Commands {
                 logger.Error(e);
                 await RespondAsync(string.Format(Strings.BackendErrorMessage, projectName));
             }
-        }
-
-        private async Task<Project> GetProjectAsync(string projectName) {
-            var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
-
-            if (guild == null) {
-                await RespondAsync(string.Format(Strings.GuildNotExistsMessage, _appSettings.Prefix));
-                return null;
-            }
-
-            var project = await _context.Projects.AsQueryable().SingleOrDefaultAsync(o => o.GuildId == guild.Id && o.Name == projectName);
-
-            if (project == null) {
-                await RespondAsync(Strings.ProjectNotExistMessage);
-                return null;
-            }
-
-            return project;
-        }
-
-        private async Task<Assignment> GetAssignmentAsync(Project project, string partName, IUser user) {
-            var part = await _context.Parts.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == partName);
-
-            if (part == null) {
-                await RespondAsync(string.Format(Strings.PartNotExists, partName, project.Name));
-                return null;
-            }
-
-            var member = await _context.Members.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == user.Id);
-
-            if (member == null) {
-                await RespondAsync(Strings.MemberNotExistsMessage);
-                return null;
-            }
-
-            var assignment = await _context.Assignments.AsQueryable()
-                .SingleOrDefaultAsync(o => o.PartId == part.Id && o.MemberId == member.Id);
-
-            if (assignment == null) {
-                await RespondAsync(Strings.AssignmentNotExists);
-            }
-
-            return assignment;
         }
     }
 }

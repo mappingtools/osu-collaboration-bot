@@ -37,16 +37,18 @@ namespace CollaborationBot.Commands {
         private readonly UserHelpService _userHelpService;
         private readonly InputSanitizingService _inputSanitizer;
         private readonly AppSettings _appSettings;
+        private readonly CommonService _common;
 
         public TopModule(OsuCollabContext context, FileHandlingService fileHandler,
             ResourceService resourceService, UserHelpService userHelpService, InputSanitizingService inputSanitizingService,
-            AppSettings appSettings) {
+            AppSettings appSettings, CommonService common) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
             _userHelpService = userHelpService;
             _inputSanitizer = inputSanitizingService;
             _appSettings = appSettings;
+            _common = common;
         }
 
         [SlashCommand("help", "Shows command information")]
@@ -122,7 +124,7 @@ namespace CollaborationBot.Commands {
             // Name, description, owner, status, member count, part count, completion %, join allowed, self assignment allowed, priority picking,
             // part restricted upload, reminders, assignment lifetime, max assignments, main channel, info channel
             // Embed in role color
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -164,7 +166,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("members", "Lists all members of the project")]
         public async Task Members([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -178,7 +180,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("join", "Lets you become a member of a project which is looking for members")]
         public async Task JoinProject([Autocomplete(typeof(ProjectJoinAutocompleteHandler))][Summary("project", "The project")] string projectName) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -210,7 +212,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("leave", "Lets you leave the project")]
         public async Task LeaveProject([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -246,7 +248,7 @@ namespace CollaborationBot.Commands {
         [SlashCommand("alias", "Changes your alias in the project")]
         public async Task Alias([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("alias", "The new alias")] string alias) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -257,11 +259,9 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            var member = await _context.Members.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id);
+            var member = await _common.GetMemberAsync(Context, project, Context.User);
 
             if (member == null) {
-                await RespondAsync(Strings.MemberNotExistsMessage);
                 return;
             }
 
@@ -279,7 +279,7 @@ namespace CollaborationBot.Commands {
         [SlashCommand("tags", "Changes your tags in the project")]
         public async Task Tags([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("tags", "The new tags")] string tags) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
@@ -292,11 +292,9 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            var member = await _context.Members.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id);
+            var member = await _common.GetMemberAsync(Context, project, Context.User);
 
             if (member == null) {
-                await RespondAsync(Strings.MemberNotExistsMessage);
                 return;
             }
 
@@ -317,17 +315,15 @@ namespace CollaborationBot.Commands {
             int slashIndex = id.LastIndexOf('/');
             ulong id2;
             if (slashIndex < 0 ? ulong.TryParse(id, out id2) : ulong.TryParse(id.Substring(slashIndex + 1), out id2)) {
-                var project = await GetProjectAsync(projectName);
+                var project = await _common.GetProjectAsync(Context, projectName);
 
                 if (project == null) {
                     return;
                 }
 
-                var member = await _context.Members.AsQueryable()
-                    .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id);
+                var member = await _common.GetMemberAsync(Context, project, Context.User);
 
                 if (member == null) {
-                    await RespondAsync(Strings.MemberNotExistsMessage);
                     return;
                 }
 
@@ -359,18 +355,15 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
-                await RespondAsync(Strings.ProjectNotExistMessage);
                 return;
             }
 
-            var member = await _context.Members.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id);
+            var member = await _common.GetMemberAsync(Context, project, Context.User);
 
             if (member == null) {
-                await RespondAsync(Strings.NotJoinedMessage);
                 return;
             }
 
@@ -499,25 +492,6 @@ namespace CollaborationBot.Commands {
             await AutoUpdateModule.HandleAutoUpdates(project, Context, _context, _fileHandler);
         }
 
-        private async Task<Project> GetProjectAsync(string projectName) {
-            var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
-
-            if (guild == null) {
-                await RespondAsync(string.Format(Strings.GuildNotExistsMessage, _appSettings.Prefix));
-                return null;
-            }
-
-            var project = await _context.Projects.AsQueryable().Include(o => o.Guild)
-                .SingleOrDefaultAsync(o => o.GuildId == guild.Id && o.Name == projectName);
-
-            if (project == null) {
-                await RespondAsync(Strings.ProjectNotExistMessage);
-                return null;
-            }
-
-            return project;
-        }
-
         #endregion
 
         #region assignments
@@ -525,17 +499,15 @@ namespace CollaborationBot.Commands {
         [SlashCommand("claim", "Claims one or more parts and assigns them to you")]
         public async Task Claim([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Autocomplete(typeof(PartAutocompleteHandler))][Summary("parts", "The parts to claim")] params string[] partNames) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var member = await _context.Members.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id);
+            var member = await _common.GetMemberAsync(Context, project, Context.User);
 
             if (member == null) {
-                await RespondAsync(Strings.MemberNotExistsMessage);
                 return;
             }
 
@@ -617,14 +589,14 @@ namespace CollaborationBot.Commands {
         [SlashCommand("unclaim", "Unclaims one or more parts and unassigns them")]
         public async Task Unclaim([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Autocomplete(typeof(PartAutocompleteHandler))][Summary("parts", "The parts to unclaim")] params string[] partNames) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
             }
 
             foreach (var partName in partNames) {
-                var assignment = await GetAssignmentAsync(project, partName, Context.User);
+                var assignment = await _common.GetAssignmentAsync(Context, project, partName, Context.User);
 
                 if (assignment == null) {
                     return;
@@ -644,26 +616,22 @@ namespace CollaborationBot.Commands {
         [SlashCommand("done", "Marks one or more parts as done")]
         public async Task Done([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Autocomplete(typeof(PartAutocompleteHandler))][Summary("parts", "The parts to complete")] params string[] partNames) {
-            var project = await GetProjectAsync(projectName);
+            var project = await _common.GetProjectAsync(Context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var member = await _context.Members.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == Context.User.Id);
+            var member = await _common.GetMemberAsync(Context, project, Context.User);
 
             if (member == null) {
-                await RespondAsync(Strings.MemberNotExistsMessage);
                 return;
             }
 
             foreach (var partName in partNames) {
-                var part = await _context.Parts.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == partName);
+                var part = await _common.GetPartAsync(Context, project, partName);
 
                 if (part == null) {
-                    await RespondAsync(string.Format(Strings.PartNotExists, partName, project.Name));
                     return;
                 }
 
@@ -685,33 +653,6 @@ namespace CollaborationBot.Commands {
                     await RespondAsync(string.Format(Strings.FinishPartFail));
                 }
             }
-        }
-
-        private async Task<Assignment> GetAssignmentAsync(Project project, string partName, IUser user) {
-            var part = await _context.Parts.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == partName);
-
-            if (part == null) {
-                await RespondAsync(string.Format(Strings.PartNotExists, partName, project.Name));
-                return null;
-            }
-
-            var member = await _context.Members.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.UniqueMemberId == user.Id);
-
-            if (member == null) {
-                await RespondAsync(Strings.MemberNotExistsMessage);
-                return null;
-            }
-
-            var assignment = await _context.Assignments.AsQueryable()
-                .SingleOrDefaultAsync(o => o.PartId == part.Id && o.MemberId == member.Id);
-
-            if (assignment == null) {
-                await RespondAsync(Strings.AssignmentNotExists);
-            }
-
-            return assignment;
         }
 
         #endregion

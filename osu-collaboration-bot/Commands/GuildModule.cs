@@ -18,15 +18,14 @@ namespace CollaborationBot.Commands {
         private readonly OsuCollabContext _context;
         private readonly FileHandlingService _fileHandler;
         private readonly ResourceService _resourceService;
-        private readonly AppSettings _appSettings;
+        private readonly CommonService _common;
 
         public GuildModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService,
-            AppSettings appSettings) {
+            ResourceService resourceService, CommonService common) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
-            _appSettings = appSettings;
+            _common = common;
         }
 
         [RequireUserPermission(GuildPermission.Administrator)]
@@ -53,7 +52,7 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(GuildPermission.Administrator)]
         [SlashCommand("collabcategory", "Changes the category in which project channels will be automatically generated")]
         public async Task CollabCategory([Summary("category")]ICategoryChannel category) {
-            var guild = await GetGuildAsync();
+            var guild = await _common.GetGuildAsync(Context);
 
             if (guild == null) {
                 return;
@@ -73,7 +72,7 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(GuildPermission.Administrator)]
         [SlashCommand("maxcollabs", "Changes the maximum number of projects a regular member can create")]
         public async Task MaxCollabs([Summary("count", "The maximum number of projects")]int count) {
-            var guild = await GetGuildAsync();
+            var guild = await _common.GetGuildAsync(Context);
 
             if (guild == null) {
                 return;
@@ -92,7 +91,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("inactivitytimer", "Changes the duration of inactivity after which a project will be deleted. If null, never deleted")]
         public async Task InactivityTimer([Summary("time", "The new inactivity timer duration (dd:hh:mm:ss:fff) (can be null)")] TimeSpan? time) {
-            var guild = await GetGuildAsync();
+            var guild = await _common.GetGuildAsync(Context);
 
             if (guild == null) {
                 return;
@@ -107,17 +106,6 @@ namespace CollaborationBot.Commands {
                 await RespondAsync(string.Format(Strings.GuildInactivityTimerFail));
                 logger.Error(ex);
             }
-        }
-
-        private async Task<Guild> GetGuildAsync() {
-            var guild = await _context.Guilds.AsQueryable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
-
-            if (guild == null) {
-                await RespondAsync(string.Format(Strings.GuildNotExistsMessage, _appSettings.Prefix));
-                return null;
-            }
-
-            return guild;
         }
     }
 }
