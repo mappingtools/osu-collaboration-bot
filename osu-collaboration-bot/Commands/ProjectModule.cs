@@ -1102,7 +1102,7 @@ namespace CollaborationBot.Commands {
                 try {
                     project.AssignmentLifetime = lifetime;
                     await _context.SaveChangesAsync();
-                    await RespondAsync(string.Format(Strings.ProjectAssignmentLifetimeSuccess, projectName, lifetime));
+                    await RespondAsync(string.Format(Strings.ProjectAssignmentLifetimeSuccess, projectName, lifetime.HasValue ? lifetime.Value.ToString("g") : Strings.Unbounded));
                 } catch (Exception e) {
                     logger.Error(e);
                     await RespondAsync(string.Format(Strings.ProjectAssignmentLifetimeFail, projectName));
