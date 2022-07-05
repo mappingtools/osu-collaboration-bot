@@ -207,6 +207,7 @@ namespace CollaborationBot {
         private ServiceProvider ConfigureServices() {
             var services = new ServiceCollection()
                 .AddSingleton(_appSettings)
+                .AddSingleton<CommonService>()
                 .AddSingleton<ResourceService>()
                 .AddDbContext<OsuCollabContext>()
                 .AddSingleton<FileHandlingService>()
