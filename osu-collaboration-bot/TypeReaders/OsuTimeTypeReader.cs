@@ -12,6 +12,10 @@ namespace CollaborationBot.TypeReaders {
 
         public override Task<TypeConverterResult> ReadAsync(IInteractionContext context, IApplicationCommandInteractionDataOption option, IServiceProvider services) {
             try {
+                if (string.Equals((string)option.Value, "null", StringComparison.OrdinalIgnoreCase)) {
+                    return Task.FromResult(TypeConverterResult.FromSuccess(null));
+                }
+
                 TimeSpan result = InputParsers.ParseOsuTimestamp((string)option.Value);
                 return Task.FromResult(TypeConverterResult.FromSuccess(result));
             } catch {
