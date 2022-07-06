@@ -733,6 +733,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not change create roles setting..
+        /// </summary>
+        public static string GuildCreateRolesFail {
+            get {
+                return ResourceManager.GetString("GuildCreateRolesFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed create roles setting to {0}..
+        /// </summary>
+        public static string GuildCreateRolesSuccess {
+            get {
+                return ResourceManager.GetString("GuildCreateRolesSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server is already registered..
         /// </summary>
         public static string GuildExistsMessage {
