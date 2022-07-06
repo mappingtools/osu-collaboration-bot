@@ -89,6 +89,7 @@ namespace CollaborationBot.Commands {
             }
         }
 
+        [RequireUserPermission(GuildPermission.Administrator)]
         [SlashCommand("inactivitytimer", "Changes the duration of inactivity after which a project will be deleted. If null, never deleted")]
         public async Task InactivityTimer([Summary("time", "The new inactivity timer duration (dd:hh:mm:ss:fff) (can be null)")] TimeSpan? time) {
             var guild = await _common.GetGuildAsync(Context);
