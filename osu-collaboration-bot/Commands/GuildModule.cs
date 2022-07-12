@@ -108,5 +108,25 @@ namespace CollaborationBot.Commands {
                 logger.Error(ex);
             }
         }
+
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [SlashCommand("createroles", "Changes whether the setup command creates new roles.")]
+        public async Task CreateRoles([Summary("value", "Whether the setup command creates new roles.")] bool value) {
+            var guild = await _common.GetGuildAsync(Context);
+
+            if (guild == null) {
+                return;
+            }
+
+            try {
+                guild.GenerateRoles = value;
+                await _context.SaveChangesAsync();
+                await RespondAsync(string.Format(Strings.GuildCreateRolesSuccess, value));
+            }
+            catch (Exception ex) {
+                await RespondAsync(string.Format(Strings.GuildCreateRolesFail));
+                logger.Error(ex);
+            }
+        }
     }
 }
