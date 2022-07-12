@@ -358,8 +358,8 @@ namespace CollaborationBot.Commands {
             try {
                 _context.Members.Remove(member);
                 await _context.SaveChangesAsync();
-                await RevokeProjectRole(Context, user, project);
                 await RevokeManagerRole(Context, user, project);
+                await RevokeProjectRole(Context, user, project);
                 await RespondAsync(
                     _resourceService.GenerateRemoveMemberFromProject(user, projectName));
             } catch (Exception e) {
@@ -707,17 +707,17 @@ namespace CollaborationBot.Commands {
             foreach (var member in memberIds.Select(guild.GetUser)) {
                 if (member is not IGuildUser gu) continue;
 
-                if (addRole is not null)
-                    try {
-                        await gu.AddRoleAsync(addRole);
-                    } catch (Exception ex) {
-                        logger.Error(ex, "Could not add role {role} to user {user}.", addRole.Id, member.Id);
-                    }
                 if (removeRole is not null)
                     try {
                         await gu.RemoveRoleAsync(removeRole);
                     } catch (Exception ex) {
                         logger.Error(ex, "Could not remove role {role} from user {user}.", removeRole.Id, member.Id);
+                    }
+                if (addRole is not null)
+                    try {
+                        await gu.AddRoleAsync(addRole);
+                    } catch (Exception ex) {
+                        logger.Error(ex, "Could not add role {role} to user {user}.", addRole.Id, member.Id);
                     }
             }
         }
