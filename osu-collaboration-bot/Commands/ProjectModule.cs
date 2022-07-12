@@ -760,8 +760,6 @@ namespace CollaborationBot.Commands {
 
             switch (role) {
                 case ProjectRole.Owner:
-                    await channel.AddPermissionOverwriteAsync(gu, GetPartialAdminPermissions());
-                    break;
                 case ProjectRole.Manager:
                     await channel.AddPermissionOverwriteAsync(gu, GetPartialAdminPermissions());
                     break;
@@ -774,88 +772,49 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        public static async Task GrantProjectRole(SocketInteractionContext context, IPresence user, Project project) {
+        private static async Task UpdateProjectRole(SocketGuild guild, IPresence user, Project project, bool managerRole, bool remove) {
             if (user is not IGuildUser gu) return;
 
-            if (project.UniqueRoleId.HasValue) {
-                var role = context.Guild.GetRole((ulong) project.UniqueRoleId.Value);
-                if (role != null) {
-                    await gu.AddRoleAsync(role);
+            var roleId = managerRole ? project.ManagerRoleId : project.UniqueRoleId;
+            if (roleId.HasValue) {
+                var role = guild.GetRole((ulong) roleId);
+                if (role is not null) {
+                    if (remove)
+                        await gu.RemoveRoleAsync(role);
+                    else
+                        await gu.AddRoleAsync(role);
                 }
             }
 
+            ProjectRole? projectRole = managerRole ?
+                remove ? ProjectRole.Member : ProjectRole.Manager :
+                remove ? null : ProjectRole.Member;
+
             if (!project.Guild.GenerateRoles && project.MainChannelId.HasValue) {
-                var channel = context.Guild.GetChannel((ulong)project.MainChannelId);
-                await UpdateChannelPermission(channel, gu.Id, ProjectRole.Member, false);
+                var channel = guild.GetChannel((ulong)project.MainChannelId);
+                await UpdateChannelPermission(channel, gu.Id, projectRole, false);
             }
 
             if (!project.Guild.GenerateRoles && project.InfoChannelId.HasValue) {
-                var channel = context.Guild.GetChannel((ulong)project.InfoChannelId);
-                await UpdateChannelPermission(channel, gu.Id, ProjectRole.Member, true);
+                var channel = guild.GetChannel((ulong)project.InfoChannelId);
+                await UpdateChannelPermission(channel, gu.Id, projectRole, true);
             }
+        }
+
+        public static async Task GrantProjectRole(SocketInteractionContext context, IPresence user, Project project) {
+            await UpdateProjectRole(context.Guild, user, project, false, false);
         }
 
         public static async Task RevokeProjectRole(SocketInteractionContext context, IPresence user, Project project) {
-            if (user is not IGuildUser gu) return;
-
-            if (project.UniqueRoleId.HasValue) {
-                var role = context.Guild.GetRole((ulong) project.UniqueRoleId.Value);
-                if (role != null) {
-                    await gu.RemoveRoleAsync(role);
-                }
-            }
-
-            if (!project.Guild.GenerateRoles && project.MainChannelId.HasValue) {
-                var channel = context.Guild.GetChannel((ulong)project.MainChannelId);
-                await UpdateChannelPermission(channel, gu.Id, null, false);
-            }
-
-            if (!project.Guild.GenerateRoles && project.InfoChannelId.HasValue) {
-                var channel = context.Guild.GetChannel((ulong)project.InfoChannelId);
-                await UpdateChannelPermission(channel, gu.Id, null, true);
-            }
+            await UpdateProjectRole(context.Guild, user, project, false, true);
         }
 
         public static async Task GrantManagerRole(SocketInteractionContext context, IPresence user, Project project) {
-            if (user is not IGuildUser gu) return;
-
-            if (project.ManagerRoleId.HasValue) {
-                var role = context.Guild.GetRole((ulong) project.ManagerRoleId.Value);
-                if (role != null) {
-                    await gu.AddRoleAsync(role);
-                }
-            }
-
-            if (!project.Guild.GenerateRoles && project.MainChannelId.HasValue) {
-                var channel = context.Guild.GetChannel((ulong)project.MainChannelId);
-                await UpdateChannelPermission(channel, gu.Id, ProjectRole.Manager, false);
-            }
-
-            if (!project.Guild.GenerateRoles && project.InfoChannelId.HasValue) {
-                var channel = context.Guild.GetChannel((ulong)project.InfoChannelId);
-                await UpdateChannelPermission(channel, gu.Id, ProjectRole.Manager, true);
-            }
+            await UpdateProjectRole(context.Guild, user, project, true, false);
         }
 
         public static async Task RevokeManagerRole(SocketInteractionContext context, IPresence user, Project project) {
-            if (user is not IGuildUser gu) return;
-
-            if (project.ManagerRoleId.HasValue) {
-                var role = context.Guild.GetRole((ulong) project.ManagerRoleId.Value);
-                if (role != null) {
-                    await gu.RemoveRoleAsync(role);
-                }
-            }
-
-            if (!project.Guild.GenerateRoles && project.MainChannelId.HasValue) {
-                var channel = context.Guild.GetChannel((ulong)project.MainChannelId);
-                await UpdateChannelPermission(channel, gu.Id, ProjectRole.Member, false);
-            }
-
-            if (!project.Guild.GenerateRoles && project.InfoChannelId.HasValue) {
-                var channel = context.Guild.GetChannel((ulong)project.InfoChannelId);
-                await UpdateChannelPermission(channel, gu.Id, ProjectRole.Member, true);
-            }
+            await UpdateProjectRole(context.Guild, user, project, true, true);
         }
 
         #region PermissionMakers
