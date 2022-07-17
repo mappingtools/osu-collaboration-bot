@@ -133,7 +133,7 @@ namespace CollaborationBot.Commands {
             var memberCount = await _context.Members.AsQueryable().Where(o => o.ProjectId == project.Id).CountAsync();
             var partCount = await _context.Parts.AsQueryable().Where(o => o.ProjectId == project.Id).CountAsync();
             var completedPartCount = await _context.Parts.AsQueryable().Where(o => o.ProjectId == project.Id && o.Status == PartStatus.Finished).CountAsync();
-            var completionPercent = 100 * completedPartCount / partCount;
+            var completionPercent = partCount <= 0 ? 0 : 100 * completedPartCount / partCount;
             var ownerMember = await _context.Members.AsQueryable().Where(o => o.ProjectId == project.Id && o.ProjectRole == ProjectRole.Owner).SingleOrDefaultAsync();
             var owner = ownerMember is not null ? Context.Guild.GetUser((ulong)ownerMember.UniqueMemberId) : null;
             var mainRole = project.UniqueRoleId.HasValue ? Context.Guild.GetRole((ulong)project.UniqueRoleId.Value) : null;
