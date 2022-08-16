@@ -246,7 +246,7 @@ namespace CollaborationBot {
                 .AddSingleton(_appSettings)
                 .AddSingleton<CommonService>()
                 .AddSingleton<ResourceService>()
-                .AddDbContext<OsuCollabContext>()
+                .AddDbContext<OsuCollabContext>(ServiceLifetime.Singleton)
                 .AddSingleton<FileHandlingService>()
                 .AddSingleton<DiscordSocketClient>()
                 .AddSingleton(_interactionService)
