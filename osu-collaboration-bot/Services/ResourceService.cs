@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -167,6 +168,18 @@ namespace CollaborationBot.Services {
             builder.Append("[/box][/notice]\n```");
 
             return builder.ToString();
+        }
+
+        public async Task RespondTextOrFile(IDiscordInteraction interaction, string text) {
+            // Respond with a file if the content is over 2000 characters
+            if (text.Length <= 2000) {
+                await interaction.RespondAsync(text);
+            } else {
+                const string tempTextFileName = "message.txt";
+                await File.WriteAllTextAsync(tempTextFileName, text);
+                await interaction.RespondWithFileAsync(tempTextFileName);
+                File.Delete(tempTextFileName);
+            }
         }
 
         public string GenerateDraintimesListMessage(List<KeyValuePair<Member, int>> draintimes) {
