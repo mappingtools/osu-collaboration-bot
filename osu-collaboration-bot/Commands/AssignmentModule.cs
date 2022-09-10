@@ -10,7 +10,6 @@ using System;
 using NLog;
 using System.Collections.Generic;
 using CollaborationBot.Autocomplete;
-using Fergun.Interactive;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollaborationBot.Commands {
@@ -30,7 +29,7 @@ namespace CollaborationBot.Commands {
         
         [SlashCommand("list", "Lists all the assignments in the project")]
         public async Task List([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
@@ -53,20 +52,20 @@ namespace CollaborationBot.Commands {
             [Summary("user", "The member to assign to")]IGuildUser user, 
             [Autocomplete(typeof(PartAutocompleteHandler))][Summary("parts", "The parts to assign to the member")]string[] partNames,
             [Summary("deadline", "The deadline for the assignment (can be null)")] DateTime? deadline = null) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var member = await _common.GetMemberAsync(Context, project, user);
+            var member = await _common.GetMemberAsync(Context, _context, project, user);
 
             if (member == null) {
                 return;
             }
 
             foreach (var partName in partNames) {
-                var part = await _common.GetPartAsync(Context, project, partName);
+                var part = await _common.GetPartAsync(Context, _context, project, partName);
 
                 if (part == null) {
                     return;
@@ -88,14 +87,14 @@ namespace CollaborationBot.Commands {
         public async Task Remove([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member to remove assignments from")]IUser user,
             [Autocomplete(typeof(PartAutocompleteHandler))][Summary("parts", "The parts to unassign from the member")]params string[] partNames) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
             }
 
             foreach (var partName in partNames) {
-                var assignment = await _common.GetAssignmentAsync(Context, project, partName, user);
+                var assignment = await _common.GetAssignmentAsync(Context, _context, project, partName, user);
 
                 if (assignment == null) {
                     return;
@@ -117,13 +116,13 @@ namespace CollaborationBot.Commands {
             [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part of the assignment")]string partName,
             [Summary("user", "The member of the assignment")]IGuildUser user,
             [Summary("deadline", "The new deadline (can be null)")]DateTime? deadline) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var assignment = await _common.GetAssignmentAsync(Context, project, partName, user);
+            var assignment = await _common.GetAssignmentAsync(Context, _context, project, partName, user);
 
             if (assignment == null) {
                 return;
@@ -145,7 +144,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("draintimes", "Calculates the total drain time assigned to each participant.")]
         public async Task DrainTimes([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;

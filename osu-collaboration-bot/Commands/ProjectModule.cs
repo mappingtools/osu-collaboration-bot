@@ -49,7 +49,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 await RespondAsync(Strings.ProjectNotExistMessage);
@@ -139,7 +139,7 @@ namespace CollaborationBot.Commands {
         
         [SlashCommand("delete", "Deletes a project")]
         public async Task Delete([RequireProjectOwner][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
@@ -206,7 +206,7 @@ namespace CollaborationBot.Commands {
             // Make channel, role, and permissions
             // Automatic channels and roles will be marked for deletion on project deletion unless states otherwise
 
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
@@ -311,7 +311,7 @@ namespace CollaborationBot.Commands {
         [SlashCommand("add", "Adds a new member to the project")]
         public async Task AddMember([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName, 
             [Summary("user", "The user to add")]IGuildUser user) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
@@ -338,13 +338,13 @@ namespace CollaborationBot.Commands {
         [SlashCommand("remove", "Removes a member from the project")]
         public async Task RemoveMember([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The user to remove")]IGuildUser user) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var member = await _common.GetMemberAsync(Context, project, user);
+            var member = await _common.GetMemberAsync(Context, _context, project, user);
 
             if (member == null) {
                 return;
@@ -372,13 +372,13 @@ namespace CollaborationBot.Commands {
         [SlashCommand("promote", "Promotes a member to a manager of the project")]
         public async Task AddManager([RequireProjectOwner][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The user to promote")]IGuildUser user) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var member = await _common.GetMemberAsync(Context, project, user);
+            var member = await _common.GetMemberAsync(Context, _context, project, user);
 
             if (member == null) {
                 return;
@@ -411,13 +411,13 @@ namespace CollaborationBot.Commands {
         [SlashCommand("demote", "Demotes a manager to a regular member of the project")]
         public async Task RemoveManager([RequireProjectOwner][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The user to demote")]IGuildUser user) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var member = await _common.GetMemberAsync(Context, project, user);
+            var member = await _common.GetMemberAsync(Context, _context, project, user);
 
             if (member == null) {
                 return;
@@ -452,13 +452,13 @@ namespace CollaborationBot.Commands {
         [SlashCommand("setowner", "Changes the owner of the project")]
         public async Task SetOwner([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The new owner")]IGuildUser user) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var member = await _common.GetMemberAsync(Context, project, user);
+            var member = await _common.GetMemberAsync(Context, _context, project, user);
 
             if (member == null) {
                 return;
@@ -494,7 +494,7 @@ namespace CollaborationBot.Commands {
         public async Task Alias([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member")]IUser user,
             [Summary("alias", "The new alias")]string alias) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
@@ -505,7 +505,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            var member = await _common.GetMemberAsync(Context, project, user);
+            var member = await _common.GetMemberAsync(Context, _context, project, user);
 
             if (member == null) {
                 return;
@@ -526,7 +526,7 @@ namespace CollaborationBot.Commands {
         public async Task Tags([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member")]IUser user,
             [Summary("tags", "The new tags")]string tags) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
@@ -537,7 +537,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            var member = await _common.GetMemberAsync(Context, project, user);
+            var member = await _common.GetMemberAsync(Context, _context, project, user);
 
             if (member == null) {
                 return;
@@ -556,7 +556,7 @@ namespace CollaborationBot.Commands {
         
         [SlashCommand("gettags", "Gets all the tags of the project")]
         public async Task Tags([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
@@ -581,13 +581,13 @@ namespace CollaborationBot.Commands {
         public async Task Id([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("user", "The member")] IUser user,
             [Summary("id", "The new ID")] ulong id) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var member = await _common.GetMemberAsync(Context, project, user);
+            var member = await _common.GetMemberAsync(Context, _context, project, user);
 
             if (member == null) {
                 return;
@@ -608,13 +608,13 @@ namespace CollaborationBot.Commands {
         public async Task Priority([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("user", "The member")]IUser user,
             [Summary("priority", "The new priority")]int? priority) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var member = await _common.GetMemberAsync(Context, project, user);
+            var member = await _common.GetMemberAsync(Context, _context, project, user);
 
             if (member == null) {
                 return;
@@ -634,7 +634,7 @@ namespace CollaborationBot.Commands {
         public async Task GeneratePriorities([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("timeweight", "The priority value of one day")]int timeWeight = 1,
             [Summary("replace", "Whether to replace all the existing priority values")]bool replace = false) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
@@ -673,7 +673,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
@@ -944,7 +944,7 @@ namespace CollaborationBot.Commands {
                 [Summary("prioritypicking", "Whether priority picking is enabled")] bool? priorityPicking = null,
                 [Summary("partrestrictedupload", "Whether to restrict part submission to just the assigned parts")] bool? partRestrictedUpload = null,
                 [Summary("doreminders", "Whether to automatically remind members about their deadlines")] bool? doReminders = null) {
-                var project = await _common.GetProjectAsync(Context, projectName);
+                var project = await _common.GetProjectAsync(Context, _context, projectName);
 
                 if (project == null) {
                     return;
@@ -988,7 +988,7 @@ namespace CollaborationBot.Commands {
                 [Summary("role", "The new member role")] IRole role,
                 [Summary("update", "Whether to update member roles and channel permissions")] bool update = true) {
                 try {
-                    var project = await _common.GetProjectAsync(Context, projectName);
+                    var project = await _common.GetProjectAsync(Context, _context, projectName);
 
                     if (project == null) {
                         return;
@@ -1025,7 +1025,7 @@ namespace CollaborationBot.Commands {
                 [Summary("role", "The new manager role")] IRole role,
                 [Summary("update", "Whether to update member roles and channel permissions")] bool update = true) {
                 try {
-                    var project = await _common.GetProjectAsync(Context, projectName);
+                    var project = await _common.GetProjectAsync(Context, _context, projectName);
 
                     if (project == null) {
                         return;
@@ -1059,7 +1059,7 @@ namespace CollaborationBot.Commands {
             [SlashCommand("rolecolor", "Changes the color of the roles of the project")]
             public async Task RoleColor([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
                 [Summary("color", "The new color as Hex code")] Color color) {
-                var project = await _common.GetProjectAsync(Context, projectName);
+                var project = await _common.GetProjectAsync(Context, _context, projectName);
 
                 if (project == null) {
                     return;
@@ -1086,7 +1086,7 @@ namespace CollaborationBot.Commands {
             [SlashCommand("description", "Changes the description of the project")]
             public async Task Description([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
                 [Summary("description", "The new description")] string description) {
-                var project = await _common.GetProjectAsync(Context, projectName);
+                var project = await _common.GetProjectAsync(Context, _context, projectName);
 
                 if (project == null) {
                     return;
@@ -1110,7 +1110,7 @@ namespace CollaborationBot.Commands {
             [SlashCommand("status", "Changes the status of the project")]
             public async Task Status([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
                 [Summary("status", "The new status")] ProjectStatus status) {
-                var project = await _common.GetProjectAsync(Context, projectName);
+                var project = await _common.GetProjectAsync(Context, _context, projectName);
 
                 if (project == null) {
                     return;
@@ -1129,7 +1129,7 @@ namespace CollaborationBot.Commands {
             [SlashCommand("maxassignments", "Changes the maximum number of allowed assignments for members of the project")]
             public async Task MaxAssignments([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
                 [Summary("maxassignments", "The new maximum number of allowed assignments (can be null)")] int? maxAssignments) {
-                var project = await _common.GetProjectAsync(Context, projectName);
+                var project = await _common.GetProjectAsync(Context, _context, projectName);
 
                 if (project == null) {
                     return;
@@ -1148,7 +1148,7 @@ namespace CollaborationBot.Commands {
             [SlashCommand("assignmentlifetime", "Changes the default duration of assignments of the project")]
             public async Task AssignmentLifetime([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
                 [Summary("lifetime", "The new duration of assignments (dd:hh:mm:ss:fff) (can be null)")] TimeSpan? lifetime) {
-                var project = await _common.GetProjectAsync(Context, projectName);
+                var project = await _common.GetProjectAsync(Context, _context, projectName);
 
                 if (project == null) {
                     return;
@@ -1168,7 +1168,7 @@ namespace CollaborationBot.Commands {
             [SlashCommand("mainchannel", "Changes the main channel of the project")]
             public async Task MainChannel([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
                 [Summary("channel", "The new main channel")] ITextChannel channel) {
-                var project = await _common.GetProjectAsync(Context, projectName);
+                var project = await _common.GetProjectAsync(Context, _context, projectName);
 
                 if (project == null) {
                     return;
@@ -1188,7 +1188,7 @@ namespace CollaborationBot.Commands {
             [SlashCommand("infochannel", "Changes the info channel of the project")]
             public async Task InfoChannel([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
                 [Summary("channel", "The new info channel")] ITextChannel channel) {
-                var project = await _common.GetProjectAsync(Context, projectName);
+                var project = await _common.GetProjectAsync(Context, _context, projectName);
 
                 if (project == null) {
                     return;
@@ -1208,7 +1208,7 @@ namespace CollaborationBot.Commands {
             [SlashCommand("deletioncleanup", "Changes whether to remove the roles and channels assigned to the project upon project deletion")]
             public async Task ChangeAutoCleanup([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
                 [Summary("cleanup", "Whether to do cleanup")] bool cleanup) {
-                var project = await _common.GetProjectAsync(Context, projectName);
+                var project = await _common.GetProjectAsync(Context, _context, projectName);
 
                 if (project == null) {
                     return;

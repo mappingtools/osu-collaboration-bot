@@ -6,7 +6,6 @@ using Discord.Interactions;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CollaborationBot.Commands {
@@ -52,7 +51,7 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(GuildPermission.Administrator)]
         [SlashCommand("collabcategory", "Changes the category in which project channels will be automatically generated")]
         public async Task CollabCategory([Summary("category")]ICategoryChannel category) {
-            var guild = await _common.GetGuildAsync(Context);
+            var guild = await _common.GetGuildAsync(Context, _context);
 
             if (guild == null) {
                 return;
@@ -72,7 +71,7 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(GuildPermission.Administrator)]
         [SlashCommand("maxcollabs", "Changes the maximum number of projects a regular member can create")]
         public async Task MaxCollabs([Summary("count", "The maximum number of projects")]int count) {
-            var guild = await _common.GetGuildAsync(Context);
+            var guild = await _common.GetGuildAsync(Context, _context);
 
             if (guild == null) {
                 return;
@@ -92,7 +91,7 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(GuildPermission.Administrator)]
         [SlashCommand("inactivitytimer", "Changes the duration of inactivity after which a project will be deleted. If null, never deleted")]
         public async Task InactivityTimer([Summary("time", "The new inactivity timer duration (dd:hh:mm:ss:fff) (can be null)")] TimeSpan? time) {
-            var guild = await _common.GetGuildAsync(Context);
+            var guild = await _common.GetGuildAsync(Context, _context);
 
             if (guild == null) {
                 return;
@@ -112,7 +111,7 @@ namespace CollaborationBot.Commands {
         [RequireUserPermission(GuildPermission.Administrator)]
         [SlashCommand("createroles", "Changes whether the setup command creates new roles.")]
         public async Task CreateRoles([Summary("value", "Whether the setup command creates new roles.")] bool value) {
-            var guild = await _common.GetGuildAsync(Context);
+            var guild = await _common.GetGuildAsync(Context, _context);
 
             if (guild == null) {
                 return;

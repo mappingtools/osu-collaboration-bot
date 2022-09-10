@@ -32,7 +32,7 @@ namespace CollaborationBot.Commands {
         
         [SlashCommand("list", "Lists all the update notifications attached to the project")]
         public async Task List([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
@@ -64,7 +64,7 @@ namespace CollaborationBot.Commands {
             [Summary("channel", "The channel to post the notification in")]ITextChannel channel,
             [Summary("cooldown", "The cooldown on the notification (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? cooldown = null,
             [Summary("mentions", "Whether to ping members on an update notification")]bool doPing = false) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
@@ -88,13 +88,13 @@ namespace CollaborationBot.Commands {
         [SlashCommand("remove", "Removes an update notification from the project")]
         public async Task Remove([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("channel", "The channel the notification is in")]ITextChannel channel) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
             }
             
-            var autoUpdate = await _common.GetAutoUpdateAsync(Context, project, channel);
+            var autoUpdate = await _common.GetAutoUpdateAsync(Context, _context, project, channel);
 
             if (autoUpdate == null) {
                 return;
@@ -114,13 +114,13 @@ namespace CollaborationBot.Commands {
         public async Task Cooldown([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("channel", "The channel the notification is in")]ITextChannel channel,
             [Summary("cooldown", "The new cooldown (dd:hh:mm:ss:fff) (can be null)")]TimeSpan? cooldown) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
             }
             
-            var autoUpdate = await _common.GetAutoUpdateAsync(Context, project, channel);
+            var autoUpdate = await _common.GetAutoUpdateAsync(Context, _context, project, channel);
 
             if (autoUpdate == null) {
                 return;
@@ -140,13 +140,13 @@ namespace CollaborationBot.Commands {
         public async Task DoPing([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("channel", "The channel the notification is in")]ITextChannel channel,
             [Summary("mentions", "Whether to ping all members in the update notification")]bool doPing) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
             }
             
-            var autoUpdate = await _common.GetAutoUpdateAsync(Context, project, channel);
+            var autoUpdate = await _common.GetAutoUpdateAsync(Context, _context, project, channel);
 
             if (autoUpdate == null) {
                 return;
@@ -164,7 +164,7 @@ namespace CollaborationBot.Commands {
         
         [SlashCommand("trigger", "Triggers all update notifications of the project")]
         public async Task Trigger([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
-            var project = await _common.GetProjectAsync(Context, projectName);
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;

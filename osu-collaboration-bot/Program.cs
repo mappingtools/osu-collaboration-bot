@@ -69,7 +69,7 @@ namespace CollaborationBot {
             _client.Ready += Ready;
 
             var interactionServiceConfig = new InteractionServiceConfig() {
-                DefaultRunMode = RunMode.Async,
+                DefaultRunMode = RunMode.Sync,
                 UseCompiledLambda = true,
                 EnableAutocompleteHandlers = true,
                 LogLevel = LogSeverity.Debug,
@@ -246,7 +246,7 @@ namespace CollaborationBot {
                 .AddSingleton(_appSettings)
                 .AddSingleton<CommonService>()
                 .AddSingleton<ResourceService>()
-                .AddDbContext<OsuCollabContext>(ServiceLifetime.Singleton)
+                .AddDbContext<OsuCollabContext>()
                 .AddSingleton<FileHandlingService>()
                 .AddSingleton<DiscordSocketClient>()
                 .AddSingleton(_interactionService)
