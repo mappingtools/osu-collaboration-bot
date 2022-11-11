@@ -214,6 +214,12 @@ namespace CollaborationBot {
                 }
                 await _context.SaveChangesAsync();
 
+                // Try reconnecting to refresh the connection
+                await _client.StopAsync();
+                await _client.LogoutAsync();
+                await _client.LoginAsync(TokenType.Bot, _appSettings.Token);
+                await _client.StartAsync();
+
             } catch (Exception exception) {
                 logger.Error(exception);
             }
