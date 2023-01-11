@@ -33,7 +33,7 @@ namespace CollaborationBot {
         private readonly List<SocketGuild> guildList = new();
         private readonly Timer checkupTimer = new();
 
-        public static void Main(string[] args) {
+        public static Task Main(string[] args) {
             config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -41,17 +41,17 @@ namespace CollaborationBot {
                 .AddEnvironmentVariables().Build();
             LogManager.Configuration = new NLogLoggingConfiguration(config.GetSection("NLog"));
 
-            try {
-                logger.Info("Starting program");
-                new Program().MainAsync().GetAwaiter().GetResult();
-            } catch (Exception exception) {
-                //NLog: catch setup errors
-                logger.Error(exception, "Stopped program because of exception");
-                throw;
-            } finally {
+            logger.Info("Starting program");
+
+            return new Program().MainAsync().ContinueWith(task => {
+                if (task.IsFaulted) {
+                    //NLog: catch setup errors
+                    logger.Error(task.Exception, "Stopped program because of exception");
+                }
+
                 // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
                 LogManager.Shutdown();
-            }
+            });
         }
 
         public async Task MainAsync() {
