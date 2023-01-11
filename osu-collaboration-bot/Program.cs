@@ -216,9 +216,6 @@ namespace CollaborationBot {
             } catch (Exception exception) {
                 logger.Error(exception);
             }
-
-            // Try killing the application to refresh the connection
-            throw new Exception();
         }
 
         private async Task Ready() {
