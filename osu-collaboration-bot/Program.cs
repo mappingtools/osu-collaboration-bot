@@ -90,10 +90,10 @@ namespace CollaborationBot {
             await _client.LoginAsync(TokenType.Bot, _appSettings.Token);
             await _client.StartAsync();
 
-            checkupTimer.Interval = TimeSpan.FromMinutes(30).TotalMilliseconds;
-            checkupTimer.Elapsed += (s, e) => _= CheckupTimerOnElapsed(s, e);
-            checkupTimer.AutoReset = true;
-            checkupTimer.Start();
+            //checkupTimer.Interval = TimeSpan.FromMinutes(30).TotalMilliseconds;
+            //checkupTimer.Elapsed += (s, e) => _= CheckupTimerOnElapsed(s, e);
+            //checkupTimer.AutoReset = true;
+            //checkupTimer.Start();
 
             // Block this task until the program is closed.
             await Task.Delay(-1);
@@ -222,9 +222,6 @@ namespace CollaborationBot {
             } catch (Exception exception) {
                 logger.Error(exception);
             }
-
-            // Try killing the application to refresh the connection
-            throw new Exception();
         }
 
         private async Task Ready() {
