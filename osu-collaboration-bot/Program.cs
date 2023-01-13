@@ -67,6 +67,7 @@ namespace CollaborationBot {
             _client.GuildAvailable += GuildAvailable;
             _client.Connected += Connected;
             _client.Ready += Ready;
+            _client.Disconnected += Suicide;
 
             var interactionServiceConfig = new InteractionServiceConfig() {
                 DefaultRunMode = RunMode.Sync,
@@ -96,6 +97,11 @@ namespace CollaborationBot {
 
             // Block this task until the program is closed.
             await Task.Delay(-1);
+        }
+
+        private static Task Suicide(Exception arg) {
+            Environment.Exit(1);
+            return Task.CompletedTask;
         }
 
         private async Task CheckupTimerOnElapsed(object sender, ElapsedEventArgs e) {
