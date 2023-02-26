@@ -58,7 +58,7 @@ namespace CollaborationBot {
             _appSettings = GetAppSettings();
 
             var discordSocketConfig = new DiscordSocketConfig {
-                GatewayIntents = GatewayIntents.DirectMessages | GatewayIntents.GuildMessages | GatewayIntents.Guilds | GatewayIntents.GuildMembers | GatewayIntents.GuildPresences,
+                GatewayIntents = GatewayIntents.DirectMessages | GatewayIntents.GuildMessages | GatewayIntents.Guilds,
                 DefaultRetryMode = RetryMode.AlwaysRetry,
                 LogLevel = LogSeverity.Debug,
             };
@@ -229,7 +229,7 @@ namespace CollaborationBot {
         }
 
         private async Task Connected() {
-            await _client.DownloadUsersAsync(guildList);
+            //await _client.DownloadUsersAsync(guildList);
             //guildList.Clear();
             await _client.SetGameAsync(_appSettings.Prefix + "help");
         }
