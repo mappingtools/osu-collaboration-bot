@@ -9,15 +9,24 @@ Built using [Mapping Tools Core](https://github.com/OliBomby/Mapping_Tools_Core)
 - Adding or removing members of a project
 - Configurable permissions
 - Beatmap part division and claiming
-- Automatic project channel and role creation
-- Automatic reminders about upcoming deadlines
+- Merging submitted parts and posting the latest version of the beatmap
+- Project channel and role creation
+- Reminders about upcoming deadlines
 - Part picking priority system
-- Automatically merging submitted parts and posting the latest version of the beatmap
-- Automatic generation of beatmap tags and description
+- Generation of beatmap tags and description
 - CSV export of annotated beatmap parts for storyboarding
-- Automatic mapped drain time calculation
+- Mapped drain time calculation
+- Generation of difficulty names
 
-For a full list of commands use /help in a server where the bot is present.
+For a full list of commands use `/help` in a server where the bot is present.
+
+
+# Adding this bot to your server
+You can add this bot to your server by clicking [here](https://discord.com/api/oauth2/authorize?client_id=863480217958612992&permissions=534992251984&scope=bot%20applications.commands).
+
+Make sure your collab category permissions are set up correctly. The bot needs at least the `View Channels`, `Manage Channels`, `Manage Permissions`, `Send Messages and Create Posts`, `Attach Files`, and `Mention @everyone, @here and All Roles` permissions in this category.
+
+Lastly use `/adminguide` and `/help guild` to get a list of commands that can be used to configure the bot for your server.
 
 # To run this bot
 - Create a PostgreSQL database with the schema from database.sql
