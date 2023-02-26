@@ -1,6 +1,6 @@
 # osu! Collaboration Bot
-This is a discord bot meant to help manage osu! mapping collabs in discord.
-It automates various tedious tasks that collab organisers have to deal with.
+This is a Discord bot meant to help manage big osu! mapping collabs in Discord.
+It automates various tedious tasks that collab organisers have to deal with, especially when you have many people working on a beatmap.
 
 Built using [Mapping Tools Core](https://github.com/OliBomby/Mapping_Tools_Core), [Discord.Net](https://github.com/discord-net/Discord.Nethttps://github.com/discord-net/Discord.Net), and a backing PostgreSQL database.
 
