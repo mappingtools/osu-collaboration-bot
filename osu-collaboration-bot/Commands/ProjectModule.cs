@@ -228,19 +228,21 @@ namespace CollaborationBot.Commands {
                     .Where(o => o.ProjectId == project.Id).ToListAsync();
 
                 // Get/Create project role
+                IRole memberRole = null;
                 if (!project.UniqueRoleId.HasValue && guild.GenerateRoles) {
-                    var role = await Context.Guild.CreateRoleAsync($"{project.Name} Participant", isMentionable:true);
+                    memberRole = await Context.Guild.CreateRoleAsync($"{project.Name} Participant", isMentionable:true);
 
-                    project.UniqueRoleId = role.Id;
+                    project.UniqueRoleId = memberRole.Id;
                     await _context.SaveChangesAsync();
 
                     // Give all members the new role and remove the old role if possible
-                    await UpdateRolesAsync(members.Select(o => (ulong)o.UniqueMemberId), Context.Guild, role);
+                    await UpdateRolesAsync(members.Select(o => (ulong)o.UniqueMemberId), Context.Guild, memberRole);
                 }
 
                 // Get/Create manager role
+                IRole managerRole = null;
                 if (!project.ManagerRoleId.HasValue && guild.GenerateRoles) {
-                    var managerRole = await Context.Guild.CreateRoleAsync($"{project.Name} Manager", isMentionable:true);
+                    managerRole = await Context.Guild.CreateRoleAsync($"{project.Name} Manager", isMentionable:true);
 
                     project.ManagerRoleId = managerRole.Id;
                     await _context.SaveChangesAsync();
@@ -254,6 +256,7 @@ namespace CollaborationBot.Commands {
                 if (guild.CollabCategoryId.HasValue) {
                     // Create info channel
                     ITextChannel infoChannel;
+                    ITextChannel mainChannel;
                     if (!project.InfoChannelId.HasValue) {
                         infoChannel = await Context.Guild.CreateTextChannelAsync($"{project.Name}-info",
                             prop => prop.CategoryId = (ulong) guild.CollabCategoryId);
@@ -266,15 +269,17 @@ namespace CollaborationBot.Commands {
 
                     // Create general channel
                     if (!project.MainChannelId.HasValue) {
-                        var mainChannel = await Context.Guild.CreateTextChannelAsync($"{project.Name}-general",
+                        mainChannel = await Context.Guild.CreateTextChannelAsync($"{project.Name}-general",
                             prop => prop.CategoryId = (ulong) guild.CollabCategoryId);
 
                         project.MainChannelId = mainChannel.Id;
                         await _context.SaveChangesAsync();
+                    } else {
+                        mainChannel = Context.Guild.GetTextChannel((ulong) project.MainChannelId.Value);
                     }
 
                     // Update permissions
-                    await UpdateProjectChannelPermissions(Context, project, members);
+                    await UpdateProjectChannelPermissions(Context, project, members, mainChannel, infoChannel, memberRole, managerRole);
 
                     // Send the description in the info channel
                     if (!string.IsNullOrEmpty(project.Description)) {
@@ -722,52 +727,52 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        private static async Task UpdateProjectChannelPermissions(SocketInteractionContext context, Project project, List<Member> members) {
+        private static async Task UpdateProjectChannelPermissions(SocketInteractionContext context, Project project, List<Member> members, IGuildChannel mainChannel = null, IGuildChannel infoChannel = null, IRole memberRole = null, IRole managerRole = null) {
             if (project.MainChannelId.HasValue) {
-                var channel = context.Guild.GetChannel((ulong)project.MainChannelId);
-                await UpdateChannelPermissions(project, channel, members, false);
+                var channel = mainChannel ?? context.Guild.GetChannel((ulong)project.MainChannelId);
+                await UpdateChannelPermissions(project, channel, members, false, memberRole, managerRole);
             }
 
             if (project.InfoChannelId.HasValue) {
-                var channel = context.Guild.GetChannel((ulong)project.InfoChannelId);
-                await UpdateChannelPermissions(project, channel, members, true);
+                var channel = infoChannel ?? context.Guild.GetChannel((ulong)project.InfoChannelId);
+                await UpdateChannelPermissions(project, channel, members, true, memberRole, managerRole);
             }
         }
 
-        private static async Task UpdateChannelPermissions(Project project, SocketGuildChannel channel, List<Member> members, bool isInfoChannel) {
+        private static async Task UpdateChannelPermissions(Project project, IGuildChannel channel, List<Member> members, bool isInfoChannel, IRole memberRole = null, IRole managerRole = null) {
             await channel.AddPermissionOverwriteAsync(channel.Guild.EveryoneRole, GetNoPermissions(channel));
 
             if (project.Guild.GenerateRoles) {
                 if (project.UniqueRoleId.HasValue) {
-                    var role = channel.Guild.GetRole((ulong)project.UniqueRoleId);
+                    var role = memberRole ?? channel.Guild.GetRole((ulong)project.UniqueRoleId);
                     await channel.AddPermissionOverwriteAsync(role, isInfoChannel ? GetReadPermissions() : GetWritePermissions());
                 }
                 if (project.ManagerRoleId.HasValue) {
-                    var role = channel.Guild.GetRole((ulong)project.ManagerRoleId);
+                    var role = managerRole ?? channel.Guild.GetRole((ulong)project.ManagerRoleId);
                     await channel.AddPermissionOverwriteAsync(role, GetPartialAdminPermissions());
                 }
             }else {
                 foreach (var member in members) {
-                    await UpdateChannelPermission(channel, (ulong)member.UniqueMemberId, member.ProjectRole,
+                    await UpdateChannelMemberPermission(channel, (ulong)member.UniqueMemberId, member.ProjectRole,
                         isInfoChannel);
                 }
             }
         }
 
-        private static async Task UpdateChannelPermission(SocketGuildChannel channel, ulong memberId, ProjectRole? role, bool isInfoChannel) {
-            var user = channel.Guild.GetUser(memberId);
-            if (user is not IGuildUser gu) return;
+        private static async Task UpdateChannelMemberPermission(IGuildChannel channel, ulong memberId, ProjectRole? role, bool isInfoChannel) {
+            var user = await channel.Guild.GetUserAsync(memberId);
+            if (user is null) return;
 
             switch (role) {
                 case ProjectRole.Owner:
                 case ProjectRole.Manager:
-                    await channel.AddPermissionOverwriteAsync(gu, GetPartialAdminPermissions());
+                    await channel.AddPermissionOverwriteAsync(user, GetPartialAdminPermissions());
                     break;
                 case ProjectRole.Member:
-                    await channel.AddPermissionOverwriteAsync(gu, isInfoChannel ? GetReadPermissions() : GetWritePermissions());
+                    await channel.AddPermissionOverwriteAsync(user, isInfoChannel ? GetReadPermissions() : GetWritePermissions());
                     break;
                 default:
-                    await channel.RemovePermissionOverwriteAsync(gu);
+                    await channel.RemovePermissionOverwriteAsync(user);
                     break;
             }
         }
@@ -792,12 +797,12 @@ namespace CollaborationBot.Commands {
 
             if (!project.Guild.GenerateRoles && project.MainChannelId.HasValue) {
                 var channel = guild.GetChannel((ulong)project.MainChannelId);
-                await UpdateChannelPermission(channel, gu.Id, projectRole, false);
+                await UpdateChannelMemberPermission(channel, gu.Id, projectRole, false);
             }
 
             if (!project.Guild.GenerateRoles && project.InfoChannelId.HasValue) {
                 var channel = guild.GetChannel((ulong)project.InfoChannelId);
-                await UpdateChannelPermission(channel, gu.Id, projectRole, true);
+                await UpdateChannelMemberPermission(channel, gu.Id, projectRole, true);
             }
         }
 
@@ -1007,7 +1012,7 @@ namespace CollaborationBot.Commands {
                         await UpdateRolesAsync(members.Select(o => (ulong)o.UniqueMemberId), Context.Guild, role, oldRole);
 
                         if (project.Guild.GenerateRoles) {
-                            await UpdateProjectChannelPermissions(Context, project, members);
+                            await UpdateProjectChannelPermissions(Context, project, members, memberRole: role);
                         }
                     }
 
@@ -1044,7 +1049,7 @@ namespace CollaborationBot.Commands {
                         await UpdateRolesAsync(members.Select(o => (ulong)o.UniqueMemberId), Context.Guild, role, oldRole);
 
                         if (project.Guild.GenerateRoles) {
-                            await UpdateProjectChannelPermissions(Context, project, members);
+                            await UpdateProjectChannelPermissions(Context, project, members, managerRole: role);
                         }
                     }
 
