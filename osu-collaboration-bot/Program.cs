@@ -30,8 +30,8 @@ namespace CollaborationBot {
         private FileHandlingService _fileHandler;
         private OsuCollabContext _context;
 
-        private readonly List<SocketGuild> guildList = new();
-        private readonly Timer checkupTimer = new();
+        private readonly List<SocketGuild> _guildList = new();
+        private readonly Timer _checkupTimer = new();
 
         public static Task Main(string[] args) {
             config = new ConfigurationBuilder()
@@ -225,7 +225,7 @@ namespace CollaborationBot {
         }
 
         private async Task Ready() {
-            await _interactionHandler.RegisterModulesAsync(guildList);
+            await _interactionHandler.RegisterModulesAsync(_guildList);
         }
 
         private async Task Connected() {
@@ -235,7 +235,7 @@ namespace CollaborationBot {
         }
 
         private Task GuildAvailable(SocketGuild arg) {
-            guildList.Add(arg);
+            _guildList.Add(arg);
             return Task.CompletedTask;
         }
 

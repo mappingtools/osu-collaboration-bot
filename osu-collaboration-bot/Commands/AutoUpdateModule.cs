@@ -184,13 +184,13 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        public static async Task HandleAutoUpdates(Project project, SocketInteractionContext context, OsuCollabContext _context, FileHandlingService fileHandler) {
+        public static async Task HandleAutoUpdates(Project project, SocketInteractionContext context, OsuCollabContext dbContext, FileHandlingService fileHandler) {
             if (!fileHandler.ProjectBaseFileExists(context.Guild, project.Name)) {
                 return;
             }
             
             // Maybe not use cooldown on the trigger command
-            var updates = await _context.AutoUpdates.AsQueryable()
+            var updates = await dbContext.AutoUpdates.AsQueryable()
                 .Where(o => o.ProjectId == project.Id)
                 .ToListAsync();
 
@@ -218,7 +218,7 @@ namespace CollaborationBot.Commands {
                 autoUpdate.LastTime = DateTime.UtcNow;
             }
 
-            await _context.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
         }
     }
 }

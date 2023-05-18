@@ -687,9 +687,9 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            int n_words = wordCount > 0 && wordCount <= 200 ? wordCount : wordCounts[random.Next(wordCounts.Length - 1)];
+            int nWords = wordCount > 0 && wordCount <= 200 ? wordCount : wordCounts[random.Next(wordCounts.Length - 1)];
             StringBuilder diffname = new StringBuilder();
-            for (int i = 0; i < n_words; i++) {
+            for (int i = 0; i < nWords; i++) {
                 if (i != 0)
                     diffname.Append(' ');
                 if (random.NextDouble() < mixChance) {

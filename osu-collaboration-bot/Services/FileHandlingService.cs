@@ -17,17 +17,17 @@ namespace CollaborationBot.Services {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private enum PermissibleFileType {
-            DOT_OSU,
-            DOT_TSV,
-            DOT_CSV
+            DotOsu,
+            DotTsv,
+            DotCSV
         }
 
         private string _path;
 
         private readonly Dictionary<PermissibleFileType, string> _permissibleFileExtensions = new() {
-            {PermissibleFileType.DOT_OSU, ".osu"},
-            {PermissibleFileType.DOT_TSV, ".tsv"},
-            {PermissibleFileType.DOT_CSV, ".csv"},
+            {PermissibleFileType.DotOsu, ".osu"},
+            {PermissibleFileType.DotTsv, ".tsv"},
+            {PermissibleFileType.DotCSV, ".csv"},
         };
 
         public void Initialize(string path) {
@@ -36,7 +36,7 @@ namespace CollaborationBot.Services {
 
         public async Task<bool> DownloadBaseFile(IGuild guild, string projectName, Attachment att) {
             try {
-                if (!IsFilePermissible(att.Url, PermissibleFileType.DOT_OSU)) return false;
+                if (!IsFilePermissible(att.Url, PermissibleFileType.DotOsu)) return false;
 
                 var localProjectPath = GetProjectPath(guild, projectName);
 
@@ -67,7 +67,7 @@ namespace CollaborationBot.Services {
 
         public async Task<string> DownloadPartSubmit(IGuild guild, string projectName, Attachment att) {
             try {
-                if (!IsFilePermissible(att.Url, PermissibleFileType.DOT_OSU)) return null;
+                if (!IsFilePermissible(att.Url, PermissibleFileType.DotOsu)) return null;
 
                 var localProjectPath = GetProjectPath(guild, projectName);
 
@@ -106,7 +106,7 @@ namespace CollaborationBot.Services {
 
         public async Task<List<PartRecord>> DownloadPartsCSV(Attachment att, bool hasHeaders = true) {
             try {
-                if (!IsFilePermissible(att.Url, PermissibleFileType.DOT_CSV)) return null;
+                if (!IsFilePermissible(att.Url, PermissibleFileType.DotCSV)) return null;
 
                 if (!Uri.TryCreate(att.Url, UriKind.Absolute, out var uri)) return null;
 
