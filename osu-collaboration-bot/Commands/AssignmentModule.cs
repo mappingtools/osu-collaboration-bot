@@ -27,7 +27,7 @@ namespace CollaborationBot.Commands {
             _common = common;
         }
         
-        [SlashCommand("list", "Lists all the assignments in the project")]
+        [SlashCommand("list", "Lists all the assignments in the project", runMode:RunMode.Async)]
         public async Task List([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 
@@ -142,7 +142,7 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        [SlashCommand("draintimes", "Calculates the total drain time assigned to each participant.")]
+        [SlashCommand("draintimes", "Calculates the total drain time assigned to each participant.", runMode:RunMode.Async)]
         public async Task DrainTimes([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 

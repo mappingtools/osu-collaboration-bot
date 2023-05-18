@@ -30,7 +30,7 @@ namespace CollaborationBot.Commands {
             _common = common;
         }
         
-        [SlashCommand("list", "Lists all the update notifications attached to the project")]
+        [SlashCommand("list", "Lists all the update notifications attached to the project", runMode:RunMode.Async)]
         public async Task List([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 

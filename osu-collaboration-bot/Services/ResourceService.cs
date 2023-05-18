@@ -23,6 +23,15 @@ namespace CollaborationBot.Services {
             _interactive = interactive;
         }
 
+        /// <summary>
+        /// Responds to the interaction with a paginator. Any command which uses this MUST run async.
+        /// </summary>
+        /// <param name="context">The interaction context.</param>
+        /// <param name="items">The items to put in the paginator.</param>
+        /// <param name="pageMaker">Function mapping items to pages.</param>
+        /// <param name="nothingString">The message to respond with if there are no items.</param>
+        /// <param name="message">The message to respond with if there are items.</param>
+        /// <typeparam name="T">The type of item to display.</typeparam>
         public async Task RespondPaginator<T>(SocketInteractionContext context, List<T> items,
         Func<List<T>, IPageBuilder[]> pageMaker, string nothingString, string message) {
             if (items.Count == 0) {

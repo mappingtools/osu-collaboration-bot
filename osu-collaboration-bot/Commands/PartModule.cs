@@ -39,7 +39,7 @@ namespace CollaborationBot.Commands {
             _common = common;
         }
         
-        [SlashCommand("list", "Lists all the parts of the project")]
+        [SlashCommand("list", "Lists all the parts of the project", runMode:RunMode.Async)]
         public async Task List([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 
@@ -59,7 +59,7 @@ namespace CollaborationBot.Commands {
                 Strings.NoParts, Strings.PartListMessage);
         }
         
-        [SlashCommand("listunclaimed", "Lists all the unclaimed parts of the project")]
+        [SlashCommand("listunclaimed", "Lists all the unclaimed parts of the project", runMode:RunMode.Async)]
         public async Task ListUnclaimed([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 

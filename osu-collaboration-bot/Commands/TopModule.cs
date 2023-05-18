@@ -109,7 +109,7 @@ namespace CollaborationBot.Commands {
 
         #region project
 
-        [SlashCommand("list", "Lists all the projects on the server and their status")]
+        [SlashCommand("list", "Lists all the projects on the server and their status", runMode:RunMode.Async)]
         public async Task List() {
             var projects = await _context.Projects.AsQueryable().Where(p => p.Guild.UniqueGuildId == Context.Guild.Id).ToListAsync();
 
@@ -162,7 +162,7 @@ namespace CollaborationBot.Commands {
             await RespondAsync(embed: embed.Build());
         }
 
-        [SlashCommand("members", "Lists all members of the project")]
+        [SlashCommand("members", "Lists all members of the project", runMode:RunMode.Async)]
         public async Task Members([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 
