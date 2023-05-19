@@ -23,14 +23,16 @@ namespace CollaborationBot.Commands {
         private readonly ResourceService _resourceService;
         private readonly InputSanitizingService _inputSanitizer;
         private readonly CommonService _common;
+        private readonly DiscordSocketClient _client;
 
         public ProjectModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService, InputSanitizingService inputSanitizingService, CommonService common) {
+            ResourceService resourceService, InputSanitizingService inputSanitizingService, CommonService common, DiscordSocketClient client) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
             _inputSanitizer = inputSanitizingService;
             _common = common;
+            _client = client;
         }
 
         #region files
@@ -654,7 +656,7 @@ namespace CollaborationBot.Commands {
                         continue;
                     }
 
-                    var memberUser = Context.Guild.GetUser((ulong) member.UniqueMemberId);
+                    var memberUser = await _client.GetUserAsync((ulong) member.UniqueMemberId);
                     if (memberUser is not IGuildUser {JoinedAt: { }} gu) {
                         member.Priority = 0;
                         continue;

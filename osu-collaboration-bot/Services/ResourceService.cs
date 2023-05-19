@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -33,7 +32,7 @@ namespace CollaborationBot.Services {
         /// <param name="message">The message to respond with if there are items.</param>
         /// <typeparam name="T">The type of item to display.</typeparam>
         public async Task RespondPaginator<T>(SocketInteractionContext context, List<T> items,
-        Func<List<T>, IPageBuilder[]> pageMaker, string nothingString, string message) {
+        Func<List<T>, Task<IPageBuilder[]>> pageMaker, string nothingString, string message) {
             if (items.Count == 0) {
                 await context.Interaction.RespondAsync(nothingString);
                 return;
@@ -42,7 +41,7 @@ namespace CollaborationBot.Services {
             await context.Interaction.RespondAsync(message);
 
             var paginator = new StaticPaginatorBuilder()
-                .WithPages(pageMaker(items))
+                .WithPages(await pageMaker(items))
                 .Build();
 
             await _interactive.SendPaginatorAsync(paginator, context.Channel);
@@ -105,8 +104,8 @@ namespace CollaborationBot.Services {
                 projects.Select(p => $"{p.Name}{(p.Status.HasValue ? $" ({p.Status})" : string.Empty)}"));
         }
 
-        public IPageBuilder[] GenerateProjectListPages(List<Project> projects) {
-            return projects.Count <= 0 ? null : GenerateListPages(projects.Select(p => (p.Name, p.Status.ToString())), Strings.Projects);
+        public Task<IPageBuilder[]> GenerateProjectListPages(List<Project> projects) {
+            return Task.FromResult(projects.Count <= 0 ? null : GenerateListPages(projects.Select(p => (p.Name, p.Status.ToString())), Strings.Projects));
         }
 
         public string GenerateMembersListMessage(List<Member> members) {
@@ -116,10 +115,10 @@ namespace CollaborationBot.Services {
                     $"{MemberName(o)}{(o.Priority.HasValue ? $" ({o.Priority.Value})" : string.Empty)} [{o.ProjectRole}]"));
         }
 
-        public IPageBuilder[] GenerateMembersListPages(List<Member> members) {
+        public async Task<IPageBuilder[]> GenerateMembersListPages(List<Member> members) {
             if (members.Count <= 0) return null;
-            return GenerateListPages(members.Select(o =>
-                (MemberName(o), $"{o.ProjectRole}{(o.Priority.HasValue ? $" ({o.Priority.Value})" : string.Empty)}")), Strings.Members);
+            return await GenerateListPages(members.Select(async o =>
+                (await MemberName(o), $"{o.ProjectRole}{(o.Priority.HasValue ? $" ({o.Priority.Value})" : string.Empty)}")), Strings.Members);
         }
 
         public string GeneratePartsListMessage(List<Part> parts) {
@@ -152,13 +151,13 @@ namespace CollaborationBot.Services {
             }));
         }
 
-        public IPageBuilder[] GeneratePartsListPages(List<Part> parts) {
+        public async Task<IPageBuilder[]> GeneratePartsListPages(List<Part> parts) {
             if (parts.Count <= 0) return null;
-            return GenerateListPages(parts.Select(o => {
+            return await GenerateListPages(parts.Select(async o => {
                 var str = $"({TimeToString(o.Start)} - {TimeToString(o.End)}): {o.Status}";
                 if (o.Assignments.Count > 0) {
                     var builder = new StringBuilder(" {");
-                    builder.AppendJoin(", ", o.Assignments.Select(a => MemberName(a.Member)));
+                    builder.AppendJoin(", ", await Task.WhenAll(o.Assignments.Select(async a => await MemberName(a.Member))));
                     builder.Append('}');
                     str += builder.ToString();
                 }
@@ -167,10 +166,10 @@ namespace CollaborationBot.Services {
             }), Strings.Parts);
         }
 
-        public string GeneratePartsListDescription(List<Part> parts, bool includeMappers = true, bool includePartNames = false) {
+        public async Task<string> GeneratePartsListDescription(List<Part> parts, bool includeMappers = true, bool includePartNames = false) {
             var builder = new StringBuilder("```[notice][box=Parts]\n");
             foreach (Part part in parts) {
-                string mappers = includeMappers ? ": " + string.Join(", ", part.Assignments.Select(a => a.Member.ProfileId.HasValue ? $"[profile={a.Member.ProfileId}]{MemberAliasOrName(a.Member)}[/profile]" : MemberAliasOrName(a.Member))) : string.Empty;
+                string mappers = includeMappers ? ": " + string.Join(", ", await Task.WhenAll(part.Assignments.Select(async a => a.Member.ProfileId.HasValue ? $"[profile={a.Member.ProfileId}]{await MemberAliasOrName(a.Member)}[/profile]" : await MemberAliasOrName(a.Member)))) : string.Empty;
                 string partName = includePartNames ? " " + part.Name : string.Empty;
                 builder.AppendLine($"({TimeToString(part.Start)} - {TimeToString(part.End)}){partName}{mappers}");
             }
@@ -197,10 +196,10 @@ namespace CollaborationBot.Services {
                 draintimes.Select(m => $"{MemberName(m.Key)}: {TimeToString(m.Value)}"));
         }
 
-        public IPageBuilder[] GenerateDrainTimePages(List<KeyValuePair<Member, int>> drainTimes) {
+        public async Task<IPageBuilder[]> GenerateDrainTimePages(List<KeyValuePair<Member, int>> drainTimes) {
             if (drainTimes.Count <= 0) return null;
-            return GenerateListPages(
-                drainTimes.Select(m => (MemberName(m.Key), TimeToString(m.Value))), Strings.AutoUpdates);
+            return await GenerateListPages(
+                drainTimes.Select(async m => (await MemberName(m.Key), TimeToString(m.Value))), Strings.AutoUpdates);
         }
 
         public string GenerateAssignmentListMessage(List<Assignment> assignments) {
@@ -209,10 +208,10 @@ namespace CollaborationBot.Services {
                 assignments.Select(o => $"{o.Part.Name}: {MemberName(o.Member)}{(o.Deadline.HasValue ? " - " + o.Deadline.Value.ToString("yyyy-MM-dd") : string.Empty)}"));
         }
 
-        public IPageBuilder[] GenerateAssignmentListPages(List<Assignment> assignments) {
+        public async Task<IPageBuilder[]> GenerateAssignmentListPages(List<Assignment> assignments) {
             if (assignments.Count <= 0) return null;
-            return GenerateListPages(assignments.Select(o =>
-                    ($"{o.Part.Name}: {MemberName(o.Member)}", $"{(o.Deadline.HasValue ? o.Deadline.Value.ToString("yyyy-MM-dd") : Strings.NoDeadline)}")),
+            return await GenerateListPages(assignments.Select(async o =>
+                    ($"{o.Part.Name}: {await MemberName(o.Member)}", $"{(o.Deadline.HasValue ? o.Deadline.Value.ToString("yyyy-MM-dd") : Strings.NoDeadline)}")),
                 Strings.Assignments);
         }
 
@@ -256,7 +255,7 @@ namespace CollaborationBot.Services {
             var e = 0;
             var c = 0;
             var pageBuilder = new PageBuilder();
-            foreach (var (name, value) in array) {
+            foreach ((string name, string value) in array) {
                 pageBuilder.AddField(name, value);
                 c++;
 
@@ -275,8 +274,12 @@ namespace CollaborationBot.Services {
             return pages;
         }
 
-        public string MemberName(Member member) {
-            var user = _client.GetUser((ulong)member.UniqueMemberId);
+        public async Task<IPageBuilder[]> GenerateListPages(IEnumerable<Task<(string, string)>> list, string itemName) {
+            return GenerateListPages(await Task.WhenAll(list), itemName);
+        }
+
+        public async Task<string> MemberName(Member member) {
+            var user = await _client.GetUserAsync((ulong)member.UniqueMemberId);
             string name = user is not null ? user.Username : Strings.UnknownUser;
             if (member.Alias != null) {
                 name += $" \"{member.Alias}\"";
@@ -284,11 +287,11 @@ namespace CollaborationBot.Services {
             return name;
         }
 
-        public string MemberAliasOrName(Member member) {
+        public async Task<string> MemberAliasOrName(Member member) {
             if (member.Alias != null) {
                 return member.Alias;
             }
-            var user = _client.GetUser((ulong)member.UniqueMemberId);
+            var user = await _client.GetUserAsync((ulong)member.UniqueMemberId);
             string name = user is not null ? user.Username : Strings.UnknownUser;
             return name;
         }

@@ -122,7 +122,7 @@ namespace CollaborationBot {
 
                 foreach (var assignment in assignmentsToRemind) {
                     try {
-                        var user = _client.GetUser((ulong)assignment.Member.UniqueMemberId);
+                        var user = await _client.GetUserAsync((ulong)assignment.Member.UniqueMemberId);
 
                         if (user != null) {
                             var dmChannel = await user.CreateDMChannelAsync();
@@ -150,7 +150,7 @@ namespace CollaborationBot {
                         if (assignment.Part.Project.MainChannelId.HasValue) {
                             // Show deadline passed message
                             var channel = _client.GetChannel((ulong)assignment.Part.Project.MainChannelId!.Value);
-                            var user = _client.GetUser((ulong)assignment.Member.UniqueMemberId);
+                            var user = await _client.GetUserAsync((ulong)assignment.Member.UniqueMemberId);
 
                             if (channel is ITextChannel textChannel && user != null) {
                                 await textChannel.SendMessageAsync(string.Format(Strings.AssignmentDeadlinePassed,
@@ -165,7 +165,7 @@ namespace CollaborationBot {
                             }
                         }
                         else {
-                            var user = _client.GetUser((ulong)assignment.Member.UniqueMemberId);
+                            var user = await _client.GetUserAsync((ulong)assignment.Member.UniqueMemberId);
                             if (user != null) {
                                 var dmChannel = await user.CreateDMChannelAsync();
                                 await dmChannel.SendMessageAsync(string.Format(Strings.AssignmentDeadlinePassed,
@@ -202,7 +202,7 @@ namespace CollaborationBot {
                     try {
                         var ownerMember = await _context.Members.Where(
                             o => o.Project.Id == project.Id && o.ProjectRole == ProjectRole.Owner).SingleOrDefaultAsync();
-                        var user = _client.GetUser((ulong)ownerMember.UniqueMemberId);
+                        var user = await _client.GetUserAsync((ulong)ownerMember.UniqueMemberId);
 
                         if (user != null) {
                             var dmChannel = await user.CreateDMChannelAsync();

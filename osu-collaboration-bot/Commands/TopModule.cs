@@ -23,6 +23,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Discord.WebSocket;
 
 namespace CollaborationBot.Commands {
     [Group("", "All common commands")]
@@ -36,10 +37,11 @@ namespace CollaborationBot.Commands {
         private readonly InputSanitizingService _inputSanitizer;
         private readonly AppSettings _appSettings;
         private readonly CommonService _common;
+        private readonly DiscordSocketClient _client;
 
         public TopModule(OsuCollabContext context, FileHandlingService fileHandler,
             ResourceService resourceService, UserHelpService userHelpService, InputSanitizingService inputSanitizingService,
-            AppSettings appSettings, CommonService common) {
+            AppSettings appSettings, CommonService common, DiscordSocketClient client) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
@@ -47,6 +49,7 @@ namespace CollaborationBot.Commands {
             _inputSanitizer = inputSanitizingService;
             _appSettings = appSettings;
             _common = common;
+            _client = client;
         }
 
         [SlashCommand("help", "Shows command information")]
@@ -133,7 +136,7 @@ namespace CollaborationBot.Commands {
             var completedPartCount = await _context.Parts.AsQueryable().Where(o => o.ProjectId == project.Id && o.Status == PartStatus.Finished).CountAsync();
             var completionPercent = partCount <= 0 ? 0 : 100 * completedPartCount / partCount;
             var ownerMember = await _context.Members.AsQueryable().Where(o => o.ProjectId == project.Id && o.ProjectRole == ProjectRole.Owner).SingleOrDefaultAsync();
-            var owner = ownerMember is not null ? Context.Guild.GetUser((ulong)ownerMember.UniqueMemberId) : null;
+            var owner = ownerMember is not null ? await _client.GetUserAsync((ulong)ownerMember.UniqueMemberId) : null;
             var mainRole = project.UniqueRoleId.HasValue ? Context.Guild.GetRole((ulong)project.UniqueRoleId.Value) : null;
             var infoChannel = project.InfoChannelId.HasValue ? Context.Guild.GetTextChannel((ulong)project.InfoChannelId.Value) : null;
             var mainChannel = project.MainChannelId.HasValue ? Context.Guild.GetTextChannel((ulong)project.MainChannelId.Value) : null;
@@ -540,7 +543,7 @@ namespace CollaborationBot.Commands {
 
                             // Notify theft
                             foreach (var victim in claimants) {
-                                var victimUser = Context.Guild.GetUser((ulong)victim.Member.UniqueMemberId);
+                                var victimUser = await _client.GetUserAsync((ulong)victim.Member.UniqueMemberId);
                                 var victimDm = await victimUser.CreateDMChannelAsync();
                                 await victimDm.SendMessageAsync(string.Format(Strings.PriorityPartSteal,
                                     Context.User.Username, member.Priority, partName,

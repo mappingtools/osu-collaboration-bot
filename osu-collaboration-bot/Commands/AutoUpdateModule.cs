@@ -46,12 +46,12 @@ namespace CollaborationBot.Commands {
                 Strings.NoAutoUpdates, Strings.AutoUpdatesListMessage);
         }
 
-        private IPageBuilder[] GenerateAutoUpdateListPages(List<AutoUpdate> autoUpdates) {
+        private Task<IPageBuilder[]> GenerateAutoUpdateListPages(List<AutoUpdate> autoUpdates) {
             if (autoUpdates.Count <= 0) return null;
-            return _resourceService.GenerateListPages(
+            return Task.FromResult(_resourceService.GenerateListPages(
                 autoUpdates.Select(o =>
                     (o.Id.ToString(), $"channel: {ChannelName((ulong)o.UniqueChannelId)}, cooldown: {o.Cooldown}, do ping: {o.DoPing}")),
-                Strings.AutoUpdates);
+                Strings.AutoUpdates));
         }
 
         private string ChannelName(ulong id) {

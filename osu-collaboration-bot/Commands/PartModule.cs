@@ -465,7 +465,7 @@ namespace CollaborationBot.Commands {
                 parts.Sort();
 
                 await _resourceService.RespondTextOrFile(Context.Interaction,
-                    _resourceService.GeneratePartsListDescription(parts, includeMappers, includePartNames));
+                    await _resourceService.GeneratePartsListDescription(parts, includeMappers, includePartNames));
             } catch (Exception e) {
                 logger.Error(e);
                 await RespondAsync(string.Format(Strings.BackendErrorMessage, projectName));
