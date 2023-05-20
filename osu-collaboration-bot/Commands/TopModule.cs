@@ -577,14 +577,15 @@ namespace CollaborationBot.Commands {
                 return false;
             }
 
-            // Count the number of active assignments (has deadline)
-            int assignments = await _context.Assignments.AsQueryable().CountAsync(o => o.MemberId == member.Id && o.Part.ProjectId == project.Id && o.Deadline.HasValue);
-            if (project.MaxAssignments.HasValue && assignments >= project.MaxAssignments) {
-                await RespondAsync(string.Format(Strings.MaxAssignmentsReached, project.MaxAssignments));
-                return false;
-            }
+            if (!project.MaxAssignments.HasValue) return true;
+            
+            // Count the number of total assignments (parts claimed)
+            int assignments = await _context.Assignments.AsQueryable().CountAsync(o => o.MemberId == member.Id && o.Part.ProjectId == project.Id);
+            if (!(assignments >= project.MaxAssignments)) return true;
 
-            return true;
+            await RespondAsync(string.Format(Strings.MaxAssignmentsReached, project.MaxAssignments));
+            return false;
+
         }
 
         [SlashCommand("unclaim", "Unclaims one or more parts and unassigns them")]
