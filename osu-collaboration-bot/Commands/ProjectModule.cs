@@ -656,8 +656,8 @@ namespace CollaborationBot.Commands {
                         continue;
                     }
 
-                    var memberUser = await _client.GetUserAsync((ulong) member.UniqueMemberId);
-                    if (memberUser is not IGuildUser {JoinedAt: { }} gu) {
+                    var memberUser = await _client.Rest.GetGuildUserAsync(Context.Guild.Id, (ulong) member.UniqueMemberId);
+                    if (memberUser is not IGuildUser {JoinedAt: not null } gu) {
                         member.Priority = 0;
                         continue;
                     }
