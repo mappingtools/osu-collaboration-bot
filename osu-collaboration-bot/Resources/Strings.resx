@@ -361,7 +361,7 @@
     <value>Here's a list of commands and their description:</value>
   </data>
   <data name="MaxAssignmentsReached" xml:space="preserve">
-    <value>You are only allowed to have {0} active assignments.</value>
+    <value>You are only allowed to have {0} claims.</value>
   </data>
   <data name="MaxCollabCountReached" xml:space="preserve">
     <value>You have already reached the maximum number of collabs ({0}).</value>

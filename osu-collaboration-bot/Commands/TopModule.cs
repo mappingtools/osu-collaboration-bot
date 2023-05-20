@@ -578,10 +578,10 @@ namespace CollaborationBot.Commands {
             }
 
             if (!project.MaxAssignments.HasValue) return true;
-            
+
             // Count the number of total assignments (parts claimed)
             int assignments = await _context.Assignments.AsQueryable().CountAsync(o => o.MemberId == member.Id && o.Part.ProjectId == project.Id);
-            if (!(assignments >= project.MaxAssignments)) return true;
+            if (assignments < project.MaxAssignments) return true;
 
             await RespondAsync(string.Format(Strings.MaxAssignmentsReached, project.MaxAssignments));
             return false;
