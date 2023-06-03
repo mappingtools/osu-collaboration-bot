@@ -91,7 +91,7 @@ namespace CollaborationBot {
             await _client.StartAsync();
 
             _checkupTimer.Interval = TimeSpan.FromMinutes(30).TotalMilliseconds;
-            _checkupTimer.Elapsed += (s, e) => _= CheckupTimerOnElapsed(s, e);
+            _checkupTimer.Elapsed += (s, e) => _= CheckupTimerOnElapsed();
             _checkupTimer.AutoReset = true;
             _checkupTimer.Start();
 
@@ -104,7 +104,7 @@ namespace CollaborationBot {
             return Task.CompletedTask;
         }
 
-        private async Task CheckupTimerOnElapsed(object _, ElapsedEventArgs _) {
+        private async Task CheckupTimerOnElapsed() {
             try {
                 logger.Info("Checking for late deadlines...");
 
