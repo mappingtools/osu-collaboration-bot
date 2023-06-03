@@ -90,10 +90,10 @@ namespace CollaborationBot {
             await _client.LoginAsync(TokenType.Bot, _appSettings.Token);
             await _client.StartAsync();
 
-            //checkupTimer.Interval = TimeSpan.FromMinutes(30).TotalMilliseconds;
-            //checkupTimer.Elapsed += (s, e) => _= CheckupTimerOnElapsed(s, e);
-            //checkupTimer.AutoReset = true;
-            //checkupTimer.Start();
+            _checkupTimer.Interval = TimeSpan.FromMinutes(30).TotalMilliseconds;
+            _checkupTimer.Elapsed += (s, e) => _= CheckupTimerOnElapsed(s, e);
+            _checkupTimer.AutoReset = true;
+            _checkupTimer.Start();
 
             // Block this task until the program is closed.
             await Task.Delay(-1);
@@ -104,7 +104,7 @@ namespace CollaborationBot {
             return Task.CompletedTask;
         }
 
-        private async Task CheckupTimerOnElapsed(object sender, ElapsedEventArgs e) {
+        private async Task CheckupTimerOnElapsed(object _, ElapsedEventArgs _) {
             try {
                 logger.Info("Checking for late deadlines...");
 
