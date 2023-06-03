@@ -48,20 +48,22 @@ namespace CollaborationBot.Services {
             var part = await dbContext.Parts.AsQueryable()
                 .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == partName);
 
-            if (part == null) {
-                await context.Interaction.RespondAsync(string.Format(Strings.PartNotExists, partName, project.Name));
-                return null;
-            }
+            if (part != null) return part;
 
-            return part;
+            // Attempt getting the part prefixed with 'part' because forgetting this is a common mistake
+            part = await dbContext.Parts.AsQueryable()
+                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == "part" + partName);
+
+            if (part != null) return part;
+
+            await context.Interaction.RespondAsync(string.Format(Strings.PartNotExists, partName, project.Name));
+            return null;
         }
 
         public async Task<Assignment> GetAssignmentAsync(IInteractionContext context, OsuCollabContext dbContext, Project project, string partName, IUser user) {
-            var part = await dbContext.Parts.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == partName);
+            var part = await GetPartAsync(context, dbContext, project, partName);
 
             if (part == null) {
-                await context.Interaction.RespondAsync(string.Format(Strings.PartNotExists, partName, project.Name));
                 return null;
             }
 

@@ -75,10 +75,10 @@ namespace CollaborationBot.Commands {
                     deadline = deadline?.ToUniversalTime();
                     await _context.Assignments.AddAsync(new Assignment { MemberId = member.Id, PartId = part.Id, Deadline = deadline, LastReminder = DateTime.UtcNow });
                     await _context.SaveChangesAsync();
-                    await RespondAsync(string.Format(Strings.AddAssignmentSuccess, partName, user.Username));
+                    await RespondAsync(string.Format(Strings.AddAssignmentSuccess, part.Name, user.Username));
                 } catch (Exception e) {
                     logger.Error(e);
-                    await RespondAsync(string.Format(Strings.AddAssignmentFail, partName, user.Username));
+                    await RespondAsync(string.Format(Strings.AddAssignmentFail, part.Name, user.Username));
                 }
             }
         }

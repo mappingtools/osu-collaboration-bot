@@ -240,10 +240,10 @@ namespace CollaborationBot.Commands {
                 try {
                     _context.Parts.Remove(part);
                     await _context.SaveChangesAsync();
-                    await RespondAsync(string.Format(Strings.RemovePartSuccess, partName, projectName));
+                    await RespondAsync(string.Format(Strings.RemovePartSuccess, part.Name, projectName));
                 } catch (Exception e) {
                     logger.Error(e);
-                    await RespondAsync(string.Format(Strings.RemovePartFail, partName, projectName));
+                    await RespondAsync(string.Format(Strings.RemovePartFail, part.Name, projectName));
                 }
             }
         }

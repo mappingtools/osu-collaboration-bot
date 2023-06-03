@@ -513,11 +513,9 @@ namespace CollaborationBot.Commands {
             }
 
             foreach (var partName in partNames) {
-                var part = await _context.Parts.AsQueryable()
-                .SingleOrDefaultAsync(predicate: o => o.ProjectId == project.Id && o.Name == partName);
+                var part = await _common.GetPartAsync(Context, _context, project, partName);
 
                 if (part == null) {
-                    await RespondAsync(string.Format(Strings.PartNotExists, partName, projectName));
                     return;
                 }
 
@@ -546,7 +544,7 @@ namespace CollaborationBot.Commands {
                                 var victimUser = await _client.GetUserAsync((ulong)victim.Member.UniqueMemberId);
                                 var victimDm = await victimUser.CreateDMChannelAsync();
                                 await victimDm.SendMessageAsync(string.Format(Strings.PriorityPartSteal,
-                                    Context.User.Username, member.Priority, partName,
+                                    Context.User.Username, member.Priority, part.Name,
                                     victim.Member.Priority));
                             }
                         } else {
@@ -559,10 +557,10 @@ namespace CollaborationBot.Commands {
                     var deadline = DateTime.UtcNow + project.AssignmentLifetime;
                     await _context.Assignments.AddAsync(new Assignment { MemberId = member.Id, PartId = part.Id, Deadline = deadline, LastReminder = DateTime.UtcNow });
                     await _context.SaveChangesAsync();
-                    await RespondAsync(string.Format(Strings.AddAssignmentSuccess, partName, Context.User.Username));
+                    await RespondAsync(string.Format(Strings.AddAssignmentSuccess, part.Name, Context.User.Username));
                 } catch (Exception e) {
                     logger.Error(e);
-                    await RespondAsync(string.Format(Strings.AddAssignmentFail, partName, Context.User.Username));
+                    await RespondAsync(string.Format(Strings.AddAssignmentFail, part.Name, Context.User.Username));
                 }
             }
         }
