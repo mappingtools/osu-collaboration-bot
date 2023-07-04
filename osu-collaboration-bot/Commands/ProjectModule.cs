@@ -561,7 +561,7 @@ namespace CollaborationBot.Commands {
             }
         }
         
-        [SlashCommand("gettags", "Gets all the tags of the project")]
+        [SlashCommand("gettags", "Gets all the tags of the project including aliases")]
         public async Task Tags([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 
@@ -575,7 +575,7 @@ namespace CollaborationBot.Commands {
                 var aliases = await _context.Members.AsQueryable()
                     .Where(o => o.ProjectId == project.Id && o.Alias != null).Select(o => o.Alias).ToListAsync();
                 var tagsClean = tags.Concat(aliases)
-                 .SelectMany(o => o.Split(' ', StringSplitOptions.RemoveEmptyEntries)).Select(o => o.Trim()).Distinct();
+                 .SelectMany(o => o.Split(' ', StringSplitOptions.RemoveEmptyEntries)).Select(o => o.Trim()).Distinct(StringComparer.OrdinalIgnoreCase);
 
                 await RespondAsync(string.Format(Strings.AllMemberTags, string.Join(' ', tagsClean)));
             } catch (Exception e) {
