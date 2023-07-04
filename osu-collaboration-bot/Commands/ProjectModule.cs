@@ -572,9 +572,9 @@ namespace CollaborationBot.Commands {
             try {
                 var tags = await _context.Members.AsQueryable()
                     .Where(o => o.ProjectId == project.Id && o.Tags != null).Select(o => o.Tags).ToListAsync();
-                var aliases = await _context.Members.AsQueryable()
-                    .Where(o => o.ProjectId == project.Id && o.Alias != null).Select(o => o.Alias).ToListAsync();
-                var tagsClean = tags.Concat(aliases)
+                string[] namesOrAliases = await Task.WhenAll((await _context.Members.AsQueryable()
+                    .Where(o => o.ProjectId == project.Id).ToListAsync()).Select(async o => await _resourceService.MemberAliasOrName(o)));
+                var tagsClean = namesOrAliases.Concat(tags)
                  .SelectMany(o => o.Split(' ', StringSplitOptions.RemoveEmptyEntries)).Select(o => o.Trim()).Distinct(StringComparer.OrdinalIgnoreCase);
 
                 await RespondAsync(string.Format(Strings.AllMemberTags, string.Join(' ', tagsClean)));

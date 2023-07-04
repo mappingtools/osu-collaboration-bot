@@ -278,9 +278,17 @@ namespace CollaborationBot.Services {
             return GenerateListPages(await Task.WhenAll(list), itemName);
         }
 
+        public static string UserOrGlobalName(IUser user) {
+            return user is not null ? string.IsNullOrEmpty(user.GlobalName) ? user.Username : user.GlobalName : Strings.UnknownUser;
+        }
+
+        public static string UserName(IUser user) {
+            return user is not null ? user.Username : Strings.UnknownUser;
+        }
+
         public async Task<string> MemberName(Member member) {
             var user = await _client.GetUserAsync((ulong)member.UniqueMemberId);
-            string name = user is not null ? user.Username : Strings.UnknownUser;
+            string name = UserName(user);
             if (member.Alias != null) {
                 name += $" \"{member.Alias}\"";
             }
@@ -292,7 +300,7 @@ namespace CollaborationBot.Services {
                 return member.Alias;
             }
             var user = await _client.GetUserAsync((ulong)member.UniqueMemberId);
-            string name = user is not null ? user.Username : Strings.UnknownUser;
+            string name = UserOrGlobalName(user);
             return name;
         }
 
