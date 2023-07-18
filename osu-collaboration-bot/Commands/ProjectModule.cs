@@ -24,15 +24,17 @@ namespace CollaborationBot.Commands {
         private readonly InputSanitizingService _inputSanitizer;
         private readonly CommonService _common;
         private readonly DiscordSocketClient _client;
+        private readonly AppSettings _appSettings;
 
         public ProjectModule(OsuCollabContext context, FileHandlingService fileHandler,
-            ResourceService resourceService, InputSanitizingService inputSanitizingService, CommonService common, DiscordSocketClient client) {
+            ResourceService resourceService, InputSanitizingService inputSanitizingService, CommonService common, DiscordSocketClient client, AppSettings appSettings) {
             _context = context;
             _fileHandler = fileHandler;
             _resourceService = resourceService;
             _inputSanitizer = inputSanitizingService;
             _common = common;
             _client = client;
+            _appSettings = appSettings;
         }
 
         #region files
@@ -101,7 +103,7 @@ namespace CollaborationBot.Commands {
                 var guild = await _context.Guilds.AsAsyncEnumerable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 
                 if (guild == null) {
-                    await RespondAsync(Strings.GuildNotExistsMessage);
+                    await RespondAsync(string.Format(Strings.GuildNotExistsMessage, _appSettings.Prefix));
                     return;
                 }
 
