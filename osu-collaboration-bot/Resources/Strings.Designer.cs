@@ -188,9 +188,10 @@ namespace CollaborationBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 1. Enable the bot in the server: `{0}guild init`
         ///2. Assign a category for collab channels to appear in: `{0}guild collabcategory [CATEGORY]`
-        ///3. Choose whether the `{0}project setup` command should create roles: `{0}guild createroles [True/False]`
-        ///4. Set an inactivity timer so inactive projects automatically get deleted: `{0}guild inactivitytimer [dd:hh:mm:ss:fff/null]`
-        ///5. Allow regular members to create collabs: `{0}guild maxcollabs 1`.
+        ///3. Make sure the collab bot has all the necessary permissions in the collab category.
+        ///4. Choose whether the `{0}project setup` command should create roles: `{0}guild createroles [True/False]`
+        ///5. Set an inactivity timer so inactive projects automatically get deleted: `{0}guild inactivitytimer [dd:hh:mm:ss:fff/null]`
+        ///6. Allow regular members to create collabs: `{0}g [rest of string was truncated]&quot;;.
         /// </summary>
         public static string AdminGuideContent {
             get {
