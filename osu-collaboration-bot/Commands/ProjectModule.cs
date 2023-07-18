@@ -232,55 +232,76 @@ namespace CollaborationBot.Commands {
                     .Where(o => o.ProjectId == project.Id).ToListAsync();
 
                 // Get/Create project role
-                IRole memberRole = null;
-                if (!project.UniqueRoleId.HasValue && guild.GenerateRoles) {
-                    memberRole = await Context.Guild.CreateRoleAsync($"{project.Name} Participant", isMentionable:true);
+                async Task<IRole> createMemberRole() {
+                    var newMemberRole = await Context.Guild.CreateRoleAsync($"{project.Name} Participant", isMentionable: true);
 
-                    project.UniqueRoleId = memberRole.Id;
+                    project.UniqueRoleId = newMemberRole.Id;
                     await _context.SaveChangesAsync();
 
                     // Give all members the new role and remove the old role if possible
-                    await UpdateRolesAsync(members.Select(o => (ulong)o.UniqueMemberId), Context.Guild, memberRole);
+                    await UpdateRolesAsync(members.Select(o => (ulong)o.UniqueMemberId), Context.Guild, newMemberRole);
+
+                    return newMemberRole;
+                }
+
+                IRole memberRole = null;
+                if (guild.GenerateRoles) {
+                    memberRole = project.UniqueRoleId.HasValue
+                        ? Context.Guild.GetRole((ulong)project.UniqueRoleId) ?? await createMemberRole()
+                        : await createMemberRole();
                 }
 
                 // Get/Create manager role
-                IRole managerRole = null;
-                if (!project.ManagerRoleId.HasValue && guild.GenerateRoles) {
-                    managerRole = await Context.Guild.CreateRoleAsync($"{project.Name} Manager", isMentionable:true);
+                async Task<IRole> createManagerRole() {
+                    var newManagerRole = await Context.Guild.CreateRoleAsync($"{project.Name} Manager", isMentionable: true);
 
-                    project.ManagerRoleId = managerRole.Id;
+                    project.ManagerRoleId = newManagerRole.Id;
                     await _context.SaveChangesAsync();
 
                     // Give all members the new role and remove the old role if possible
                     await UpdateRolesAsync(
                         members.Where(o => o.ProjectRole != ProjectRole.Member).Select(o => (ulong)o.UniqueMemberId),
-                        Context.Guild, managerRole);
+                        Context.Guild, newManagerRole);
+
+                    return newManagerRole;
+                }
+
+                IRole managerRole = null;
+                if (guild.GenerateRoles) {
+                    managerRole = project.ManagerRoleId.HasValue
+                        ? Context.Guild.GetRole((ulong)project.ManagerRoleId) ?? await createManagerRole()
+                        : await createManagerRole();
                 }
 
                 if (guild.CollabCategoryId.HasValue) {
                     // Create info channel
-                    ITextChannel infoChannel;
-                    ITextChannel mainChannel;
-                    if (!project.InfoChannelId.HasValue) {
-                        infoChannel = await Context.Guild.CreateTextChannelAsync($"{project.Name}-info",
-                            prop => prop.CategoryId = (ulong) guild.CollabCategoryId);
-
-                        project.InfoChannelId = infoChannel.Id;
+                    async Task<ITextChannel> createInfoChannel() {
+                        if (!guild.CollabCategoryId.HasValue) return null;
+                        var newInfoChannel = await Context.Guild.CreateTextChannelAsync($"{project.Name}-info",
+                            prop => prop.CategoryId = (ulong)guild.CollabCategoryId);
+                        project.InfoChannelId = newInfoChannel.Id;
                         await _context.SaveChangesAsync();
-                    } else {
-                        infoChannel = Context.Guild.GetTextChannel((ulong) project.InfoChannelId.Value);
+                        return newInfoChannel;
                     }
+
+                    var infoChannel = project.InfoChannelId.HasValue
+                        ? Context.Guild.GetTextChannel((ulong)project.InfoChannelId.Value) ?? await createInfoChannel()
+                        : await createInfoChannel();
 
                     // Create general channel
-                    if (!project.MainChannelId.HasValue) {
-                        mainChannel = await Context.Guild.CreateTextChannelAsync($"{project.Name}-general",
-                            prop => prop.CategoryId = (ulong) guild.CollabCategoryId);
+                    async Task<ITextChannel> createMainChannel() {
+                        if (!guild.CollabCategoryId.HasValue) return null;
+                        var newMainChannel = await Context.Guild.CreateTextChannelAsync($"{project.Name}-general",
+                            prop => prop.CategoryId = (ulong)guild.CollabCategoryId);
 
-                        project.MainChannelId = mainChannel.Id;
+                        project.MainChannelId = newMainChannel.Id;
                         await _context.SaveChangesAsync();
-                    } else {
-                        mainChannel = Context.Guild.GetTextChannel((ulong) project.MainChannelId.Value);
+                        return newMainChannel;
                     }
+
+                    var mainChannel = project.MainChannelId.HasValue
+                        ? Context.Guild.GetTextChannel((ulong)project.MainChannelId.Value) ?? await createMainChannel()
+                        : await createMainChannel();
 
                     // Update permissions
                     await UpdateProjectChannelPermissions(Context, project, members, mainChannel, infoChannel, memberRole, managerRole);
