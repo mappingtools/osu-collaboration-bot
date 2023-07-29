@@ -422,18 +422,18 @@ namespace CollaborationBot.Commands {
 
                 parts.Sort();
 
-                FileHandlingService.PartRecord selector(Part o) => new() {
+                async Task<FileHandlingService.PartRecord> selector(Part o) => new() {
                     Name = o.Name,
                     Start = o.Start,
                     End = o.End,
                     Status = o.Status,
-                    MapperNames = includeMappers ? string.Join(";", o.Assignments.Select(a => _resourceService.MemberAliasOrName(a.Member))) : null
+                    MapperNames = includeMappers ? string.Join(";", await Task.WhenAll(o.Assignments.Select(async a => await _resourceService.MemberAliasOrName(a.Member)))) : null
                 };
 
                 await using var dataStream = new MemoryStream();
                 var writer = new StreamWriter(dataStream);
                 await using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
-                await csv.WriteRecordsAsync(parts.Select(selector));
+                await csv.WriteRecordsAsync(await Task.WhenAll(parts.Select(selector)));
 
                 await writer.FlushAsync();
                 dataStream.Position = 0;
