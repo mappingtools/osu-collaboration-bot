@@ -37,7 +37,7 @@ namespace CollaborationBot.Services {
 
         public async Task<string> DownloadBaseFile(IGuild guild, string projectName, Attachment att) {
             try {
-                if (!IsFilePermissible(att.Url, PermissibleFileType.DotOsu)) return Strings.FileTypeNeedsToBeOsu;
+                if (!IsFilePermissible(att.Filename, PermissibleFileType.DotOsu)) return Strings.FileTypeNeedsToBeOsu;
 
                 var localProjectPath = GetProjectPath(guild, projectName);
 
@@ -71,7 +71,7 @@ namespace CollaborationBot.Services {
 
         public async Task<string> DownloadPartSubmit(IGuild guild, string projectName, Attachment att) {
             try {
-                if (!IsFilePermissible(att.Url, PermissibleFileType.DotOsu)) return null;
+                if (!IsFilePermissible(att.Filename, PermissibleFileType.DotOsu)) return null;
 
                 var localProjectPath = GetProjectPath(guild, projectName);
 
@@ -110,7 +110,7 @@ namespace CollaborationBot.Services {
 
         public async Task<List<PartRecord>> DownloadPartsCSV(Attachment att, bool hasHeaders = true) {
             try {
-                if (!IsFilePermissible(att.Url, PermissibleFileType.DotCSV)) return null;
+                if (!IsFilePermissible(att.Filename, PermissibleFileType.DotCSV)) return null;
 
                 if (!Uri.TryCreate(att.Url, UriKind.Absolute, out var uri)) return null;
 
