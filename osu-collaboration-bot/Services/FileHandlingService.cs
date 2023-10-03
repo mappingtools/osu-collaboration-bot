@@ -11,6 +11,7 @@ using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 using Discord;
 using NLog;
+using Strings = CollaborationBot.Resources.Strings;
 
 namespace CollaborationBot.Services {
     public class FileHandlingService {
@@ -34,15 +35,18 @@ namespace CollaborationBot.Services {
             _path = path;
         }
 
-        public async Task<bool> DownloadBaseFile(IGuild guild, string projectName, Attachment att) {
+        public async Task<string> DownloadBaseFile(IGuild guild, string projectName, Attachment att) {
             try {
-                if (!IsFilePermissible(att.Url, PermissibleFileType.DotOsu)) return false;
+                if (!IsFilePermissible(att.Url, PermissibleFileType.DotOsu)) return Strings.FileTypeNeedsToBeOsu;
 
                 var localProjectPath = GetProjectPath(guild, projectName);
 
-                if (!Directory.Exists(localProjectPath)) return false;
+                if (!Directory.Exists(localProjectPath)) {
+                    logger.Error("Could not find local project path: {projectPath}", localProjectPath);
+                    return Strings.CouldNotFindLocalProjectPath;
+                }
 
-                if (!Uri.TryCreate(att.Url, UriKind.Absolute, out var uri)) return false;
+                if (!Uri.TryCreate(att.Url, UriKind.Absolute, out var uri)) return Strings.CouldNotCreateUri;
 
                 var oldFilePath = GetProjectBaseFilePath(guild, projectName);
                 var filePath = Path.Combine(localProjectPath, att.Filename);
@@ -57,11 +61,11 @@ namespace CollaborationBot.Services {
                     File.Delete(oldFilePath);
                 }
 
-                return true;
+                return null;
             }
             catch (Exception e) {
                 logger.Error(e);
-                return false;
+                return Strings.UploadBaseFileFail;
             }
         }
 

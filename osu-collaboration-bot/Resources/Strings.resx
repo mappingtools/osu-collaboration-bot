@@ -700,4 +700,13 @@ Replace the part with the [square brackets] with the relevant value.</value>
   <data name="GuildCreateRolesFail" xml:space="preserve">
     <value>Could not change create roles setting.</value>
   </data>
+  <data name="FileTypeNeedsToBeOsu" xml:space="preserve">
+    <value>The file type needs to be '.osu'.</value>
+  </data>
+  <data name="CouldNotFindLocalProjectPath" xml:space="preserve">
+    <value>Could not find local project path.</value>
+  </data>
+  <data name="CouldNotCreateUri" xml:space="preserve">
+    <value>Could not create download URI.</value>
+  </data>
 </root>

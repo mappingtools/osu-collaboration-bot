@@ -60,8 +60,9 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            if (!await _fileHandler.DownloadBaseFile(Context.Guild, projectName, attachment)) {
-                await RespondAsync(Strings.UploadBaseFileFail);
+            string errorMsg = await _fileHandler.DownloadBaseFile(Context.Guild, projectName, attachment);
+            if (errorMsg is not null) {
+                await RespondAsync(errorMsg);
                 return;
             }
 

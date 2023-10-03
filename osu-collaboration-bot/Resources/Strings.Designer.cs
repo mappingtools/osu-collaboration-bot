@@ -582,6 +582,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not create download URI..
+        /// </summary>
+        public static string CouldNotCreateUri {
+            get {
+                return ResourceManager.GetString("CouldNotCreateUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find local project path..
+        /// </summary>
+        public static string CouldNotFindLocalProjectPath {
+            get {
+                return ResourceManager.GetString("CouldNotFindLocalProjectPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not parse input string..
         /// </summary>
         public static string CouldNotParseInput {
@@ -668,6 +686,15 @@ namespace CollaborationBot.Resources {
         public static string EditPartSuccess {
             get {
                 return ResourceManager.GetString("EditPartSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file type needs to be &apos;.osu&apos;..
+        /// </summary>
+        public static string FileTypeNeedsToBeOsu {
+            get {
+                return ResourceManager.GetString("FileTypeNeedsToBeOsu", resourceCulture);
             }
         }
         
