@@ -7,7 +7,7 @@ namespace CollaborationBot.Services {
         public InputSanitizingService() {
         }
 
-        private static readonly char[] IllegalChars = new char[] { '@', '`' };
+        private static readonly char[] illegalChars = new char[] { '@', '`' };
 
         public bool IsValidProjectName(string projectName) {
             return IsValidName(projectName) &&
@@ -17,7 +17,7 @@ namespace CollaborationBot.Services {
         public bool IsValidName(string name) {
             return !string.IsNullOrWhiteSpace(name) &&
                 (System.Text.Encoding.UTF8.GetByteCount(name) == name.Length) &&
-                !IllegalChars.Any(o => name.Contains(o)); ;
+                !illegalChars.Any(o => name.Contains(o)); ;
         }
     }
 }

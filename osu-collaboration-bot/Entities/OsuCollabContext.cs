@@ -1,7 +1,5 @@
-﻿using System;
-using CollaborationBot.Services;
+﻿using CollaborationBot.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Npgsql;
 
 #nullable disable
@@ -9,7 +7,7 @@ using Npgsql;
 namespace CollaborationBot.Entities
 {
     public partial class OsuCollabContext : DbContext {
-        private readonly AppSettings appSettings;
+        private readonly AppSettings _appSettings;
 
         public OsuCollabContext()
         {
@@ -17,7 +15,7 @@ namespace CollaborationBot.Entities
 
         public OsuCollabContext(DbContextOptions<OsuCollabContext> options, AppSettings appSettings)
             : base(options) {
-            this.appSettings = appSettings;
+            _appSettings = appSettings;
 
             NpgsqlConnection.GlobalTypeMapper.MapEnum<PartStatus>("part_status");
             NpgsqlConnection.GlobalTypeMapper.MapEnum<ProjectStatus>("project_status");
@@ -35,7 +33,7 @@ namespace CollaborationBot.Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseNpgsql(appSettings.ConnectionString);
+                optionsBuilder.UseNpgsql(_appSettings.ConnectionString);
             }
         }
 
