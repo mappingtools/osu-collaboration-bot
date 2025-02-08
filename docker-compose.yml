@@ -18,7 +18,7 @@ services:
     build: .
     restart: unless-stopped
     environment:
-      - App__ConnectionString=Server=host.docker.internal;Port=5432;Database=postgres;User Id=postgres;Password=postgres;
+      - App__ConnectionString=Server=db;Port=5432;Database=postgres;User Id=postgres;Password=postgres;
       - App__Token=<BOT TOKEN HERE>
     volumes:
       - usr/share/osu-collab-bot/logs:/etc/logs
