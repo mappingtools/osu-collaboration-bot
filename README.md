@@ -43,3 +43,5 @@ To do this, you first have to edit `docker-compose.yml` and add in your Discord 
 You can also change the output location for the logs from `usr/share/osu-collab-bot/logs` to somewhere else.
 
 If you want to be able to access the PostgreSQL database externally, uncomment the `ports` section of the Docker compose file and change the password of the database to something secure. Don't forget to update the password in the connection string environment variable.
+
+If you are running on a server with ARM architecture, you'll have to change the `Dockerfile` to change `linux-x64` to `linux-arm64` in the `dotnet publish` and `COPY` commands.
