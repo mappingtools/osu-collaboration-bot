@@ -1054,7 +1054,7 @@ namespace CollaborationBot.Commands {
             [SlashCommand("managerrole", "Changes the manager role of the project and optionally assigns the new role to all managers")]
             public async Task ManagerRole([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
                 [Summary("role", "The new manager role")] IRole role,
-                [Summary("update", "Whether to update member roles and channel permissions")] bool update = true) {
+                [Summary("update", "Whether to update manager roles and channel permissions")] bool update = true) {
                 try {
                     var project = await _common.GetProjectAsync(Context, _context, projectName);
 
