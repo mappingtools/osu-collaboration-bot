@@ -1176,6 +1176,25 @@ namespace CollaborationBot.Commands {
                 }
             }
 
+            [SlashCommand("maxassignmenttime", "Changes the maximum aggregate time a member is allowed to claim in the project")]
+            public async Task MaxAssignmentTime([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
+                [Summary("maxassignmenttime", "The new maximum aggregate time a member is allowed to claim (dd:hh:mm:ss:fff) (can be null)")] TimeSpan? maxAssignmentTime) {
+                var project = await _common.GetProjectAsync(Context, _context, projectName);
+
+                if (project == null) {
+                    return;
+                }
+
+                try {
+                    project.MaxAssignmentTime = maxAssignmentTime;
+                    await _context.SaveChangesAsync();
+                    await RespondAsync(string.Format(Strings.ProjectMaxAssignmentTimeSuccess, projectName, maxAssignmentTime.HasValue ? maxAssignmentTime.Value.ToString("g") : Strings.Unbounded));
+                } catch (Exception e) {
+                    logger.Error(e);
+                    await RespondAsync(string.Format(Strings.ProjectMaxAssignmentTimeFail, projectName));
+                }
+            }
+
             [SlashCommand("assignmentlifetime", "Changes the default duration of assignments of the project")]
             public async Task AssignmentLifetime([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
                 [Summary("lifetime", "The new duration of assignments (dd:hh:mm:ss:fff) (can be null)")] TimeSpan? lifetime) {

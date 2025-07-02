@@ -85,6 +85,7 @@ CREATE TABLE public.projects
     status project_status NOT NULL DEFAULT 'not_started'::project_status,
     self_assignment_allowed boolean NOT NULL DEFAULT false,
     max_assignments integer DEFAULT 1,
+    max_assignment_time interval,
     priority_picking boolean NOT NULL DEFAULT false,
     part_restricted_upload boolean NOT NULL DEFAULT true,
     assignment_lifetime interval DEFAULT '14 days'::interval,

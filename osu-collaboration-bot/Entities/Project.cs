@@ -23,6 +23,7 @@ namespace CollaborationBot.Entities
         public ProjectStatus? Status { get; set; }
         public bool SelfAssignmentAllowed { get; set; }
         public int? MaxAssignments { get; set; }
+        public TimeSpan? MaxAssignmentTime { get; set; }
         public bool PriorityPicking { get; set; }
         public bool PartRestrictedUpload { get; set; }
         public TimeSpan? AssignmentLifetime { get; set; }

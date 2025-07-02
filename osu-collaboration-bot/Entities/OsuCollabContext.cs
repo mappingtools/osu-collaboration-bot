@@ -178,6 +178,8 @@ namespace CollaborationBot.Entities
 
                 entity.Property(e => e.MaxAssignments).HasColumnName("max_assignments");
 
+                entity.Property(e => e.MaxAssignmentTime).HasColumnName("max_assignment_time");
+
                 entity.Property(e => e.Name)
                     .HasMaxLength(255)
                     .HasColumnName("name");

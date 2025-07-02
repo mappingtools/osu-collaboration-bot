@@ -709,4 +709,13 @@ Replace the part with the [square brackets] with the relevant value.</value>
   <data name="CouldNotCreateUri" xml:space="preserve">
     <value>Could not create download URI.</value>
   </data>
+  <data name="ProjectMaxAssignmentTimeSuccess" xml:space="preserve">
+    <value>Changed max assignment time of project `{0}` to {1}.</value>
+  </data>
+  <data name="ProjectMaxAssignmentTimeFail" xml:space="preserve">
+    <value>Could not change max assignment time of project `{0}`.</value>
+  </data>
+  <data name="MaxAssignmentTimeReached" xml:space="preserve">
+    <value>You are only allowed to claim a time of {0}.</value>
+  </data>
 </root>

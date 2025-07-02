@@ -888,6 +888,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are only allowed to claim a time of {0}..
+        /// </summary>
+        public static string MaxAssignmentTimeReached {
+            get {
+                return ResourceManager.GetString("MaxAssignmentTimeReached", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have already reached the maximum number of collabs ({0})..
         /// </summary>
         public static string MaxCollabCountReached {
@@ -1399,6 +1408,24 @@ namespace CollaborationBot.Resources {
         public static string ProjectMaxAssignmentsSuccess {
             get {
                 return ResourceManager.GetString("ProjectMaxAssignmentsSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not change max assignment time of project `{0}`..
+        /// </summary>
+        public static string ProjectMaxAssignmentTimeFail {
+            get {
+                return ResourceManager.GetString("ProjectMaxAssignmentTimeFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed max assignment time of project `{0}` to {1}..
+        /// </summary>
+        public static string ProjectMaxAssignmentTimeSuccess {
+            get {
+                return ResourceManager.GetString("ProjectMaxAssignmentTimeSuccess", resourceCulture);
             }
         }
         

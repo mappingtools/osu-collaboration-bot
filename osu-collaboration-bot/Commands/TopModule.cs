@@ -155,6 +155,7 @@ namespace CollaborationBot.Commands {
                     new EmbedFieldBuilder().WithName("Restricted submission").WithValue(project.PartRestrictedUpload).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Reminders").WithValue(project.DoReminders).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Max claims").WithValue(project.MaxAssignments.HasValue ? project.MaxAssignments : Strings.Unbounded).WithIsInline(true),
+                    new EmbedFieldBuilder().WithName("Max claim time").WithValue(project.MaxAssignmentTime.HasValue ? project.MaxAssignmentTime.Value.ToString() : Strings.Unbounded).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Claim lifetime").WithValue(project.AssignmentLifetime.HasValue ? project.AssignmentLifetime : Strings.Unbounded).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Last activity").WithValue(project.LastActivity.HasValue ? project.LastActivity.Value.ToString("yyyy-MM-dd") : Strings.None).WithIsInline(true)
                     )
@@ -566,6 +567,7 @@ namespace CollaborationBot.Commands {
         }
 
         private async Task<bool> CheckClaimPermissionsAsync(Project project, Member member, Part part) {
+            // Manager and owner can always claim parts
             if (member.ProjectRole != ProjectRole.Member) {
                 return true;
             }
@@ -575,15 +577,33 @@ namespace CollaborationBot.Commands {
                 return false;
             }
 
-            if (!project.MaxAssignments.HasValue) return true;
+            if (project.MaxAssignments.HasValue) {
+                // Count the number of total assignments (parts claimed)
+                int assignments = await _context.Assignments.AsQueryable()
+                    .CountAsync(o => o.MemberId == member.Id && o.Part.ProjectId == project.Id);
 
-            // Count the number of total assignments (parts claimed)
-            int assignments = await _context.Assignments.AsQueryable().CountAsync(o => o.MemberId == member.Id && o.Part.ProjectId == project.Id);
-            if (assignments < project.MaxAssignments) return true;
+                if (assignments >= project.MaxAssignments) {
+                    await RespondAsync(string.Format(Strings.MaxAssignmentsReached, project.MaxAssignments));
+                    return false;
+                }
+            }
 
-            await RespondAsync(string.Format(Strings.MaxAssignmentsReached, project.MaxAssignments));
-            return false;
+            if (project.MaxAssignmentTime.HasValue) {
+                // Count the aggregate time of all claimed parts
+                var totalTimeMs = await _context.Assignments.AsQueryable()
+                    .Where(o => o.MemberId == member.Id && o.Part.ProjectId == project.Id && o.Part.End.HasValue && o.Part.Start.HasValue)
+                    .SumAsync(o => o.Part.End.Value - o.Part.Start.Value);
 
+                if (part.Start.HasValue && part.End.HasValue)
+                    totalTimeMs += part.End.Value - part.Start.Value;
+
+                if (totalTimeMs > project.MaxAssignmentTime.Value.TotalMilliseconds) {
+                    await RespondAsync(string.Format(Strings.MaxAssignmentTimeReached, project.MaxAssignmentTime.Value));
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         [SlashCommand("unclaim", "Unclaims one or more parts and unassigns them")]

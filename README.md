@@ -101,6 +101,7 @@ If you want to be able to access the PostgreSQL database externally, uncomment t
     - [description](#description-project-options-description)
     - [status](#status-project-options-status)
     - [maxassignments](#maxassignments-project-options-maxassignments)
+    - [maxassignmenttime](#maxassignmenttime-project-options-maxassignmenttime)
     - [assignmentlifetime](#assignmentlifetime-project-options-assignmentlifetime)
     - [mainchannel](#mainchannel-project-options-mainchannel)
     - [infochannel](#infochannel-project-options-infochannel)
@@ -567,6 +568,16 @@ Changes the maximum number of allowed assignments for members of the project.
 **Arguments:**
 - `project` (string): The project.
 - `maxassignments` (int?): The new maximum number of allowed assignments (can be null).
+
+### maxassignmenttime `/project options maxassignmenttime`
+
+Changes the maximum aggregate time a member is allowed to claim in the project.
+
+**Permissions Required:** Project Manager
+
+**Arguments:**
+- `project` (string): The project.
+- `maxassignmenttime` (TimeSpan?): The new maximum aggregate time a member is allowed to claim (dd:hh:mm:ss:fff) (can be null).
 
 ### assignmentlifetime `/project options assignmentlifetime`
 
