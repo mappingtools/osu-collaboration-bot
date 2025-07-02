@@ -168,10 +168,24 @@ namespace CollaborationBot.Services {
 
         public async Task<string> GeneratePartsListDescription(List<Part> parts, bool includeMappers = true, bool includePartNames = false) {
             var builder = new StringBuilder("```[notice][box=Parts]\n");
+            var info = new List<(int?, int?, string, string)>();
             foreach (Part part in parts) {
                 string mappers = includeMappers ? ": " + string.Join(", ", await Task.WhenAll(part.Assignments.Select(async a => a.Member.ProfileId.HasValue ? $"[profile={a.Member.ProfileId}]{await MemberAliasOrName(a.Member)}[/profile]" : await MemberAliasOrName(a.Member)))) : string.Empty;
                 string partName = includePartNames ? " " + part.Name : string.Empty;
-                builder.AppendLine($"({TimeToString(part.Start)} - {TimeToString(part.End)}){partName}{mappers}");
+                info.Add((part.Start, part.End, partName, mappers));
+            }
+
+            // Merge consecutive parts with the same name and mappers
+            for (int i = 1; i < info.Count; i++) {
+                if (info[i].Item3 == info[i - 1].Item3 && info[i].Item4 == info[i - 1].Item4) {
+                    info[i - 1] = (info[i - 1].Item1, info[i].Item2, info[i - 1].Item3, info[i - 1].Item4);
+                    info.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            foreach (var (start, end, partName, mappers) in info) {
+                builder.AppendLine($"[{TimeToString(start)} - {TimeToString(end)}]{partName}{mappers}");
             }
             builder.Append("[/box][/notice]\n```");
 
