@@ -8,6 +8,7 @@ RUN dotnet publish "./osu-collaboration-bot.csproj" -c Release -r linux-${TARGET
 
 #Runner
 FROM mcr.microsoft.com/dotnet/runtime:6.0
+ARG TARGETARCH
 WORKDIR /app
 COPY --from=build /source/bin/Release/net6.0/linux-${TARGETARCH}/publish /app/
 CMD [ "./osu-collaboration-bot" ]
