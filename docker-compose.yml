@@ -19,7 +19,7 @@ services:
     restart: unless-stopped
     environment:
       - App__ConnectionString=Server=db;Port=5432;Database=postgres;User Id=postgres;Password=postgres;
-      - App__Token=<BOT TOKEN HERE>
+      - App__Token=${App__Token}
     logging:
       driver: json-file
       options:

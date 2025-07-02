@@ -340,6 +340,7 @@ ASALocalRun/
 healthchecksdb
 
 # Secrets
+.env
 osu-collaboration-bot/appsettings.Development.json
 scaffold.sh
 

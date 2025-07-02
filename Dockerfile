@@ -1,6 +1,6 @@
 #Builder
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-ARG TARGETARCH=amd64
+ARG TARGETARCH
 WORKDIR /source
 COPY osu-collaboration-bot ./
 #RUN dotnet restore "./osu-collaboration-bot.csproj"
