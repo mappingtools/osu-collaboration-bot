@@ -200,9 +200,7 @@ namespace CollaborationBot.Commands {
             }
 
             try {
-                await _context.Members.AddAsync(new Member { ProjectId = project.Id, UniqueMemberId = Context.User.Id, ProjectRole = ProjectRole.Member });
-                await _context.SaveChangesAsync();
-                await ProjectModule.GrantProjectRole(Context, Context.User, project);
+                await ProjectModule.AddMemberInternal(_client.Rest, Context, _context, project, Context.User);
                 await RespondAsync(
                     _resourceService.GenerateAddMemberToProject(Context.User, projectName));
             } catch (Exception e) {

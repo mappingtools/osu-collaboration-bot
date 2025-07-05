@@ -354,9 +354,7 @@ namespace CollaborationBot.Commands {
             }
 
             try {
-                await _context.Members.AddAsync(new Member { ProjectId = project.Id, UniqueMemberId = user.Id, ProjectRole = ProjectRole.Member });
-                await _context.SaveChangesAsync();
-                await GrantProjectRole(Context, user, project);
+                await AddMemberInternal(_client.Rest, Context, _context, project, user);
                 await RespondAsync(
                     _resourceService.GenerateAddMemberToProject(user, projectName));
             } catch (Exception e) {
@@ -364,6 +362,17 @@ namespace CollaborationBot.Commands {
                 await RespondAsync(
                     _resourceService.GenerateAddMemberToProject(user, projectName, false));
             }
+        }
+
+        public static async Task AddMemberInternal<T>(DiscordSocketRestClient client, SocketInteractionContext context, OsuCollabContext dbContext, Project project, T user) where T : IPresence, IUser {
+            int? priority = null;
+            if (project.AutoGeneratePriorities) {
+                priority = await GeneratePriorityValue(client, context.Guild.Id, user.Id);
+            }
+
+            await dbContext.Members.AddAsync(new Member { ProjectId = project.Id, UniqueMemberId = user.Id, ProjectRole = ProjectRole.Member, Priority = priority });
+            await dbContext.SaveChangesAsync();
+            await GrantProjectRole(context, user, project);
         }
         
         [SlashCommand("remove", "Removes a member from the project")]
@@ -680,12 +689,7 @@ namespace CollaborationBot.Commands {
                         continue;
                     }
 
-                    var memberUser = await _client.Rest.GetGuildUserAsync(Context.Guild.Id, (ulong) member.UniqueMemberId);
-                    if (memberUser is not IGuildUser {JoinedAt: not null } gu) {
-                        member.Priority = 0;
-                        continue;
-                    }
-                    member.Priority = (int) (DateTimeOffset.UtcNow - gu.JoinedAt.Value).TotalDays * timeWeight;
+                    member.Priority = await GeneratePriorityValue(_client.Rest, Context.Guild.Id, (ulong) member.UniqueMemberId, timeWeight);
                 }
 
                 await _context.SaveChangesAsync();
@@ -694,6 +698,14 @@ namespace CollaborationBot.Commands {
                 logger.Error(e);
                 await RespondAsync(string.Format(Strings.GeneratePrioritiesFail, projectName));
             }
+        }
+
+        public static async Task<int> GeneratePriorityValue(DiscordSocketRestClient client, ulong guildId, ulong uniqueMemberId, int timeWeight = 1) {
+            var memberUser = await client.GetGuildUserAsync(guildId, uniqueMemberId);
+            if (memberUser is not IGuildUser {JoinedAt: not null } gu) {
+                return 0;
+            }
+            return (int) (DateTimeOffset.UtcNow - gu.JoinedAt.Value).TotalDays * timeWeight;
         }
 
         [SlashCommand("rename", "Renames the project")]
@@ -973,6 +985,7 @@ namespace CollaborationBot.Commands {
                 [Summary("canclaim", "Whether members may claim parts on their own")] bool? selfAssignmentAllowed = null,
                 [Summary("canjoin", "Whether anyone may join the project")] bool? anyoneJoinAllowed = null,
                 [Summary("prioritypicking", "Whether priority picking is enabled")] bool? priorityPicking = null,
+                [Summary("autogeneratepriorities", "Whether to automatically generate priorities for members when they join")] bool? autoGeneratePriorities = null,
                 [Summary("partrestrictedupload", "Whether to restrict part submission to just the assigned parts")] bool? partRestrictedUpload = null,
                 [Summary("doreminders", "Whether to automatically remind members about their deadlines")] bool? doReminders = null) {
                 var project = await _common.GetProjectAsync(Context, _context, projectName);
@@ -993,6 +1006,10 @@ namespace CollaborationBot.Commands {
                     }
                     if (priorityPicking.HasValue) {
                         project.PriorityPicking = priorityPicking.Value;
+                        n++;
+                    }
+                    if (autoGeneratePriorities.HasValue) {
+                        project.AutoGeneratePriorities = autoGeneratePriorities.Value;
                         n++;
                     }
                     if (partRestrictedUpload.HasValue) {

@@ -504,6 +504,7 @@ Configures several boolean project options.
 - `canclaim` (bool, optional): Whether members may claim parts on their own.
 - `canjoin` (bool, optional): Whether anyone may join the project.
 - `prioritypicking` (bool, optional): Whether priority picking is enabled.
+- `autogeneratepriorities` (bool, optional): Whether to automatically generate priorities for members when they join.
 - `partrestrictedupload` (bool, optional): Whether to restrict part submission to just the assigned parts.
 - `doreminders` (bool, optional): Whether to automatically remind members about their deadlines.
 
