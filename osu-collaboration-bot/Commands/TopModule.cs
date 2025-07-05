@@ -152,6 +152,7 @@ namespace CollaborationBot.Commands {
                     new EmbedFieldBuilder().WithName("Can join").WithValue(project.JoinAllowed).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Can claim").WithValue(project.SelfAssignmentAllowed).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Priority picking").WithValue(project.PriorityPicking).WithIsInline(true),
+                    new EmbedFieldBuilder().WithName("Auto generate priorities").WithValue(project.AutoGeneratePriorities).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Restricted submission").WithValue(project.PartRestrictedUpload).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Reminders").WithValue(project.DoReminders).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Max claims").WithValue(project.MaxAssignments.HasValue ? project.MaxAssignments : Strings.Unbounded).WithIsInline(true),
