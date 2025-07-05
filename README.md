@@ -628,9 +628,9 @@ Lists all the parts of the project.
 **Arguments:**
 - `project` (string): The project.
 
-### listunclaimed `/part listunclaimed`
+### listclaimable `/part listclaimable`
 
-Lists all the unclaimed parts of the project.
+Lists all the unclaimed or stealable parts of the project.
 
 **Arguments:**
 - `project` (string): The project.

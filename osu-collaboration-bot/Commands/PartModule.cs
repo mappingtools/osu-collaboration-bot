@@ -59,24 +59,36 @@ namespace CollaborationBot.Commands {
                 Strings.NoParts, Strings.PartListMessage);
         }
         
-        [SlashCommand("listunclaimed", "Lists all the unclaimed parts of the project", runMode:RunMode.Async)]
-        public async Task ListUnclaimed([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
+        [SlashCommand("listclaimable", "Lists all the claimable parts of the project", runMode:RunMode.Async)]
+        public async Task ListClaimable([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
                 return;
             }
 
-            var parts = await _context.Parts.AsQueryable()
-                .Where(o => o.ProjectId == project.Id && o.Assignments.Count == 0)
-                .Include(o => o.Assignments)
-                .ThenInclude(o => o.Member)
-                .ToListAsync();
+            var member = await _common.GetMemberAsync(Context, _context, project, Context.User);
+
+            List<Part> parts;
+            if (project.PriorityPicking && member is { Priority: not null }) {
+                // Include parts which are claimed but can be stolen because you have higher priority
+                parts = await _context.Parts.AsQueryable()
+                    .Where(o => o.ProjectId == project.Id && o.Assignments.All(a => a.Member.Priority < member.Priority))
+                    .Include(o => o.Assignments)
+                    .ThenInclude(o => o.Member)
+                    .ToListAsync();
+            } else {
+                parts = await _context.Parts.AsQueryable()
+                    .Where(o => o.ProjectId == project.Id && o.Assignments.Count == 0)
+                    .Include(o => o.Assignments)
+                    .ThenInclude(o => o.Member)
+                    .ToListAsync();
+            }
 
             parts.Sort();
 
             await _resourceService.RespondPaginator(Context, parts, _resourceService.GeneratePartsListPages,
-                Strings.NoParts, Strings.PartListUnclaimedMessage);
+                Strings.NoParts, Strings.PartListClaimableMessage);
         }
         
         [SlashCommand("add", "Adds a new part to the project")]

@@ -918,7 +918,7 @@ namespace CollaborationBot.Resources {
         ///   Looks up a localized string similar to 1. Set your mapper name: `{0}alias {1} [YOUR OSU NAME]`
         ///2. Set your tags (like old names and stuff): `{0}tags {1} [YOUR TAGS]`
         ///3. Set your osu! profile ID (the number in the URL to your osu! profile): `{0}id {1} [YOUR ID]`
-        ///4. See which parts are available `{0}part listunclaimed {1}`
+        ///4. See which parts are available `{0}part listclaimable {1}`
         ///5. Claim a part `{0}claim {1} [PART NAME]`
         ///6. Submit your mapping progress to your part: `{0}submit {1}` with your .osu file attached
         ///7. When done, mark your part as finished: `{0}done {1} [PART NAME]`
@@ -1214,20 +1214,20 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Here are all the claimable parts of the project:.
+        /// </summary>
+        public static string PartListClaimableMessage {
+            get {
+                return ResourceManager.GetString("PartListClaimableMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Here are all the parts of the project:.
         /// </summary>
         public static string PartListMessage {
             get {
                 return ResourceManager.GetString("PartListMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Here are all the unclaimed parts of the project:.
-        /// </summary>
-        public static string PartListUnclaimedMessage {
-            get {
-                return ResourceManager.GetString("PartListUnclaimedMessage", resourceCulture);
             }
         }
         

@@ -376,7 +376,7 @@
     <value>1. Set your mapper name: `{0}alias {1} [YOUR OSU NAME]`
 2. Set your tags (like old names and stuff): `{0}tags {1} [YOUR TAGS]`
 3. Set your osu! profile ID (the number in the URL to your osu! profile): `{0}id {1} [YOUR ID]`
-4. See which parts are available `{0}part listunclaimed {1}`
+4. See which parts are available `{0}part listclaimable {1}`
 5. Claim a part `{0}claim {1} [PART NAME]`
 6. Submit your mapping progress to your part: `{0}submit {1}` with your .osu file attached
 7. When done, mark your part as finished: `{0}done {1} [PART NAME]`
@@ -652,8 +652,8 @@ Replace the part with the [square brackets] with the relevant value.</value>
   <data name="RemoveProjectStart" xml:space="preserve">
     <value>Removing project `{0}`...</value>
   </data>
-  <data name="PartListUnclaimedMessage" xml:space="preserve">
-    <value>Here are all the unclaimed parts of the project:</value>
+  <data name="PartListClaimableMessage" xml:space="preserve">
+    <value>Here are all the claimable parts of the project:</value>
   </data>
   <data name="Unbounded" xml:space="preserve">
     <value>Unbounded</value>
