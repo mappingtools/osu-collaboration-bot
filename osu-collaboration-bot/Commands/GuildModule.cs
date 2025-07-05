@@ -31,15 +31,22 @@ namespace CollaborationBot.Commands {
         [SlashCommand("init", "Initializes compatibility with the server")]
         public async Task Init() {
             try {
-                if (await _context.Guilds.AnyAsync(o => o.UniqueGuildId == Context.Guild.Id)) {
+                bool dbGuildExists = await _context.Guilds.AnyAsync(o => o.UniqueGuildId == Context.Guild.Id);
+                bool directoryExists = _fileHandler.GuildDirectoryExists(Context.Guild);
+
+                if (dbGuildExists && directoryExists) {
                     await RespondAsync(Strings.GuildExistsMessage);
                     return;
                 }
 
-                await _context.Guilds.AddAsync(new Guild { UniqueGuildId = Context.Guild.Id });
-                await _context.SaveChangesAsync();
+                if (!dbGuildExists) {
+                    await _context.Guilds.AddAsync(new Guild { UniqueGuildId = Context.Guild.Id });
+                    await _context.SaveChangesAsync();
+                }
 
-                _fileHandler.GenerateGuildDirectory(Context.Guild);
+                if (!directoryExists)
+                    _fileHandler.GenerateGuildDirectory(Context.Guild);
+
                 await RespondAsync(_resourceService.GenerateAddGuildMessage());
             }
             catch (Exception ex) {

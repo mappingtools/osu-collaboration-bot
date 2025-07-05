@@ -34,6 +34,7 @@ Lastly use `/adminguide` and `/help guild` to get a list of commands that can be
 ```
 App__ConnectionString=<YOUR CONNECTION STRING>
 App__Token=<YOUR DISCORD BOT TOKEN>
+App__Path=<PATH TO STORAGE BEATMAP FILES>
 ```
 - Compile and run the program with .NET 6.0
 

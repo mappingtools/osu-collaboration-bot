@@ -165,6 +165,10 @@ namespace CollaborationBot.Services {
             return Path.Combine(_path, guild.Id.ToString(), projectName);
         }
 
+        public bool GuildDirectoryExists(IGuild guild) {
+            return Directory.Exists(GetGuildPath(guild));
+        }
+
         public void GenerateGuildDirectory(IGuild guild) {
             var localGuildPath = GetGuildPath(guild);
 

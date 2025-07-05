@@ -25,5 +25,8 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
+    volumes:
+      - bot-files:/etc/osu_collab_bot/
 volumes: 
      bot-db:
+     bot-files:
