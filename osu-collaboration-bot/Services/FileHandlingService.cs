@@ -42,8 +42,7 @@ namespace CollaborationBot.Services {
                 var localProjectPath = GetProjectPath(guild, projectName);
 
                 if (!Directory.Exists(localProjectPath)) {
-                    logger.Error("Could not find local project path: {projectPath}", localProjectPath);
-                    return Strings.CouldNotFindLocalProjectPath;
+                    GenerateProjectDirectory(guild, projectName);
                 }
 
                 if (!Uri.TryCreate(att.Url, UriKind.Absolute, out var uri)) return Strings.CouldNotCreateUri;
