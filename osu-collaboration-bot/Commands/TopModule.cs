@@ -614,7 +614,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            foreach (var partName in partNames) {
+            foreach (string partName in partNames) {
                 var assignment = await _common.GetAssignmentAsync(Context, _context, project, partName, Context.User);
 
                 if (assignment == null) {
@@ -630,6 +630,48 @@ namespace CollaborationBot.Commands {
                     await RespondAsync(string.Format(Strings.RemoveAssignmentFail, Context.User.Username));
                 }
             }
+
+            // Try to remove the unclaimed parts from the base file
+            if (!_fileHandler.ProjectBaseFileExists(Context.Guild, project.Name)) return;
+
+            // Get all the parts that still have claims or are locked
+            var claimedParts = await _context.Assignments.AsQueryable()
+                .Where(o => o.Part.ProjectId == project.Id)
+                .Select(o => o.Part)
+                .Distinct()
+                .Union(_context.Parts.AsQueryable()
+                    .Where(o => o.ProjectId == project.Id && o.Status == PartStatus.Locked))
+                .ToListAsync();
+
+            var editor = new BeatmapEditor(_fileHandler.GetProjectBaseFilePath(Context.Guild, projectName));
+            var beatmap = editor.ReadFile();
+            int removedCount = 0;
+
+            // Remove all hit objects that are not (partially) in the claimed parts
+            foreach (var hitObject in beatmap.HitObjects.ToList()) {
+                if (claimedParts.Any(p =>
+                        (hitObject.EndTime >= p.Start - 5 || !p.Start.HasValue) &&
+                        (hitObject.StartTime <= p.End + 5 || !p.End.HasValue))) {
+                    continue;
+                }
+
+                beatmap.HitObjects.Remove(hitObject);
+                removedCount++;
+            }
+
+            if (removedCount == 0) return;
+
+            // Fix break periods
+            beatmap.FixBreakPeriods();
+
+            editor.WriteFile(beatmap);
+
+            // Reset the activity timer
+            project.LastActivity = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            // Handle auto-updates
+            await AutoUpdateModule.HandleAutoUpdates(project, Context, _context, _fileHandler);
         }
 
         [SlashCommand("done", "Marks one or more parts as done")]
