@@ -40,7 +40,8 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("list", "Lists all the parts of the project", runMode:RunMode.Async)]
-        public async Task List([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
+        public async Task List([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
+            [Summary("user", "Filter the part list to parts assigned to this member (optional)")]IGuildUser user = null) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
@@ -49,6 +50,7 @@ namespace CollaborationBot.Commands {
 
             var parts = await _context.Parts.AsQueryable()
                 .Where(o => o.ProjectId == project.Id)
+                .Where(o => user == null || o.Assignments.Any(a => a.Member.UniqueMemberId == user.Id))
                 .Include(o => o.Assignments)
                 .ThenInclude(o => o.Member)
                 .ToListAsync();

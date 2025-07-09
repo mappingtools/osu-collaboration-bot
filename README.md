@@ -629,6 +629,7 @@ Lists all the parts of the project.
 
 **Arguments:**
 - `project` (string): The project.
+- `user` (IUser, optional): Filter the part list to parts assigned to this member. Defaults to `null`.
 
 ### listclaimable `/part listclaimable`
 
