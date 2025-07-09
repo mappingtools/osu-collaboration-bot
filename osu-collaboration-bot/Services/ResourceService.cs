@@ -42,6 +42,8 @@ namespace CollaborationBot.Services {
 
             var paginator = new StaticPaginatorBuilder()
                 .WithPages(await pageMaker(items))
+                .WithDefaultTimeoutPage()
+                .WithDefaultCanceledPage()
                 .Build();
 
             await _interactive.SendPaginatorAsync(paginator, context.Channel);
