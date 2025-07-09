@@ -223,7 +223,7 @@ Changes your osu! profile ID in a project.
 - `project` (string): The project.
 - `id` (string): The new ID.
 
-### submitpart `/submitpart`
+### submit `/submit`
 
 Submits a part of a beatmap to a project.
 
@@ -247,6 +247,7 @@ Claims one or more parts and assigns them to you.
 ### unclaim `/unclaim`
 
 Unclaims one or more parts and unassigns them.
+This will then also remove any hit objects that are not part of any claimed or locked part.
 
 **Permissions Required:** Project Member
 
