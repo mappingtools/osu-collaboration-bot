@@ -24,6 +24,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Discord.WebSocket;
+using Mapping_Tools_Core.BeatmapHelper.HitObjects;
+using Mapping_Tools_Core.BeatmapHelper.TimingStuff;
 
 namespace CollaborationBot.Commands {
     [Group("", "All common commands")]
@@ -345,7 +347,7 @@ namespace CollaborationBot.Commands {
         [SlashCommand("submit", "Submits a part of beatmap to the project")]
         public async Task SubmitPart([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("beatmap", "The part to submit as a .osu file")] Attachment attachment,
-            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part name to submit to (optional)")] string partName = null) {
+            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part name to submit to (optional). Will overwrite the entire part including endpoints.")] string partName = null) {
             // Find out which parts this member is allowed to edit in the project
             // Download the attached file and put it in the member's folder
             // Merge it into the base file
@@ -374,9 +376,10 @@ namespace CollaborationBot.Commands {
             }
 
             List<Part> parts = null;
-            bool partIsRestricted = project.PartRestrictedUpload || partName is not null;
+            bool partNameProvided = partName is not null;
+            bool partIsRestricted = project.PartRestrictedUpload || partNameProvided;
             if (partIsRestricted) {
-                if (partName is null) {
+                if (!partNameProvided) {
                     // Submit to claimed part
                     parts = await _context.Assignments.AsQueryable()
                         .Where(o => o.Part.ProjectId == project.Id && o.Member.UniqueMemberId == Context.User.Id)
@@ -468,6 +471,20 @@ namespace CollaborationBot.Commands {
                     IncludeKiai = true,
                     ScaleToNewCircleSize = false,
                 };
+
+                void removePartOfBeatmap(double startTime, double endTime)
+                {
+                    beatmap.HitObjects.RemoveAll(h => h.StartTime >= startTime && h.StartTime <= endTime);
+                    beatmap.BeatmapTiming.RemoveAll(tp => tp.Offset >= startTime && tp.Offset <= endTime);
+                }
+
+                // If a part name is provided. Overwrite the entire part, so remove all hit objects in the part
+                if (partNameProvided) {
+                    foreach (var part in parts) {
+                        removePartOfBeatmap(part.Start - placer.Padding ?? double.MinValue, part.End + placer.Padding ?? double.MaxValue);
+                    }
+                }
+
                 placer.PlaceOsuPattern(partBeatmap, beatmap);
 
                 // Fix break periods
