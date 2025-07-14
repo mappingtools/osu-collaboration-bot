@@ -638,6 +638,7 @@ Lists all the unclaimed or stealable parts of the project.
 
 **Arguments:**
 - `project` (string): The project.
+- `checkMaxAssignmentTime` (bool, optional): Whether to check if the part is short enough to be claimed. Defaults to `true`.
 
 ### add `/part add`
 

@@ -62,7 +62,8 @@ namespace CollaborationBot.Commands {
         }
         
         [SlashCommand("listclaimable", "Lists all the claimable parts of the project", runMode:RunMode.Async)]
-        public async Task ListClaimable([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
+        public async Task ListClaimable([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
+            [Summary("checkMaxAssignmentTime", "Whether to check if the part is short enough to be claimed.")]bool checkClaimTime = true) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
@@ -85,6 +86,15 @@ namespace CollaborationBot.Commands {
                     .Include(o => o.Assignments)
                     .ThenInclude(o => o.Member)
                     .ToListAsync();
+            }
+
+            if (checkClaimTime && project.MaxAssignmentTime.HasValue) {
+                // Count the aggregate time of all claimed parts
+                int totalTimeMs = await _context.Assignments.AsQueryable()
+                    .Where(o => o.MemberId == member.Id && o.Part.ProjectId == project.Id && o.Part.End.HasValue && o.Part.Start.HasValue)
+                    .SumAsync(o => o.Part.End.Value - o.Part.Start.Value);
+
+                parts = parts.Where(o => !o.Start.HasValue || !o.End.HasValue || o.End.Value - o.Start.Value + totalTimeMs <= project.MaxAssignmentTime.Value.TotalMilliseconds).ToList();
             }
 
             parts.Sort();

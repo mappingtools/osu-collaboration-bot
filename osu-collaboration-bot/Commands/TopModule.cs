@@ -606,7 +606,7 @@ namespace CollaborationBot.Commands {
 
             if (project.MaxAssignmentTime.HasValue) {
                 // Count the aggregate time of all claimed parts
-                var totalTimeMs = await _context.Assignments.AsQueryable()
+                int totalTimeMs = await _context.Assignments.AsQueryable()
                     .Where(o => o.MemberId == member.Id && o.Part.ProjectId == project.Id && o.Part.End.HasValue && o.Part.Start.HasValue)
                     .SumAsync(o => o.Part.End.Value - o.Part.Start.Value);
 
