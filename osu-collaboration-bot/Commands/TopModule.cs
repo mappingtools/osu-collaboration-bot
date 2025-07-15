@@ -421,10 +421,10 @@ namespace CollaborationBot.Commands {
                     partBeatmap.HitObjects = partBeatmap.HitObjects
                         .Where(ho => parts!.Any(p =>
                             p.Status != PartStatus.Locked &&
-                            (ho.StartTime >= p.Start - 5 || !p.Start.HasValue) &&
-                            (ho.StartTime <= p.End + 5 || !p.End.HasValue) &&
-                            (ho.EndTime >= p.Start - 5 || !p.Start.HasValue) &&
-                            (ho.EndTime <= p.End + 5 || !p.End.HasValue)))
+                            (ho.StartTime >= p.Start || !p.Start.HasValue) &&
+                            (ho.StartTime <= p.End || !p.End.HasValue) &&
+                            (ho.EndTime >= p.Start || !p.Start.HasValue) &&
+                            (ho.EndTime <= p.End || !p.End.HasValue)))
                         .ToList();
                 }
 
@@ -458,7 +458,7 @@ namespace CollaborationBot.Commands {
                 var placer = new OsuPatternPlacer {
                     PatternOverwriteMode = PatternOverwriteMode.PartitionedOverwrite,
                     TimingOverwriteMode = TimingOverwriteMode.PatternTimingOnly,
-                    Padding = 5,
+                    Padding = 0,
                     PartingDistance = 4,
                     FixColourHax = true,
                     FixBpmSv = false,
@@ -472,20 +472,16 @@ namespace CollaborationBot.Commands {
                     ScaleToNewCircleSize = false,
                 };
 
-                void removePartOfBeatmap(double startTime, double endTime)
-                {
-                    beatmap.HitObjects.RemoveAll(h => h.StartTime >= startTime && h.StartTime <= endTime);
-                    beatmap.BeatmapTiming.RemoveAll(tp => tp.Offset >= startTime && tp.Offset <= endTime);
-                }
-
-                // If a part name is provided. Overwrite the entire part, so remove all hit objects in the part
                 if (partNameProvided) {
-                    foreach (var part in parts) {
-                        removePartOfBeatmap(part.Start - placer.Padding ?? double.MinValue, part.End + placer.Padding ?? double.MaxValue);
-                    }
+                    placer.PlaceOsuPattern(
+                        partBeatmap,
+                        beatmap,
+                        overwriteStartTime: parts.FirstOrDefault()?.Start,
+                        overwriteEndTime: parts.FirstOrDefault()?.End
+                        );
+                } else {
+                    placer.PlaceOsuPattern(partBeatmap, beatmap);
                 }
-
-                placer.PlaceOsuPattern(partBeatmap, beatmap);
 
                 // Fix break periods
                 beatmap.FixBreakPeriods();
