@@ -129,6 +129,11 @@ namespace CollaborationBot.Commands {
 
                 var projectEntry = await _context.Projects.AddAsync(new Project {Name = projectName, GuildId = guild.Id, Status = ProjectStatus.NotStarted, LastActivity = DateTime.UtcNow});
                 await _context.SaveChangesAsync();
+                
+                // Make sure a person row exists
+                _ = CommonService.GetPersonAsync(_context, _client.Rest, Context.User.Id);
+
+                // Add the owner as a member
                 await _context.Members.AddAsync(new Member { ProjectId = projectEntry.Entity.Id, UniqueMemberId = Context.User.Id, ProjectRole = ProjectRole.Owner });
                 await _context.SaveChangesAsync();
             } 
@@ -369,6 +374,9 @@ namespace CollaborationBot.Commands {
             if (project.AutoGeneratePriorities) {
                 priority = await GeneratePriorityValue(client, context.Guild.Id, user.Id);
             }
+
+            // Make sure a person row exists
+            _ = CommonService.GetPersonAsync(dbContext, client, user.Id);
 
             await dbContext.Members.AddAsync(new Member { ProjectId = project.Id, UniqueMemberId = user.Id, ProjectRole = ProjectRole.Member, Priority = priority });
             await dbContext.SaveChangesAsync();

@@ -10,19 +10,17 @@ namespace CollaborationBot.Services {
     public class CommonService {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly AppSettings _appSettings;
-        private readonly DiscordSocketClient _client;
 
-        public CommonService(AppSettings appSettings, DiscordSocketClient client) {
+        public CommonService(AppSettings appSettings) {
             _appSettings = appSettings;
-            _client = client;
         }
 
-        public async Task<Person> GetPersonAsync(OsuCollabContext dbContext, ulong uniqueMemberId) {
+        public static async Task<Person> GetPersonAsync(OsuCollabContext dbContext, DiscordSocketRestClient client, ulong uniqueMemberId) {
             var person = await dbContext.People.AsQueryable().SingleOrDefaultAsync(o => o.UniqueMemberId == uniqueMemberId);
 
             if (person != null) return person;
 
-            var user = await _client.GetUserAsync(uniqueMemberId);
+            var user = await client.GetUserAsync(uniqueMemberId);
 
             if (user != null) {
                 person = new Person {

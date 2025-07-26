@@ -136,7 +136,6 @@ namespace CollaborationBot.Commands {
             var completedPartCount = await _context.Parts.AsQueryable().Where(o => o.ProjectId == project.Id && o.Status == PartStatus.Finished).CountAsync();
             var completionPercent = partCount <= 0 ? 0 : 100 * completedPartCount / partCount;
             var ownerMember = await _context.Members.AsQueryable().Where(o => o.ProjectId == project.Id && o.ProjectRole == ProjectRole.Owner).SingleOrDefaultAsync();
-            var owner = ownerMember is not null ? await _common.GetPersonAsync(_context, (ulong)ownerMember.UniqueMemberId) : null;
             var mainRole = project.UniqueRoleId.HasValue ? Context.Guild.GetRole((ulong)project.UniqueRoleId.Value) : null;
             var infoChannel = project.InfoChannelId.HasValue ? Context.Guild.GetTextChannel((ulong)project.InfoChannelId.Value) : null;
             var mainChannel = project.MainChannelId.HasValue ? Context.Guild.GetTextChannel((ulong)project.MainChannelId.Value) : null;
@@ -145,7 +144,7 @@ namespace CollaborationBot.Commands {
                 .WithTitle(project.Name)
                 .WithDescription(project.Description)
                 .WithFields(
-                    new EmbedFieldBuilder().WithName("Owner").WithValue(owner?.Mention).WithIsInline(true),
+                    new EmbedFieldBuilder().WithName("Owner").WithValue($"<@{ownerMember.UniqueMemberId}>").WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Info").WithValue(infoChannel?.Mention ?? Strings.None).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Chat").WithValue(mainChannel?.Mention ?? Strings.None).WithIsInline(true),
                     new EmbedFieldBuilder().WithName("Status").WithValue(project.Status.HasValue ? project.Status : Strings.None).WithIsInline(true),
@@ -256,7 +255,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            var person = await _common.GetPersonAsync(_context, Context.User.Id);
+            var person = await CommonService.GetPersonAsync(_context, _client.Rest, Context.User.Id);
 
             if (person == null) {
                 return;
@@ -282,7 +281,7 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            var person = await _common.GetPersonAsync(_context, Context.User.Id);
+            var person = await CommonService.GetPersonAsync(_context, _client.Rest, Context.User.Id);
 
             if (person == null) {
                 return;
@@ -304,7 +303,7 @@ namespace CollaborationBot.Commands {
             int slashIndex = id.LastIndexOf('/');
             ulong id2;
             if (slashIndex < 0 ? ulong.TryParse(id, out id2) : ulong.TryParse(id.Substring(slashIndex + 1), out id2)) {
-                var person = await _common.GetPersonAsync(_context, Context.User.Id);
+                var person = await CommonService.GetPersonAsync(_context, _client.Rest, Context.User.Id);
 
                 if (person == null) {
                     return;
