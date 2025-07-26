@@ -39,6 +39,7 @@ namespace CollaborationBot.Commands {
                 .Where(o => o.Part.ProjectId == project.Id)
                 .Include(o => o.Part)
                 .Include(o => o.Member)
+                .ThenInclude(o => o.Person)
                 .ToListAsync();
 
             assignments.Sort();
