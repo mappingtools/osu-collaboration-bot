@@ -356,6 +356,47 @@ namespace CollaborationBot.Commands {
             }
         }
 
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [SlashCommand("updateall", "Updates all your Discord username cache in a project")]
+        public async Task UpdateName([Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName) {
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            try {
+                var members = await _context.Members.AsQueryable()
+                    .Where(o => o.ProjectId == project.Id)
+                    .Include(o => o.Person)
+                    .ToListAsync();
+
+                foreach (var member in members) {
+                    var person = member.Person;
+                    var user = await _client.GetUserAsync((ulong)member.UniqueMemberId);
+
+                    if (person == null) {
+                        person = new Person {
+                            UniqueMemberId = user.Id,
+                            Username = user.Username,
+                            GlobalName = user.GlobalName,
+                        };
+                        _context.People.Add(person);
+                    }
+                    else {
+                        person.Username = user.Username;
+                        person.GlobalName = user.GlobalName;
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+                await RespondAsync(string.Format(Strings.UpdateNameSuccess, "everyone", "everyone's global name"));
+            } catch (Exception e) {
+                logger.Error(e);
+                await RespondAsync(Strings.UpdateNameFail);
+            }
+        }
+
         [SlashCommand("submit", "Submits a part of beatmap to the project")]
         public async Task SubmitPart([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("beatmap", "The part to submit as a .osu file")] Attachment attachment,
