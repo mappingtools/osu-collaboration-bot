@@ -288,19 +288,19 @@ namespace CollaborationBot.Services {
         }
 
         public static string UserOrGlobalName(IUser user) {
-            return user is not null ? string.IsNullOrEmpty(user.GlobalName) ? user.Username : user.GlobalName : Strings.UnknownUser;
+            return user is not null ? !string.IsNullOrWhiteSpace(user.GlobalName) ? user.GlobalName : UserName(user) : Strings.UnknownUser;
         }
 
         public static string UserOrGlobalName(Person user) {
-            return user is not null ? string.IsNullOrEmpty(user.GlobalName) ? user.Username : user.GlobalName : Strings.UnknownUser;
+            return user is not null ? !string.IsNullOrWhiteSpace(user.GlobalName) ? user.GlobalName : UserName(user) : Strings.UnknownUser;
         }
 
         public static string UserName(IUser user) {
-            return user is not null ? user.Username : Strings.UnknownUser;
+            return user is not null && !string.IsNullOrWhiteSpace(user.Username) ? user.Username : Strings.UnknownUser;
         }
 
         public static string UserName(Person user) {
-            return user is not null ? user.Username : Strings.UnknownUser;
+            return user is not null && !string.IsNullOrWhiteSpace(user.Username) ? user.Username : Strings.UnknownUser;
         }
 
         public string MemberName(Member member) {
