@@ -718,4 +718,10 @@ Replace the part with the [square brackets] with the relevant value.</value>
   <data name="MaxAssignmentTimeReached" xml:space="preserve">
     <value>You are only allowed to claim a time of {0}.</value>
   </data>
+  <data name="UpdateNameSuccess" xml:space="preserve">
+    <value>Successfully updated username to `{0}` and global name to `{1}`.</value>
+  </data>
+  <data name="UpdateNameFail" xml:space="preserve">
+    <value>Could not update username.</value>
+  </data>
 </root>

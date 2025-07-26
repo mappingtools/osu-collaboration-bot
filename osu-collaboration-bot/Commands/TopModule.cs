@@ -321,6 +321,39 @@ namespace CollaborationBot.Commands {
             }
         }
 
+        [SlashCommand("updateusername", "Updates your Discord username cache")]
+        public async Task UpdateName() {
+            var user = await _client.GetUserAsync(Context.User.Id);
+
+            if (user == null) {
+                await RespondAsync(Strings.BackendErrorMessage);
+                return;
+            }
+
+            try {
+                var person = await _context.People.AsQueryable().SingleOrDefaultAsync(o => o.UniqueMemberId == Context.User.Id);
+
+                if (person == null) {
+                    person = new Person {
+                        UniqueMemberId = user.Id,
+                        Username = user.Username,
+                        GlobalName = user.GlobalName,
+                    };
+                    _context.People.Add(person);
+                }
+                else {
+                    person.Username = user.Username;
+                    person.GlobalName = user.GlobalName;
+                }
+
+                await _context.SaveChangesAsync();
+                await RespondAsync(string.Format(Strings.UpdateNameSuccess, user.Username, user.GlobalName));
+            } catch (Exception e) {
+                logger.Error(e);
+                await RespondAsync(Strings.UpdateNameFail);
+            }
+        }
+
         [SlashCommand("submit", "Submits a part of beatmap to the project")]
         public async Task SubmitPart([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("beatmap", "The part to submit as a .osu file")] Attachment attachment,

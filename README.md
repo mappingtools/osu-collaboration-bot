@@ -223,6 +223,10 @@ Changes your osu! profile ID.
 - `project` (string): The project.
 - `id` (string): The new ID.
 
+### updateusername `/updateusername`
+
+Updates your Discord username cache.
+
 ### submit `/submit`
 
 Submits a part of a beatmap to a project.

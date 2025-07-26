@@ -1763,6 +1763,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not update username..
+        /// </summary>
+        public static string UpdateNameFail {
+            get {
+                return ResourceManager.GetString("UpdateNameFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully updated username to `{0}` and global name to `{1}`..
+        /// </summary>
+        public static string UpdateNameSuccess {
+            get {
+                return ResourceManager.GetString("UpdateNameSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Something went wrong while trying to upload the base file..
         /// </summary>
         public static string UploadBaseFileFail {
