@@ -1,0 +1,17 @@
+
+services:
+  db-dev:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres # IMPORTANT: Use a strong password in production!
+    ports:
+      - "5432:5432" # Maps host port 5432 to container port 5432
+    volumes:
+      - bot-db-dev:/var/lib/postgresql/data # Persists database data
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+
+volumes:
+  bot-db-dev:
