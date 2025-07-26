@@ -53,11 +53,12 @@ namespace CollaborationBot.Commands {
                 .Where(o => user == null || o.Assignments.Any(a => a.Member.UniqueMemberId == user.Id))
                 .Include(o => o.Assignments)
                 .ThenInclude(o => o.Member)
+                .ThenInclude(o => o.Person)
                 .ToListAsync();
 
             parts.Sort();
 
-            await _resourceService.RespondPaginator(_context, Context, parts, _resourceService.GeneratePartsListPages,
+            await _resourceService.RespondPaginator(Context, parts, _resourceService.GeneratePartsListPages,
                 Strings.NoParts, Strings.PartListMessage);
         }
         
@@ -79,12 +80,14 @@ namespace CollaborationBot.Commands {
                     .Where(o => o.ProjectId == project.Id && o.Assignments.All(a => a.Member.Priority < member.Priority))
                     .Include(o => o.Assignments)
                     .ThenInclude(o => o.Member)
+                    .ThenInclude(o => o.Person)
                     .ToListAsync();
             } else {
                 parts = await _context.Parts.AsQueryable()
                     .Where(o => o.ProjectId == project.Id && o.Assignments.Count == 0)
                     .Include(o => o.Assignments)
                     .ThenInclude(o => o.Member)
+                    .ThenInclude(o => o.Person)
                     .ToListAsync();
             }
 
@@ -99,7 +102,7 @@ namespace CollaborationBot.Commands {
 
             parts.Sort();
 
-            await _resourceService.RespondPaginator(_context, Context, parts, _resourceService.GeneratePartsListPages,
+            await _resourceService.RespondPaginator(Context, parts, _resourceService.GeneratePartsListPages,
                 Strings.NoParts, Strings.PartListClaimableMessage);
         }
         
@@ -442,22 +445,24 @@ namespace CollaborationBot.Commands {
                 var parts = await _context.Parts.AsQueryable()
                     .Where(o => o.ProjectId == project.Id)
                     .Include(o => o.Assignments)
-                    .ThenInclude(o => o.Member).ToListAsync();
+                    .ThenInclude(o => o.Member)
+                    .ThenInclude(o => o.Person)
+                    .ToListAsync();
 
                 parts.Sort();
 
-                async Task<FileHandlingService.PartRecord> selector(Part o) => new() {
+                FileHandlingService.PartRecord selector(Part o) => new() {
                     Name = o.Name,
                     Start = o.Start,
                     End = o.End,
                     Status = o.Status,
-                    MapperNames = includeMappers ? string.Join(";", await Task.WhenAll(o.Assignments.Select(async a => await _resourceService.MemberAliasOrName(_context, a.Member)))) : null
+                    MapperNames = includeMappers ? string.Join(";", o.Assignments.Select(a => _resourceService.MemberAliasOrName(a.Member))) : null
                 };
 
                 await using var dataStream = new MemoryStream();
                 var writer = new StreamWriter(dataStream);
                 await using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
-                await csv.WriteRecordsAsync(await Task.WhenAll(parts.Select(selector)));
+                await csv.WriteRecordsAsync(parts.Select(selector));
 
                 await writer.FlushAsync();
                 dataStream.Position = 0;
@@ -485,12 +490,13 @@ namespace CollaborationBot.Commands {
                     .Where(o => o.ProjectId == project.Id)
                     .Include(o => o.Assignments)
                     .ThenInclude(o => o.Member)
-                    .ThenInclude(o => o.Person).ToListAsync();
+                    .ThenInclude(o => o.Person)
+                    .ToListAsync();
 
                 parts.Sort();
 
                 await _resourceService.RespondTextOrFile(Context.Interaction,
-                    await _resourceService.GeneratePartsListDescription(_context, parts, includeMappers, includePartNames));
+                    _resourceService.GeneratePartsListDescription(parts, includeMappers: includeMappers, includePartNames: includePartNames));
             } catch (Exception e) {
                 logger.Error(e);
                 await RespondAsync(string.Format(Strings.BackendErrorMessage, projectName));

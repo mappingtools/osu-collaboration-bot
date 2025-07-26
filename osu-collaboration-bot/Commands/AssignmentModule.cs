@@ -43,7 +43,7 @@ namespace CollaborationBot.Commands {
 
             assignments.Sort();
 
-            await _resourceService.RespondPaginator(_context, Context, assignments, _resourceService.GenerateAssignmentListPages,
+            await _resourceService.RespondPaginator(Context, assignments, _resourceService.GenerateAssignmentListPages,
                 Strings.NoAssignments, Strings.AssignmentListMessage);
         }
         
@@ -165,7 +165,7 @@ namespace CollaborationBot.Commands {
 
                 drainTimes = drainTimes.OrderBy(o => o.Value).ToList();
 
-                await _resourceService.RespondPaginator(_context, Context, drainTimes, _resourceService.GenerateDrainTimePages, Strings.NoAssignments,
+                await _resourceService.RespondPaginator(Context, drainTimes, _resourceService.GenerateDrainTimePages, Strings.NoAssignments,
                     Strings.DrainTimeListMessage);
             } catch (Exception e) {
                 logger.Error(e);

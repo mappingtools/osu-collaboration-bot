@@ -116,7 +116,7 @@ namespace CollaborationBot.Commands {
         public async Task List() {
             var projects = await _context.Projects.AsQueryable().Where(p => p.Guild.UniqueGuildId == Context.Guild.Id).ToListAsync();
 
-            await _resourceService.RespondPaginator(_context, Context, projects, _resourceService.GenerateProjectListPages,
+            await _resourceService.RespondPaginator(Context, projects, _resourceService.GenerateProjectListPages,
                 Strings.NoProjects, Strings.ProjectListMessage);
         }
 
@@ -175,9 +175,12 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            var members = await _context.Members.AsQueryable().Where(o => o.ProjectId == project.Id).ToListAsync();
+            var members = await _context.Members.AsQueryable()
+                .Where(o => o.ProjectId == project.Id)
+                .Include(o => o.Person)
+                .ToListAsync();
 
-            await _resourceService.RespondPaginator(_context, Context, members, _resourceService.GenerateMembersListPages,
+            await _resourceService.RespondPaginator(Context, members, _resourceService.GenerateMembersListPages,
                 Strings.NoMembers, Strings.MemberListMessage);
         }
 

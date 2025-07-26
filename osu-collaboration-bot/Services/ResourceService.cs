@@ -8,18 +8,15 @@ using CollaborationBot.Entities;
 using CollaborationBot.Resources;
 using Discord;
 using Discord.Interactions;
-using Discord.WebSocket;
 using Fergun.Interactive;
 using Fergun.Interactive.Pagination;
 
 namespace CollaborationBot.Services {
     public class ResourceService {
         private readonly InteractiveService _interactive;
-        private readonly CommonService _common;
 
-        public ResourceService(InteractiveService interactive, CommonService common) {
+        public ResourceService(InteractiveService interactive) {
             _interactive = interactive;
-            _common = common;
         }
 
         /// <summary>
@@ -31,8 +28,8 @@ namespace CollaborationBot.Services {
         /// <param name="nothingString">The message to respond with if there are no items.</param>
         /// <param name="message">The message to respond with if there are items.</param>
         /// <typeparam name="T">The type of item to display.</typeparam>
-        public async Task RespondPaginator<T>(OsuCollabContext dbContext, SocketInteractionContext context, List<T> items,
-        Func<OsuCollabContext, List<T>, Task<IPageBuilder[]>> pageMaker, string nothingString, string message) {
+        public async Task RespondPaginator<T>(SocketInteractionContext context, List<T> items,
+            Func<List<T>, IPageBuilder[]> pageMaker, string nothingString, string message) {
             if (items.Count == 0) {
                 await context.Interaction.RespondAsync(nothingString);
                 return;
@@ -41,7 +38,7 @@ namespace CollaborationBot.Services {
             await context.Interaction.RespondAsync(message);
 
             var paginator = new StaticPaginatorBuilder()
-                .WithPages(await pageMaker(dbContext, items))
+                .WithPages(pageMaker(items))
                 .WithDefaultTimeoutPage()
                 .WithDefaultCanceledPage()
                 .Build();
@@ -106,31 +103,31 @@ namespace CollaborationBot.Services {
                 projects.Select(p => $"{p.Name}{(p.Status.HasValue ? $" ({p.Status})" : string.Empty)}"));
         }
 
-        public Task<IPageBuilder[]> GenerateProjectListPages(OsuCollabContext dbContext, List<Project> projects) {
-            return Task.FromResult(projects.Count <= 0 ? null : GenerateListPages(projects.Select(p => (p.Name, p.Status.ToString())), Strings.Projects));
+        public IPageBuilder[] GenerateProjectListPages(List<Project> projects) {
+            return projects.Count <= 0 ? null : GenerateListPages(projects.Select(p => (p.Name, p.Status.ToString())), Strings.Projects);
         }
 
-        public string GenerateMembersListMessage(OsuCollabContext dbContext, List<Member> members) {
+        public string GenerateMembersListMessage(List<Member> members) {
             if (members.Count <= 0) return Strings.NoMembers;
             return GenerateListMessage(Strings.MemberListMessage, 
                 members.Select(o =>
-                    $"{MemberName(dbContext, o)}{(o.Priority.HasValue ? $" ({o.Priority.Value})" : string.Empty)} [{o.ProjectRole}]"));
+                    $"{MemberName(o)}{(o.Priority.HasValue ? $" ({o.Priority.Value})" : string.Empty)} [{o.ProjectRole}]"));
         }
 
-        public async Task<IPageBuilder[]> GenerateMembersListPages(OsuCollabContext dbContext, List<Member> members) {
+        public IPageBuilder[] GenerateMembersListPages(List<Member> members) {
             if (members.Count <= 0) return null;
-            return await GenerateListPages(members.Select(async o =>
-                (await MemberName(dbContext, o), $"{o.ProjectRole}{(o.Priority.HasValue ? $" ({o.Priority.Value})" : string.Empty)}")), Strings.Members);
+            return GenerateListPages(members.Select(o =>
+                (MemberName(o), $"{o.ProjectRole}{(o.Priority.HasValue ? $" ({o.Priority.Value})" : string.Empty)}")), Strings.Members);
         }
 
-        public string GeneratePartsListMessage(OsuCollabContext dbContext, List<Part> parts) {
+        public string GeneratePartsListMessage(List<Part> parts) {
             if (parts.Count <= 0) return Strings.NoParts;
             return GenerateListMessage(Strings.PartListMessage,
                 parts.Select(o => {
                     var str = $"{o.Name} ({TimeToString(o.Start)} - {TimeToString(o.End)}): {o.Status}";
                     if (o.Assignments.Count > 0) {
                         var builder = new StringBuilder(" {");
-                        builder.AppendJoin(", ", o.Assignments.Select(a => MemberName(dbContext, a.Member)));
+                        builder.AppendJoin(", ", o.Assignments.Select(a => MemberName(a.Member)));
                         builder.Append('}');
                         str += builder.ToString();
                     }
@@ -138,13 +135,13 @@ namespace CollaborationBot.Services {
                 }));
         }
 
-        public Embed[] GeneratePartsListEmbeds(OsuCollabContext dbContext, List<Part> parts) {
+        public Embed[] GeneratePartsListEmbeds( List<Part> parts) {
             if (parts.Count <= 0) return null;
             return GenerateListEmbeds(parts.Select(o => {
                 var str = $"({TimeToString(o.Start)} - {TimeToString(o.End)}): {o.Status}";
                 if (o.Assignments.Count > 0) {
                     var builder = new StringBuilder(" {");
-                    builder.AppendJoin(", ", o.Assignments.Select(a => MemberName(dbContext, a.Member)));
+                    builder.AppendJoin(", ", o.Assignments.Select(a => MemberName(a.Member)));
                     builder.Append('}');
                     str += builder.ToString();
                 }
@@ -153,13 +150,13 @@ namespace CollaborationBot.Services {
             }));
         }
 
-        public async Task<IPageBuilder[]> GeneratePartsListPages(OsuCollabContext dbContext, List<Part> parts) {
+        public IPageBuilder[] GeneratePartsListPages(List<Part> parts) {
             if (parts.Count <= 0) return null;
-            return await GenerateListPages(parts.Select(async o => {
+            return GenerateListPages(parts.Select(o => {
                 var str = $"({TimeToString(o.Start)} - {TimeToString(o.End)}): {o.Status}";
                 if (o.Assignments.Count > 0) {
                     var builder = new StringBuilder(" {");
-                    builder.AppendJoin(", ", await Task.WhenAll(o.Assignments.Select(async a => await MemberName(dbContext, a.Member))));
+                    builder.AppendJoin(", ", o.Assignments.Select(a => MemberName(a.Member)));
                     builder.Append('}');
                     str += builder.ToString();
                 }
@@ -168,11 +165,11 @@ namespace CollaborationBot.Services {
             }), Strings.Parts);
         }
 
-        public async Task<string> GeneratePartsListDescription(OsuCollabContext dbContext, List<Part> parts, bool includeMappers = true, bool includePartNames = false) {
+        public string GeneratePartsListDescription(List<Part> parts, bool includeMappers = true, bool includePartNames = false) {
             var builder = new StringBuilder("```[notice][box=Parts]\n");
             var info = new List<(int?, int?, string, string)>();
             foreach (Part part in parts) {
-                string mappers = includeMappers ? ": " + string.Join(", ", await Task.WhenAll(part.Assignments.Select(async a => a.Member.Person.ProfileId.HasValue ? $"[profile={a.Member.Person.ProfileId}]{await MemberAliasOrName(dbContext, a.Member)}[/profile]" : await MemberAliasOrName(dbContext, a.Member)))) : string.Empty;
+                string mappers = includeMappers ? ": " + string.Join(", ", part.Assignments.Select(a => a.Member.Person.ProfileId.HasValue ? $"[profile={a.Member.Person.ProfileId}]{MemberAliasOrName(a.Member)}[/profile]" : MemberAliasOrName(a.Member))) : string.Empty;
                 string partName = includePartNames ? " " + part.Name : string.Empty;
                 info.Add((part.Start, part.End, partName, mappers));
             }
@@ -206,28 +203,28 @@ namespace CollaborationBot.Services {
             }
         }
 
-        public string GenerateDraintimesListMessage(OsuCollabContext dbContext, List<KeyValuePair<Member, int>> draintimes) {
+        public string GenerateDraintimesListMessage(List<KeyValuePair<Member, int>> draintimes) {
             if (draintimes.Count <= 0) return Strings.NoAssignments;
             return GenerateListMessage(Strings.DrainTimeListMessage,
-                draintimes.Select(m => $"{MemberName(dbContext, m.Key)}: {TimeToString(m.Value)}"));
+                draintimes.Select(m => $"{MemberName(m.Key)}: {TimeToString(m.Value)}"));
         }
 
-        public async Task<IPageBuilder[]> GenerateDrainTimePages(OsuCollabContext dbContext, List<KeyValuePair<Member, int>> drainTimes) {
+        public IPageBuilder[] GenerateDrainTimePages(List<KeyValuePair<Member, int>> drainTimes) {
             if (drainTimes.Count <= 0) return null;
-            return await GenerateListPages(
-                drainTimes.Select(async m => (await MemberName(dbContext, m.Key), TimeToString(m.Value))), Strings.AutoUpdates);
+            return GenerateListPages(
+                drainTimes.Select(m => (MemberName(m.Key), TimeToString(m.Value))), Strings.AutoUpdates);
         }
 
-        public string GenerateAssignmentListMessage(OsuCollabContext dbContext, List<Assignment> assignments) {
+        public string GenerateAssignmentListMessage(List<Assignment> assignments) {
             if (assignments.Count <= 0) return Strings.NoAssignments;
             return GenerateListMessage(Strings.AssignmentListMessage,
-                assignments.Select(o => $"{o.Part.Name}: {MemberName(dbContext, o.Member)}{(o.Deadline.HasValue ? " - " + o.Deadline.Value.ToString("yyyy-MM-dd") : string.Empty)}"));
+                assignments.Select(o => $"{o.Part.Name}: {MemberName(o.Member)}{(o.Deadline.HasValue ? " - " + o.Deadline.Value.ToString("yyyy-MM-dd") : string.Empty)}"));
         }
 
-        public async Task<IPageBuilder[]> GenerateAssignmentListPages(OsuCollabContext dbContext, List<Assignment> assignments) {
+        public IPageBuilder[] GenerateAssignmentListPages(List<Assignment> assignments) {
             if (assignments.Count <= 0) return null;
-            return await GenerateListPages(assignments.Select(async o =>
-                    ($"{o.Part.Name}: {await MemberName(dbContext, o.Member)}", $"{(o.Deadline.HasValue ? o.Deadline.Value.ToString("yyyy-MM-dd") : Strings.NoDeadline)}")),
+            return GenerateListPages(assignments.Select(o =>
+                    ($"{o.Part.Name}: {MemberName(o.Member)}", $"{(o.Deadline.HasValue ? o.Deadline.Value.ToString("yyyy-MM-dd") : Strings.NoDeadline)}")),
                 Strings.Assignments);
         }
 
@@ -290,10 +287,6 @@ namespace CollaborationBot.Services {
             return pages;
         }
 
-        public async Task<IPageBuilder[]> GenerateListPages(IEnumerable<Task<(string, string)>> list, string itemName) {
-            return GenerateListPages(await Task.WhenAll(list), itemName);
-        }
-
         public static string UserOrGlobalName(IUser user) {
             return user is not null ? string.IsNullOrEmpty(user.GlobalName) ? user.Username : user.GlobalName : Strings.UnknownUser;
         }
@@ -310,8 +303,8 @@ namespace CollaborationBot.Services {
             return user is not null ? user.Username : Strings.UnknownUser;
         }
 
-        public async Task<string> MemberName(OsuCollabContext dbContext, Member member) {
-            var user = await _common.GetPersonAsync(dbContext, (ulong)member.UniqueMemberId);
+        public string MemberName(Member member) {
+            var user = member.Person;
             string name = UserName(user);
             if (user.Alias != null) {
                 name += $" \"{user.Alias}\"";
@@ -319,8 +312,8 @@ namespace CollaborationBot.Services {
             return name;
         }
 
-        public async Task<string> MemberAliasOrName(OsuCollabContext dbContext, Member member) {
-            var user = await _common.GetPersonAsync(dbContext, (ulong)member.UniqueMemberId);
+        public string MemberAliasOrName(Member member) {
+            var user = member.Person;
             if (user.Alias != null) {
                 return user.Alias;
             }

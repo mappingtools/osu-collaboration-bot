@@ -42,16 +42,16 @@ namespace CollaborationBot.Commands {
                 .Where(o => o.ProjectId == project.Id)
                 .ToListAsync();
 
-            await _resourceService.RespondPaginator(_context, Context, autoUpdates, GenerateAutoUpdateListPages,
+            await _resourceService.RespondPaginator(Context, autoUpdates, GenerateAutoUpdateListPages,
                 Strings.NoAutoUpdates, Strings.AutoUpdatesListMessage);
         }
 
-        private Task<IPageBuilder[]> GenerateAutoUpdateListPages(OsuCollabContext dbContext, List<AutoUpdate> autoUpdates) {
+        private IPageBuilder[] GenerateAutoUpdateListPages(List<AutoUpdate> autoUpdates) {
             if (autoUpdates.Count <= 0) return null;
-            return Task.FromResult(_resourceService.GenerateListPages(
+            return _resourceService.GenerateListPages(
                 autoUpdates.Select(o =>
                     (o.Id.ToString(), $"channel: {ChannelName((ulong)o.UniqueChannelId)}, cooldown: {o.Cooldown}, do ping: {o.DoPing}")),
-                Strings.AutoUpdates));
+                Strings.AutoUpdates);
         }
 
         private string ChannelName(ulong id) {
