@@ -17,10 +17,8 @@ namespace CollaborationBot.Entities
         public decimal UniqueMemberId { get; set; }
         public ProjectRole ProjectRole { get; set; }
         public int? Priority { get; set; }
-        public string Alias { get; set; }
-        public string Tags { get; set; }
-        public decimal? ProfileId { get; set; }
 
+        public virtual Person Person { get; set; }
         public virtual Project Project { get; set; }
         public virtual ICollection<Assignment> Assignments { get; set; }
     }

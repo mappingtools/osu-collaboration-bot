@@ -3,15 +3,45 @@ using Discord;
 using NLog;
 using System.Threading.Tasks;
 using CollaborationBot.Entities;
+using Discord.WebSocket;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollaborationBot.Services {
     public class CommonService {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly AppSettings _appSettings;
+        private readonly DiscordSocketClient _client;
 
-        public CommonService(AppSettings appSettings) {
+        public CommonService(AppSettings appSettings, DiscordSocketClient client) {
             _appSettings = appSettings;
+            _client = client;
+        }
+
+        public async Task<Person> GetPersonAsync(OsuCollabContext dbContext, ulong uniqueMemberId) {
+            var person = await dbContext.People.AsQueryable().SingleOrDefaultAsync(o => o.UniqueMemberId == uniqueMemberId);
+
+            if (person != null) return person;
+
+            var user = await _client.GetUserAsync(uniqueMemberId);
+
+            if (user != null) {
+                person = new Person {
+                    UniqueMemberId = uniqueMemberId,
+                    Username = user.Username,
+                    GlobalName = user.GlobalName,
+                };
+                dbContext.People.Add(person);
+                await dbContext.SaveChangesAsync();
+            }
+            else {
+                person = new Person {
+                    UniqueMemberId = uniqueMemberId,
+                    Username = "unknown_user",
+                    GlobalName = "Unknown User",
+                };
+            }
+
+            return person;
         }
 
         public async Task<Guild> GetGuildAsync(IInteractionContext context, OsuCollabContext dbContext) {

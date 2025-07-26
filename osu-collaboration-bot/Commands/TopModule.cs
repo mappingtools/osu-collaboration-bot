@@ -24,8 +24,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Discord.WebSocket;
-using Mapping_Tools_Core.BeatmapHelper.HitObjects;
-using Mapping_Tools_Core.BeatmapHelper.TimingStuff;
 
 namespace CollaborationBot.Commands {
     [Group("", "All common commands")]
@@ -118,7 +116,7 @@ namespace CollaborationBot.Commands {
         public async Task List() {
             var projects = await _context.Projects.AsQueryable().Where(p => p.Guild.UniqueGuildId == Context.Guild.Id).ToListAsync();
 
-            await _resourceService.RespondPaginator(Context, projects, _resourceService.GenerateProjectListPages,
+            await _resourceService.RespondPaginator(_context, Context, projects, _resourceService.GenerateProjectListPages,
                 Strings.NoProjects, Strings.ProjectListMessage);
         }
 
@@ -138,7 +136,7 @@ namespace CollaborationBot.Commands {
             var completedPartCount = await _context.Parts.AsQueryable().Where(o => o.ProjectId == project.Id && o.Status == PartStatus.Finished).CountAsync();
             var completionPercent = partCount <= 0 ? 0 : 100 * completedPartCount / partCount;
             var ownerMember = await _context.Members.AsQueryable().Where(o => o.ProjectId == project.Id && o.ProjectRole == ProjectRole.Owner).SingleOrDefaultAsync();
-            var owner = ownerMember is not null ? await _client.GetUserAsync((ulong)ownerMember.UniqueMemberId) : null;
+            var owner = ownerMember is not null ? await _common.GetPersonAsync(_context, (ulong)ownerMember.UniqueMemberId) : null;
             var mainRole = project.UniqueRoleId.HasValue ? Context.Guild.GetRole((ulong)project.UniqueRoleId.Value) : null;
             var infoChannel = project.InfoChannelId.HasValue ? Context.Guild.GetTextChannel((ulong)project.InfoChannelId.Value) : null;
             var mainChannel = project.MainChannelId.HasValue ? Context.Guild.GetTextChannel((ulong)project.MainChannelId.Value) : null;
@@ -179,7 +177,7 @@ namespace CollaborationBot.Commands {
 
             var members = await _context.Members.AsQueryable().Where(o => o.ProjectId == project.Id).ToListAsync();
 
-            await _resourceService.RespondPaginator(Context, members, _resourceService.GenerateMembersListPages,
+            await _resourceService.RespondPaginator(_context, Context, members, _resourceService.GenerateMembersListPages,
                 Strings.NoMembers, Strings.MemberListMessage);
         }
 
@@ -248,28 +246,21 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        [SlashCommand("alias", "Changes your alias in the project")]
-        public async Task Alias([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
-            [Summary("alias", "The new alias")] string alias) {
-            var project = await _common.GetProjectAsync(Context, _context, projectName);
-
-            if (project == null) {
-                return;
-            }
-
+        [SlashCommand("alias", "Changes your alias")]
+        public async Task Alias([Summary("alias", "The new alias")] string alias) {
             if (!_inputSanitizer.IsValidName(alias)) {
                 await RespondAsync(Strings.IllegalInput);
                 return;
             }
 
-            var member = await _common.GetMemberAsync(Context, _context, project, Context.User);
+            var person = await _common.GetPersonAsync(_context, Context.User.Id);
 
-            if (member == null) {
+            if (person == null) {
                 return;
             }
 
             try {
-                member.Alias = alias;
+                person.Alias = alias;
 
                 await _context.SaveChangesAsync();
                 await RespondAsync(string.Format(Strings.ChangeAliasSuccess, Context.User.Mention, alias));
@@ -279,15 +270,8 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        [SlashCommand("tags", "Changes your tags in the project")]
-        public async Task Tags([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
-            [Summary("tags", "The new tags")] string tags) {
-            var project = await _common.GetProjectAsync(Context, _context, projectName);
-
-            if (project == null) {
-                return;
-            }
-
+        [SlashCommand("tags", "Changes your tags")]
+        public async Task Tags([Summary("tags", "The new tags")] string tags) {
             string tagsString = string.Join(' ', tags);
 
             if (!_inputSanitizer.IsValidName(tagsString)) {
@@ -295,14 +279,14 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            var member = await _common.GetMemberAsync(Context, _context, project, Context.User);
+            var person = await _common.GetPersonAsync(_context, Context.User.Id);
 
-            if (member == null) {
+            if (person == null) {
                 return;
             }
 
             try {
-                member.Tags = tagsString;
+                person.Tags = tagsString;
 
                 await _context.SaveChangesAsync();
                 await RespondAsync(string.Format(Strings.ChangeTagsSuccess, Context.User.Mention, tagsString));
@@ -312,26 +296,19 @@ namespace CollaborationBot.Commands {
             }
         }
 
-        [SlashCommand("id", "Changes your osu! profile ID in the project")]
-        public async Task Id([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
-            [Summary("id", "The new ID")] string id) {
+        [SlashCommand("id", "Changes your osu! profile ID")]
+        public async Task Id([Summary("id", "The new ID")] string id) {
             int slashIndex = id.LastIndexOf('/');
             ulong id2;
             if (slashIndex < 0 ? ulong.TryParse(id, out id2) : ulong.TryParse(id.Substring(slashIndex + 1), out id2)) {
-                var project = await _common.GetProjectAsync(Context, _context, projectName);
+                var person = await _common.GetPersonAsync(_context, Context.User.Id);
 
-                if (project == null) {
-                    return;
-                }
-
-                var member = await _common.GetMemberAsync(Context, _context, project, Context.User);
-
-                if (member == null) {
+                if (person == null) {
                     return;
                 }
 
                 try {
-                    member.ProfileId = id2;
+                    person.ProfileId = id2;
 
                     await _context.SaveChangesAsync();
                     await RespondAsync(string.Format(Strings.ChangeIdSuccess, Context.User.Mention, id2));

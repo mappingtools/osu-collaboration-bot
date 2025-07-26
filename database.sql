@@ -75,6 +75,18 @@ CREATE TABLE public.guilds
     CONSTRAINT guilds_unique_id UNIQUE (unique_guild_id)
 );
 
+CREATE TABLE public.people
+(
+    unique_member_id numeric NOT NULL,
+    username character varying(255) COLLATE pg_catalog."default",
+    global_name character varying(255) COLLATE pg_catalog."default",
+    alias character varying(255) COLLATE pg_catalog."default",
+    tags character varying(255) COLLATE pg_catalog."default",
+    profile_id numeric,
+    CONSTRAINT people_pkey PRIMARY KEY (unique_member_id),
+    CONSTRAINT people_unique_id UNIQUE (unique_member_id)
+);
+
 CREATE TABLE public.projects
 (
     id integer NOT NULL DEFAULT nextval('projects_id_seq'::regclass),
@@ -128,11 +140,12 @@ CREATE TABLE public.members
     unique_member_id numeric NOT NULL,
     project_role project_role NOT NULL DEFAULT 'member'::project_role,
     priority integer,
-    alias character varying(255) COLLATE pg_catalog."default",
-    tags character varying(255) COLLATE pg_catalog."default",
-    profile_id numeric,
     CONSTRAINT members_pkey PRIMARY KEY (id),
     CONSTRAINT "Single membership" UNIQUE (project_id, unique_member_id),
+    CONSTRAINT fk_unique_member_id FOREIGN KEY (unique_member_id)
+        REFERENCES public.people (unique_member_id)
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE,
     CONSTRAINT members_project_id_fkey FOREIGN KEY (project_id)
         REFERENCES public.projects (id) MATCH SIMPLE
         ON UPDATE NO ACTION

@@ -195,7 +195,7 @@ Allows you to leave a project.
 
 ### alias `/alias`
 
-Changes your alias in a project.
+Changes your alias.
 
 **Permissions Required:** Project Member
 
@@ -205,7 +205,7 @@ Changes your alias in a project.
 
 ### tags `/tags`
 
-Changes your tags in a project.
+Changes your tags.
 
 **Permissions Required:** Project Member
 
@@ -215,7 +215,7 @@ Changes your tags in a project.
 
 ### id `/id`
 
-Changes your osu! profile ID in a project.
+Changes your osu! profile ID.
 
 **Permissions Required:** Project Member
 
@@ -419,28 +419,6 @@ Changes the owner of the project.
 - `project` (string): The project.
 - `user` (string): The new owner.
 
-### alias `/project alias`
-
-Changes the alias of a member of the project.
-
-**Permissions Required:** Project Manager
-
-**Arguments:**
-- `project` (string): The project.
-- `user` (string): The member.
-- `alias` (string): The new alias.
-
-### tags `/project tags`
-
-Changes the tags of a member of the project.
-
-**Permissions Required:** Project Manager
-
-**Arguments:**
-- `project` (string): The project.
-- `user` (string): The member.
-- `tags` (string): The new tags.
-
 ### gettags `/project gettags`
 
 Gets all the tags of the project including aliases.
@@ -449,17 +427,6 @@ Gets all the tags of the project including aliases.
 
 **Arguments:**
 - `project` (string): The project.
-
-### id `/project id`
-
-Changes the osu! profile ID of a member of the project.
-
-**Permissions Required:** Project Manager
-
-**Arguments:**
-- `project` (string): The project.
-- `user` (string): The member.
-- `id` (string): The new ID.
 
 ### priority `/project priority`
 

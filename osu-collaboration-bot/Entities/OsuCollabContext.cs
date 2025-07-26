@@ -26,6 +26,7 @@ namespace CollaborationBot.Entities
         public virtual DbSet<AutoUpdate> AutoUpdates { get; set; }
         public virtual DbSet<Guild> Guilds { get; set; }
         public virtual DbSet<Member> Members { get; set; }
+        public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<Part> Parts { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
 
@@ -128,16 +129,34 @@ namespace CollaborationBot.Entities
 
                 entity.Property(e => e.UniqueMemberId).HasColumnName("unique_member_id");
 
-                entity.Property(e => e.Alias).HasColumnName("alias");
-
-                entity.Property(e => e.Tags).HasColumnName("tags");
-
-                entity.Property(e => e.ProfileId).HasColumnName("profile_id");
+                entity.HasOne(d => d.Person)
+                    .WithMany(p => p.Members)
+                    .HasForeignKey(d => d.UniqueMemberId)
+                    .HasConstraintName("fk_unique_member_id");
 
                 entity.HasOne(d => d.Project)
                     .WithMany(p => p.Members)
                     .HasForeignKey(d => d.ProjectId)
                     .HasConstraintName("members_project_id_fkey");
+            });
+
+            modelBuilder.Entity<Person>(entity =>
+            {
+                entity.ToTable("people");
+
+                entity.HasKey(e => e.UniqueMemberId);
+
+                entity.Property(e => e.UniqueMemberId).HasColumnName("unique_member_id");
+
+                entity.Property(e => e.Username).HasColumnName("username");
+
+                entity.Property(e => e.GlobalName).HasColumnName("global_name");
+
+                entity.Property(e => e.Alias).HasColumnName("alias");
+
+                entity.Property(e => e.Tags).HasColumnName("tags");
+
+                entity.Property(e => e.ProfileId).HasColumnName("profile_id");
             });
 
             modelBuilder.Entity<Part>(entity =>

@@ -530,70 +530,6 @@ namespace CollaborationBot.Commands {
             }
         }
         
-        [SlashCommand("alias", "Changes the alias of a member of the project")]
-        public async Task Alias([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
-            [Summary("user", "The member")]IUser user,
-            [Summary("alias", "The new alias")]string alias) {
-            var project = await _common.GetProjectAsync(Context, _context, projectName);
-
-            if (project == null) {
-                return;
-            }
-
-            if (!_inputSanitizer.IsValidName(alias)) {
-                await RespondAsync(Strings.IllegalInput);
-                return;
-            }
-
-            var member = await _common.GetMemberAsync(Context, _context, project, user);
-
-            if (member == null) {
-                return;
-            }
-
-            try {
-                member.Alias = alias;
-
-                await _context.SaveChangesAsync();
-                await RespondAsync(string.Format(Strings.ChangeAliasSuccess, user.Mention, alias));
-            } catch (Exception e) {
-                logger.Error(e);
-                await RespondAsync(Strings.ChangeAliasFail);
-            }
-        }
-        
-        [SlashCommand("tags", "Changes the tags of a member of the project")]
-        public async Task Tags([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
-            [Summary("user", "The member")]IUser user,
-            [Summary("tags", "The new tags")]string tags) {
-            var project = await _common.GetProjectAsync(Context, _context, projectName);
-
-            if (project == null) {
-                return;
-            }
-
-            if (!_inputSanitizer.IsValidName(tags)) {
-                await RespondAsync(Strings.IllegalInput);
-                return;
-            }
-
-            var member = await _common.GetMemberAsync(Context, _context, project, user);
-
-            if (member == null) {
-                return;
-            }
-
-            try {
-                member.Tags = tags;
-
-                await _context.SaveChangesAsync();
-                await RespondAsync(string.Format(Strings.ChangeTagsSuccess, user.Mention, tags));
-            } catch (Exception e) {
-                logger.Error(e);
-                await RespondAsync(Strings.ChangeTagsFail);
-            }
-        }
-        
         [SlashCommand("gettags", "Gets all the tags of the project including aliases")]
         public async Task Tags([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
@@ -604,9 +540,9 @@ namespace CollaborationBot.Commands {
 
             try {
                 var tags = await _context.Members.AsQueryable()
-                    .Where(o => o.ProjectId == project.Id && o.Tags != null).Select(o => o.Tags).ToListAsync();
+                    .Where(o => o.ProjectId == project.Id && o.Person.Tags != null).Select(o => o.Person.Tags).ToListAsync();
                 string[] namesOrAliases = await Task.WhenAll((await _context.Members.AsQueryable()
-                    .Where(o => o.ProjectId == project.Id).ToListAsync()).Select(async o => await _resourceService.MemberAliasOrName(o)));
+                    .Where(o => o.ProjectId == project.Id).ToListAsync()).Select(async o => await _resourceService.MemberAliasOrName(_context, o)));
                 var tagsClean = namesOrAliases.Concat(tags)
                  .SelectMany(o => o.Split(' ', StringSplitOptions.RemoveEmptyEntries)).Select(o => o.Trim()).Distinct(StringComparer.OrdinalIgnoreCase);
 
@@ -614,33 +550,6 @@ namespace CollaborationBot.Commands {
             } catch (Exception e) {
                 logger.Error(e);
                 await RespondAsync(Strings.BackendErrorMessage);
-            }
-        }
-        
-        [SlashCommand("id", "Changes the osu! profile ID of a member of the project")]
-        public async Task Id([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
-            [Summary("user", "The member")] IUser user,
-            [Summary("id", "The new ID")] ulong id) {
-            var project = await _common.GetProjectAsync(Context, _context, projectName);
-
-            if (project == null) {
-                return;
-            }
-
-            var member = await _common.GetMemberAsync(Context, _context, project, user);
-
-            if (member == null) {
-                return;
-            }
-
-            try {
-                member.ProfileId = id;
-
-                await _context.SaveChangesAsync();
-                await RespondAsync(string.Format(Strings.ChangeIdSuccess, user.Mention, id));
-            } catch (Exception e) {
-                logger.Error(e);
-                await RespondAsync(Strings.ChangeIdFail);
             }
         }
         
