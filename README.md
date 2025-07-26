@@ -197,30 +197,21 @@ Allows you to leave a project.
 
 Changes your alias.
 
-**Permissions Required:** Project Member
-
 **Arguments:**
-- `project` (string): The project.
 - `alias` (string): The new alias.
 
 ### tags `/tags`
 
 Changes your tags.
 
-**Permissions Required:** Project Member
-
 **Arguments:**
-- `project` (string): The project.
 - `tags` (string): The new tags.
 
 ### id `/id`
 
 Changes your osu! profile ID.
 
-**Permissions Required:** Project Member
-
 **Arguments:**
-- `project` (string): The project.
 - `id` (string): The new ID.
 
 ### updateusername `/updateusername`
