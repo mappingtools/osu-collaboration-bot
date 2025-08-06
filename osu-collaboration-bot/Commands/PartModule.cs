@@ -115,17 +115,20 @@ namespace CollaborationBot.Commands {
                 return;
             }
 
-            var parts = await _context.Parts.AsQueryable()
+            var parts = await QueryParts(_context, project, time);
+            parts.Sort();
+
+            await _resourceService.RespondPaginator(Context, parts, _resourceService.GeneratePartsListPages,
+                Strings.QueryNoParts, Strings.PartQueryListMessage);
+        }
+
+        public static async Task<List<Part>> QueryParts(OsuCollabContext context, Project project, TimeSpan time) {
+            return await context.Parts.AsQueryable()
                 .Where(o => o.ProjectId == project.Id && (o.Start == null || o.Start <= time.TotalMilliseconds) && (o.End == null || o.End >= time.TotalMilliseconds))
                 .Include(o => o.Assignments)
                 .ThenInclude(o => o.Member)
                 .ThenInclude(o => o.Person)
                 .ToListAsync();
-
-            parts.Sort();
-
-            await _resourceService.RespondPaginator(Context, parts, _resourceService.GeneratePartsListPages,
-                Strings.QueryNoParts, Strings.PartQueryListMessage);
         }
         
         [SlashCommand("add", "Adds a new part to the project")]
