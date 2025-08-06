@@ -589,7 +589,7 @@ namespace CollaborationBot.Commands {
         
         [SlashCommand("generatepriorities", "Automatically generates priorities for all members based on membership age")]
         public async Task GeneratePriorities([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
-            [Summary("timeweight", "The priority value of one day")]int timeWeight = 1,
+            [Summary("timeWeight", "The priority value of one day")]int timeWeight = 1,
             [Summary("replace", "Whether to replace all the existing priority values")]bool replace = false) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 
@@ -627,7 +627,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("rename", "Renames the project")]
         public async Task Rename([RequireProjectOwner][Summary("project", "The old project name")] string projectName,
-            [Summary("newname", "The new project name")] string newProjectName) {
+            [Summary("newName", "The new project name")] string newProjectName) {
             if (!_inputSanitizer.IsValidProjectName(newProjectName)) {
                 await RespondAsync(string.Format(Strings.IllegalProjectName, newProjectName));
                 return;
@@ -899,12 +899,12 @@ namespace CollaborationBot.Commands {
 
             [SlashCommand("options", "Configures several boolean project options")]
             public async Task Options([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
-                [Summary("canclaim", "Whether members may claim parts on their own")] bool? selfAssignmentAllowed = null,
-                [Summary("canjoin", "Whether anyone may join the project")] bool? anyoneJoinAllowed = null,
-                [Summary("prioritypicking", "Whether priority picking is enabled")] bool? priorityPicking = null,
-                [Summary("autogeneratepriorities", "Whether to automatically generate priorities for members when they join")] bool? autoGeneratePriorities = null,
-                [Summary("partrestrictedupload", "Whether to restrict part submission to just the assigned parts")] bool? partRestrictedUpload = null,
-                [Summary("doreminders", "Whether to automatically remind members about their deadlines")] bool? doReminders = null) {
+                [Summary("canClaim", "Whether members may claim parts on their own")] bool? selfAssignmentAllowed = null,
+                [Summary("canJoin", "Whether anyone may join the project")] bool? anyoneJoinAllowed = null,
+                [Summary("priorityPicking", "Whether priority picking is enabled")] bool? priorityPicking = null,
+                [Summary("autoGeneratePriorities", "Whether to automatically generate priorities for members when they join")] bool? autoGeneratePriorities = null,
+                [Summary("partRestrictedUpload", "Whether to restrict part submission to just the assigned parts")] bool? partRestrictedUpload = null,
+                [Summary("doReminders", "Whether to automatically remind members about their deadlines")] bool? doReminders = null) {
                 var project = await _common.GetProjectAsync(Context, _context, projectName);
 
                 if (project == null) {
@@ -1093,7 +1093,7 @@ namespace CollaborationBot.Commands {
 
             [SlashCommand("maxassignments", "Changes the maximum number of allowed assignments for members of the project")]
             public async Task MaxAssignments([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
-                [Summary("maxassignments", "The new maximum number of allowed assignments (can be null)")] int? maxAssignments) {
+                [Summary("maxAssignments", "The new maximum number of allowed assignments (can be null)")] int? maxAssignments) {
                 var project = await _common.GetProjectAsync(Context, _context, projectName);
 
                 if (project == null) {
@@ -1112,7 +1112,7 @@ namespace CollaborationBot.Commands {
 
             [SlashCommand("maxassignmenttime", "Changes the maximum aggregate time a member is allowed to claim in the project")]
             public async Task MaxAssignmentTime([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
-                [Summary("maxassignmenttime", "The new maximum aggregate time a member is allowed to claim (dd:hh:mm:ss:fff) (can be null)")] TimeSpan? maxAssignmentTime) {
+                [Summary("maxAssignmenttime", "The new maximum aggregate time a member is allowed to claim (dd:hh:mm:ss:fff) (can be null)")] TimeSpan? maxAssignmentTime) {
                 var project = await _common.GetProjectAsync(Context, _context, projectName);
 
                 if (project == null) {

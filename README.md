@@ -276,14 +276,14 @@ Marks one or more parts as done.
 Generates a random difficulty name.
 
 **Arguments:**
-- `wordcount` (int, optional): The number of words to use in the sentence. Must be between 1 and 200. Defaults to `-1`.
+- `wordCount` (int, optional): The number of words to use in the sentence. Must be between 1 and 200. Defaults to `-1`.
 
 ### blixys `/blixys`
 
 Generates some inspiration.
 
 **Arguments:**
-- `wordcount` (int, optional): The number of words to use in the sentence. Must be between 1 and 200. Defaults to `-1`.
+- `wordCount` (int, optional): The number of words to use in the sentence. Must be between 1 and 200. Defaults to `-1`.
 
 ## Guild Module `/guild`
 
@@ -453,7 +453,7 @@ Automatically generates priorities for all members based on membership age.
 
 **Arguments:**
 - `project` (string): The project.
-- `timeweight` (int, optional): The priority value of one day. Defaults to `1`.
+- `timeWeight` (int, optional): The priority value of one day. Defaults to `1`.
 - `replace` (bool, optional): Whether to replace all the existing priority values. Defaults to `false`.
 
 ### rename `/project rename`
@@ -464,7 +464,7 @@ Renames the project.
 
 **Arguments:**
 - `project` (string): The old project name.
-- `newname` (string): The new project name.
+- `newName` (string): The new project name.
 
 ## Project Options Module `/project options`
 
@@ -476,12 +476,12 @@ Configures several boolean project options.
 
 **Arguments:**
 - `project` (string): The project.
-- `canclaim` (bool, optional): Whether members may claim parts on their own.
-- `canjoin` (bool, optional): Whether anyone may join the project.
-- `prioritypicking` (bool, optional): Whether priority picking is enabled.
-- `autogeneratepriorities` (bool, optional): Whether to automatically generate priorities for members when they join.
-- `partrestrictedupload` (bool, optional): Whether to restrict part submission to just the assigned parts.
-- `doreminders` (bool, optional): Whether to automatically remind members about their deadlines.
+- `canClaim` (bool, optional): Whether members may claim parts on their own.
+- `canJoin` (bool, optional): Whether anyone may join the project.
+- `priorityPicking` (bool, optional): Whether priority picking is enabled.
+- `autoGeneratePriorities` (bool, optional): Whether to automatically generate priorities for members when they join.
+- `partRestrictedUpload` (bool, optional): Whether to restrict part submission to just the assigned parts.
+- `doReminders` (bool, optional): Whether to automatically remind members about their deadlines.
 
 ### role `/project options role`
 
@@ -543,7 +543,7 @@ Changes the maximum number of allowed assignments for members of the project.
 
 **Arguments:**
 - `project` (string): The project.
-- `maxassignments` (int?): The new maximum number of allowed assignments (can be null).
+- `maxAssignments` (int?): The new maximum number of allowed assignments (can be null).
 
 ### maxassignmenttime `/project options maxassignmenttime`
 
@@ -553,7 +553,7 @@ Changes the maximum aggregate time a member is allowed to claim in the project.
 
 **Arguments:**
 - `project` (string): The project.
-- `maxassignmenttime` (TimeSpan?): The new maximum aggregate time a member is allowed to claim (dd:hh:mm:ss:fff) (can be null).
+- `maxAssignmenttime` (TimeSpan?): The new maximum aggregate time a member is allowed to claim (dd:hh:mm:ss:fff) (can be null).
 
 ### assignmentlifetime `/project options assignmentlifetime`
 
@@ -643,7 +643,7 @@ Changes the name of the part.
 **Arguments:**
 - `project` (string): The project.
 - `part` (string): The part.
-- `newname` (string): The new name for the part.
+- `newName` (string): The new name for the part.
 
 ### start `/part start`
 
@@ -706,8 +706,8 @@ Imports parts from a beatmap's bookmarks.
 **Arguments:**
 - `project` (string): The project.
 - `beatmap` (Attachment): The beatmap .osu to import bookmarks from.
-- `hasstart` (bool, optional): Whether there is a bookmark indicating the start of the first part. Defaults to `true`.
-- `hasend` (bool, optional): Whether there is a bookmark indicating the end of the last part. Defaults to `false`.
+- `hasStart` (bool, optional): Whether there is a bookmark indicating the start of the first part. Defaults to `true`.
+- `hasEnd` (bool, optional): Whether there is a bookmark indicating the end of the last part. Defaults to `false`.
 - `replace` (bool, optional): Whether to clear the existing parts before importing. Defaults to `true`.
 
 ### fromcsv `/part fromcsv`
@@ -719,7 +719,7 @@ Imports parts from a CSV file.
 **Arguments:**
 - `project` (string): The project.
 - `file` (Attachment): The .csv file to import parts from.
-- `hasheaders` (bool, optional): Whether the CSV file has explicit headers. Defaults to `true`.
+- `hasHeaders` (bool, optional): Whether the CSV file has explicit headers. Defaults to `true`.
 - `replace` (bool, optional): Whether to clear the existing parts before importing. Defaults to `true`.
 
 ### tocsv `/part tocsv`
@@ -740,8 +740,8 @@ Generates an element with all the parts which you can add to your beatmap descri
 
 **Arguments:**
 - `project` (string): The project.
-- `includemappers` (bool, optional): Whether to show the mappers assigned to each part. Defaults to `true`.
-- `includepartnames` (bool, optional): Whether to show the name of each part. Defaults to `false`.
+- `includeMappers` (bool, optional): Whether to show the mappers assigned to each part. Defaults to `true`.
+- `includePartNames` (bool, optional): Whether to show the name of each part. Defaults to `false`.
 
 ## Assignment Module `/asn`
 

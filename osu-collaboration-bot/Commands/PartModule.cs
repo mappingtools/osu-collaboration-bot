@@ -165,7 +165,7 @@ namespace CollaborationBot.Commands {
         [SlashCommand("rename", "Changes the name of the part")]
         public async Task Rename([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part")]string name,
-            [Summary("newname", "The new name for the part")]string newName) {
+            [Summary("newName", "The new name for the part")]string newName) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
@@ -323,8 +323,8 @@ namespace CollaborationBot.Commands {
         [SlashCommand("frombookmarks", "Imports parts from a beatmap's bookmarks")]
         public async Task FromBookmarks([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("beatmap", "The beatmap .osu to import bookmarks from")]Attachment attachment,
-            [Summary("hasstart", "Whether there is a bookmark indicating the start of the first part")] bool hasStart = true,
-            [Summary("hasend", "Whether there is a bookmark indicating the end of the last part")] bool hasEnd = false,
+            [Summary("hasStart", "Whether there is a bookmark indicating the start of the first part")] bool hasStart = true,
+            [Summary("hasEnd", "Whether there is a bookmark indicating the end of the last part")] bool hasEnd = false,
             [Summary("replace", "Whether to clear the existing parts before importing")] bool replace = true) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 
@@ -416,7 +416,7 @@ namespace CollaborationBot.Commands {
         [SlashCommand("fromcsv", "Imports parts from a CSV file")]
         public async Task FromCSV([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
             [Summary("file", "The .csv file to import parts from")]Attachment attachment,
-            [Summary("hasheaders", "Whether the CSV file has explicit headers")]bool hasHeaders = true,
+            [Summary("hasHeaders", "Whether the CSV file has explicit headers")]bool hasHeaders = true,
             [Summary("replace", "Whether to clear the existing parts before importing")]bool replace = true) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 
@@ -459,7 +459,7 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("tocsv", "Exports all parts of the project to a CSV file")]
         public async Task ToCSV([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,
-            [Summary("includemappers", "Whether to include columns showing the mappers assigned to each part")]bool includeMappers=false) {
+            [Summary("includeMappers", "Whether to include columns showing the mappers assigned to each part")]bool includeMappers=false) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {
@@ -502,8 +502,8 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("todescription", "Generates an element with all the parts which you can add to your beatmap description.")]
         public async Task ToDesc([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
-            [Summary("includemappers", "Whether to show the mappers assigned to each part")] bool includeMappers = true,
-            [Summary("includepartnames", "Whether to show the name of each part")] bool includePartNames = false) {
+            [Summary("includeMappers", "Whether to show the mappers assigned to each part")] bool includeMappers = true,
+            [Summary("includePartNames", "Whether to show the name of each part")] bool includePartNames = false) {
             var project = await _common.GetProjectAsync(Context, _context, projectName);
 
             if (project == null) {

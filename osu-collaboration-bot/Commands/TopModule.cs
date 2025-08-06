@@ -815,12 +815,12 @@ namespace CollaborationBot.Commands {
         private static readonly int[] wordCounts = { 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 10 };
 
         [SlashCommand("diffname", "Generates a random difficulty name")]
-        public async Task Diffname([Summary("wordcount", "The number of words to use in the sentence")][MinValue(1)][MaxValue(200)]int wordCount = -1) {
+        public async Task Diffname([Summary("wordCount", "The number of words to use in the sentence")][MinValue(1)][MaxValue(200)]int wordCount = -1) {
             await DoRandomString(@"CollaborationBot.Resources.Diffname Words.txt", wordCount, 0.02);
         }
 
         [SlashCommand("blixys", "Generates some inspiration")]
-        public async Task Blixys([Summary("wordcount", "The number of words to use in the sentence")][MinValue(1)][MaxValue(200)]int wordCount=-1) {
+        public async Task Blixys([Summary("wordCount", "The number of words to use in the sentence")][MinValue(1)][MaxValue(200)]int wordCount=-1) {
             await DoRandomString(@"CollaborationBot.Resources.blixys.txt", wordCount, 0.05);
         }
 
