@@ -23,6 +23,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using CollaborationBot.TypeReaders;
 using Discord.WebSocket;
 
 namespace CollaborationBot.Commands {
@@ -516,6 +517,38 @@ namespace CollaborationBot.Commands {
 
             // Handle auto-updates
             await AutoUpdateModule.HandleAutoUpdates(project, Context, _context, _fileHandler);
+        }
+
+        [SlashCommand("feedback", "Prints your feedback, mentioning the relevant part owner(s) if a timestamp is included")]
+        public async Task Feedback([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
+            [Summary("feedback", "The feedback to give (may include a timestamp)")] string feedback) {
+            if (!_inputSanitizer.IsSafeToPrint(feedback)) {
+                await RespondAsync(Strings.IllegalInput);
+                return;
+            }
+
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            var timestamp = OsuTimeTypeReader.TryRead(feedback, allowNull: false);
+            var mentions = new StringBuilder();
+
+            if (timestamp.IsSuccess) {
+                var parts = await PartModule.QueryParts(_context, project, (TimeSpan)timestamp.Value);
+                var people = parts.SelectMany(p => p.Assignments)
+                    .Select(a => a.Member.Person)
+                    .Where(p => p.UniqueMemberId != Context.User.Id)
+                    .Distinct().ToList();
+                mentions.AppendJoin(' ', people.Select(p => p.Mention));
+            }
+
+            if (mentions.Length > 0)
+                await RespondAsync(string.Format(Strings.FeedbackMessage, Context.User.Mention, mentions, feedback));
+            else
+                await RespondAsync(string.Format(Strings.FeedbackMessageNoMention, Context.User.Mention, feedback));
         }
 
         #endregion

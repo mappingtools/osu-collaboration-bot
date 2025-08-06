@@ -690,6 +690,24 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} has left feedback for {1}: {2}.
+        /// </summary>
+        public static string FeedbackMessage {
+            get {
+                return ResourceManager.GetString("FeedbackMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} has left feedback: {1}.
+        /// </summary>
+        public static string FeedbackMessageNoMention {
+            get {
+                return ResourceManager.GetString("FeedbackMessageNoMention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The file type needs to be &apos;.osu&apos;..
         /// </summary>
         public static string FileTypeNeedsToBeOsu {

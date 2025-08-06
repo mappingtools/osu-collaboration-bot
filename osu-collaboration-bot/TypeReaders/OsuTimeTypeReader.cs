@@ -13,23 +13,24 @@ namespace CollaborationBot.TypeReaders {
         }
 
         public override Task<TypeConverterResult> ReadAsync(IInteractionContext context, IApplicationCommandInteractionDataOption option, IServiceProvider services) {
+            return Task.FromResult(TryRead((string)option.Value, AllowNull));
+        }
+
+        public static TypeConverterResult TryRead(string value, bool allowNull = true) {
             try {
-                var value = (string)option.Value;
                 // Remove parts after a dash, for example in feedback: "01:56:474 (1,2) - ..."
                 value = value.Split('-')[0].Trim();
 
                 if (string.IsNullOrWhiteSpace(value) || string.Equals(value, "null", StringComparison.OrdinalIgnoreCase)) {
-                    return Task.FromResult(
-                        AllowNull ?
+                    return allowNull ?
                             TypeConverterResult.FromSuccess(null) :
-                            TypeConverterResult.FromError(InteractionCommandError.ParseFailed, "Timestamp cannot be null.")
-                            );
+                            TypeConverterResult.FromError(InteractionCommandError.ParseFailed, "Timestamp cannot be null.");
                 }
 
                 TimeSpan result = InputParsers.ParseOsuTimestamp(value);
-                return Task.FromResult(TypeConverterResult.FromSuccess(result));
+                return TypeConverterResult.FromSuccess(result);
             } catch {
-                return Task.FromResult(TypeConverterResult.FromError(InteractionCommandError.ParseFailed, "Timestamp could not be parsed as an osu! timestamp."));
+                return TypeConverterResult.FromError(InteractionCommandError.ParseFailed, "Timestamp could not be parsed as an osu! timestamp.");
             }
         }
     }

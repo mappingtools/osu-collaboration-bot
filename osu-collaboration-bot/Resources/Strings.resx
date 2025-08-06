@@ -730,4 +730,10 @@ Replace the part with the [square brackets] with the relevant value.</value>
   <data name="QueryNoParts" xml:space="preserve">
     <value>Your query yielded no parts.</value>
   </data>
+  <data name="FeedbackMessage" xml:space="preserve">
+    <value>{0} has left feedback for {1}: {2}</value>
+  </data>
+  <data name="FeedbackMessageNoMention" xml:space="preserve">
+    <value>{0} has left feedback: {1}</value>
+  </data>
 </root>

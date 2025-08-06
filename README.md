@@ -229,6 +229,16 @@ Submits a part of a beatmap to a project.
 - `attachment` (Attachment): The part to submit as a .osu file.
 - `part` (string, optional): The part name to submit to. Will overwrite the entire part including endpoints. Defaults to `null`.
 
+### feedback `/feedback`
+
+Prints your feedback, mentioning the relevant part owner(s) if a timestamp is included.
+
+**Permissions Required:** Project Member
+
+**Arguments:**
+- `project` (string): The project.
+- `feedback` (string): The feedback to give (may include a timestamp).
+
 ### claim `/claim`
 
 Claims one or more parts and assigns them to you.
