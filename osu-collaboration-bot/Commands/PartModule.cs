@@ -105,6 +105,28 @@ namespace CollaborationBot.Commands {
             await _resourceService.RespondPaginator(Context, parts, _resourceService.GeneratePartsListPages,
                 Strings.NoParts, Strings.PartListClaimableMessage);
         }
+
+        [SlashCommand("query", "Finds all the parts at a specific time")]
+        public async Task Query([Autocomplete(typeof(ProjectAutocompleteHandler))] [Summary("project", "The project")] string projectName,
+            [Summary("time", "The time to query")] TimeSpan time) {
+            var project = await _common.GetProjectAsync(Context, _context, projectName);
+
+            if (project == null) {
+                return;
+            }
+
+            var parts = await _context.Parts.AsQueryable()
+                .Where(o => o.ProjectId == project.Id && (o.Start == null || o.Start <= time.TotalMilliseconds) && (o.End == null || o.End >= time.TotalMilliseconds))
+                .Include(o => o.Assignments)
+                .ThenInclude(o => o.Member)
+                .ThenInclude(o => o.Person)
+                .ToListAsync();
+
+            parts.Sort();
+
+            await _resourceService.RespondPaginator(Context, parts, _resourceService.GeneratePartsListPages,
+                Strings.QueryNoParts, Strings.PartQueryListMessage);
+        }
         
         [SlashCommand("add", "Adds a new part to the project")]
         public async Task Add([RequireProjectManager][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")]string projectName,

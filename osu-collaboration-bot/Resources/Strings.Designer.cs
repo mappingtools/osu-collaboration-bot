@@ -1241,6 +1241,15 @@ namespace CollaborationBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Here are all the parts matching your query:.
+        /// </summary>
+        public static string PartQueryListMessage {
+            get {
+                return ResourceManager.GetString("PartQueryListMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parts.
         /// </summary>
         public static string Parts {
@@ -1498,6 +1507,15 @@ namespace CollaborationBot.Resources {
         public static string ProjectStatusSuccess {
             get {
                 return ResourceManager.GetString("ProjectStatusSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your query yielded no parts..
+        /// </summary>
+        public static string QueryNoParts {
+            get {
+                return ResourceManager.GetString("QueryNoParts", resourceCulture);
             }
         }
         

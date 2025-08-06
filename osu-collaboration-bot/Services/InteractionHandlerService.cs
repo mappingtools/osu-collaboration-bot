@@ -29,7 +29,8 @@ namespace CollaborationBot.Services {
             _interactions.Log += Log;
 
             // Add custom type readers
-            _interactions.AddTypeConverter<TimeSpan>(new OsuTimeTypeReader());
+            _interactions.AddTypeConverter<TimeSpan>(new OsuTimeTypeReader { AllowNull = false });
+            _interactions.AddTypeConverter<TimeSpan?>(new OsuTimeTypeReader());
             _interactions.AddTypeConverter<Color>(new ColorTypeReader());
             _interactions.AddTypeConverter<string[]>(new StringArrayReader());
         }

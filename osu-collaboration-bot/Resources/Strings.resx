@@ -724,4 +724,10 @@ Replace the part with the [square brackets] with the relevant value.</value>
   <data name="UpdateNameFail" xml:space="preserve">
     <value>Could not update username.</value>
   </data>
+  <data name="PartQueryListMessage" xml:space="preserve">
+    <value>Here are all the parts matching your query:</value>
+  </data>
+  <data name="QueryNoParts" xml:space="preserve">
+    <value>Your query yielded no parts.</value>
+  </data>
 </root>

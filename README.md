@@ -602,6 +602,14 @@ Lists all the unclaimed or stealable parts of the project.
 - `project` (string): The project.
 - `checkMaxAssignmentTime` (bool, optional): Whether to check if the part is short enough to be claimed. Defaults to `true`.
 
+### query `/part query`
+
+Finds all the parts at a specific time.
+
+**Arguments:**
+- `project` (string): The project.
+- `time` (TimeSpan): The time to query.
+
 ### add `/part add`
 
 Adds a new part to the project.
