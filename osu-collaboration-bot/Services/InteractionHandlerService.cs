@@ -31,6 +31,8 @@ namespace CollaborationBot.Services {
             // Add custom type readers
             _interactions.AddTypeConverter<TimeSpan>(new OsuTimeTypeReader { AllowNull = false });
             _interactions.AddTypeConverter<TimeSpan?>(new OsuTimeTypeReader());
+            _interactions.AddTypeConverter<DateTime>(new DateTimeTypeReader { AllowNull = false });
+            _interactions.AddTypeConverter<DateTime?>(new DateTimeTypeReader());
             _interactions.AddTypeConverter<Color>(new ColorTypeReader());
             _interactions.AddTypeConverter<string[]>(new StringArrayReader());
         }
