@@ -131,7 +131,7 @@ namespace CollaborationBot.Commands {
                 await _context.SaveChangesAsync();
                 
                 // Make sure a person row exists
-                _ = CommonService.GetPersonAsync(_context, _client.Rest, Context.User.Id);
+                _ = await CommonService.GetPersonAsync(_context, _client.Rest, Context.User.Id);
 
                 // Add the owner as a member
                 await _context.Members.AddAsync(new Member { ProjectId = projectEntry.Entity.Id, UniqueMemberId = Context.User.Id, ProjectRole = ProjectRole.Owner });
@@ -376,7 +376,7 @@ namespace CollaborationBot.Commands {
             }
 
             // Make sure a person row exists
-            _ = CommonService.GetPersonAsync(dbContext, client, user.Id);
+            _ = await CommonService.GetPersonAsync(dbContext, client, user.Id);
 
             await dbContext.Members.AddAsync(new Member { ProjectId = project.Id, UniqueMemberId = user.Id, ProjectRole = ProjectRole.Member, Priority = priority });
             await dbContext.SaveChangesAsync();
