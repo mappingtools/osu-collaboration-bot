@@ -22,7 +22,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using CollaborationBot.TypeReaders;
 using Discord.WebSocket;
 
@@ -521,7 +523,8 @@ namespace CollaborationBot.Commands {
 
         [SlashCommand("feedback", "Prints your feedback, mentioning the relevant part owner(s) if a timestamp is included")]
         public async Task Feedback([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
-            [Summary("feedback", "The feedback to give (may include a timestamp)")] string feedback) {
+            [Summary("feedback", "The feedback to give (may include a timestamp)")] string feedback,
+            [Summary("convertTimestamps", "Whether to convert osu! timestamps to clickable links (default: true)")] bool convertTimestamps = true) {
             if (!_inputSanitizer.IsSafeToPrint(feedback)) {
                 await RespondAsync(Strings.IllegalInput);
                 return;
@@ -545,10 +548,41 @@ namespace CollaborationBot.Commands {
                 mentions.AppendJoin(' ', people.Select(p => p.Mention));
             }
 
+            // Replace all timestamps with clickable edit links
+            if (convertTimestamps)
+                feedback = ConvertTimestampsToMarkdown(feedback);
+
             if (mentions.Length > 0)
                 await RespondAsync(string.Format(Strings.FeedbackMessage, Context.User.Mention, mentions, feedback));
             else
                 await RespondAsync(string.Format(Strings.FeedbackMessageNoMention, Context.User.Mention, feedback));
+        }
+
+        /// <summary>
+        /// Converts all osu! timestamps in a string to clickable markdown links.
+        /// </summary>
+        /// <param name="input">The string containing osu! timestamps.</param>
+        /// <returns>A new string with timestamps converted to markdown links.</returns>
+        public static string ConvertTimestampsToMarkdown(string input)
+        {
+            // Regex to match the osu! timestamp format:
+            // <minutes>:<seconds>:<milliseconds> with an optional combo part in parentheses
+            const string pattern = @"(\d{2}:\d{2}:\d{3}(?:\s*\([^)]+\))?)";
+
+            // The URL template for the osu!:// protocol redirector
+            const string urlTemplate = "https://intradeus.github.io/http-protocol-redirector?r=osu://edit/";
+
+            return Regex.Replace(input, pattern, match =>
+            {
+                // The full timestamp string captured by the regex
+                string timestamp = match.Value;
+
+                // URL-encode the timestamp to be safe in the URL
+                string encodedTimestamp = HttpUtility.UrlEncode(timestamp);
+
+                // Construct the final markdown link
+                return $"[{timestamp}]({urlTemplate}{encodedTimestamp})";
+            });
         }
 
         #endregion

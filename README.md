@@ -232,6 +232,7 @@ Submits a part of a beatmap to a project.
 ### feedback `/feedback`
 
 Prints your feedback, mentioning the relevant part owner(s) if a timestamp is included.
+Also turns any timestamps into clickable edit links.
 
 **Permissions Required:** Project Member
 
