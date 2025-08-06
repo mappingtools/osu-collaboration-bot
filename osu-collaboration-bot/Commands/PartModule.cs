@@ -124,7 +124,7 @@ namespace CollaborationBot.Commands {
 
         public static async Task<List<Part>> QueryParts(OsuCollabContext context, Project project, TimeSpan time) {
             return await context.Parts.AsQueryable()
-                .Where(o => o.ProjectId == project.Id && (o.Start == null || o.Start <= time.TotalMilliseconds) && (o.End == null || o.End >= time.TotalMilliseconds))
+                .Where(o => o.ProjectId == project.Id && (o.Start == null || o.Start <= time.TotalMilliseconds) && (o.End == null || o.End > time.TotalMilliseconds))
                 .Include(o => o.Assignments)
                 .ThenInclude(o => o.Member)
                 .ThenInclude(o => o.Person)
