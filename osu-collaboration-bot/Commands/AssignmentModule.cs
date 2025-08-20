@@ -155,7 +155,9 @@ namespace CollaborationBot.Commands {
                 var assignments = (await _context.Assignments.AsQueryable()
                     .Where(o => o.Part.ProjectId == project.Id)
                     .Include(o => o.Part)
-                    .Include(o => o.Member).ToListAsync())
+                    .Include(o => o.Member)
+                    .ThenInclude(o => o.Person)
+                    .ToListAsync())
                     .GroupBy(o => o.Member);
 
                 var drainTimes = new List<KeyValuePair<Member, int>>();
