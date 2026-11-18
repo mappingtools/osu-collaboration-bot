@@ -36,7 +36,7 @@ App__ConnectionString=<YOUR CONNECTION STRING>
 App__Token=<YOUR DISCORD BOT TOKEN>
 App__Path=<PATH TO STORAGE BEATMAP FILES>
 ```
-- Compile and run the program with .NET 6.0
+- Compile and run the program with the .NET 10 SDK.
 
 ## Running with Docker
 You can build a Docker Image with the provided Docker Compose file.

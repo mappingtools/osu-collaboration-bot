@@ -1,40 +1,47 @@
 name: Deploy
 
 on:
- push:
-  branches:
-    - master
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
 
 jobs:
-  build:
-
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    
-    - name: Install SSH Key
-      uses: shimataro/ssh-key-action@v2
-      with:
-       key: ${{ secrets.deploy_ssh_key }} 
-       known_hosts: 'placeholder'
-       
-    - name: Adding Known Hosts
-      run: ssh-keyscan -H ${{ secrets.deploy_host }} >> ~/.ssh/known_hosts
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.x
-        
-    - name: Restore dependencies
-      run: dotnet restore
-      
-    - name: Build
-      run: dotnet build -c Release -o ./release --no-restore
-      
-    - name: Deploy with rsync
-      run: rsync -avz --chmod=770 --exclude={'appsettings.*','*.pdb','*.dev','*.dev*'} ./release/ ${{ secrets.deploy_username }}@${{ secrets.deploy_host }}:/var/collabbot/
-    
-    - name: Restart systemd service
-      run: ssh ${{ secrets.deploy_username }}@${{ secrets.deploy_host }} "sudo systemctl restart osu-collaboration-bot.service"
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          known_hosts: osu-collaboration-bot-production ${{ vars.DEPLOY_SSH_HOST_KEY }}
+
+      - name: Rebuild the bot with Docker Compose
+        env:
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+          DEPLOY_USERNAME: ${{ vars.DEPLOY_USERNAME }}
+        run: |
+          ssh -o BatchMode=yes -o StrictHostKeyChecking=yes \
+            -o HostKeyAlias=osu-collaboration-bot-production \
+            "$DEPLOY_USERNAME@$DEPLOY_HOST" 'bash -se' <<'REMOTE'
+          cd /home/opc/osu-collaboration-bot
+          branch=$(git branch --show-current)
+          changes=$(git status --porcelain)
+          if [ "$branch" != master ] || [ -n "$changes" ]; then
+            echo 'The deployment checkout must be clean and on master.' >&2
+            exit 1
+          fi
+
+          git fetch origin master
+          git merge --ff-only FETCH_HEAD
+          if [ "$(git rev-parse HEAD)" != "$(git rev-parse FETCH_HEAD)" ]; then
+            echo 'The deployment checkout is ahead of origin/master.' >&2
+            exit 1
+          fi
+
+          sudo -n docker compose --project-name osu-collaboration-bot --env-file .env \
+            up --build --no-deps --wait --wait-timeout 60 bot
+          REMOTE
