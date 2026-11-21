@@ -2,7 +2,6 @@ using Discord.Interactions;
 using System;
 using System.Threading.Tasks;
 using Discord;
-using Mapping_Tools_Core;
 
 namespace CollaborationBot.TypeReaders {
     public class DateTimeTypeReader : TypeConverter<DateTime?> {

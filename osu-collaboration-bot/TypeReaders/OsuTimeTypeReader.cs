@@ -2,7 +2,7 @@ using Discord.Interactions;
 using System;
 using System.Threading.Tasks;
 using Discord;
-using Mapping_Tools_Core;
+using Mapping_Tools.Core.SystemTools;
 
 namespace CollaborationBot.TypeReaders {
     public class OsuTimeTypeReader : TypeConverter<TimeSpan?> {
@@ -27,7 +27,7 @@ namespace CollaborationBot.TypeReaders {
                             TypeConverterResult.FromError(InteractionCommandError.ParseFailed, "Timestamp cannot be null.");
                 }
 
-                TimeSpan result = InputParsers.ParseOsuTimestamp(value);
+                TimeSpan result = TypeConverters.ParseOsuTimestamp(value);
                 return TypeConverterResult.FromSuccess(result);
             } catch {
                 return TypeConverterResult.FromError(InteractionCommandError.ParseFailed, "Timestamp could not be parsed as an osu! timestamp.");

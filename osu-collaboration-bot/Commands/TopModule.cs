@@ -5,13 +5,8 @@ using CollaborationBot.Resources;
 using CollaborationBot.Services;
 using Discord;
 using Discord.Interactions;
-using Mapping_Tools_Core.BeatmapHelper;
-using Mapping_Tools_Core.BeatmapHelper.Contexts;
-using Mapping_Tools_Core.BeatmapHelper.IO.Decoding;
-using Mapping_Tools_Core.BeatmapHelper.IO.Editor;
-using Mapping_Tools_Core.Exceptions;
-using Mapping_Tools_Core.MathUtil;
-using Mapping_Tools_Core.Tools.PatternGallery;
+using Mapping_Tools.Core.BeatmapHelper;
+using Mapping_Tools.Core.MathUtil;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using System;
@@ -362,7 +357,7 @@ namespace CollaborationBot.Commands {
         [SlashCommand("submit", "Submits a part of beatmap to the project")]
         public async Task SubmitPart([RequireProjectMember][Autocomplete(typeof(ProjectAutocompleteHandler))][Summary("project", "The project")] string projectName,
             [Summary("beatmap", "The part to submit as a .osu file")] Attachment attachment,
-            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part name to submit to (optional). Will overwrite the entire part including endpoints.")] string partName = null) {
+            [Autocomplete(typeof(PartAutocompleteHandler))][Summary("part", "The part to overwrite. Leaves up to 5 ms at edges without submitted objects.")] string partName = null) {
             // Find out which parts this member is allowed to edit in the project
             // Download the attached file and put it in the member's folder
             // Merge it into the base file
@@ -429,79 +424,13 @@ namespace CollaborationBot.Commands {
             }
 
             try {
-                var partBeatmap = new OsuBeatmapDecoder().Decode(beatmapString);
-
-                if (partIsRestricted) {
-                    // Restrict beatmap to only the hit objects inside any assigned part
-                    partBeatmap.HitObjects = partBeatmap.HitObjects
-                        .Where(ho => parts!.Any(p =>
-                            p.Status != PartStatus.Locked &&
-                            (ho.StartTime >= p.Start || !p.Start.HasValue) &&
-                            (ho.StartTime <= p.End || !p.End.HasValue) &&
-                            (ho.EndTime >= p.Start || !p.Start.HasValue) &&
-                            (ho.EndTime <= p.End || !p.End.HasValue)))
-                        .ToList();
-                }
-
-                var count = partBeatmap.HitObjects.Count;
-
+                var count = await BeatmapSubmission.SubmitPartAsync(
+                    _fileHandler.GetProjectBaseFilePath(Context.Guild, projectName),
+                    beatmapString, parts, partNameProvided, ReportSubmitWarningsAsync);
                 if (count == 0) {
                     await RespondAsync(Strings.SubmitNoHitObjects);
                     return;
                 }
-
-                var editor = new BeatmapEditor(_fileHandler.GetProjectBaseFilePath(Context.Guild, projectName));
-                var beatmap = editor.ReadFile();
-
-                // Check the global SV and stack leniency and warn the user if problems arise
-                double svFactor = partBeatmap.Difficulty.SliderMultiplier / beatmap.Difficulty.SliderMultiplier;
-                if (!Precision.AlmostEquals(svFactor, 1) &&
-                    partBeatmap.HitObjects.Any(o => {
-                        var newSV = svFactor * MathHelper.Clamp(o.GetContext<TimingContext>().SliderVelocity, 0.1, 10);
-                        return double.IsNaN(newSV) ||
-                               Precision.DefinitelySmaller(newSV, 0.1) ||
-                               Precision.DefinitelyBigger(newSV, 10);
-                    })) {
-                    await RespondAsync(string.Format(Strings.GlobalSVMismatchWarning));
-                }
-
-                if (!Precision.AlmostEquals(partBeatmap.General.StackLeniency, beatmap.General.StackLeniency)) {
-                    await RespondAsync(string.Format(Strings.StackLeniencyMismatchWarning));
-                }
-
-                // Merge the part and save
-                var placer = new OsuPatternPlacer {
-                    PatternOverwriteMode = PatternOverwriteMode.PartitionedOverwrite,
-                    TimingOverwriteMode = TimingOverwriteMode.PatternTimingOnly,
-                    Padding = 0,
-                    PartingDistance = 4,
-                    FixColourHax = true,
-                    FixBpmSv = false,
-                    FixStackLeniency = false,
-                    FixTickRate = false,
-                    FixGlobalSv = true,
-                    SnapToNewTiming = false,
-                    ScaleToNewTiming = false,
-                    IncludeHitsounds = true,
-                    IncludeKiai = true,
-                    ScaleToNewCircleSize = false,
-                };
-
-                if (partNameProvided) {
-                    placer.PlaceOsuPattern(
-                        partBeatmap,
-                        beatmap,
-                        overwriteStartTime: parts.FirstOrDefault()?.Start,
-                        overwriteEndTime: parts.FirstOrDefault()?.End
-                        );
-                } else {
-                    placer.PlaceOsuPattern(partBeatmap, beatmap);
-                }
-
-                // Fix break periods
-                beatmap.FixBreakPeriods();
-
-                editor.WriteFile(beatmap);
 
                 await RespondAsync(_resourceService.GenerateSubmitPartMessage(projectName, count, true));
             } catch (BeatmapParsingException e) {
@@ -519,6 +448,23 @@ namespace CollaborationBot.Commands {
 
             // Handle auto-updates
             await AutoUpdateModule.HandleAutoUpdates(project, Context, _context, _fileHandler);
+        }
+
+        private async Task ReportSubmitWarningsAsync(Beatmap partBeatmap, Beatmap beatmap) {
+            double svFactor = partBeatmap.BeatmapTiming.SliderMultiplier / beatmap.BeatmapTiming.SliderMultiplier;
+            if (!Precision.AlmostEquals(svFactor, 1) &&
+                partBeatmap.HitObjects.Any(o => {
+                    var newSV = svFactor * (-100 / o.SliderVelocity);
+                    return double.IsNaN(newSV) ||
+                           Precision.DefinitelyBigger(0.1, newSV) ||
+                           Precision.DefinitelyBigger(newSV, 10);
+                })) {
+                await RespondAsync(string.Format(Strings.GlobalSVMismatchWarning));
+            }
+
+            if (!Precision.AlmostEquals(partBeatmap.General["StackLeniency"].DoubleValue, beatmap.General["StackLeniency"].DoubleValue)) {
+                await RespondAsync(string.Format(Strings.StackLeniencyMismatchWarning));
+            }
         }
 
         [SlashCommand("feedback", "Prints your feedback, mentioning the relevant part owner(s) if a timestamp is included")]
@@ -735,15 +681,15 @@ namespace CollaborationBot.Commands {
                     .Where(o => o.ProjectId == project.Id && o.Status == PartStatus.Locked))
                 .ToListAsync();
 
-            var editor = new BeatmapEditor(_fileHandler.GetProjectBaseFilePath(Context.Guild, projectName));
-            var beatmap = editor.ReadFile();
+            var baseFilePath = _fileHandler.GetProjectBaseFilePath(Context.Guild, projectName);
+            var beatmap = BeatmapFile.Read(baseFilePath);
             int removedCount = 0;
 
             // Remove all hit objects that are not (partially) in the claimed parts
             foreach (var hitObject in beatmap.HitObjects.ToList()) {
                 if (claimedParts.Any(p =>
-                        (hitObject.EndTime >= p.Start - 5 || !p.Start.HasValue) &&
-                        (hitObject.StartTime <= p.End + 5 || !p.End.HasValue))) {
+                        (hitObject.GetEndTime(false) >= p.Start - 5 || !p.Start.HasValue) &&
+                        (hitObject.Time <= p.End + 5 || !p.End.HasValue))) {
                     continue;
                 }
 
@@ -756,7 +702,7 @@ namespace CollaborationBot.Commands {
             // Fix break periods
             beatmap.FixBreakPeriods();
 
-            editor.WriteFile(beatmap);
+            BeatmapFile.Write(baseFilePath, beatmap);
 
             // Reset the activity timer
             project.LastActivity = DateTime.UtcNow;

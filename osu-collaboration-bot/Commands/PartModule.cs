@@ -5,8 +5,7 @@ using CollaborationBot.Services;
 using CsvHelper;
 using Discord;
 using Discord.Interactions;
-using Mapping_Tools_Core.BeatmapHelper.IO.Decoding;
-using Mapping_Tools_Core.Exceptions;
+using Mapping_Tools.Core.BeatmapHelper;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using System;
@@ -346,8 +345,8 @@ namespace CollaborationBot.Commands {
 
             var newParts = new List<Part>();
             try {
-                var beatmap = new OsuBeatmapDecoder().Decode(beatmapString);
-                var bookmarks = beatmap.Editor.Bookmarks;
+                var beatmap = BeatmapFile.Decode(beatmapString);
+                var bookmarks = beatmap.Bookmarks;
                 var count = bookmarks.Count;
 
                 if (count == 0) {

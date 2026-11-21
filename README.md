@@ -227,7 +227,7 @@ Submits a part of a beatmap to a project.
 **Arguments:**
 - `project` (string): The project.
 - `attachment` (Attachment): The part to submit as a .osu file.
-- `part` (string, optional): The part name to submit to. Will overwrite the entire part including endpoints. Defaults to `null`.
+- `part` (string, optional): The part to overwrite. Each edge without a submitted object can be trimmed by up to 5 ms.
 
 ### feedback `/feedback`
 
