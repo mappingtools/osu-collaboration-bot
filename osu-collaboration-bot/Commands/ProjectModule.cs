@@ -101,7 +101,7 @@ namespace CollaborationBot.Commands {
         [SlashCommand("create", "Creates a new project")]
         public async Task Create([Summary("project", "The name of the new project")]string projectName) {
             try {
-                var guild = await _context.Guilds.AsAsyncEnumerable().SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
+                var guild = await _context.Guilds.SingleOrDefaultAsync(o => o.UniqueGuildId == Context.Guild.Id);
 
                 if (guild == null) {
                     await RespondAsync(string.Format(Strings.GuildNotExistsMessage, _appSettings.Prefix));
